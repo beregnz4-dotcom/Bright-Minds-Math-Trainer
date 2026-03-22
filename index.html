@@ -1,951 +1,1234 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bright Minds Math Trainer</title>
-<style>
-:root{
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --text:#1f2937;
-  --muted:#6b7280;
-  --line:#e5e7eb;
-  --yellow:#f4b000;
-  --purple:#7a4dff;
-  --green:#22c55e;
-  --red:#ef4444;
-  --dark:#111827;
-  --soft:#f9fafb;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:linear-gradient(180deg,#f8fafc,#eef2ff);
-  color:var(--text);
-}
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:20px;
-}
-h1{
-  text-align:center;
-  margin:0 0 10px;
-  font-size:32px;
-}
-.sub{
-  text-align:center;
-  color:var(--muted);
-  margin-bottom:16px;
-  font-weight:600;
-}
-.tabs{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-bottom:18px;
-}
-.tab{
-  padding:10px 16px;
-  border-radius:12px;
-  background:#e5e7eb;
-  cursor:pointer;
-  font-weight:800;
-  user-select:none;
-}
-.tab.active{
-  background:var(--yellow);
-  color:white;
-}
-.section{display:none}
-.section.active{display:block}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bright Minds Math</title>
+  <meta name="theme-color" content="#f4b000">
+  <style>
+    :root{
+      --bg:#f7f8fc;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --yellow:#f4b000;
+      --purple:#7a4dff;
+      --green:#22c55e;
+      --red:#ef4444;
+      --dark:#111827;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,#fbfcff,#eef2ff);
+      color:var(--text);
+    }
+    .wrap{
+      max-width:1050px;
+      margin:auto;
+      padding:18px;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:16px;
+      flex-wrap:wrap;
+    }
+    .brand h1{
+      margin:0;
+      font-size:30px;
+      line-height:1.05;
+    }
+    .brand p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-weight:600;
+      font-size:14px;
+    }
+    .ghost-btn{
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+    }
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .tab{
+      background:#e8ebf3;
+      color:#374151;
+      border:none;
+      padding:10px 16px;
+      border-radius:999px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .tab.active{
+      background:var(--yellow);
+      color:#fff;
+    }
+    .section{display:none}
+    .section.active{display:block}
+    .grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:16px;
+    }
+    @media (max-width: 860px){
+      .grid{grid-template-columns:1fr}
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:16px;
+      box-shadow:var(--shadow);
+      margin-bottom:16px;
+    }
+    .card h3{
+      margin:0 0 12px;
+      font-size:18px;
+    }
+    .subtle{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:600;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    input, select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:16px;
+      background:#fff;
+      color:var(--text);
+    }
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:12px 16px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .btn-yellow{background:var(--yellow); color:#fff}
+    .btn-purple{background:var(--purple); color:#fff}
+    .btn-green{background:var(--green); color:#fff}
+    .btn-red{background:var(--red); color:#fff}
+    .btn-dark{background:var(--dark); color:#fff}
+    .btn-soft{background:#eef2ff; color:var(--text)}
 
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:0 10px 30px rgba(17,24,39,.06);
-}
-.grid2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-}
-@media (max-width:800px){
-  .grid2{grid-template-columns:1fr}
-}
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .chip{
+      border:1px solid #d1d5db;
+      background:#fff;
+      color:#374151;
+      padding:9px 12px;
+      border-radius:999px;
+      font-weight:800;
+      cursor:pointer;
+      user-select:none;
+      min-width:72px;
+      text-align:center;
+    }
+    .chip.active{
+      background:var(--yellow);
+      color:#fff;
+      border-color:var(--yellow);
+    }
 
-label.title{
-  display:block;
-  font-size:14px;
-  font-weight:800;
-  color:var(--muted);
-  margin-bottom:8px;
-}
-input,select{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:white;
-  font-size:16px;
-}
-.row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-}
-button{
-  border:none;
-  border-radius:12px;
-  padding:12px 16px;
-  font-weight:800;
-  cursor:pointer;
-}
-.btn-yellow{background:var(--yellow);color:white}
-.btn-purple{background:var(--purple);color:white}
-.btn-green{background:var(--green);color:white}
-.btn-red{background:var(--red);color:white}
-.btn-dark{background:var(--dark);color:white}
-.btn-soft{background:#eef2ff;color:var(--text)}
-.btn-ghost{background:#f3f4f6;color:var(--text)}
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:10px;
+      margin-bottom:16px;
+    }
+    @media (max-width: 860px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+    }
+    .stat{
+      background:#fbfcff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px 10px;
+      text-align:center;
+    }
+    .stat .k{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:800;
+    }
+    .stat .v{
+      font-size:24px;
+      font-weight:900;
+      margin-top:2px;
+    }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-  margin-bottom:14px;
-}
-@media (max-width:800px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-}
-.stat{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:10px;
-  text-align:center;
-}
-.stat .k{
-  color:var(--muted);
-  font-size:12px;
-  font-weight:800;
-}
-.stat .v{
-  margin-top:4px;
-  font-size:24px;
-  font-weight:900;
-}
+    .flashcard{
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:26px 16px;
+      background:linear-gradient(180deg,#fff,#f8fbff);
+      text-align:center;
+      min-height:260px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .problem{
+      font-size:112px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:2px;
+      color:var(--dark);
+      margin:0 0 12px;
+    }
+    @media (max-width: 680px){
+      .problem{font-size:76px}
+    }
+    .answer{
+      min-height:54px;
+      font-size:44px;
+      color:var(--green);
+      font-weight:900;
+    }
+    .feedback{
+      min-height:30px;
+      font-size:22px;
+      font-weight:900;
+      margin-top:10px;
+    }
+    .actions{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
 
-.flashcard{
-  background:linear-gradient(180deg,#ffffff,#f8fafc);
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:24px 16px;
-  text-align:center;
-}
-.problem{
-  font-size:120px;
-  font-weight:900;
-  line-height:1;
-  letter-spacing:2px;
-  margin:10px 0 14px;
-  color:var(--dark);
-}
-@media (max-width:700px){
-  .problem{font-size:82px}
-}
-.answer{
-  min-height:52px;
-  font-size:44px;
-  font-weight:900;
-  color:var(--green);
-}
-.feedback{
-  min-height:30px;
-  font-size:24px;
-  font-weight:900;
-  margin-top:10px;
-}
-.controls{
-  text-align:center;
-  margin-top:14px;
-}
+    .direct-wrap{
+      max-width:320px;
+      margin:10px auto 0;
+    }
 
-.historyItem{
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:12px;
-  margin-bottom:10px;
-  background:white;
-}
-.historyTitle{
-  font-weight:900;
-  margin-bottom:6px;
-}
-.small{
-  color:var(--muted);
-  font-size:14px;
-}
+    .specific-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(92px,1fr));
+      gap:8px;
+      margin-top:12px;
+    }
 
-.tableGrid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-}
-@media (max-width:800px){
-  .tableGrid{grid-template-columns:repeat(2,1fr)}
-}
-.tableCard{
-  background:white;
-  padding:10px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  text-align:center;
-}
-.header{
-  background:var(--yellow);
-  color:white;
-  padding:6px;
-  border-radius:8px;
-  margin-bottom:8px;
-  font-weight:900;
-}
-.notice{
-  text-align:center;
-  color:var(--muted);
-  font-weight:700;
-  margin-top:8px;
-}
+    .history-item{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      margin-bottom:10px;
+      background:#fff;
+    }
+    .history-title{
+      font-weight:900;
+      margin-bottom:6px;
+    }
 
-.selectorBar{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-}
-.selectorInfo{
-  font-weight:800;
-  color:var(--muted);
-}
+    .table-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:10px;
+    }
+    @media (max-width: 860px){
+      .table-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    .table-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:10px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+    .table-head{
+      background:var(--yellow);
+      color:#fff;
+      font-weight:900;
+      padding:6px;
+      border-radius:10px;
+      margin-bottom:8px;
+    }
 
-.modalBackdrop{
-  position:fixed;
-  inset:0;
-  background:rgba(17,24,39,.45);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
-  z-index:999;
-}
-.modal{
-  width:min(980px,100%);
-  max-height:90vh;
-  overflow:auto;
-  background:white;
-  border-radius:20px;
-  border:1px solid var(--line);
-  box-shadow:0 20px 60px rgba(0,0,0,.2);
-}
-.modalHeader{
-  position:sticky;
-  top:0;
-  background:white;
-  padding:16px;
-  border-bottom:1px solid var(--line);
-  z-index:2;
-}
-.modalBody{
-  padding:16px;
-}
-.modalFooter{
-  position:sticky;
-  bottom:0;
-  background:white;
-  padding:16px;
-  border-top:1px solid var(--line);
-}
-.quickRow{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:12px;
-}
-.quickBtn{
-  background:#eef2ff;
-  color:var(--text);
-  border:none;
-  border-radius:999px;
-  padding:8px 12px;
-  font-weight:800;
-  cursor:pointer;
-}
-.selectorBlock{
-  background:var(--soft);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:14px;
-  margin-bottom:14px;
-}
-.selectorBlockTitle{
-  font-weight:900;
-  margin-bottom:10px;
-}
-.wordGrid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:10px;
-}
-.pickItem input{display:none}
-.pickItem span{
-  display:block;
-  padding:10px 12px;
-  border-radius:12px;
-  background:white;
-  border:1px solid #d1d5db;
-  font-weight:800;
-  text-align:center;
-  cursor:pointer;
-}
-.pickItem input:checked + span{
-  background:var(--yellow);
-  color:white;
-  border-color:var(--yellow);
-}
-.factGrid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(95px,1fr));
-  gap:8px;
-}
-.searchBox{
-  margin-bottom:12px;
-}
-</style>
+    .visual-wrap{
+      background:#fff9f1;
+      border:1px solid #efe4d2;
+      border-radius:24px;
+      padding:18px;
+    }
+    .visual-title{
+      text-align:center;
+      font-weight:900;
+      font-size:32px;
+      color:#334155;
+      margin-bottom:6px;
+    }
+    .visual-sub{
+      text-align:center;
+      color:#64748b;
+      font-weight:700;
+      margin-bottom:16px;
+    }
+    .stairs{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      overflow-x:auto;
+      padding-bottom:6px;
+    }
+    .stair-col{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:110px;
+    }
+    .stair-head{
+      border-radius:16px;
+      text-align:center;
+      padding:10px 0;
+      font-size:42px;
+      font-weight:900;
+      color:#334155;
+      box-shadow:0 4px 10px rgba(0,0,0,.07);
+    }
+    .stair-cell{
+      border-radius:14px;
+      text-align:center;
+      padding:11px 8px;
+      font-size:19px;
+      font-weight:800;
+      color:#334155;
+      box-shadow:0 3px 8px rgba(0,0,0,.05);
+      white-space:nowrap;
+    }
+    @media (max-width:680px){
+      .stair-col{min-width:96px}
+      .stair-head{font-size:34px}
+      .stair-cell{font-size:16px}
+    }
+
+    .memo-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-top:14px;
+    }
+    @media (max-width: 700px){
+      .memo-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    .memo-card{
+      height:92px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:28px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:var(--shadow);
+      background:#fff;
+      color:#fff;
+      transition:transform .12s ease;
+    }
+    .memo-card:active{transform:scale(.98)}
+    .memo-back{
+      background:linear-gradient(180deg,var(--purple),#5f37d6);
+      color:#fff;
+      font-size:18px;
+      letter-spacing:1px;
+    }
+    .memo-front{
+      background:#fff;
+      color:var(--dark);
+    }
+    .memo-matched{
+      background:#dcfce7 !important;
+      color:#166534 !important;
+      border-color:#86efac;
+    }
+
+    .empty{
+      color:var(--muted);
+      font-weight:700;
+      text-align:center;
+      padding:18px 0;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <h1>🚀 Bright Minds Math Trainer</h1>
-  <div class="sub">Selector premium estilo spelling + práctica inteligente</div>
-
-  <div class="tabs">
-    <div class="tab active" onclick="showTab(0)">Juego</div>
-    <div class="tab" onclick="showTab(1)">Progreso</div>
-    <div class="tab" onclick="showTab(2)">Tablas</div>
-  </div>
-
-  <div class="section active">
-    <div class="grid2">
-      <div class="card">
-        <label class="title">👧 Dar de alta niño</label>
-        <div class="row">
-          <input id="newChild" placeholder="Ej: Aitana">
-          <button class="btn-yellow" onclick="addChild()">Agregar</button>
-        </div>
-        <div style="margin-top:12px">
-          <label class="title">Niño activo</label>
-          <select id="childSelect"></select>
-        </div>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <h1>🚀 Bright Minds Math</h1>
+        <p>Modo app premium · práctica inteligente de tablas</p>
       </div>
+      <button class="ghost-btn" onclick="resetApp()">Reset App</button>
+    </div>
 
-      <div class="card">
-        <div class="selectorBar">
-          <div>
-            <div class="historyTitle">Seleccionar ejercicios</div>
-            <div class="selectorInfo" id="selectionInfo">Seleccionados: 0</div>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab(0)">Juego</button>
+      <button class="tab" onclick="showTab(1)">Específicas</button>
+      <button class="tab" onclick="showTab(2)">Progreso</button>
+      <button class="tab" onclick="showTab(3)">Visual</button>
+      <button class="tab" onclick="showTab(4)">Memorama</button>
+    </div>
+
+    <div class="section active">
+      <div class="grid">
+        <div>
+          <div class="card">
+            <h3>Niños</h3>
+            <div class="row">
+              <input id="newChild" placeholder="Name">
+              <button class="btn btn-yellow" onclick="addChild()">Agregar</button>
+            </div>
+            <div style="margin-top:12px">
+              <select id="childSelect" onchange="renderHistory(); renderWeakFacts(); drawChart();"></select>
+            </div>
           </div>
-          <div class="row">
-            <button class="btn-soft" onclick="openSelector()">Abrir selector</button>
-            <button class="btn-soft" onclick="loadHardFacts()">Cargar difíciles</button>
-            <button class="btn-soft" onclick="clearSelection()">Limpiar</button>
+
+          <div class="card">
+            <h3>Modo de práctica</h3>
+            <div class="row">
+              <button id="modeFlashBtn" class="btn btn-yellow" onclick="setPracticeMode('flashcards')">Flashcards</button>
+              <button id="modeDirectBtn" class="btn btn-soft" onclick="setPracticeMode('direct')">Respuesta directa</button>
+            </div>
+            <div class="subtle" style="margin-top:10px">Flashcards: SHOW + BIEN/MAL. Respuesta directa: el niño escribe y la app valida sola.</div>
+          </div>
+
+          <div class="card">
+            <h3>Tablas incluidas</h3>
+            <div class="row">
+              <button class="btn btn-soft" onclick="selectAllTables()">Todas</button>
+              <button class="btn btn-soft" onclick="clearAllTables()">Limpiar</button>
+              <button class="btn btn-soft" onclick="selectRange(2,5)">2–5</button>
+              <button class="btn btn-soft" onclick="selectRange(6,10)">6–10</button>
+              <button class="btn btn-soft" onclick="loadWeakToSpecific()">Difíciles</button>
+            </div>
+            <div id="tableChips" class="chips"></div>
           </div>
         </div>
 
-        <div style="margin-top:14px">
-          <label class="title">Lista personalizada rápida (opcional)</label>
-          <input id="customList" placeholder="Ej: 4x7, 3x5, 8x3">
+        <div>
+          <div class="card">
+            <div class="stats">
+              <div class="stat"><div class="k">Tiempo</div><div class="v" id="time">0.0</div></div>
+              <div class="stat"><div class="k">Promedio</div><div class="v" id="avg">0.00</div></div>
+              <div class="stat"><div class="k">Buenas</div><div class="v" id="good">0</div></div>
+              <div class="stat"><div class="k">Malas</div><div class="v" id="bad">0</div></div>
+              <div class="stat"><div class="k">Restantes</div><div class="v" id="remaining">0</div></div>
+            </div>
+
+            <div class="row" style="justify-content:center;margin-bottom:12px">
+              <button class="btn btn-yellow" onclick="startSession()">START</button>
+              <button class="btn btn-soft" onclick="resetSession()">Reset sesión</button>
+            </div>
+
+            <div class="flashcard">
+              <div id="problem" class="problem">—</div>
+              <div id="answer" class="answer"></div>
+              <div id="feedback" class="feedback"></div>
+
+              <div id="directWrap" class="direct-wrap" style="display:none;">
+                <input id="directInput" inputmode="numeric" placeholder="Escribe la respuesta">
+                <div class="actions" style="margin-top:10px">
+                  <button id="validateBtn" class="btn btn-purple" onclick="validateDirectAnswer()">VALIDAR</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="flashActions" class="actions">
+              <button id="showBtn" class="btn btn-purple" onclick="showAnswer()">SHOW</button>
+              <button id="goodBtn" class="btn btn-green" onclick="markAnswer(true)">BIEN</button>
+              <button id="badBtn" class="btn btn-red" onclick="markAnswer(false)">MAL</button>
+              <button id="nextBtn" class="btn btn-dark" onclick="nextProblem()">NEXT</button>
+            </div>
+
+            <div id="directActions" class="actions" style="display:none;">
+              <button id="nextDirectBtn" class="btn btn-dark" onclick="nextProblem()">NEXT</button>
+            </div>
+
+            <div class="subtle" style="text-align:center;margin-top:10px">
+              La respuesta aparece según el modo seleccionado.
+            </div>
+          </div>
         </div>
-
-        <div class="notice">Puedes elegir tablas completas, rangos, ejercicios individuales o difíciles guardadas.</div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="row" style="justify-content:center; margin-bottom:12px">
-        <button class="btn-yellow" onclick="startSession()">START</button>
-        <button class="btn-soft" onclick="resetSession()">Reset sesión</button>
-      </div>
-
-      <div class="stats">
-        <div class="stat"><div class="k">Tiempo</div><div class="v" id="timer">0.0s</div></div>
-        <div class="stat"><div class="k">Promedio</div><div class="v" id="avg">0.00</div></div>
-        <div class="stat"><div class="k">Buenas</div><div class="v" id="good">0</div></div>
-        <div class="stat"><div class="k">Malas</div><div class="v" id="bad">0</div></div>
-        <div class="stat"><div class="k">Restantes</div><div class="v" id="remaining">0</div></div>
-      </div>
-
-      <div class="flashcard">
-        <div id="problem" class="problem">—</div>
-        <div id="answer" class="answer"></div>
-        <div id="feedback" class="feedback"></div>
-      </div>
-
-      <div class="controls">
-        <button class="btn-purple" onclick="showAnswer()">SHOW</button>
-        <button class="btn-green" onclick="markAnswer(true)">BIEN</button>
-        <button class="btn-red" onclick="markAnswer(false)">MAL</button>
-        <button class="btn-dark" onclick="nextProblem()">NEXT</button>
-      </div>
-
-      <div class="notice">La respuesta solo aparece con SHOW. La tarjeta cuenta una sola vez.</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="card">
-      <div class="historyTitle">📈 Progreso guardado</div>
-      <div id="history"></div>
-    </div>
-    <div class="card">
-      <div class="historyTitle">🧠 Multiplicaciones difíciles</div>
-      <div id="weakFacts"></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="card">
-      <div class="historyTitle">🧠 Tabla visual</div>
-      <div class="tableGrid" id="tables"></div>
-    </div>
-  </div>
-</div>
-
-<div class="modalBackdrop" id="selectorModal">
-  <div class="modal">
-    <div class="modalHeader">
-      <div class="historyTitle">Seleccionar ejercicios</div>
-      <div class="small">Elige tablas completas o ejercicios individuales</div>
-    </div>
-
-    <div class="modalBody">
-      <div class="quickRow">
-        <button class="quickBtn" onclick="selectAllFacts()">Todas</button>
-        <button class="quickBtn" onclick="clearAllFacts()">Ninguna</button>
-        <button class="quickBtn" onclick="selectTableRange(2,5)">Tablas 2–5</button>
-        <button class="quickBtn" onclick="selectTableRange(6,10)">Tablas 6–10</button>
-        <button class="quickBtn" onclick="selectWeakFacts()">Difíciles</button>
-      </div>
-
-      <div class="selectorBlock">
-        <div class="selectorBlockTitle">Tablas completas</div>
-        <div id="tablePickGrid" class="wordGrid"></div>
-      </div>
-
-      <div class="selectorBlock">
-        <div class="selectorBlockTitle">Buscar ejercicio específico</div>
-        <input id="factSearch" class="searchBox" placeholder="Ej: 4x7 o 7">
-        <div id="factPickGrid" class="factGrid"></div>
-      </div>
-    </div>
-
-    <div class="modalFooter">
-      <div class="row" style="justify-content:space-between">
-        <div class="selectorInfo" id="modalSelectionInfo">Seleccionados: 0</div>
+    <div class="section">
+      <div class="card">
+        <h3>Seleccionar multiplicaciones específicas</h3>
         <div class="row">
-          <button class="btn-ghost" onclick="closeSelector()">Cancelar</button>
-          <button class="btn-yellow" onclick="applySelector()">Aplicar selección</button>
+          <select id="specificTable" style="max-width:180px" onchange="renderSpecific()">
+            <option value="2">Tabla 2</option>
+            <option value="3">Tabla 3</option>
+            <option value="4">Tabla 4</option>
+            <option value="5">Tabla 5</option>
+            <option value="6">Tabla 6</option>
+            <option value="7">Tabla 7</option>
+            <option value="8">Tabla 8</option>
+            <option value="9">Tabla 9</option>
+            <option value="10">Tabla 10</option>
+          </select>
+          <button class="btn btn-soft" onclick="selectAllSpecificCurrent()">Seleccionar toda la tabla</button>
+          <button class="btn btn-soft" onclick="clearSpecificCurrent()">Limpiar esta tabla</button>
+          <button class="btn btn-soft" onclick="clearAllSpecific()">Limpiar todo</button>
+        </div>
+        <div id="specificGrid" class="specific-grid"></div>
+        <div class="subtle" id="specificCount" style="margin-top:10px">Específicas seleccionadas: 0</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="card">
+        <div class="row" style="justify-content:space-between">
+          <h3 style="margin:0">Progreso</h3>
+          <button class="btn btn-yellow" onclick="exportCSV()">Exportar CSV</button>
+        </div>
+        <canvas id="chart" width="900" height="260" style="width:100%;background:#fff;border-radius:18px;margin-top:12px"></canvas>
+      </div>
+
+      <div class="card">
+        <h3>Historial</h3>
+        <div id="history"></div>
+      </div>
+
+      <div class="card">
+        <h3>Multiplicaciones difíciles</h3>
+        <div id="weakFacts"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="card">
+        <div class="visual-wrap">
+          <div class="visual-title">Times Tables</div>
+          <div class="visual-sub">Ayuda visual escalonada</div>
+          <div class="row" style="justify-content:center;margin-bottom:14px">
+            <button class="btn btn-soft" onclick="renderVisual(9)">Mostrar 1–9</button>
+            <button class="btn btn-soft" onclick="renderVisual(10)">Mostrar 1–10</button>
+          </div>
+          <div id="visualGrid" class="stairs"></div>
         </div>
       </div>
     </div>
+
+    <div class="section">
+      <div class="card">
+        <h3>Memorama</h3>
+        <div class="row">
+          <button class="btn btn-yellow" onclick="startMemoGame(6)">Fácil (6 pares)</button>
+          <button class="btn btn-soft" onclick="startMemoGame(8)">Normal (8 pares)</button>
+          <button class="btn btn-soft" onclick="startMemoGame(10)">Difícil (10 pares)</button>
+        </div>
+        <div class="stats" style="margin-top:14px">
+          <div class="stat"><div class="k">Tiempo</div><div class="v" id="memoTime">0.0</div></div>
+          <div class="stat"><div class="k">Movimientos</div><div class="v" id="memoMoves">0</div></div>
+          <div class="stat"><div class="k">Parejas</div><div class="v" id="memoPairs">0</div></div>
+          <div class="stat"><div class="k">Meta</div><div class="v" id="memoTarget">0</div></div>
+          <div class="stat"><div class="k">Modo</div><div class="v" id="memoMode">—</div></div>
+        </div>
+        <div id="memoGrid" class="memo-grid"></div>
+        <div id="memoFeedback" class="subtle" style="text-align:center;margin-top:12px"></div>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-let problems = [];
-let current = null;
-let startTime = null;
-let timerInterval = null;
-let goodCount = 0;
-let badCount = 0;
-let answeredCurrent = false;
+  <script>
+    let problems = [];
+    let current = null;
+    let startTime = null;
+    let timerInterval = null;
+    let goodCount = 0;
+    let badCount = 0;
+    let answeredCurrent = false;
+    let revealed = false;
+    let practiceMode = "flashcards";
 
-let selectedFacts = new Set();
-let tempSelectedFacts = new Set();
+    let selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
+    let specificFacts = new Set();
 
-const timerEl = document.getElementById("timer");
-const avgEl = document.getElementById("avg");
-const goodEl = document.getElementById("good");
-const badEl = document.getElementById("bad");
-const remainingEl = document.getElementById("remaining");
-const problemEl = document.getElementById("problem");
-const answerEl = document.getElementById("answer");
-const feedbackEl = document.getElementById("feedback");
-const childSelect = document.getElementById("childSelect");
-const selectorModal = document.getElementById("selectorModal");
-const selectionInfo = document.getElementById("selectionInfo");
-const modalSelectionInfo = document.getElementById("modalSelectionInfo");
-const factPickGrid = document.getElementById("factPickGrid");
-const tablePickGrid = document.getElementById("tablePickGrid");
+    let memoCards = [];
+    let memoFlipped = [];
+    let memoMatched = 0;
+    let memoMoves = 0;
+    let memoStartTime = null;
+    let memoInterval = null;
+    let memoBusy = false;
+    let memoTargetPairs = 0;
 
-function showTab(i){
-  document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active", idx===i));
-  document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active", idx===i));
-  if(i===1){
-    renderHistory();
-    renderWeakFacts();
-  }
-}
+    const visualColors = {
+      1:"#F6E7A1",
+      2:"#A9D8F3",
+      3:"#BFE7C6",
+      4:"#CFE77A",
+      5:"#F6B8A8",
+      6:"#F3A28C",
+      7:"#B9DD6F",
+      8:"#A8D85E",
+      9:"#F08D7A",
+      10:"#D7C4F3"
+    };
 
-function getChildren(){
-  return JSON.parse(localStorage.getItem("children") || "[]");
-}
-function saveChildren(list){
-  localStorage.setItem("children", JSON.stringify(list));
-}
-function loadChildren(){
-  childSelect.innerHTML = "";
-  const list = getChildren();
-  list.forEach(name=>{
-    const opt = document.createElement("option");
-    opt.value = name;
-    opt.textContent = name;
-    childSelect.appendChild(opt);
-  });
-}
-function addChild(){
-  const input = document.getElementById("newChild");
-  const name = input.value.trim();
-  if(!name) return;
-  const list = getChildren();
-  if(!list.includes(name)) list.push(name);
-  saveChildren(list);
-  loadChildren();
-  childSelect.value = name;
-  input.value = "";
-}
-loadChildren();
+    const childSelect = document.getElementById("childSelect");
+    const problemEl = document.getElementById("problem");
+    const answerEl = document.getElementById("answer");
+    const feedbackEl = document.getElementById("feedback");
+    const timeEl = document.getElementById("time");
+    const avgEl = document.getElementById("avg");
+    const goodEl = document.getElementById("good");
+    const badEl = document.getElementById("bad");
+    const remainingEl = document.getElementById("remaining");
+    const showBtn = document.getElementById("showBtn");
+    const goodBtn = document.getElementById("goodBtn");
+    const badBtn = document.getElementById("badBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const directWrap = document.getElementById("directWrap");
+    const directInput = document.getElementById("directInput");
+    const flashActions = document.getElementById("flashActions");
+    const directActions = document.getElementById("directActions");
+    const nextDirectBtn = document.getElementById("nextDirectBtn");
+    const modeFlashBtn = document.getElementById("modeFlashBtn");
+    const modeDirectBtn = document.getElementById("modeDirectBtn");
 
-function currentChild(){
-  return childSelect.value;
-}
-
-function getMathDB(){
-  return JSON.parse(localStorage.getItem("mathDB") || "{}");
-}
-function saveMathDB(db){
-  localStorage.setItem("mathDB", JSON.stringify(db));
-}
-
-function getWeakDB(){
-  return JSON.parse(localStorage.getItem("mathWeakDB") || "{}");
-}
-function saveWeakDB(db){
-  localStorage.setItem("mathWeakDB", JSON.stringify(db));
-}
-function registerWrongFact(fact){
-  const child = currentChild();
-  if(!child) return;
-  const db = getWeakDB();
-  if(!db[child]) db[child] = {};
-  if(!db[child][fact]) db[child][fact] = 0;
-  db[child][fact] += 1;
-  saveWeakDB(db);
-}
-function getHardFactsForChild(){
-  const child = currentChild();
-  if(!child) return [];
-  const db = getWeakDB();
-  const facts = db[child] || {};
-  return Object.entries(facts)
-    .sort((a,b)=>b[1]-a[1])
-    .map(([fact])=>fact);
-}
-
-function allFacts(){
-  const list = [];
-  for(let t=2;t<=10;t++){
-    for(let i=1;i<=10;i++){
-      list.push(`${t}x${i}`);
+    function showTab(i){
+      document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active", idx===i));
+      document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active", idx===i));
+      if(i===2){
+        renderHistory();
+        renderWeakFacts();
+        drawChart();
+      }
+      if(i===1) renderSpecific();
+      if(i===3) renderVisual(9);
+      if(i===4) renderMemoBoard();
     }
-  }
-  return list;
-}
 
-function renderTablePickGrid(){
-  let html = "";
-  for(let t=2;t<=10;t++){
-    const checked = isTableFullySelected(t, tempSelectedFacts);
-    html += `
-      <label class="pickItem">
-        <input type="checkbox" ${checked ? "checked" : ""} onchange="toggleTable(${t}, this.checked)">
-        <span>Tabla ${t}</span>
-      </label>
-    `;
-  }
-  tablePickGrid.innerHTML = html;
-}
-
-function renderFactPickGrid(filter=""){
-  const facts = allFacts().filter(f=>{
-    const q = filter.trim().toLowerCase();
-    if(!q) return true;
-    return f.includes(q);
-  });
-
-  factPickGrid.innerHTML = facts.map(f=>`
-    <label class="pickItem">
-      <input type="checkbox" ${tempSelectedFacts.has(f) ? "checked" : ""} onchange="toggleFact('${f}', this.checked)">
-      <span>${f}</span>
-    </label>
-  `).join("");
-}
-
-function isTableFullySelected(table, setObj){
-  for(let i=1;i<=10;i++){
-    if(!setObj.has(`${table}x${i}`)) return false;
-  }
-  return true;
-}
-
-function toggleTable(table, checked){
-  for(let i=1;i<=10;i++){
-    const f = `${table}x${i}`;
-    if(checked) tempSelectedFacts.add(f);
-    else tempSelectedFacts.delete(f);
-  }
-  renderTablePickGrid();
-  renderFactPickGrid(document.getElementById("factSearch").value);
-  updateModalSelectionInfo();
-}
-
-function toggleFact(fact, checked){
-  if(checked) tempSelectedFacts.add(fact);
-  else tempSelectedFacts.delete(fact);
-  renderTablePickGrid();
-  updateModalSelectionInfo();
-}
-
-function selectAllFacts(){
-  tempSelectedFacts = new Set(allFacts());
-  renderTablePickGrid();
-  renderFactPickGrid(document.getElementById("factSearch").value);
-  updateModalSelectionInfo();
-}
-
-function clearAllFacts(){
-  tempSelectedFacts = new Set();
-  renderTablePickGrid();
-  renderFactPickGrid(document.getElementById("factSearch").value);
-  updateModalSelectionInfo();
-}
-
-function selectTableRange(min,max){
-  for(let t=min;t<=max;t++){
-    for(let i=1;i<=10;i++){
-      tempSelectedFacts.add(`${t}x${i}`);
+    function setPracticeMode(mode){
+      practiceMode = mode;
+      const isFlash = mode === "flashcards";
+      modeFlashBtn.className = isFlash ? "btn btn-yellow" : "btn btn-soft";
+      modeDirectBtn.className = isFlash ? "btn btn-soft" : "btn btn-yellow";
+      flashActions.style.display = isFlash ? "flex" : "none";
+      directWrap.style.display = isFlash ? "none" : "block";
+      directActions.style.display = isFlash ? "none" : "flex";
+      answerEl.style.display = isFlash ? "block" : "none";
+      directInput.value = "";
+      feedbackEl.textContent = "";
     }
-  }
-  renderTablePickGrid();
-  renderFactPickGrid(document.getElementById("factSearch").value);
-  updateModalSelectionInfo();
-}
 
-function selectWeakFacts(){
-  getHardFactsForChild().forEach(f=>tempSelectedFacts.add(f));
-  renderTablePickGrid();
-  renderFactPickGrid(document.getElementById("factSearch").value);
-  updateModalSelectionInfo();
-}
-
-function openSelector(){
-  tempSelectedFacts = new Set(selectedFacts);
-  renderTablePickGrid();
-  renderFactPickGrid("");
-  updateModalSelectionInfo();
-  selectorModal.style.display = "flex";
-}
-
-function closeSelector(){
-  selectorModal.style.display = "none";
-}
-
-function applySelector(){
-  selectedFacts = new Set(tempSelectedFacts);
-  updateSelectionInfo();
-  closeSelector();
-}
-
-function updateSelectionInfo(){
-  selectionInfo.textContent = `Seleccionados: ${selectedFacts.size}`;
-}
-function updateModalSelectionInfo(){
-  modalSelectionInfo.textContent = `Seleccionados: ${tempSelectedFacts.size}`;
-}
-
-document.getElementById("factSearch").addEventListener("input", (e)=>{
-  renderFactPickGrid(e.target.value.toLowerCase());
-});
-
-function loadHardFacts(){
-  const hard = getHardFactsForChild();
-  document.getElementById("customList").value = hard.join(", ");
-}
-
-function clearSelection(){
-  selectedFacts = new Set();
-  document.getElementById("customList").value = "";
-  updateSelectionInfo();
-}
-
-function parseCustomList(str){
-  const list = [];
-  str.split(",").forEach(item=>{
-    const clean = item.trim().toLowerCase().replace(/\s+/g, "");
-    const [a,b] = clean.split("x").map(Number);
-    if(a && b){
-      list.push({ q:`${a}x${b}`, a:a*b });
+    function getKids(){
+      return JSON.parse(localStorage.getItem("kids") || "[]");
     }
-  });
-  return list;
-}
+    function saveKids(list){
+      localStorage.setItem("kids", JSON.stringify(list));
+    }
+    function loadKids(){
+      const list = getKids();
+      childSelect.innerHTML = list.map(n => `<option>${n}</option>`).join("");
+    }
+    function addChild(){
+      const input = document.getElementById("newChild");
+      const name = input.value.trim();
+      if(!name) return;
+      const list = getKids();
+      if(!list.includes(name)) list.push(name);
+      saveKids(list);
+      loadKids();
+      childSelect.value = name;
+      input.value = "";
+    }
+    function currentChild(){
+      return childSelect.value;
+    }
 
-function shuffle(arr){
-  const copy = [...arr];
-  for(let i=copy.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [copy[i],copy[j]] = [copy[j],copy[i]];
-  }
-  return copy;
-}
+    function getDB(){
+      return JSON.parse(localStorage.getItem("db") || "{}");
+    }
+    function saveDB(db){
+      localStorage.setItem("db", JSON.stringify(db));
+    }
 
-function buildProblems(){
-  const custom = document.getElementById("customList").value.trim();
-  let list = [];
+    function getWeakDB(){
+      return JSON.parse(localStorage.getItem("weakDB") || "{}");
+    }
+    function saveWeakDB(db){
+      localStorage.setItem("weakDB", JSON.stringify(db));
+    }
+    function registerWrong(fact){
+      const child = currentChild();
+      if(!child) return;
+      const db = getWeakDB();
+      if(!db[child]) db[child] = {};
+      if(!db[child][fact]) db[child][fact] = 0;
+      db[child][fact] += 1;
+      saveWeakDB(db);
+    }
+    function getWeakFacts(){
+      const child = currentChild();
+      if(!child) return [];
+      const db = getWeakDB();
+      const facts = db[child] || {};
+      return Object.entries(facts).sort((a,b)=>b[1]-a[1]).map(([fact])=>fact);
+    }
 
-  if(custom){
-    list = parseCustomList(custom);
-  } else if(selectedFacts.size > 0){
-    [...selectedFacts].forEach(f=>{
-      const [a,b] = f.split("x").map(Number);
-      if(a && b) list.push({ q:f, a:a*b });
-    });
-  } else {
-    for(let t=2;t<=10;t++){
-      for(let i=1;i<=10;i++){
-        list.push({ q:`${t}x${i}`, a:t*i });
+    function renderTableChips(){
+      const box = document.getElementById("tableChips");
+      let html = "";
+      for(let i=2;i<=10;i++){
+        html += `<div class="chip ${selectedTables.has(i) ? "active" : ""}" onclick="toggleTable(${i})">Tabla ${i}</div>`;
+      }
+      box.innerHTML = html;
+    }
+    function toggleTable(n){
+      selectedTables.has(n) ? selectedTables.delete(n) : selectedTables.add(n);
+      renderTableChips();
+    }
+    function selectAllTables(){
+      selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
+      renderTableChips();
+    }
+    function clearAllTables(){
+      selectedTables = new Set();
+      renderTableChips();
+    }
+    function selectRange(a,b){
+      selectedTables = new Set();
+      for(let i=a;i<=b;i++) selectedTables.add(i);
+      renderTableChips();
+    }
+
+    function factsForTable(t){
+      const arr = [];
+      for(let i=1;i<=10;i++) arr.push(`${t}x${i}`);
+      return arr;
+    }
+    function renderSpecific(){
+      const table = Number(document.getElementById("specificTable").value);
+      const box = document.getElementById("specificGrid");
+      box.innerHTML = factsForTable(table).map(f => `
+        <div class="chip ${specificFacts.has(f) ? "active" : ""}" onclick="toggleSpecific('${f}')">${f}</div>
+      `).join("");
+      document.getElementById("specificCount").textContent = `Específicas seleccionadas: ${specificFacts.size}`;
+    }
+    function toggleSpecific(f){
+      specificFacts.has(f) ? specificFacts.delete(f) : specificFacts.add(f);
+      renderSpecific();
+    }
+    function selectAllSpecificCurrent(){
+      const table = Number(document.getElementById("specificTable").value);
+      factsForTable(table).forEach(f => specificFacts.add(f));
+      renderSpecific();
+    }
+    function clearSpecificCurrent(){
+      const table = Number(document.getElementById("specificTable").value);
+      factsForTable(table).forEach(f => specificFacts.delete(f));
+      renderSpecific();
+    }
+    function clearAllSpecific(){
+      specificFacts = new Set();
+      renderSpecific();
+    }
+    function loadWeakToSpecific(){
+      specificFacts = new Set(getWeakFacts());
+      document.getElementById("specificTable").value = "2";
+      renderSpecific();
+    }
+
+    function shuffle(arr){
+      const copy = [...arr];
+      for(let i=copy.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function buildProblems(){
+      let list = [];
+      if(specificFacts.size > 0){
+        [...specificFacts].forEach(f => {
+          const [a,b] = f.split("x").map(Number);
+          if(a && b) list.push({ q:f, a:a*b });
+        });
+      } else {
+        [...selectedTables].forEach(t => {
+          for(let i=1;i<=10;i++) list.push({ q:`${t}x${i}`, a:t*i });
+        });
+      }
+      return shuffle(list);
+    }
+
+    function resetButtons(){
+      showBtn.disabled = false;
+      goodBtn.disabled = true;
+      badBtn.disabled = true;
+      nextBtn.disabled = true;
+      nextDirectBtn.disabled = true;
+    }
+
+    function resetSession(){
+      clearInterval(timerInterval);
+      problems = [];
+      current = null;
+      startTime = null;
+      goodCount = 0;
+      badCount = 0;
+      answeredCurrent = false;
+      revealed = false;
+      timeEl.textContent = "0.0";
+      avgEl.textContent = "0.00";
+      goodEl.textContent = "0";
+      badEl.textContent = "0";
+      remainingEl.textContent = "0";
+      problemEl.textContent = "—";
+      answerEl.textContent = "";
+      feedbackEl.textContent = "";
+      feedbackEl.style.color = "";
+      directInput.value = "";
+      resetButtons();
+    }
+
+    function startSession(){
+      if(!currentChild()){
+        alert("Primero agrega o selecciona un niño.");
+        return;
+      }
+      if(selectedTables.size===0 && specificFacts.size===0){
+        alert("Selecciona tablas o específicas.");
+        return;
+      }
+      problems = buildProblems();
+      if(problems.length===0){
+        alert("No hay ejercicios para practicar.");
+        return;
+      }
+      goodCount = 0;
+      badCount = 0;
+      answeredCurrent = false;
+      revealed = false;
+      startTime = Date.now();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer,100);
+      updateStats();
+      nextProblem();
+    }
+
+    function updateTimer(){
+      if(!startTime) return;
+      const t = (Date.now()-startTime)/1000;
+      timeEl.textContent = t.toFixed(1);
+      const total = goodCount + badCount;
+      avgEl.textContent = total ? (t/total).toFixed(2) : "0.00";
+    }
+
+    function updateStats(){
+      goodEl.textContent = goodCount;
+      badEl.textContent = badCount;
+      remainingEl.textContent = problems.length;
+    }
+
+    function nextProblem(){
+      if(problems.length===0){
+        finishSession();
+        return;
+      }
+      current = problems.pop();
+      answeredCurrent = false;
+      revealed = false;
+      problemEl.textContent = current.q;
+      answerEl.textContent = "";
+      feedbackEl.textContent = "";
+      feedbackEl.style.color = "";
+      directInput.value = "";
+      resetButtons();
+
+      if(practiceMode === "direct"){
+        nextDirectBtn.disabled = true;
+      }
+
+      updateStats();
+    }
+
+    function showAnswer(){
+      if(practiceMode !== "flashcards") return;
+      if(!current || revealed) return;
+      revealed = true;
+      answerEl.textContent = current.a;
+      showBtn.disabled = true;
+      goodBtn.disabled = false;
+      badBtn.disabled = false;
+    }
+
+    function markAnswer(ok){
+      if(practiceMode !== "flashcards") return;
+      if(!current || answeredCurrent || !revealed) return;
+      answeredCurrent = true;
+      if(ok){
+        goodCount++;
+        feedbackEl.textContent = "✅ Bien";
+        feedbackEl.style.color = "#22c55e";
+      } else {
+        badCount++;
+        feedbackEl.textContent = "❌ Mal";
+        feedbackEl.style.color = "#ef4444";
+        registerWrong(current.q);
+      }
+      goodBtn.disabled = true;
+      badBtn.disabled = true;
+      nextBtn.disabled = false;
+      updateTimer();
+      updateStats();
+    }
+
+    function validateDirectAnswer(){
+      if(practiceMode !== "direct") return;
+      if(!current || answeredCurrent) return;
+
+      const value = directInput.value.trim();
+      if(value === "") return;
+
+      answeredCurrent = true;
+      const userAnswer = Number(value);
+
+      if(userAnswer === current.a){
+        goodCount++;
+        feedbackEl.textContent = "✅ Correcto";
+        feedbackEl.style.color = "#22c55e";
+      } else {
+        badCount++;
+        feedbackEl.textContent = `❌ Incorrecto. Respuesta: ${current.a}`;
+        feedbackEl.style.color = "#ef4444";
+        registerWrong(current.q);
+      }
+
+      nextDirectBtn.disabled = false;
+      updateTimer();
+      updateStats();
+    }
+
+    function finishSession(){
+      clearInterval(timerInterval);
+      const totalTime = startTime ? (Date.now()-startTime)/1000 : 0;
+      const total = goodCount + badCount;
+      const avg = total ? totalTime/total : 0;
+      const child = currentChild();
+      const db = getDB();
+      if(!db[child]) db[child] = [];
+      db[child].push({
+        date:new Date().toLocaleString(),
+        mode:practiceMode,
+        time:Number(totalTime.toFixed(1)),
+        avg:Number(avg.toFixed(2)),
+        good:goodCount,
+        bad:badCount
+      });
+      saveDB(db);
+      problemEl.textContent = "🏁 FIN";
+      answerEl.textContent = totalTime.toFixed(1) + "s";
+      feedbackEl.textContent = `Promedio: ${avg.toFixed(2)}s`;
+      feedbackEl.style.color = "#7a4dff";
+      showBtn.disabled = true;
+      goodBtn.disabled = true;
+      badBtn.disabled = true;
+      nextBtn.disabled = true;
+      nextDirectBtn.disabled = true;
+      renderHistory();
+      renderWeakFacts();
+      drawChart();
+    }
+
+    function renderHistory(){
+      const box = document.getElementById("history");
+      const db = getDB();
+      const child = currentChild();
+      const items = db[child] || [];
+      if(items.length===0){
+        box.innerHTML = `<div class="empty">Todavía no hay sesiones guardadas.</div>`;
+        return;
+      }
+      box.innerHTML = items.slice().reverse().map(s => `
+        <div class="history-item">
+          <div class="history-title">${child} · ${s.mode || "flashcards"}</div>
+          <div>${s.time}s · ${s.avg}s/prom ${s.good !== undefined ? `· ✅ ${s.good} · ❌ ${s.bad}` : ""}</div>
+          <div class="subtle">${s.date}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderWeakFacts(){
+      const box = document.getElementById("weakFacts");
+      const child = currentChild();
+      if(!child){
+        box.innerHTML = `<div class="empty">Selecciona un niño.</div>`;
+        return;
+      }
+      const db = getWeakDB();
+      const items = Object.entries(db[child] || {}).sort((a,b)=>b[1]-a[1]);
+      if(items.length===0){
+        box.innerHTML = `<div class="empty">Todavía no hay errores guardados.</div>`;
+        return;
+      }
+      box.innerHTML = items.map(([fact,count]) => `
+        <div class="history-item"><b>${fact}</b> — ${count} fallas</div>
+      `).join("");
+    }
+
+    function exportCSV(){
+      const db = getDB();
+      const rows = [["Name","Mode","Time","Average","Good","Bad","Date"]];
+      Object.keys(db).forEach(name => {
+        db[name].forEach(r => rows.push([name,r.mode || "flashcards",r.time,r.avg,r.good ?? "",r.bad ?? "",r.date]));
+      });
+      const csv = rows.map(r => r.join(",")).join("\n");
+      const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "math_results.csv";
+      a.click();
+    }
+
+    function drawChart(){
+      const canvas = document.getElementById("chart");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      const db = getDB();
+      const child = currentChild();
+      const items = db[child] || [];
+      if(items.length===0) return;
+
+      const nonMemoItems = items.filter(x => x.mode !== "memorama");
+      const max = Math.max(...nonMemoItems.map(x => x.time), 1);
+      const left = 40, bottom = 220, barW = 26, gap = 18;
+
+      ctx.strokeStyle = "#cbd5e1";
+      ctx.beginPath();
+      ctx.moveTo(left, 20);
+      ctx.lineTo(left, bottom);
+      ctx.lineTo(canvas.width - 20, bottom);
+      ctx.stroke();
+
+      nonMemoItems.forEach((item, i) => {
+        const h = (item.time / max) * 160;
+        const x = left + 18 + i*(barW+gap);
+        const y = bottom - h;
+        ctx.fillStyle = item.mode === "direct" ? "#7a4dff" : "#f4b000";
+        ctx.fillRect(x, y, barW, h);
+        ctx.fillStyle = "#475569";
+        ctx.font = "12px system-ui";
+        ctx.fillText(String(i+1), x+6, bottom+16);
+      });
+    }
+
+    function buildTraditionalTables(){
+      const box = document.getElementById("tableGrid");
+      let html = "";
+      for(let t=1;t<=10;t++){
+        html += `<div class="table-card"><div class="table-head">${t}</div>`;
+        for(let i=1;i<=10;i++){
+          html += `${t} × ${i} = ${t*i}<br>`;
+        }
+        html += `</div>`;
+      }
+      box.innerHTML = html;
+    }
+
+    function renderVisual(max=9){
+      const box = document.getElementById("visualGrid");
+      let html = "";
+      for(let t=1;t<=max;t++){
+        const color = visualColors[t] || "#e5e7eb";
+        html += `<div class="stair-col">`;
+        html += `<div class="stair-head" style="background:${color}">${t}</div>`;
+        for(let i=1;i<=9;i++){
+          html += `<div class="stair-cell" style="background:${color}">${t} × ${i} = ${t*i}</div>`;
+        }
+        html += `</div>`;
+      }
+      box.innerHTML = html;
+    }
+
+    function buildMemoSourceFacts(){
+      let facts = [];
+      if(specificFacts.size > 0){
+        facts = [...specificFacts];
+      } else {
+        [...selectedTables].forEach(t => {
+          for(let i=1;i<=10;i++) facts.push(`${t}x${i}`);
+        });
+      }
+      return facts;
+    }
+
+    function startMemoGame(pairCount){
+      if(!currentChild()){
+        alert("Primero agrega o selecciona un niño.");
+        return;
+      }
+
+      const facts = shuffle(buildMemoSourceFacts()).slice(0, pairCount);
+      if(facts.length === 0){
+        alert("Selecciona tablas o específicas para el memorama.");
+        return;
+      }
+
+      memoTargetPairs = facts.length;
+      memoMatched = 0;
+      memoMoves = 0;
+      memoFlipped = [];
+      memoBusy = false;
+
+      memoCards = [];
+      facts.forEach((fact, idx) => {
+        const [a,b] = fact.split("x").map(Number);
+        const res = a*b;
+        memoCards.push({ id:`q-${idx}`, pair:fact, type:"q", text:fact, flipped:false, matched:false });
+        memoCards.push({ id:`a-${idx}`, pair:fact, type:"a", text:String(res), flipped:false, matched:false });
+      });
+
+      memoCards = shuffle(memoCards);
+      memoStartTime = Date.now();
+      clearInterval(memoInterval);
+      memoInterval = setInterval(updateMemoStats, 100);
+      document.getElementById("memoMode").textContent = `${facts.length} pares`;
+      renderMemoBoard();
+      updateMemoStats();
+      document.getElementById("memoFeedback").textContent = "";
+    }
+
+    function updateMemoStats(){
+      const t = memoStartTime ? ((Date.now() - memoStartTime)/1000) : 0;
+      document.getElementById("memoTime").textContent = t.toFixed(1);
+      document.getElementById("memoMoves").textContent = memoMoves;
+      document.getElementById("memoPairs").textContent = memoMatched;
+      document.getElementById("memoTarget").textContent = memoTargetPairs;
+    }
+
+    function renderMemoBoard(){
+      const box = document.getElementById("memoGrid");
+      if(!box) return;
+      if(memoCards.length === 0){
+        box.innerHTML = `<div class="empty" style="grid-column:1/-1">Presiona un nivel para iniciar el memorama.</div>`;
+        updateMemoStats();
+        return;
+      }
+
+      box.innerHTML = memoCards.map((card, idx) => {
+        const faceClass = (card.flipped || card.matched) ? "memo-front" : "memo-back";
+        const matchedClass = card.matched ? " memo-matched" : "";
+        const label = (card.flipped || card.matched) ? card.text : "?";
+        return `<div class="memo-card ${faceClass}${matchedClass}" onclick="flipMemoCard(${idx})">${label}</div>`;
+      }).join("");
+      updateMemoStats();
+    }
+
+    function flipMemoCard(index){
+      if(memoBusy) return;
+      const card = memoCards[index];
+      if(!card || card.flipped || card.matched) return;
+
+      card.flipped = true;
+      memoFlipped.push(index);
+      renderMemoBoard();
+
+      if(memoFlipped.length === 2){
+        memoMoves++;
+        memoBusy = true;
+        const [i1, i2] = memoFlipped;
+        const c1 = memoCards[i1];
+        const c2 = memoCards[i2];
+
+        const isMatch = c1.pair === c2.pair && c1.type !== c2.type;
+
+        if(isMatch){
+          c1.matched = true;
+          c2.matched = true;
+          memoMatched++;
+          memoFlipped = [];
+          memoBusy = false;
+          renderMemoBoard();
+
+          if(memoMatched === memoTargetPairs){
+            finishMemoGame();
+          }
+        } else {
+          setTimeout(() => {
+            c1.flipped = false;
+            c2.flipped = false;
+            memoFlipped = [];
+            memoBusy = false;
+            renderMemoBoard();
+          }, 700);
+        }
       }
     }
-  }
 
-  const unique = [];
-  const seen = new Set();
-  list.forEach(item=>{
-    if(!seen.has(item.q)){
-      seen.add(item.q);
-      unique.push(item);
+    function finishMemoGame(){
+      clearInterval(memoInterval);
+      const totalTime = memoStartTime ? ((Date.now() - memoStartTime)/1000) : 0;
+      document.getElementById("memoFeedback").textContent = `🎉 ¡Completado! Tiempo: ${totalTime.toFixed(1)}s · Movimientos: ${memoMoves}`;
+
+      const child = currentChild();
+      const db = getDB();
+      if(!db[child]) db[child] = [];
+      db[child].push({
+        date:new Date().toLocaleString(),
+        mode:"memorama",
+        time:Number(totalTime.toFixed(1)),
+        avg:"",
+        good:memoMatched,
+        bad:Math.max(memoMoves - memoMatched, 0)
+      });
+      saveDB(db);
+      renderHistory();
+      drawChart();
     }
-  });
 
-  return shuffle(unique);
-}
-
-function resetSession(){
-  clearInterval(timerInterval);
-  problems = [];
-  current = null;
-  startTime = null;
-  goodCount = 0;
-  badCount = 0;
-  answeredCurrent = false;
-  timerEl.textContent = "0.0s";
-  avgEl.textContent = "0.00";
-  goodEl.textContent = "0";
-  badEl.textContent = "0";
-  remainingEl.textContent = "0";
-  problemEl.textContent = "—";
-  answerEl.textContent = "";
-  feedbackEl.textContent = "";
-  feedbackEl.style.color = "";
-}
-
-function startSession(){
-  if(!currentChild()){
-    alert("Primero agrega o selecciona un niño.");
-    return;
-  }
-
-  const custom = document.getElementById("customList").value.trim();
-  if(selectedFacts.size===0 && !custom){
-    alert("Abre el selector y elige ejercicios, o escribe una lista personalizada.");
-    return;
-  }
-
-  problems = buildProblems();
-  if(problems.length === 0){
-    alert("No hay multiplicaciones para practicar.");
-    return;
-  }
-
-  goodCount = 0;
-  badCount = 0;
-  answeredCurrent = false;
-  startTime = Date.now();
-
-  clearInterval(timerInterval);
-  timerInterval = setInterval(updateTimer,100);
-
-  updateStats();
-  nextProblem();
-}
-
-function updateTimer(){
-  if(!startTime) return;
-  const seconds = ((Date.now()-startTime)/1000);
-  timerEl.textContent = seconds.toFixed(1) + "s";
-  const total = goodCount + badCount;
-  avgEl.textContent = total ? (seconds/total).toFixed(2) : "0.00";
-}
-
-function updateStats(){
-  goodEl.textContent = goodCount;
-  badEl.textContent = badCount;
-  remainingEl.textContent = problems.length;
-}
-
-function nextProblem(){
-  if(problems.length === 0){
-    finishSession();
-    return;
-  }
-
-  current = problems.pop();
-  answeredCurrent = false;
-  problemEl.textContent = current.q;
-  answerEl.textContent = "";
-  feedbackEl.textContent = "";
-  feedbackEl.style.color = "";
-  updateStats();
-}
-
-function showAnswer(){
-  if(!current) return;
-  answerEl.textContent = current.a;
-}
-
-function markAnswer(ok){
-  if(!current || answeredCurrent) return;
-
-  answeredCurrent = true;
-
-  if(ok){
-    goodCount++;
-    feedbackEl.textContent = "✅ Bien";
-    feedbackEl.style.color = "var(--green)";
-  } else {
-    badCount++;
-    feedbackEl.textContent = "❌ Mal";
-    feedbackEl.style.color = "var(--red)";
-    registerWrongFact(current.q);
-  }
-
-  updateTimer();
-  updateStats();
-}
-
-function finishSession(){
-  clearInterval(timerInterval);
-
-  const totalSeconds = startTime ? ((Date.now()-startTime)/1000) : 0;
-  const total = goodCount + badCount;
-  const avg = total ? (totalSeconds/total) : 0;
-
-  const child = currentChild();
-  const db = getMathDB();
-  if(!db[child]) db[child] = [];
-
-  db[child].push({
-    date: new Date().toLocaleString(),
-    total: totalSeconds.toFixed(1),
-    avg: avg.toFixed(2),
-    good: goodCount,
-    bad: badCount
-  });
-  saveMathDB(db);
-
-  problemEl.textContent = "🏁 FIN";
-  answerEl.textContent = totalSeconds.toFixed(1) + "s";
-  feedbackEl.textContent = `Promedio: ${avg.toFixed(2)}s`;
-  feedbackEl.style.color = "var(--purple)";
-  renderHistory();
-  renderWeakFacts();
-}
-
-function renderHistory(){
-  const db = getMathDB();
-  const box = document.getElementById("history");
-  const keys = Object.keys(db);
-
-  if(keys.length === 0){
-    box.innerHTML = `<div class="small">Todavía no hay sesiones guardadas.</div>`;
-    return;
-  }
-
-  let html = "";
-  keys.forEach(name=>{
-    html += `<div class="historyItem"><div class="historyTitle">${name}</div>`;
-    db[name].slice().reverse().forEach(s=>{
-      html += `<div>${s.total}s • ${s.avg}s/prom • ✅ ${s.good} • ❌ ${s.bad}</div><div class="small">${s.date}</div><br>`;
-    });
-    html += `</div>`;
-  });
-  box.innerHTML = html;
-}
-
-function renderWeakFacts(){
-  const child = currentChild();
-  const box = document.getElementById("weakFacts");
-  if(!child){
-    box.innerHTML = `<div class="small">Selecciona un niño.</div>`;
-    return;
-  }
-
-  const db = getWeakDB();
-  const facts = db[child] || {};
-  const ordered = Object.entries(facts).sort((a,b)=>b[1]-a[1]);
-
-  if(ordered.length === 0){
-    box.innerHTML = `<div class="small">Todavía no hay errores guardados para ${child}.</div>`;
-    return;
-  }
-
-  box.innerHTML = ordered.map(([fact,count])=>
-    `<div class="historyItem"><b>${fact}</b> — ${count} fallas</div>`
-  ).join("");
-}
-
-function buildTables(){
-  const box = document.getElementById("tables");
-  let html = "";
-  for(let t=1;t<=10;t++){
-    html += `<div class="tableCard"><div class="header">${t}</div>`;
-    for(let i=1;i<=10;i++){
-      html += `${t} x ${i} = ${t*i}<br>`;
+    function resetApp(){
+      localStorage.clear();
+      location.reload();
     }
-    html += `</div>`;
-  }
-  box.innerHTML = html;
-}
 
-buildTables();
-updateSelectionInfo();
-resetSession();
-</script>
+    loadKids();
+    renderTableChips();
+    renderSpecific();
+    buildTraditionalTables();
+    renderVisual(9);
+    renderMemoBoard();
+    setPracticeMode("flashcards");
+    resetSession();
+  </script>
 </body>
 </html>

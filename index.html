@@ -4,327 +4,948 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bright Minds Math Trainer</title>
-
 <style>
-body{margin:0;font-family:system-ui;background:#f5f6fa}
-.container{max-width:900px;margin:auto;padding:20px}
-h1{text-align:center}
-
-.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:15px}
-.tab{padding:10px 16px;border-radius:10px;background:#e5e7eb;cursor:pointer;font-weight:bold}
-.active{background:#f4b000;color:white}
-
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --yellow:#f4b000;
+  --purple:#7a4dff;
+  --green:#22c55e;
+  --red:#ef4444;
+  --dark:#111827;
+  --soft:#f9fafb;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:linear-gradient(180deg,#f8fafc,#eef2ff);
+  color:var(--text);
+}
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+h1{
+  text-align:center;
+  margin:0 0 10px;
+  font-size:32px;
+}
+.sub{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:16px;
+  font-weight:600;
+}
+.tabs{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.tab{
+  padding:10px 16px;
+  border-radius:12px;
+  background:#e5e7eb;
+  cursor:pointer;
+  font-weight:800;
+  user-select:none;
+}
+.tab.active{
+  background:var(--yellow);
+  color:white;
+}
 .section{display:none}
 .section.active{display:block}
 
 .card{
-  background:white;
-  padding:15px;
-  border-radius:15px;
-  margin-bottom:15px;
-  box-shadow:0 5px 15px rgba(0,0,0,.05);
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:0 10px 30px rgba(17,24,39,.06);
+}
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+@media (max-width:800px){
+  .grid2{grid-template-columns:1fr}
 }
 
+label.title{
+  display:block;
+  font-size:14px;
+  font-weight:800;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+input,select{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:white;
+  font-size:16px;
+}
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+button{
+  border:none;
+  border-radius:12px;
+  padding:12px 16px;
+  font-weight:800;
+  cursor:pointer;
+}
+.btn-yellow{background:var(--yellow);color:white}
+.btn-purple{background:var(--purple);color:white}
+.btn-green{background:var(--green);color:white}
+.btn-red{background:var(--red);color:white}
+.btn-dark{background:var(--dark);color:white}
+.btn-soft{background:#eef2ff;color:var(--text)}
+.btn-ghost{background:#f3f4f6;color:var(--text)}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  margin-bottom:14px;
+}
+@media (max-width:800px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+.stat{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:10px;
+  text-align:center;
+}
+.stat .k{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+.stat .v{
+  margin-top:4px;
+  font-size:24px;
+  font-weight:900;
+}
+
+.flashcard{
+  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:24px 16px;
+  text-align:center;
+}
 .problem{
   font-size:120px;
-  text-align:center;
   font-weight:900;
-  margin:20px;
+  line-height:1;
+  letter-spacing:2px;
+  margin:10px 0 14px;
+  color:var(--dark);
 }
-
+@media (max-width:700px){
+  .problem{font-size:82px}
+}
 .answer{
-  font-size:40px;
+  min-height:52px;
+  font-size:44px;
+  font-weight:900;
+  color:var(--green);
+}
+.feedback{
+  min-height:30px;
+  font-size:24px;
+  font-weight:900;
+  margin-top:10px;
+}
+.controls{
   text-align:center;
-  color:#27c36a;
+  margin-top:14px;
 }
 
-button{
-  padding:12px 16px;
-  margin:5px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.start{background:#f4b000;color:white}
-.show{background:#7a4dff;color:white}
-.good{background:#27c36a;color:white}
-.bad{background:#ff4b4b;color:white}
-.next{background:#1f2430;color:white}
-
-.timer,.stats,.lives{text-align:center;font-weight:bold;margin:10px}
-
-input,select{
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #ddd;
-  width:100%;
+.historyItem{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px;
   margin-bottom:10px;
+  background:white;
+}
+.historyTitle{
+  font-weight:900;
+  margin-bottom:6px;
+}
+.small{
+  color:var(--muted);
+  font-size:14px;
 }
 
-.selectorBox{background:#f9fafb;padding:10px;border-radius:10px}
-.chipsGrid{display:flex;flex-wrap:wrap;gap:10px}
-.tableChip input{display:none}
-
-.tableChip span{
+.tableGrid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+@media (max-width:800px){
+  .tableGrid{grid-template-columns:repeat(2,1fr)}
+}
+.tableCard{
+  background:white;
   padding:10px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  text-align:center;
+}
+.header{
+  background:var(--yellow);
+  color:white;
+  padding:6px;
+  border-radius:8px;
+  margin-bottom:8px;
+  font-weight:900;
+}
+.notice{
+  text-align:center;
+  color:var(--muted);
+  font-weight:700;
+  margin-top:8px;
+}
+
+.selectorBar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+}
+.selectorInfo{
+  font-weight:800;
+  color:var(--muted);
+}
+
+.modalBackdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(17,24,39,.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  z-index:999;
+}
+.modal{
+  width:min(980px,100%);
+  max-height:90vh;
+  overflow:auto;
   background:white;
   border-radius:20px;
-  border:1px solid #ddd;
+  border:1px solid var(--line);
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+}
+.modalHeader{
+  position:sticky;
+  top:0;
+  background:white;
+  padding:16px;
+  border-bottom:1px solid var(--line);
+  z-index:2;
+}
+.modalBody{
+  padding:16px;
+}
+.modalFooter{
+  position:sticky;
+  bottom:0;
+  background:white;
+  padding:16px;
+  border-top:1px solid var(--line);
+}
+.quickRow{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.quickBtn{
+  background:#eef2ff;
+  color:var(--text);
+  border:none;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:800;
   cursor:pointer;
-  font-weight:bold;
 }
-
-.tableChip input:checked + span{
-  background:#f4b000;
+.selectorBlock{
+  background:var(--soft);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:14px;
+}
+.selectorBlockTitle{
+  font-weight:900;
+  margin-bottom:10px;
+}
+.wordGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:10px;
+}
+.pickItem input{display:none}
+.pickItem span{
+  display:block;
+  padding:10px 12px;
+  border-radius:12px;
+  background:white;
+  border:1px solid #d1d5db;
+  font-weight:800;
+  text-align:center;
+  cursor:pointer;
+}
+.pickItem input:checked + span{
+  background:var(--yellow);
   color:white;
+  border-color:var(--yellow);
 }
-
-.tableGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.tableCard{background:white;padding:10px;border-radius:10px;text-align:center}
-.header{background:#f4b000;color:white;padding:6px;border-radius:6px;margin-bottom:6px}
+.factGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(95px,1fr));
+  gap:8px;
+}
+.searchBox{
+  margin-bottom:12px;
+}
 </style>
 </head>
-
 <body>
 <div class="container">
+  <h1>🚀 Bright Minds Math Trainer</h1>
+  <div class="sub">Selector premium estilo spelling + práctica inteligente</div>
 
-<h1>🎮 Math Trainer PRO</h1>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(0)">Juego</div>
+    <div class="tab" onclick="showTab(1)">Progreso</div>
+    <div class="tab" onclick="showTab(2)">Tablas</div>
+  </div>
 
-<div class="tabs">
-  <div class="tab active" onclick="tab(0)">Juego</div>
-  <div class="tab" onclick="tab(1)">Progreso</div>
-  <div class="tab" onclick="tab(2)">Tablas</div>
+  <div class="section active">
+    <div class="grid2">
+      <div class="card">
+        <label class="title">👧 Dar de alta niño</label>
+        <div class="row">
+          <input id="newChild" placeholder="Ej: Aitana">
+          <button class="btn-yellow" onclick="addChild()">Agregar</button>
+        </div>
+        <div style="margin-top:12px">
+          <label class="title">Niño activo</label>
+          <select id="childSelect"></select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="selectorBar">
+          <div>
+            <div class="historyTitle">Seleccionar ejercicios</div>
+            <div class="selectorInfo" id="selectionInfo">Seleccionados: 0</div>
+          </div>
+          <div class="row">
+            <button class="btn-soft" onclick="openSelector()">Abrir selector</button>
+            <button class="btn-soft" onclick="loadHardFacts()">Cargar difíciles</button>
+            <button class="btn-soft" onclick="clearSelection()">Limpiar</button>
+          </div>
+        </div>
+
+        <div style="margin-top:14px">
+          <label class="title">Lista personalizada rápida (opcional)</label>
+          <input id="customList" placeholder="Ej: 4x7, 3x5, 8x3">
+        </div>
+
+        <div class="notice">Puedes elegir tablas completas, rangos, ejercicios individuales o difíciles guardadas.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:center; margin-bottom:12px">
+        <button class="btn-yellow" onclick="startSession()">START</button>
+        <button class="btn-soft" onclick="resetSession()">Reset sesión</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">Tiempo</div><div class="v" id="timer">0.0s</div></div>
+        <div class="stat"><div class="k">Promedio</div><div class="v" id="avg">0.00</div></div>
+        <div class="stat"><div class="k">Buenas</div><div class="v" id="good">0</div></div>
+        <div class="stat"><div class="k">Malas</div><div class="v" id="bad">0</div></div>
+        <div class="stat"><div class="k">Restantes</div><div class="v" id="remaining">0</div></div>
+      </div>
+
+      <div class="flashcard">
+        <div id="problem" class="problem">—</div>
+        <div id="answer" class="answer"></div>
+        <div id="feedback" class="feedback"></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-purple" onclick="showAnswer()">SHOW</button>
+        <button class="btn-green" onclick="markAnswer(true)">BIEN</button>
+        <button class="btn-red" onclick="markAnswer(false)">MAL</button>
+        <button class="btn-dark" onclick="nextProblem()">NEXT</button>
+      </div>
+
+      <div class="notice">La respuesta solo aparece con SHOW. La tarjeta cuenta una sola vez.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <div class="historyTitle">📈 Progreso guardado</div>
+      <div id="history"></div>
+    </div>
+    <div class="card">
+      <div class="historyTitle">🧠 Multiplicaciones difíciles</div>
+      <div id="weakFacts"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <div class="historyTitle">🧠 Tabla visual</div>
+      <div class="tableGrid" id="tables"></div>
+    </div>
+  </div>
 </div>
 
-<!-- JUEGO -->
-<div class="section active">
+<div class="modalBackdrop" id="selectorModal">
+  <div class="modal">
+    <div class="modalHeader">
+      <div class="historyTitle">Seleccionar ejercicios</div>
+      <div class="small">Elige tablas completas o ejercicios individuales</div>
+    </div>
 
-<div class="card">
-<h3>👧 Niños</h3>
-<input id="newChild" placeholder="Nombre">
-<button onclick="addChild()">Agregar</button>
-<select id="childSelect"></select>
-</div>
+    <div class="modalBody">
+      <div class="quickRow">
+        <button class="quickBtn" onclick="selectAllFacts()">Todas</button>
+        <button class="quickBtn" onclick="clearAllFacts()">Ninguna</button>
+        <button class="quickBtn" onclick="selectTableRange(2,5)">Tablas 2–5</button>
+        <button class="quickBtn" onclick="selectTableRange(6,10)">Tablas 6–10</button>
+        <button class="quickBtn" onclick="selectWeakFacts()">Difíciles</button>
+      </div>
 
-<div class="card selectorBox">
-<div id="checks" class="chipsGrid"></div>
+      <div class="selectorBlock">
+        <div class="selectorBlockTitle">Tablas completas</div>
+        <div id="tablePickGrid" class="wordGrid"></div>
+      </div>
 
-<button onclick="selectAll()">Todas</button>
-<button onclick="clearAll()">Limpiar</button>
+      <div class="selectorBlock">
+        <div class="selectorBlockTitle">Buscar ejercicio específico</div>
+        <input id="factSearch" class="searchBox" placeholder="Ej: 4x7 o 7">
+        <div id="factPickGrid" class="factGrid"></div>
+      </div>
+    </div>
 
-<input id="customList" placeholder="Ej: 4x7,3x5">
-<button onclick="useHardMode()">Solo difíciles</button>
-</div>
-
-<button class="start" onclick="start()">START</button>
-
-<div class="timer" id="timer">⏱ 0</div>
-<div class="lives" id="lives">❤️❤️❤️</div>
-
-<div class="problem" id="problem">—</div>
-<div class="answer" id="answer"></div>
-
-<div style="text-align:center">
-<button class="show" onclick="showAnswer()">SHOW</button>
-<button class="good" onclick="mark(true)">BIEN</button>
-<button class="bad" onclick="mark(false)">MAL</button>
-<button class="next" onclick="next()">NEXT</button>
-</div>
-
-<div class="stats" id="stats"></div>
-
-</div>
-
-<!-- PROGRESO -->
-<div class="section">
-<div id="history"></div>
-</div>
-
-<!-- TABLAS -->
-<div class="section">
-<div class="tableGrid" id="tables"></div>
-</div>
-
+    <div class="modalFooter">
+      <div class="row" style="justify-content:space-between">
+        <div class="selectorInfo" id="modalSelectionInfo">Seleccionados: 0</div>
+        <div class="row">
+          <button class="btn-ghost" onclick="closeSelector()">Cancelar</button>
+          <button class="btn-yellow" onclick="applySelector()">Aplicar selección</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-let problems=[],current;
-let startTime,timerInterval;
-let good=0,bad=0,lives=3;
-let mode="normal";
+let problems = [];
+let current = null;
+let startTime = null;
+let timerInterval = null;
+let goodCount = 0;
+let badCount = 0;
+let answeredCurrent = false;
 
-function tab(i){
-document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active",idx===i));
-document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active",idx===i));
-if(i===1) renderHistory();
+let selectedFacts = new Set();
+let tempSelectedFacts = new Set();
+
+const timerEl = document.getElementById("timer");
+const avgEl = document.getElementById("avg");
+const goodEl = document.getElementById("good");
+const badEl = document.getElementById("bad");
+const remainingEl = document.getElementById("remaining");
+const problemEl = document.getElementById("problem");
+const answerEl = document.getElementById("answer");
+const feedbackEl = document.getElementById("feedback");
+const childSelect = document.getElementById("childSelect");
+const selectorModal = document.getElementById("selectorModal");
+const selectionInfo = document.getElementById("selectionInfo");
+const modalSelectionInfo = document.getElementById("modalSelectionInfo");
+const factPickGrid = document.getElementById("factPickGrid");
+const tablePickGrid = document.getElementById("tablePickGrid");
+
+function showTab(i){
+  document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active", idx===i));
+  document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active", idx===i));
+  if(i===1){
+    renderHistory();
+    renderWeakFacts();
+  }
 }
 
-function checks(){
-let h="";
-for(let i=2;i<=10;i++){
-h+=`<label class="tableChip">
-<input type="checkbox" value="${i}" checked>
-<span>${i}</span>
-</label>`;
+function getChildren(){
+  return JSON.parse(localStorage.getItem("children") || "[]");
 }
-checksDiv.innerHTML=h;
+function saveChildren(list){
+  localStorage.setItem("children", JSON.stringify(list));
 }
-const checksDiv=document.getElementById("checks");
-checks();
-
-function selectAll(){document.querySelectorAll("#checks input").forEach(x=>x.checked=true)}
-function clearAll(){document.querySelectorAll("#checks input").forEach(x=>x.checked=false)}
-
-function tables(){
-return [...document.querySelectorAll("#checks input:checked")].map(x=>+x.value);
-}
-
-function getChildren(){return JSON.parse(localStorage.getItem("children")||"[]")}
-function saveChildren(c){localStorage.setItem("children",JSON.stringify(c))}
-
-function addChild(){
-let n=newChild.value.trim();
-if(!n)return;
-let c=getChildren();c.push(n);saveChildren(c);loadChildren();
-}
-
 function loadChildren(){
-childSelect.innerHTML="";
-getChildren().forEach(n=>{
-let o=document.createElement("option");
-o.textContent=n;
-childSelect.appendChild(o);
-});
+  childSelect.innerHTML = "";
+  const list = getChildren();
+  list.forEach(name=>{
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    childSelect.appendChild(opt);
+  });
+}
+function addChild(){
+  const input = document.getElementById("newChild");
+  const name = input.value.trim();
+  if(!name) return;
+  const list = getChildren();
+  if(!list.includes(name)) list.push(name);
+  saveChildren(list);
+  loadChildren();
+  childSelect.value = name;
+  input.value = "";
 }
 loadChildren();
 
-function currentChild(){return childSelect.value}
-
-function getWeak(){return JSON.parse(localStorage.getItem("weak")||"{}")}
-function saveWeak(d){localStorage.setItem("weak",JSON.stringify(d))}
-
-function registerWrong(f){
-let c=currentChild();
-let d=getWeak();
-if(!d[c])d[c]={};
-if(!d[c][f])d[c][f]=0;
-d[c][f]++;
-saveWeak(d);
+function currentChild(){
+  return childSelect.value;
 }
 
-function getHard(){
-let c=currentChild();
-let d=getWeak()[c]||{};
-return Object.keys(d);
+function getMathDB(){
+  return JSON.parse(localStorage.getItem("mathDB") || "{}");
+}
+function saveMathDB(db){
+  localStorage.setItem("mathDB", JSON.stringify(db));
 }
 
-function useHardMode(){mode="hard"}
+function getWeakDB(){
+  return JSON.parse(localStorage.getItem("mathWeakDB") || "{}");
+}
+function saveWeakDB(db){
+  localStorage.setItem("mathWeakDB", JSON.stringify(db));
+}
+function registerWrongFact(fact){
+  const child = currentChild();
+  if(!child) return;
+  const db = getWeakDB();
+  if(!db[child]) db[child] = {};
+  if(!db[child][fact]) db[child][fact] = 0;
+  db[child][fact] += 1;
+  saveWeakDB(db);
+}
+function getHardFactsForChild(){
+  const child = currentChild();
+  if(!child) return [];
+  const db = getWeakDB();
+  const facts = db[child] || {};
+  return Object.entries(facts)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([fact])=>fact);
+}
 
-function build(){
-let list=[];
-let custom=customList.value.trim();
+function allFacts(){
+  const list = [];
+  for(let t=2;t<=10;t++){
+    for(let i=1;i<=10;i++){
+      list.push(`${t}x${i}`);
+    }
+  }
+  return list;
+}
 
-if(custom){
-custom.split(",").forEach(x=>{
-let[a,b]=x.split("x").map(Number);
-if(a&&b)list.push({q:`${a}x${b}`,a:a*b});
+function renderTablePickGrid(){
+  let html = "";
+  for(let t=2;t<=10;t++){
+    const checked = isTableFullySelected(t, tempSelectedFacts);
+    html += `
+      <label class="pickItem">
+        <input type="checkbox" ${checked ? "checked" : ""} onchange="toggleTable(${t}, this.checked)">
+        <span>Tabla ${t}</span>
+      </label>
+    `;
+  }
+  tablePickGrid.innerHTML = html;
+}
+
+function renderFactPickGrid(filter=""){
+  const facts = allFacts().filter(f=>{
+    const q = filter.trim().toLowerCase();
+    if(!q) return true;
+    return f.includes(q);
+  });
+
+  factPickGrid.innerHTML = facts.map(f=>`
+    <label class="pickItem">
+      <input type="checkbox" ${tempSelectedFacts.has(f) ? "checked" : ""} onchange="toggleFact('${f}', this.checked)">
+      <span>${f}</span>
+    </label>
+  `).join("");
+}
+
+function isTableFullySelected(table, setObj){
+  for(let i=1;i<=10;i++){
+    if(!setObj.has(`${table}x${i}`)) return false;
+  }
+  return true;
+}
+
+function toggleTable(table, checked){
+  for(let i=1;i<=10;i++){
+    const f = `${table}x${i}`;
+    if(checked) tempSelectedFacts.add(f);
+    else tempSelectedFacts.delete(f);
+  }
+  renderTablePickGrid();
+  renderFactPickGrid(document.getElementById("factSearch").value);
+  updateModalSelectionInfo();
+}
+
+function toggleFact(fact, checked){
+  if(checked) tempSelectedFacts.add(fact);
+  else tempSelectedFacts.delete(fact);
+  renderTablePickGrid();
+  updateModalSelectionInfo();
+}
+
+function selectAllFacts(){
+  tempSelectedFacts = new Set(allFacts());
+  renderTablePickGrid();
+  renderFactPickGrid(document.getElementById("factSearch").value);
+  updateModalSelectionInfo();
+}
+
+function clearAllFacts(){
+  tempSelectedFacts = new Set();
+  renderTablePickGrid();
+  renderFactPickGrid(document.getElementById("factSearch").value);
+  updateModalSelectionInfo();
+}
+
+function selectTableRange(min,max){
+  for(let t=min;t<=max;t++){
+    for(let i=1;i<=10;i++){
+      tempSelectedFacts.add(`${t}x${i}`);
+    }
+  }
+  renderTablePickGrid();
+  renderFactPickGrid(document.getElementById("factSearch").value);
+  updateModalSelectionInfo();
+}
+
+function selectWeakFacts(){
+  getHardFactsForChild().forEach(f=>tempSelectedFacts.add(f));
+  renderTablePickGrid();
+  renderFactPickGrid(document.getElementById("factSearch").value);
+  updateModalSelectionInfo();
+}
+
+function openSelector(){
+  tempSelectedFacts = new Set(selectedFacts);
+  renderTablePickGrid();
+  renderFactPickGrid("");
+  updateModalSelectionInfo();
+  selectorModal.style.display = "flex";
+}
+
+function closeSelector(){
+  selectorModal.style.display = "none";
+}
+
+function applySelector(){
+  selectedFacts = new Set(tempSelectedFacts);
+  updateSelectionInfo();
+  closeSelector();
+}
+
+function updateSelectionInfo(){
+  selectionInfo.textContent = `Seleccionados: ${selectedFacts.size}`;
+}
+function updateModalSelectionInfo(){
+  modalSelectionInfo.textContent = `Seleccionados: ${tempSelectedFacts.size}`;
+}
+
+document.getElementById("factSearch").addEventListener("input", (e)=>{
+  renderFactPickGrid(e.target.value.toLowerCase());
 });
+
+function loadHardFacts(){
+  const hard = getHardFactsForChild();
+  document.getElementById("customList").value = hard.join(", ");
 }
 
-else if(mode==="hard"){
-getHard().forEach(f=>{
-let[a,b]=f.split("x").map(Number);
-list.push({q:f,a:a*b});
-});
+function clearSelection(){
+  selectedFacts = new Set();
+  document.getElementById("customList").value = "";
+  updateSelectionInfo();
 }
 
-else{
-tables().forEach(t=>{
-for(let i=1;i<=10;i++){
-list.push({q:`${t}x${i}`,a:t*i});
-}
-});
-}
-
-return list.sort(()=>Math.random()-0.5);
-}
-
-function start(){
-problems=build();
-good=0;bad=0;lives=3;
-updateLives();
-
-startTime=Date.now();
-clearInterval(timerInterval);
-timerInterval=setInterval(()=>{
-timer.innerText="⏱ "+((Date.now()-startTime)/1000).toFixed(1);
-},100);
-
-next();
+function parseCustomList(str){
+  const list = [];
+  str.split(",").forEach(item=>{
+    const clean = item.trim().toLowerCase().replace(/\s+/g, "");
+    const [a,b] = clean.split("x").map(Number);
+    if(a && b){
+      list.push({ q:`${a}x${b}`, a:a*b });
+    }
+  });
+  return list;
 }
 
-function next(){
-if(lives<=0||problems.length===0){finish();return;}
-current=problems.pop();
-problem.innerText=current.q;
-answer.innerText="";
+function shuffle(arr){
+  const copy = [...arr];
+  for(let i=copy.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]] = [copy[j],copy[i]];
+  }
+  return copy;
 }
 
-function showAnswer(){answer.innerText=current.a}
+function buildProblems(){
+  const custom = document.getElementById("customList").value.trim();
+  let list = [];
 
-function mark(ok){
-if(ok)good++;
-else{
-bad++;lives--;
-updateLives();
-registerWrong(current.q);
+  if(custom){
+    list = parseCustomList(custom);
+  } else if(selectedFacts.size > 0){
+    [...selectedFacts].forEach(f=>{
+      const [a,b] = f.split("x").map(Number);
+      if(a && b) list.push({ q:f, a:a*b });
+    });
+  } else {
+    for(let t=2;t<=10;t++){
+      for(let i=1;i<=10;i++){
+        list.push({ q:`${t}x${i}`, a:t*i });
+      }
+    }
+  }
+
+  const unique = [];
+  const seen = new Set();
+  list.forEach(item=>{
+    if(!seen.has(item.q)){
+      seen.add(item.q);
+      unique.push(item);
+    }
+  });
+
+  return shuffle(unique);
 }
-stats();
+
+function resetSession(){
+  clearInterval(timerInterval);
+  problems = [];
+  current = null;
+  startTime = null;
+  goodCount = 0;
+  badCount = 0;
+  answeredCurrent = false;
+  timerEl.textContent = "0.0s";
+  avgEl.textContent = "0.00";
+  goodEl.textContent = "0";
+  badEl.textContent = "0";
+  remainingEl.textContent = "0";
+  problemEl.textContent = "—";
+  answerEl.textContent = "";
+  feedbackEl.textContent = "";
+  feedbackEl.style.color = "";
 }
 
-function updateLives(){livesDiv.innerText="❤️".repeat(lives)}
-const livesDiv=document.getElementById("lives");
+function startSession(){
+  if(!currentChild()){
+    alert("Primero agrega o selecciona un niño.");
+    return;
+  }
 
-function stats(){
-let t=(Date.now()-startTime)/1000;
-let total=good+bad;
-let avg=total?(t/total).toFixed(2):0;
-statsDiv.innerText=`⭐ ${good} ❌ ${bad} ⚡ ${avg}s`;
+  const custom = document.getElementById("customList").value.trim();
+  if(selectedFacts.size===0 && !custom){
+    alert("Abre el selector y elige ejercicios, o escribe una lista personalizada.");
+    return;
+  }
+
+  problems = buildProblems();
+  if(problems.length === 0){
+    alert("No hay multiplicaciones para practicar.");
+    return;
+  }
+
+  goodCount = 0;
+  badCount = 0;
+  answeredCurrent = false;
+  startTime = Date.now();
+
+  clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer,100);
+
+  updateStats();
+  nextProblem();
 }
-const statsDiv=document.getElementById("stats");
 
-function finish(){
-clearInterval(timerInterval);
-problem.innerText="🏁 FIN";
+function updateTimer(){
+  if(!startTime) return;
+  const seconds = ((Date.now()-startTime)/1000);
+  timerEl.textContent = seconds.toFixed(1) + "s";
+  const total = goodCount + badCount;
+  avgEl.textContent = total ? (seconds/total).toFixed(2) : "0.00";
+}
+
+function updateStats(){
+  goodEl.textContent = goodCount;
+  badEl.textContent = badCount;
+  remainingEl.textContent = problems.length;
+}
+
+function nextProblem(){
+  if(problems.length === 0){
+    finishSession();
+    return;
+  }
+
+  current = problems.pop();
+  answeredCurrent = false;
+  problemEl.textContent = current.q;
+  answerEl.textContent = "";
+  feedbackEl.textContent = "";
+  feedbackEl.style.color = "";
+  updateStats();
+}
+
+function showAnswer(){
+  if(!current) return;
+  answerEl.textContent = current.a;
+}
+
+function markAnswer(ok){
+  if(!current || answeredCurrent) return;
+
+  answeredCurrent = true;
+
+  if(ok){
+    goodCount++;
+    feedbackEl.textContent = "✅ Bien";
+    feedbackEl.style.color = "var(--green)";
+  } else {
+    badCount++;
+    feedbackEl.textContent = "❌ Mal";
+    feedbackEl.style.color = "var(--red)";
+    registerWrongFact(current.q);
+  }
+
+  updateTimer();
+  updateStats();
+}
+
+function finishSession(){
+  clearInterval(timerInterval);
+
+  const totalSeconds = startTime ? ((Date.now()-startTime)/1000) : 0;
+  const total = goodCount + badCount;
+  const avg = total ? (totalSeconds/total) : 0;
+
+  const child = currentChild();
+  const db = getMathDB();
+  if(!db[child]) db[child] = [];
+
+  db[child].push({
+    date: new Date().toLocaleString(),
+    total: totalSeconds.toFixed(1),
+    avg: avg.toFixed(2),
+    good: goodCount,
+    bad: badCount
+  });
+  saveMathDB(db);
+
+  problemEl.textContent = "🏁 FIN";
+  answerEl.textContent = totalSeconds.toFixed(1) + "s";
+  feedbackEl.textContent = `Promedio: ${avg.toFixed(2)}s`;
+  feedbackEl.style.color = "var(--purple)";
+  renderHistory();
+  renderWeakFacts();
 }
 
 function renderHistory(){
-let db=JSON.parse(localStorage.getItem("mathDB")||"{}");
-let html="";
-Object.keys(db).forEach(n=>{
-html+=`<div class="card"><b>${n}</b><br>`;
-db[n].forEach(s=>{
-html+=`${s}<br>`;
-});
-html+="</div>";
-});
-history.innerHTML=html;
+  const db = getMathDB();
+  const box = document.getElementById("history");
+  const keys = Object.keys(db);
+
+  if(keys.length === 0){
+    box.innerHTML = `<div class="small">Todavía no hay sesiones guardadas.</div>`;
+    return;
+  }
+
+  let html = "";
+  keys.forEach(name=>{
+    html += `<div class="historyItem"><div class="historyTitle">${name}</div>`;
+    db[name].slice().reverse().forEach(s=>{
+      html += `<div>${s.total}s • ${s.avg}s/prom • ✅ ${s.good} • ❌ ${s.bad}</div><div class="small">${s.date}</div><br>`;
+    });
+    html += `</div>`;
+  });
+  box.innerHTML = html;
+}
+
+function renderWeakFacts(){
+  const child = currentChild();
+  const box = document.getElementById("weakFacts");
+  if(!child){
+    box.innerHTML = `<div class="small">Selecciona un niño.</div>`;
+    return;
+  }
+
+  const db = getWeakDB();
+  const facts = db[child] || {};
+  const ordered = Object.entries(facts).sort((a,b)=>b[1]-a[1]);
+
+  if(ordered.length === 0){
+    box.innerHTML = `<div class="small">Todavía no hay errores guardados para ${child}.</div>`;
+    return;
+  }
+
+  box.innerHTML = ordered.map(([fact,count])=>
+    `<div class="historyItem"><b>${fact}</b> — ${count} fallas</div>`
+  ).join("");
 }
 
 function buildTables(){
-let h="";
-for(let t=1;t<=10;t++){
-h+=`<div class="tableCard"><div class="header">${t}</div>`;
-for(let i=1;i<=10;i++)h+=`${t}x${i}=${t*i}<br>`;
-h+=`</div>`;
+  const box = document.getElementById("tables");
+  let html = "";
+  for(let t=1;t<=10;t++){
+    html += `<div class="tableCard"><div class="header">${t}</div>`;
+    for(let i=1;i<=10;i++){
+      html += `${t} x ${i} = ${t*i}<br>`;
+    }
+    html += `</div>`;
+  }
+  box.innerHTML = html;
 }
-tablesDiv.innerHTML=h;
-}
-const tablesDiv=document.getElementById("tables");
-buildTables();
-</script>
 
+buildTables();
+updateSelectionInfo();
+resetSession();
+</script>
 </body>
 </html>

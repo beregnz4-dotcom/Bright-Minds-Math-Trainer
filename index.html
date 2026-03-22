@@ -1,1 +1,247 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Math Trainer PRO</title>
 
+<style>
+body{font-family:system-ui;background:#fff4d6;margin:0}
+.container{max-width:900px;margin:auto;padding:20px}
+
+.tabs{display:flex;gap:10px;margin-bottom:15px}
+.tab{padding:10px 14px;background:white;border-radius:10px;cursor:pointer;font-weight:bold}
+.active{background:#f4b000;color:white}
+
+.section{display:none}
+.section.active{display:block}
+
+.problem{font-size:60px;text-align:center;margin:20px;font-weight:bold}
+.answer{font-size:40px;text-align:center;color:green}
+
+button{padding:12px;margin:6px;border:none;border-radius:10px;font-weight:bold;cursor:pointer}
+.start{background:#f4b000;color:white}
+.show{background:#7a4dff;color:white}
+.good{background:#27c36a;color:white}
+.bad{background:#ff4b4b;color:white}
+.next{background:#1f2430;color:white}
+
+.timer{text-align:center;font-weight:bold;margin:10px}
+
+.stats{text-align:center;font-weight:bold}
+
+.lives{text-align:center;font-size:22px}
+
+.goal{text-align:center;margin:10px;font-weight:bold}
+
+.tableGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.tableCard{background:white;padding:10px;border-radius:10px;text-align:center}
+.header{background:#f4b000;color:white;font-weight:bold;padding:6px;border-radius:6px;margin-bottom:6px}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>🚀 Math Trainer PRO</h1>
+
+<div class="tabs">
+  <div class="tab active" onclick="tab(0)">Flashcards</div>
+  <div class="tab" onclick="tab(1)">Progreso</div>
+  <div class="tab" onclick="tab(2)">Tablas</div>
+</div>
+
+<!-- FLASH -->
+<div class="section active">
+
+<input id="name" placeholder="Nombre" style="padding:10px;width:100%;margin-bottom:10px">
+
+<div id="checks"></div>
+
+<div class="goal">
+Meta (seg por ejercicio): 
+<input id="goal" type="number" value="2" style="width:60px">
+</div>
+
+<button class="start" onclick="start()">START</button>
+
+<div class="timer" id="timer">⏱ 0.0</div>
+<div class="lives" id="lives">❤️❤️❤️</div>
+
+<div class="problem" id="problem">—</div>
+<div class="answer" id="answer"></div>
+
+<div style="text-align:center">
+<button class="show" onclick="showAnswer()">SHOW</button>
+<button class="good" onclick="mark(true)">BIEN</button>
+<button class="bad" onclick="mark(false)">MAL</button>
+<button class="next" onclick="next()">NEXT</button>
+</div>
+
+<div class="stats" id="stats"></div>
+
+</div>
+
+<!-- PROGRESO -->
+<div class="section">
+<canvas id="chart" width="800" height="300"></canvas>
+</div>
+
+<!-- TABLAS -->
+<div class="section">
+<div class="tableGrid" id="tables"></div>
+</div>
+
+</div>
+
+<script>
+let problems=[],current;
+let startTime,timerInterval;
+let good=0,bad=0,lives=3;
+
+function tab(i){
+  document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active",idx===i));
+  document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active",idx===i));
+  if(i===1) chart();
+}
+
+function checks(){
+let h="";
+for(let i=2;i<=10;i++) h+=`<label><input type="checkbox" value="${i}" checked> ${i}</label> `;
+document.getElementById("checks").innerHTML=h;
+}
+checks();
+
+function tables(){
+  return [...document.querySelectorAll("#checks input:checked")].map(x=>+x.value);
+}
+
+function build(){
+  let list=[];
+  tables().forEach(t=>{
+    for(let i=1;i<=10;i++){
+      list.push({q:`${t} x ${i}`,a:t*i});
+    }
+  });
+  return list.sort(()=>Math.random()-0.5);
+}
+
+function start(){
+  problems=build();
+  good=0;bad=0;lives=3;
+  updateLives();
+
+  startTime=Date.now();
+  timerInterval=setInterval(()=>{
+    let t=((Date.now()-startTime)/1000).toFixed(1);
+    document.getElementById("timer").innerText="⏱ "+t+"s";
+  },100);
+
+  next();
+}
+
+function next(){
+  if(lives<=0){finish();return;}
+  if(problems.length===0){finish();return;}
+
+  current=problems.pop();
+  problem.innerText=current.q;
+  answer.innerText="";
+}
+
+function showAnswer(){answer.innerText=current.a;}
+
+function mark(ok){
+  if(ok) good++;
+  else{
+    bad++;
+    lives--;
+    updateLives();
+  }
+  stats();
+}
+
+function updateLives(){
+  document.getElementById("lives").innerText="❤️".repeat(lives);
+}
+
+function stats(){
+  let total=good+bad;
+  let t=(Date.now()-startTime)/1000;
+  let avg=total? (t/total).toFixed(2):0;
+
+  document.getElementById("stats").innerText=
+  `✅ ${good} ❌ ${bad} ⚡ ${avg}s`;
+}
+
+function finish(){
+  clearInterval(timerInterval);
+
+  let t=((Date.now()-startTime)/1000).toFixed(1);
+  let avg=(t/(good+bad)).toFixed(2);
+  save(t,avg);
+
+  problem.innerText="🏁 DONE";
+  answer.innerText=t+"s";
+
+  recordMessage(avg);
+}
+
+function recordMessage(avg){
+  let name=nameInput();
+  let data=get();
+
+  if(data[name] && data[name].length>1){
+    let best=Math.min(...data[name].map(x=>x.avg));
+    if(avg<=best){
+      alert("🏆 NUEVO RÉCORD!");
+    }
+  }
+}
+
+function nameInput(){
+  return document.getElementById("name").value;
+}
+
+function get(){return JSON.parse(localStorage.getItem("math")||"{}");}
+
+function save(time,avg){
+  let name=nameInput();
+  if(!name) return;
+
+  let data=get();
+  if(!data[name]) data[name]=[];
+
+  data[name].push({time:+time,avg:+avg});
+  localStorage.setItem("math",JSON.stringify(data));
+}
+
+function chart(){
+  let name=nameInput();
+  let data=get()[name];
+  if(!data) return;
+
+  let ctx=document.getElementById("chart").getContext("2d");
+  ctx.clearRect(0,0,800,300);
+
+  data.forEach((p,i)=>{
+    ctx.fillRect(i*30,300-p.time*5,10,p.time*5);
+  });
+}
+
+function buildTables(){
+let html="";
+for(let t=1;t<=10;t++){
+html+=`<div class="tableCard"><div class="header">${t}</div>`;
+for(let i=1;i<=10;i++){
+html+=`${t} x ${i} = ${t*i}<br>`;
+}
+html+=`</div>`;
+}
+document.getElementById("tables").innerHTML=html;
+}
+buildTables();
+</script>
+
+</body>
+</html>

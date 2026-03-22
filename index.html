@@ -3,47 +3,119 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Math Trainer PRO</title>
+<title>Bright Minds Math Trainer</title>
 
 <style>
-body{font-family:system-ui;background:#fff4d6;margin:0}
+:root{
+  --bg:#f7f3e8;
+  --card:#ffffff;
+  --text:#2b241f;
+  --muted:#7a6f66;
+  --line:#e8dfd3;
+  --yellow:#f4b000;
+  --purple:#7a4dff;
+  --green:#27c36a;
+  --red:#ff4b4b;
+  --dark:#1f2430;
+}
+
+body{
+  margin:0;
+  font-family:system-ui;
+  background:var(--bg);
+  color:var(--text);
+}
+
 .container{max-width:900px;margin:auto;padding:20px}
 
+h1{margin-bottom:10px}
+
 .tabs{display:flex;gap:10px;margin-bottom:15px}
-.tab{padding:10px 14px;background:white;border-radius:10px;cursor:pointer;font-weight:bold}
-.active{background:#f4b000;color:white}
+.tab{
+  padding:10px 14px;
+  border-radius:10px;
+  background:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+.active{background:var(--yellow);color:white}
 
 .section{display:none}
 .section.active{display:block}
 
-.problem{font-size:60px;text-align:center;margin:20px;font-weight:bold}
-.answer{font-size:40px;text-align:center;color:green}
+.card{
+  background:var(--card);
+  padding:15px;
+  border-radius:15px;
+  margin-bottom:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
 
-button{padding:12px;margin:6px;border:none;border-radius:10px;font-weight:bold;cursor:pointer}
-.start{background:#f4b000;color:white}
-.show{background:#7a4dff;color:white}
-.good{background:#27c36a;color:white}
-.bad{background:#ff4b4b;color:white}
-.next{background:#1f2430;color:white}
+.problem{
+  font-size:70px;
+  text-align:center;
+  margin:20px;
+  font-weight:bold;
+}
 
-.timer{text-align:center;font-weight:bold;margin:10px}
+.answer{
+  font-size:40px;
+  text-align:center;
+  color:var(--green);
+}
 
-.stats{text-align:center;font-weight:bold}
+.controls{text-align:center}
 
-.lives{text-align:center;font-size:22px}
+button{
+  padding:12px 16px;
+  margin:5px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-.goal{text-align:center;margin:10px;font-weight:bold}
+.start{background:var(--yellow);color:white}
+.show{background:var(--purple);color:white}
+.good{background:var(--green);color:white}
+.bad{background:var(--red);color:white}
+.next{background:var(--dark);color:white}
 
-.tableGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.tableCard{background:white;padding:10px;border-radius:10px;text-align:center}
-.header{background:#f4b000;color:white;font-weight:bold;padding:6px;border-radius:6px;margin-bottom:6px}
+.timer, .stats, .lives{text-align:center;font-weight:bold;margin:10px}
+
+input, select{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid var(--line);
+}
+
+.tableGrid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+
+.tableCard{
+  background:white;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.header{
+  background:var(--yellow);
+  color:white;
+  padding:6px;
+  border-radius:6px;
+  margin-bottom:6px;
+}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>🚀 Math Trainer PRO</h1>
+<h1>🚀 Bright Minds Math Trainer</h1>
 
 <div class="tabs">
   <div class="tab active" onclick="tab(0)">Flashcards</div>
@@ -54,37 +126,47 @@ button{padding:12px;margin:6px;border:none;border-radius:10px;font-weight:bold;c
 <!-- FLASH -->
 <div class="section active">
 
-<input id="name" placeholder="Nombre" style="padding:10px;width:100%;margin-bottom:10px">
+<div class="card">
+  <h3>👧 Niños</h3>
 
-<div id="checks"></div>
+  <input id="newChild" placeholder="Agregar niño">
+  <button onclick="addChild()">Agregar</button>
 
-<div class="goal">
-Meta (seg por ejercicio): 
-<input id="goal" type="number" value="2" style="width:60px">
+  <select id="childSelect"></select>
 </div>
 
-<button class="start" onclick="start()">START</button>
+<div class="card">
+  <div id="checks"></div>
 
-<div class="timer" id="timer">⏱ 0.0</div>
-<div class="lives" id="lives">❤️❤️❤️</div>
+  Meta:
+  <input id="goal" type="number" value="2" style="width:60px">
 
-<div class="problem" id="problem">—</div>
-<div class="answer" id="answer"></div>
-
-<div style="text-align:center">
-<button class="show" onclick="showAnswer()">SHOW</button>
-<button class="good" onclick="mark(true)">BIEN</button>
-<button class="bad" onclick="mark(false)">MAL</button>
-<button class="next" onclick="next()">NEXT</button>
+  <br><br>
+  <button class="start" onclick="start()">START</button>
 </div>
 
-<div class="stats" id="stats"></div>
+<div class="card">
+  <div class="timer" id="timer">⏱ 0.0</div>
+  <div class="lives" id="lives">❤️❤️❤️</div>
+
+  <div class="problem" id="problem">—</div>
+  <div class="answer" id="answer"></div>
+
+  <div class="controls">
+    <button class="show" onclick="showAnswer()">SHOW</button>
+    <button class="good" onclick="mark(true)">BIEN</button>
+    <button class="bad" onclick="mark(false)">MAL</button>
+    <button class="next" onclick="next()">NEXT</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+</div>
 
 </div>
 
 <!-- PROGRESO -->
 <div class="section">
-<canvas id="chart" width="800" height="300"></canvas>
+<div id="history"></div>
 </div>
 
 <!-- TABLAS -->
@@ -102,7 +184,7 @@ let good=0,bad=0,lives=3;
 function tab(i){
   document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active",idx===i));
   document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active",idx===i));
-  if(i===1) chart();
+  if(i===1) renderHistory();
 }
 
 function checks(){
@@ -111,6 +193,40 @@ for(let i=2;i<=10;i++) h+=`<label><input type="checkbox" value="${i}" checked> $
 document.getElementById("checks").innerHTML=h;
 }
 checks();
+
+function getChildren(){
+  return JSON.parse(localStorage.getItem("children")||"[]");
+}
+
+function saveChildren(list){
+  localStorage.setItem("children",JSON.stringify(list));
+}
+
+function addChild(){
+  let name=document.getElementById("newChild").value.trim();
+  if(!name) return;
+
+  let list=getChildren();
+  list.push(name);
+  saveChildren(list);
+  loadChildren();
+}
+
+function loadChildren(){
+  let sel=document.getElementById("childSelect");
+  sel.innerHTML="";
+  getChildren().forEach(n=>{
+    let opt=document.createElement("option");
+    opt.value=n;
+    opt.textContent=n;
+    sel.appendChild(opt);
+  });
+}
+loadChildren();
+
+function currentChild(){
+  return document.getElementById("childSelect").value;
+}
 
 function tables(){
   return [...document.querySelectorAll("#checks input:checked")].map(x=>+x.value);
@@ -132,9 +248,10 @@ function start(){
   updateLives();
 
   startTime=Date.now();
+  clearInterval(timerInterval);
   timerInterval=setInterval(()=>{
     let t=((Date.now()-startTime)/1000).toFixed(1);
-    document.getElementById("timer").innerText="⏱ "+t+"s";
+    timer.innerText="⏱ "+t+"s";
   },100);
 
   next();
@@ -162,7 +279,7 @@ function mark(ok){
 }
 
 function updateLives(){
-  document.getElementById("lives").innerText="❤️".repeat(lives);
+  livesEl.innerText="❤️".repeat(lives);
 }
 
 function stats(){
@@ -170,63 +287,56 @@ function stats(){
   let t=(Date.now()-startTime)/1000;
   let avg=total? (t/total).toFixed(2):0;
 
-  document.getElementById("stats").innerText=
-  `✅ ${good} ❌ ${bad} ⚡ ${avg}s`;
+  statsEl.innerText=`✅ ${good} ❌ ${bad} ⚡ ${avg}s`;
 }
+
+const livesEl=document.getElementById("lives");
+const statsEl=document.getElementById("stats");
 
 function finish(){
   clearInterval(timerInterval);
 
   let t=((Date.now()-startTime)/1000).toFixed(1);
   let avg=(t/(good+bad)).toFixed(2);
-  save(t,avg);
+
+  saveSession(t,avg);
 
   problem.innerText="🏁 DONE";
   answer.innerText=t+"s";
-
-  recordMessage(avg);
 }
 
-function recordMessage(avg){
-  let name=nameInput();
-  let data=get();
-
-  if(data[name] && data[name].length>1){
-    let best=Math.min(...data[name].map(x=>x.avg));
-    if(avg<=best){
-      alert("🏆 NUEVO RÉCORD!");
-    }
-  }
+function getDB(){
+  return JSON.parse(localStorage.getItem("mathDB")||"{}");
 }
 
-function nameInput(){
-  return document.getElementById("name").value;
+function saveDB(db){
+  localStorage.setItem("mathDB",JSON.stringify(db));
 }
 
-function get(){return JSON.parse(localStorage.getItem("math")||"{}");}
-
-function save(time,avg){
-  let name=nameInput();
+function saveSession(time,avg){
+  let name=currentChild();
   if(!name) return;
 
-  let data=get();
-  if(!data[name]) data[name]=[];
+  let db=getDB();
+  if(!db[name]) db[name]=[];
 
-  data[name].push({time:+time,avg:+avg});
-  localStorage.setItem("math",JSON.stringify(data));
+  db[name].push({time,avg,date:new Date().toLocaleString()});
+  saveDB(db);
 }
 
-function chart(){
-  let name=nameInput();
-  let data=get()[name];
-  if(!data) return;
+function renderHistory(){
+  let db=getDB();
+  let html="";
 
-  let ctx=document.getElementById("chart").getContext("2d");
-  ctx.clearRect(0,0,800,300);
-
-  data.forEach((p,i)=>{
-    ctx.fillRect(i*30,300-p.time*5,10,p.time*5);
+  Object.keys(db).forEach(name=>{
+    html+=`<div class="card"><b>${name}</b><br>`;
+    db[name].slice().reverse().forEach(s=>{
+      html+=`${s.time}s | ${s.avg}s/prom<br>`;
+    });
+    html+="</div>";
   });
+
+  document.getElementById("history").innerHTML=html;
 }
 
 function buildTables(){
@@ -238,7 +348,7 @@ html+=`${t} x ${i} = ${t*i}<br>`;
 }
 html+=`</div>`;
 }
-document.getElementById("tables").innerHTML=html;
+tables.innerHTML=html;
 }
 buildTables();
 </script>

@@ -6,65 +6,37 @@
 <title>Bright Minds Math Trainer</title>
 
 <style>
-:root{
-  --bg:#f7f3e8;
-  --card:#ffffff;
-  --text:#2b241f;
-  --muted:#7a6f66;
-  --line:#e8dfd3;
-  --yellow:#f4b000;
-  --purple:#7a4dff;
-  --green:#27c36a;
-  --red:#ff4b4b;
-  --dark:#1f2430;
-}
-
-body{
-  margin:0;
-  font-family:system-ui;
-  background:var(--bg);
-  color:var(--text);
-}
-
+body{margin:0;font-family:system-ui;background:#f5f6fa}
 .container{max-width:900px;margin:auto;padding:20px}
+h1{text-align:center}
 
-h1{margin-bottom:10px}
-
-.tabs{display:flex;gap:10px;margin-bottom:15px}
-.tab{
-  padding:10px 14px;
-  border-radius:10px;
-  background:white;
-  cursor:pointer;
-  font-weight:bold;
-}
-.active{background:var(--yellow);color:white}
+.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:15px}
+.tab{padding:10px 16px;border-radius:10px;background:#e5e7eb;cursor:pointer;font-weight:bold}
+.active{background:#f4b000;color:white}
 
 .section{display:none}
 .section.active{display:block}
 
 .card{
-  background:var(--card);
+  background:white;
   padding:15px;
   border-radius:15px;
   margin-bottom:15px;
-  box-shadow:0 4px 10px rgba(0,0,0,.05);
+  box-shadow:0 5px 15px rgba(0,0,0,.05);
 }
 
 .problem{
-  font-size:70px;
+  font-size:120px;
   text-align:center;
+  font-weight:900;
   margin:20px;
-  font-weight:bold;
 }
 
 .answer{
   font-size:40px;
   text-align:center;
-  color:var(--green);
+  color:#27c36a;
 }
-
-.controls{text-align:center}
 
 button{
   padding:12px 16px;
@@ -75,92 +47,93 @@ button{
   cursor:pointer;
 }
 
-.start{background:var(--yellow);color:white}
-.show{background:var(--purple);color:white}
-.good{background:var(--green);color:white}
-.bad{background:var(--red);color:white}
-.next{background:var(--dark);color:white}
+.start{background:#f4b000;color:white}
+.show{background:#7a4dff;color:white}
+.good{background:#27c36a;color:white}
+.bad{background:#ff4b4b;color:white}
+.next{background:#1f2430;color:white}
 
-.timer, .stats, .lives{text-align:center;font-weight:bold;margin:10px}
+.timer,.stats,.lives{text-align:center;font-weight:bold;margin:10px}
 
-input, select{
+input,select{
   padding:10px;
   border-radius:8px;
-  border:1px solid var(--line);
+  border:1px solid #ddd;
+  width:100%;
+  margin-bottom:10px;
 }
 
-.tableGrid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-}
+.selectorBox{background:#f9fafb;padding:10px;border-radius:10px}
+.chipsGrid{display:flex;flex-wrap:wrap;gap:10px}
+.tableChip input{display:none}
 
-.tableCard{
-  background:white;
+.tableChip span{
   padding:10px;
-  border-radius:10px;
-  text-align:center;
+  background:white;
+  border-radius:20px;
+  border:1px solid #ddd;
+  cursor:pointer;
+  font-weight:bold;
 }
 
-.header{
-  background:var(--yellow);
+.tableChip input:checked + span{
+  background:#f4b000;
   color:white;
-  padding:6px;
-  border-radius:6px;
-  margin-bottom:6px;
 }
+
+.tableGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.tableCard{background:white;padding:10px;border-radius:10px;text-align:center}
+.header{background:#f4b000;color:white;padding:6px;border-radius:6px;margin-bottom:6px}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>🚀 Math Trainer PRO v2</h1>
+<h1>🎮 Math Trainer PRO</h1>
 
 <div class="tabs">
-  <div class="tab active" onclick="tab(0)">Flashcards</div>
+  <div class="tab active" onclick="tab(0)">Juego</div>
   <div class="tab" onclick="tab(1)">Progreso</div>
   <div class="tab" onclick="tab(2)">Tablas</div>
 </div>
 
-<!-- FLASH -->
+<!-- JUEGO -->
 <div class="section active">
 
 <div class="card">
-  <h3>👧 Niños</h3>
-
-  <input id="newChild" placeholder="Agregar niño">
-  <button onclick="addChild()">Agregar</button>
-
-  <select id="childSelect"></select>
+<h3>👧 Niños</h3>
+<input id="newChild" placeholder="Nombre">
+<button onclick="addChild()">Agregar</button>
+<select id="childSelect"></select>
 </div>
 
-<div class="card">
-  <div id="checks"></div>
+<div class="card selectorBox">
+<div id="checks" class="chipsGrid"></div>
 
-  Meta:
-  <input id="goal" type="number" value="2" style="width:60px">
+<button onclick="selectAll()">Todas</button>
+<button onclick="clearAll()">Limpiar</button>
 
-  <br><br>
-  <button class="start" onclick="start()">START</button>
+<input id="customList" placeholder="Ej: 4x7,3x5">
+<button onclick="useHardMode()">Solo difíciles</button>
 </div>
 
-<div class="card">
-  <div class="timer" id="timer">⏱ 0.0</div>
-  <div class="lives" id="lives">❤️❤️❤️</div>
+<button class="start" onclick="start()">START</button>
 
-  <div class="problem" id="problem">—</div>
-  <div class="answer" id="answer"></div>
+<div class="timer" id="timer">⏱ 0</div>
+<div class="lives" id="lives">❤️❤️❤️</div>
 
-  <div class="controls">
-    <button class="show" onclick="showAnswer()">SHOW</button>
-    <button class="good" onclick="mark(true)">BIEN</button>
-    <button class="bad" onclick="mark(false)">MAL</button>
-    <button class="next" onclick="next()">NEXT</button>
-  </div>
+<div class="problem" id="problem">—</div>
+<div class="answer" id="answer"></div>
 
-  <div class="stats" id="stats"></div>
+<div style="text-align:center">
+<button class="show" onclick="showAnswer()">SHOW</button>
+<button class="good" onclick="mark(true)">BIEN</button>
+<button class="bad" onclick="mark(false)">MAL</button>
+<button class="next" onclick="next()">NEXT</button>
 </div>
+
+<div class="stats" id="stats"></div>
 
 </div>
 
@@ -180,176 +153,176 @@ input, select{
 let problems=[],current;
 let startTime,timerInterval;
 let good=0,bad=0,lives=3;
+let mode="normal";
 
 function tab(i){
-  document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active",idx===i));
-  document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active",idx===i));
-  if(i===1) renderHistory();
+document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active",idx===i));
+document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active",idx===i));
+if(i===1) renderHistory();
 }
 
 function checks(){
 let h="";
-for(let i=2;i<=10;i++) h+=`<label><input type="checkbox" value="${i}" checked> ${i}</label> `;
-document.getElementById("checks").innerHTML=h;
+for(let i=2;i<=10;i++){
+h+=`<label class="tableChip">
+<input type="checkbox" value="${i}" checked>
+<span>${i}</span>
+</label>`;
 }
+checksDiv.innerHTML=h;
+}
+const checksDiv=document.getElementById("checks");
 checks();
 
-function getChildren(){
-  return JSON.parse(localStorage.getItem("children")||"[]");
+function selectAll(){document.querySelectorAll("#checks input").forEach(x=>x.checked=true)}
+function clearAll(){document.querySelectorAll("#checks input").forEach(x=>x.checked=false)}
+
+function tables(){
+return [...document.querySelectorAll("#checks input:checked")].map(x=>+x.value);
 }
 
-function saveChildren(list){
-  localStorage.setItem("children",JSON.stringify(list));
-}
+function getChildren(){return JSON.parse(localStorage.getItem("children")||"[]")}
+function saveChildren(c){localStorage.setItem("children",JSON.stringify(c))}
 
 function addChild(){
-  let name=document.getElementById("newChild").value.trim();
-  if(!name) return;
-
-  let list=getChildren();
-  list.push(name);
-  saveChildren(list);
-  loadChildren();
+let n=newChild.value.trim();
+if(!n)return;
+let c=getChildren();c.push(n);saveChildren(c);loadChildren();
 }
 
 function loadChildren(){
-  let sel=document.getElementById("childSelect");
-  sel.innerHTML="";
-  getChildren().forEach(n=>{
-    let opt=document.createElement("option");
-    opt.value=n;
-    opt.textContent=n;
-    sel.appendChild(opt);
-  });
+childSelect.innerHTML="";
+getChildren().forEach(n=>{
+let o=document.createElement("option");
+o.textContent=n;
+childSelect.appendChild(o);
+});
 }
 loadChildren();
 
-function currentChild(){
-  return document.getElementById("childSelect").value;
+function currentChild(){return childSelect.value}
+
+function getWeak(){return JSON.parse(localStorage.getItem("weak")||"{}")}
+function saveWeak(d){localStorage.setItem("weak",JSON.stringify(d))}
+
+function registerWrong(f){
+let c=currentChild();
+let d=getWeak();
+if(!d[c])d[c]={};
+if(!d[c][f])d[c][f]=0;
+d[c][f]++;
+saveWeak(d);
 }
 
-function tables(){
-  return [...document.querySelectorAll("#checks input:checked")].map(x=>+x.value);
+function getHard(){
+let c=currentChild();
+let d=getWeak()[c]||{};
+return Object.keys(d);
 }
+
+function useHardMode(){mode="hard"}
 
 function build(){
-  let list=[];
-  tables().forEach(t=>{
-    for(let i=1;i<=10;i++){
-      list.push({q:`${t} x ${i}`,a:t*i});
-    }
-  });
-  return list.sort(()=>Math.random()-0.5);
+let list=[];
+let custom=customList.value.trim();
+
+if(custom){
+custom.split(",").forEach(x=>{
+let[a,b]=x.split("x").map(Number);
+if(a&&b)list.push({q:`${a}x${b}`,a:a*b});
+});
+}
+
+else if(mode==="hard"){
+getHard().forEach(f=>{
+let[a,b]=f.split("x").map(Number);
+list.push({q:f,a:a*b});
+});
+}
+
+else{
+tables().forEach(t=>{
+for(let i=1;i<=10;i++){
+list.push({q:`${t}x${i}`,a:t*i});
+}
+});
+}
+
+return list.sort(()=>Math.random()-0.5);
 }
 
 function start(){
-  problems=build();
-  good=0;bad=0;lives=3;
-  updateLives();
+problems=build();
+good=0;bad=0;lives=3;
+updateLives();
 
-  startTime=Date.now();
-  clearInterval(timerInterval);
-  timerInterval=setInterval(()=>{
-    let t=((Date.now()-startTime)/1000).toFixed(1);
-    timer.innerText="⏱ "+t+"s";
-  },100);
+startTime=Date.now();
+clearInterval(timerInterval);
+timerInterval=setInterval(()=>{
+timer.innerText="⏱ "+((Date.now()-startTime)/1000).toFixed(1);
+},100);
 
-  next();
+next();
 }
 
 function next(){
-  if(lives<=0){finish();return;}
-  if(problems.length===0){finish();return;}
-
-  current=problems.pop();
-  problem.innerText=current.q;
-  answer.innerText="";
+if(lives<=0||problems.length===0){finish();return;}
+current=problems.pop();
+problem.innerText=current.q;
+answer.innerText="";
 }
 
-function showAnswer(){answer.innerText=current.a;}
+function showAnswer(){answer.innerText=current.a}
 
 function mark(ok){
-  if(ok) good++;
-  else{
-    bad++;
-    lives--;
-    updateLives();
-  }
-  stats();
+if(ok)good++;
+else{
+bad++;lives--;
+updateLives();
+registerWrong(current.q);
+}
+stats();
 }
 
-function updateLives(){
-  livesEl.innerText="❤️".repeat(lives);
-}
+function updateLives(){livesDiv.innerText="❤️".repeat(lives)}
+const livesDiv=document.getElementById("lives");
 
 function stats(){
-  let total=good+bad;
-  let t=(Date.now()-startTime)/1000;
-  let avg=total? (t/total).toFixed(2):0;
-
-  statsEl.innerText=`✅ ${good} ❌ ${bad} ⚡ ${avg}s`;
+let t=(Date.now()-startTime)/1000;
+let total=good+bad;
+let avg=total?(t/total).toFixed(2):0;
+statsDiv.innerText=`⭐ ${good} ❌ ${bad} ⚡ ${avg}s`;
 }
-
-const livesEl=document.getElementById("lives");
-const statsEl=document.getElementById("stats");
+const statsDiv=document.getElementById("stats");
 
 function finish(){
-  clearInterval(timerInterval);
-
-  let t=((Date.now()-startTime)/1000).toFixed(1);
-  let avg=(t/(good+bad)).toFixed(2);
-
-  saveSession(t,avg);
-
-  problem.innerText="🏁 DONE";
-  answer.innerText=t+"s";
-}
-
-function getDB(){
-  return JSON.parse(localStorage.getItem("mathDB")||"{}");
-}
-
-function saveDB(db){
-  localStorage.setItem("mathDB",JSON.stringify(db));
-}
-
-function saveSession(time,avg){
-  let name=currentChild();
-  if(!name) return;
-
-  let db=getDB();
-  if(!db[name]) db[name]=[];
-
-  db[name].push({time,avg,date:new Date().toLocaleString()});
-  saveDB(db);
+clearInterval(timerInterval);
+problem.innerText="🏁 FIN";
 }
 
 function renderHistory(){
-  let db=getDB();
-  let html="";
-
-  Object.keys(db).forEach(name=>{
-    html+=`<div class="card"><b>${name}</b><br>`;
-    db[name].slice().reverse().forEach(s=>{
-      html+=`${s.time}s | ${s.avg}s/prom<br>`;
-    });
-    html+="</div>";
-  });
-
-  document.getElementById("history").innerHTML=html;
+let db=JSON.parse(localStorage.getItem("mathDB")||"{}");
+let html="";
+Object.keys(db).forEach(n=>{
+html+=`<div class="card"><b>${n}</b><br>`;
+db[n].forEach(s=>{
+html+=`${s}<br>`;
+});
+html+="</div>";
+});
+history.innerHTML=html;
 }
 
 function buildTables(){
-let html="";
+let h="";
 for(let t=1;t<=10;t++){
-html+=`<div class="tableCard"><div class="header">${t}</div>`;
-for(let i=1;i<=10;i++){
-html+=`${t} x ${i} = ${t*i}<br>`;
+h+=`<div class="tableCard"><div class="header">${t}</div>`;
+for(let i=1;i<=10;i++)h+=`${t}x${i}=${t*i}<br>`;
+h+=`</div>`;
 }
-html+=`</div>`;
+tablesDiv.innerHTML=h;
 }
-tables.innerHTML=html;
-}
+const tablesDiv=document.getElementById("tables");
 buildTables();
 </script>
 

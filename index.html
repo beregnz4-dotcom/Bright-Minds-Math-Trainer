@@ -540,6 +540,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+// 👇 PEGA AQUÍ
+setTimeout(() => {
+  const elements = document.querySelectorAll("*");
+
+  elements.forEach(el => {
+    const text = el.innerText?.toLowerCase();
+
+    if (text === "crear cuenta" || text === "create account") {
+      el.style.pointerEvents = "auto";
+      el.style.opacity = "1";
+      el.onclick = registerUser;
+    }
+
+    if (text === "entrar" || text === "login") {
+      el.onclick = loginUser;
+    }
+  });
+}, 1000);
     function translateFirebaseError(code) {
       const map = {
         "auth/invalid-email": "Correo inválido.",

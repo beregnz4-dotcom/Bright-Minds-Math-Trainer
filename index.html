@@ -511,7 +511,21 @@
     window.logoutUser = async function () {
       await signOut(auth);
     };
+document.addEventListener("DOMContentLoaded", () => {
+  const buttons = document.querySelectorAll("button");
 
+  buttons.forEach(btn => {
+    const text = btn.innerText.toLowerCase();
+
+    if (text.includes("crear") || text.includes("create")) {
+      btn.onclick = registerUser;
+    }
+
+    if (text.includes("entrar") || text.includes("login")) {
+      btn.onclick = loginUser;
+    }
+  });
+});
     onAuthStateChanged(auth, (user) => {
       const overlay = document.getElementById("loginOverlay");
       const badge = document.getElementById("userBadge");

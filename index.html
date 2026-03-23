@@ -29,7 +29,6 @@
     }
 
     *{box-sizing:border-box}
-
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
@@ -37,556 +36,196 @@
       color:var(--text);
     }
 
-    .wrap{
-      max-width:1100px;
-      margin:auto;
-      padding:18px;
-    }
-
+    .wrap{max-width:1100px;margin:auto;padding:18px}
     .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:16px;
-      flex-wrap:wrap;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      margin-bottom:16px;flex-wrap:wrap
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
+    .brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
     .brand img{
-      width:58px;
-      height:58px;
-      border-radius:14px;
-      object-fit:contain;
-      background:#fff;
-      box-shadow:var(--shadow);
-      padding:4px;
+      width:58px;height:58px;border-radius:14px;object-fit:contain;
+      background:#fff;box-shadow:var(--shadow);padding:4px
     }
-
-    .brand h1{
-      margin:0;
-      font-size:30px;
-      line-height:1.05;
-    }
-
-    .brand p{
-      margin:4px 0 0;
-      color:var(--muted);
-      font-weight:600;
-      font-size:14px;
-    }
-
-    .user-badge{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:700;
-    }
+    .brand h1{margin:0;font-size:30px;line-height:1.05}
+    .brand p{margin:4px 0 0;color:var(--muted);font-weight:600;font-size:14px}
+    .user-badge{margin-top:4px;color:var(--muted);font-size:12px;font-weight:700}
 
     .ghost-btn{
-      background:#fff;
-      border:1px solid var(--line);
-      color:var(--text);
-      padding:10px 14px;
-      border-radius:12px;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:var(--shadow);
+      background:#fff;border:1px solid var(--line);color:var(--text);
+      padding:10px 14px;border-radius:12px;font-weight:800;cursor:pointer;
+      box-shadow:var(--shadow)
     }
 
-    .tabs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:16px;
-    }
-
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
     .tab{
-      background:#e8ebf3;
-      color:#374151;
-      border:none;
-      padding:10px 16px;
-      border-radius:999px;
-      font-weight:800;
-      cursor:pointer;
+      background:#e8ebf3;color:#374151;border:none;padding:10px 16px;
+      border-radius:999px;font-weight:800;cursor:pointer
     }
-
-    .tab.active{
-      background:var(--yellow);
-      color:#fff;
-    }
+    .tab.active{background:var(--yellow);color:#fff}
 
     .section{display:none}
     .section.active{display:block}
 
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:16px;
-    }
-
-    @media (max-width:900px){
-      .grid{grid-template-columns:1fr}
-    }
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
 
     .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:16px;
-      box-shadow:var(--shadow);
-      margin-bottom:16px;
+      background:var(--card);border:1px solid var(--line);border-radius:24px;
+      padding:16px;box-shadow:var(--shadow);margin-bottom:16px
     }
+    .card h3{margin:0 0 12px;font-size:18px}
+    .subtle{color:var(--muted);font-size:13px;font-weight:600}
 
-    .card h3{
-      margin:0 0 12px;
-      font-size:18px;
-    }
-
-    .subtle{
-      color:var(--muted);
-      font-size:13px;
-      font-weight:600;
-    }
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
     input, select{
-      width:100%;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px 14px;
-      font-size:16px;
-      background:#fff;
-      color:var(--text);
+      width:100%;border:1px solid var(--line);border-radius:14px;
+      padding:12px 14px;font-size:16px;background:#fff;color:var(--text)
     }
 
     .btn{
-      border:none;
-      border-radius:14px;
-      padding:12px 16px;
-      font-weight:800;
-      cursor:pointer;
+      border:none;border-radius:14px;padding:12px 16px;
+      font-weight:800;cursor:pointer
     }
+    .btn-yellow{background:var(--yellow);color:#fff}
+    .btn-soft{background:#eef2ff;color:var(--text)}
+    .btn-green{background:var(--green);color:#fff}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-dark{background:var(--dark);color:#fff}
 
-    .btn-yellow{background:var(--yellow); color:#fff}
-    .btn-soft{background:#eef2ff; color:var(--text)}
-    .btn-green{background:var(--green); color:#fff}
-    .btn-red{background:var(--red); color:#fff}
-    .btn-dark{background:var(--dark); color:#fff}
+    .hero{text-align:center;padding:24px 16px}
+    .hero img{width:180px;max-width:70%;margin-bottom:8px}
+    .hero-title{font-size:22px;font-weight:900;margin-bottom:4px}
+    .hero-sub{color:var(--muted);font-weight:700}
 
-    .hero{
-      text-align:center;
-      padding:24px 16px;
-    }
-
-    .hero img{
-      width:180px;
-      max-width:70%;
-      margin-bottom:8px;
-    }
-
-    .hero-title{
-      font-size:22px;
-      font-weight:900;
-      margin-bottom:4px;
-    }
-
-    .hero-sub{
-      color:var(--muted);
-      font-weight:700;
-    }
-
-    .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .chip{
-      border:1px solid #d1d5db;
-      background:#fff;
-      color:#374151;
-      padding:9px 12px;
-      border-radius:999px;
-      font-weight:800;
-      cursor:pointer;
-      user-select:none;
-      min-width:72px;
-      text-align:center;
-      transition:.15s ease;
+      border:1px solid #d1d5db;background:#fff;color:#374151;padding:9px 12px;
+      border-radius:999px;font-weight:800;cursor:pointer;user-select:none;
+      min-width:72px;text-align:center;transition:.15s ease
     }
-
     .chip.active{
-      background:var(--yellow);
-      color:#fff;
-      border-color:var(--yellow);
-      transform:scale(1.03);
+      background:var(--yellow);color:#fff;border-color:var(--yellow);
+      transform:scale(1.03)
     }
 
-    .mode-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-    }
-
-    @media (max-width:900px){
-      .mode-grid{grid-template-columns:1fr}
-    }
+    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media (max-width:900px){.mode-grid{grid-template-columns:1fr}}
 
     .mode-card{
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:18px;
-      background:linear-gradient(180deg,#fff,#f8fbff);
-      box-shadow:var(--shadow);
-      cursor:pointer;
-      transition:.15s ease;
+      border:1px solid var(--line);border-radius:22px;padding:18px;
+      background:linear-gradient(180deg,#fff,#f8fbff);box-shadow:var(--shadow);
+      cursor:pointer;transition:.15s ease
     }
-
     .mode-card.active{
       border-color:var(--yellow);
-      box-shadow:0 0 0 3px rgba(244,176,0,.15), var(--shadow);
+      box-shadow:0 0 0 3px rgba(244,176,0,.15), var(--shadow)
     }
+    .mode-icon{font-size:34px;margin-bottom:8px}
+    .mode-title{font-size:20px;font-weight:900;margin-bottom:4px}
 
-    .mode-icon{
-      font-size:34px;
-      margin-bottom:8px;
-    }
-
-    .mode-title{
-      font-size:20px;
-      font-weight:900;
-      margin-bottom:4px;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:10px;
-      margin-bottom:16px;
-    }
-
-    @media (max-width:900px){
-      .stats{grid-template-columns:repeat(2,1fr)}
-    }
-
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+    @media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
     .stat{
-      background:#fbfcff;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px 10px;
-      text-align:center;
+      background:#fbfcff;border:1px solid var(--line);border-radius:18px;
+      padding:12px 10px;text-align:center
     }
-
-    .stat .k{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:800;
-    }
-
-    .stat .v{
-      font-size:24px;
-      font-weight:900;
-      margin-top:2px;
-    }
+    .stat .k{font-size:12px;color:var(--muted);font-weight:800}
+    .stat .v{font-size:24px;font-weight:900;margin-top:2px}
 
     .stage{
-      border:1px solid var(--line);
-      border-radius:28px;
-      padding:26px 16px;
-      background:linear-gradient(180deg,#fff,#f8fbff);
-      text-align:center;
-      min-height:300px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      transition:.2s ease;
+      border:1px solid var(--line);border-radius:28px;padding:26px 16px;
+      background:linear-gradient(180deg,#fff,#f8fbff);text-align:center;
+      min-height:300px;display:flex;flex-direction:column;justify-content:center;
+      transition:.2s ease
     }
-
     .stage.success{
-      background:linear-gradient(180deg,#f0fdf4,#dcfce7);
-      border-color:#86efac;
+      background:linear-gradient(180deg,#f0fdf4,#dcfce7);border-color:#86efac
     }
-
     .stage.error{
-      background:linear-gradient(180deg,#fff1f2,#ffe4e6);
-      border-color:#fda4af;
+      background:linear-gradient(180deg,#fff1f2,#ffe4e6);border-color:#fda4af
     }
 
     .problem{
-      font-size:112px;
-      line-height:1;
-      font-weight:900;
-      letter-spacing:2px;
-      color:var(--dark);
-      margin:0 0 12px;
+      font-size:112px;line-height:1;font-weight:900;letter-spacing:2px;
+      color:var(--dark);margin:0 0 12px
     }
-
-    @media (max-width:680px){
-      .problem{font-size:76px}
-    }
-
-    .answer{
-      min-height:54px;
-      font-size:44px;
-      color:var(--green);
-      font-weight:900;
-    }
-
-    .feedback{
-      min-height:30px;
-      font-size:22px;
-      font-weight:900;
-      margin-top:10px;
-    }
-
-    .actions{
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:14px;
-    }
+    @media (max-width:680px){.problem{font-size:76px}}
+    .answer{min-height:54px;font-size:44px;color:var(--green);font-weight:900}
+    .feedback{min-height:30px;font-size:22px;font-weight:900;margin-top:10px}
+    .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:14px}
 
     .quiz-options{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      max-width:420px;
-      margin:18px auto 0;
+      display:grid;grid-template-columns:1fr;gap:12px;max-width:420px;
+      margin:18px auto 0
     }
-
     .quiz-option{
-      border:none;
-      border-radius:18px;
-      padding:16px;
-      font-size:28px;
-      font-weight:900;
-      cursor:pointer;
-      background:#eef2ff;
-      color:#111827;
-      box-shadow:0 6px 12px rgba(0,0,0,.06);
+      border:none;border-radius:18px;padding:16px;font-size:28px;font-weight:900;
+      cursor:pointer;background:#eef2ff;color:#111827;box-shadow:0 6px 12px rgba(0,0,0,.06)
     }
+    .quiz-option.correct{background:#dcfce7;color:#166534}
+    .quiz-option.wrong{background:#fee2e2;color:#991b1b}
 
-    .quiz-option.correct{
-      background:#dcfce7;
-      color:#166534;
-    }
-
-    .quiz-option.wrong{
-      background:#fee2e2;
-      color:#991b1b;
-    }
-
-    .memo-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-      margin-top:14px;
-    }
-
-    @media (max-width:700px){
-      .memo-grid{grid-template-columns:repeat(3,1fr)}
-    }
-
+    .memo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+    @media (max-width:700px){.memo-grid{grid-template-columns:repeat(3,1fr)}}
     .memo-card{
-      height:92px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      font-size:28px;
-      cursor:pointer;
-      user-select:none;
-      box-shadow:var(--shadow);
-      background:#fff;
-      color:#fff;
+      height:92px;border-radius:18px;border:1px solid var(--line);
+      display:flex;align-items:center;justify-content:center;font-weight:900;
+      font-size:28px;cursor:pointer;user-select:none;box-shadow:var(--shadow);
+      background:#fff;color:#fff
     }
+    .memo-back{background:linear-gradient(180deg,var(--purple),#5f37d6);color:#fff;font-size:18px}
+    .memo-front{background:#fff;color:var(--dark)}
+    .memo-matched{background:#dcfce7 !important;color:#166534 !important;border-color:#86efac}
 
-    .memo-back{
-      background:linear-gradient(180deg,var(--purple),#5f37d6);
-      color:#fff;
-      font-size:18px;
-    }
-
-    .memo-front{
-      background:#fff;
-      color:var(--dark);
-    }
-
-    .memo-matched{
-      background:#dcfce7 !important;
-      color:#166534 !important;
-      border-color:#86efac;
-    }
-
-    .specific-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(92px,1fr));
-      gap:8px;
-      margin-top:12px;
-    }
+    .specific-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px;margin-top:12px}
 
     .history-item{
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      margin-bottom:10px;
-      background:#fff;
+      border:1px solid var(--line);border-radius:16px;padding:12px;
+      margin-bottom:10px;background:#fff
     }
-
-    .history-title{
-      font-weight:900;
-      margin-bottom:6px;
-    }
+    .history-title{font-weight:900;margin-bottom:6px}
 
     .visual-wrap{
-      background:#fff9f1;
-      border:1px solid #efe4d2;
-      border-radius:24px;
-      padding:18px;
+      background:#fff9f1;border:1px solid #efe4d2;border-radius:24px;padding:18px
     }
-
-    .visual-title{
-      text-align:center;
-      font-weight:900;
-      font-size:32px;
-      color:#334155;
-      margin-bottom:6px;
-    }
-
-    .visual-sub{
-      text-align:center;
-      color:#64748b;
-      font-weight:700;
-      margin-bottom:16px;
-    }
-
-    .stairs{
-      display:flex;
-      align-items:flex-end;
-      gap:10px;
-      overflow-x:auto;
-      padding-bottom:6px;
-    }
-
-    .stair-col{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      min-width:110px;
-    }
-
+    .visual-title{text-align:center;font-weight:900;font-size:32px;color:#334155;margin-bottom:6px}
+    .visual-sub{text-align:center;color:#64748b;font-weight:700;margin-bottom:16px}
+    .stairs{display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding-bottom:6px}
+    .stair-col{display:flex;flex-direction:column;gap:8px;min-width:110px}
     .stair-head{
-      border-radius:16px;
-      text-align:center;
-      padding:10px 0;
-      font-size:42px;
-      font-weight:900;
-      color:#334155;
-      box-shadow:0 4px 10px rgba(0,0,0,.07);
+      border-radius:16px;text-align:center;padding:10px 0;font-size:42px;
+      font-weight:900;color:#334155;box-shadow:0 4px 10px rgba(0,0,0,.07)
     }
-
     .stair-cell{
-      border-radius:14px;
-      text-align:center;
-      padding:11px 8px;
-      font-size:19px;
-      font-weight:800;
-      color:#334155;
-      box-shadow:0 3px 8px rgba(0,0,0,.05);
-      white-space:nowrap;
+      border-radius:14px;text-align:center;padding:11px 8px;font-size:19px;
+      font-weight:800;color:#334155;box-shadow:0 3px 8px rgba(0,0,0,.05);
+      white-space:nowrap
     }
-
     @media (max-width:680px){
       .stair-col{min-width:96px}
       .stair-head{font-size:34px}
       .stair-cell{font-size:16px}
     }
 
-    canvas{
-      background:#fff;
-      border-radius:18px;
-      width:100%;
-    }
-
-    .empty{
-      color:var(--muted);
-      font-weight:700;
-      text-align:center;
-      padding:18px 0;
-    }
+    canvas{background:#fff;border-radius:18px;width:100%}
+    .empty{color:var(--muted);font-weight:700;text-align:center;padding:18px 0}
 
     .login-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(247,248,252,.96);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      z-index:9999;
+      position:fixed;inset:0;background:rgba(247,248,252,.96);
+      display:flex;align-items:center;justify-content:center;padding:20px;z-index:9999
     }
-
     .login-card{
-      width:min(460px,100%);
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:22px;
-      box-shadow:var(--shadow);
-      text-align:center;
+      width:min(460px,100%);background:#fff;border:1px solid var(--line);
+      border-radius:24px;padding:22px;box-shadow:var(--shadow);text-align:center
     }
-
-    .login-card img{
-      width:110px;
-      max-width:50%;
-      margin-bottom:8px;
-    }
-
-    .login-title{
-      font-size:24px;
-      font-weight:900;
-      margin:4px 0;
-    }
-
-    .login-sub{
-      color:var(--muted);
-      font-weight:600;
-      margin-bottom:16px;
-    }
-
-    .login-actions{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .login-actions .btn{
-      flex:1;
-    }
-
-    .error-text{
-      color:#b91c1c;
-      font-weight:700;
-      margin-top:10px;
-      min-height:22px;
-    }
+    .login-card img{width:110px;max-width:50%;margin-bottom:8px}
+    .login-title{font-size:24px;font-weight:900;margin:4px 0}
+    .login-sub{color:var(--muted);font-weight:600;margin-bottom:16px}
+    .login-actions{display:flex;gap:10px;margin-top:12px}
+    .login-actions .btn{flex:1}
+    .error-text{color:#b91c1c;font-weight:700;margin-top:10px;min-height:22px}
   </style>
 </head>
 <body>
@@ -901,7 +540,6 @@
 
   <script>
     let appMode = "memorama";
-
     let selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
     let specificFacts = new Set();
 
@@ -932,37 +570,20 @@
     let memoTargetPairs = 0;
 
     const visualColors = {
-      1:"#F6E7A1",
-      2:"#A9D8F3",
-      3:"#BFE7C6",
-      4:"#CFE77A",
-      5:"#F6B8A8",
-      6:"#F3A28C",
-      7:"#B9DD6F",
-      8:"#A8D85E",
-      9:"#F08D7A",
-      10:"#D7C4F3"
+      1:"#F6E7A1",2:"#A9D8F3",3:"#BFE7C6",4:"#CFE77A",5:"#F6B8A8",
+      6:"#F3A28C",7:"#B9DD6F",8:"#A8D85E",9:"#F08D7A",10:"#D7C4F3"
     };
 
     function showTab(i){
       document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active", idx===i));
       document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active", idx===i));
-      if(i===2){
-        renderHistory();
-        renderWeakFacts();
-        drawChart();
-      }
+      if(i===2){ renderHistory(); renderWeakFacts(); drawChart(); }
       if(i===1) renderSpecific();
       if(i===3) renderVisual(9);
     }
 
-    function getKids(){
-      return JSON.parse(localStorage.getItem("kids") || "[]");
-    }
-
-    function saveKids(list){
-      localStorage.setItem("kids", JSON.stringify(list));
-    }
+    function getKids(){ return JSON.parse(localStorage.getItem("kids") || "[]"); }
+    function saveKids(list){ localStorage.setItem("kids", JSON.stringify(list)); }
 
     function loadKids(){
       const sel = document.getElementById("childSelect");
@@ -981,25 +602,11 @@
       input.value = "";
     }
 
-    function currentChild(){
-      return document.getElementById("childSelect").value;
-    }
-
-    function getDB(){
-      return JSON.parse(localStorage.getItem("db") || "{}");
-    }
-
-    function saveDB(db){
-      localStorage.setItem("db", JSON.stringify(db));
-    }
-
-    function getWeakDB(){
-      return JSON.parse(localStorage.getItem("weakDB") || "{}");
-    }
-
-    function saveWeakDB(db){
-      localStorage.setItem("weakDB", JSON.stringify(db));
-    }
+    function currentChild(){ return document.getElementById("childSelect").value; }
+    function getDB(){ return JSON.parse(localStorage.getItem("db") || "{}"); }
+    function saveDB(db){ localStorage.setItem("db", JSON.stringify(db)); }
+    function getWeakDB(){ return JSON.parse(localStorage.getItem("weakDB") || "{}"); }
+    function saveWeakDB(db){ localStorage.setItem("weakDB", JSON.stringify(db)); }
 
     function registerWrong(fact){
       const child = currentChild();
@@ -1033,16 +640,8 @@
       renderTableChips();
     }
 
-    function selectAllTables(){
-      selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
-      renderTableChips();
-    }
-
-    function clearAllTables(){
-      selectedTables = new Set();
-      renderTableChips();
-    }
-
+    function selectAllTables(){ selectedTables = new Set([2,3,4,5,6,7,8,9,10]); renderTableChips(); }
+    function clearAllTables(){ selectedTables = new Set(); renderTableChips(); }
     function selectRange(a,b){
       selectedTables = new Set();
       for(let i=a;i<=b;i++) selectedTables.add(i);
@@ -1081,11 +680,7 @@
       renderSpecific();
     }
 
-    function clearAllSpecific(){
-      specificFacts = new Set();
-      renderSpecific();
-    }
-
+    function clearAllSpecific(){ specificFacts = new Set(); renderSpecific(); }
     function loadWeakToSpecific(){
       specificFacts = new Set(getWeakFacts());
       document.getElementById("specificTable").value = "2";
@@ -1118,7 +713,6 @@
       document.getElementById("modeMemorama").classList.toggle("active", mode==="memorama");
       document.getElementById("modeQuiz").classList.toggle("active", mode==="quiz");
       document.getElementById("modeSpeed").classList.toggle("active", mode==="speed");
-
       document.getElementById("memoramaPanel").style.display = mode==="memorama" ? "block" : "none";
       document.getElementById("quizPanel").style.display = mode==="quiz" ? "block" : "none";
       document.getElementById("speedPanel").style.display = mode==="speed" ? "block" : "none";
@@ -1129,10 +723,7 @@
       if(!child) return;
       const db = getDB();
       if(!db[child]) db[child] = [];
-      db[child].push({
-        date:new Date().toLocaleString(),
-        ...obj
-      });
+      db[child].push({ date:new Date().toLocaleString(), ...obj });
       saveDB(db);
     }
 
@@ -1145,398 +736,263 @@
 
     function resetSpeed(){
       clearInterval(speedTimer);
-      speedProblems = [];
-      speedCurrent = null;
-      speedStartTime = null;
-      speedGood = 0;
-      speedBad = 0;
-      speedAnswered = false;
-      document.getElementById("speedTime").textContent = "0.0";
-      document.getElementById("speedAvg").textContent = "0.00";
-      document.getElementById("speedGood").textContent = "0";
-      document.getElementById("speedBad").textContent = "0";
-      document.getElementById("speedRemaining").textContent = "0";
-      document.getElementById("speedProblem").textContent = "—";
-      document.getElementById("speedAnswer").textContent = "";
-      document.getElementById("speedFeedback").textContent = "";
+      speedProblems=[]; speedCurrent=null; speedStartTime=null; speedGood=0; speedBad=0; speedAnswered=false;
+      document.getElementById("speedTime").textContent="0.0";
+      document.getElementById("speedAvg").textContent="0.00";
+      document.getElementById("speedGood").textContent="0";
+      document.getElementById("speedBad").textContent="0";
+      document.getElementById("speedRemaining").textContent="0";
+      document.getElementById("speedProblem").textContent="—";
+      document.getElementById("speedAnswer").textContent="";
+      document.getElementById("speedFeedback").textContent="";
       document.getElementById("speedStage").classList.remove("success","error");
       resetSpeedButtons();
     }
 
     function startSpeed(){
-      if(!currentChild()){
-        alert("Primero agrega o selecciona un niño.");
-        return;
-      }
+      if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
       const facts = buildFacts();
-      if(facts.length===0){
-        alert("Selecciona tablas o específicas.");
-        return;
-      }
-
-      speedProblems = shuffle(facts.map(f=>{
-        const [a,b] = f.split("x").map(Number);
-        return { q:f, a:a*b };
-      }));
-
-      speedGood = 0;
-      speedBad = 0;
-      speedStartTime = Date.now();
+      if(facts.length===0) return alert("Selecciona tablas o específicas.");
+      speedProblems = shuffle(facts.map(f=>{ const [a,b]=f.split("x").map(Number); return {q:f,a:a*b}; }));
+      speedGood=0; speedBad=0; speedStartTime=Date.now();
       clearInterval(speedTimer);
-      speedTimer = setInterval(updateSpeedTimer,100);
-      nextSpeed();
-      updateSpeedStats();
+      speedTimer=setInterval(updateSpeedTimer,100);
+      nextSpeed(); updateSpeedStats();
     }
 
     function updateSpeedTimer(){
       if(!speedStartTime) return;
-      const t = (Date.now()-speedStartTime)/1000;
-      document.getElementById("speedTime").textContent = t.toFixed(1);
-      const total = speedGood + speedBad;
-      document.getElementById("speedAvg").textContent = total ? (t/total).toFixed(2) : "0.00";
+      const t=(Date.now()-speedStartTime)/1000;
+      document.getElementById("speedTime").textContent=t.toFixed(1);
+      const total=speedGood+speedBad;
+      document.getElementById("speedAvg").textContent=total?(t/total).toFixed(2):"0.00";
     }
 
     function updateSpeedStats(){
-      document.getElementById("speedGood").textContent = speedGood;
-      document.getElementById("speedBad").textContent = speedBad;
-      document.getElementById("speedRemaining").textContent = speedProblems.length;
+      document.getElementById("speedGood").textContent=speedGood;
+      document.getElementById("speedBad").textContent=speedBad;
+      document.getElementById("speedRemaining").textContent=speedProblems.length;
     }
 
     function nextSpeed(){
-      if(speedProblems.length===0){
-        finishSpeed();
-        return;
-      }
-      speedCurrent = speedProblems.pop();
-      speedAnswered = false;
-      document.getElementById("speedProblem").textContent = speedCurrent.q;
-      document.getElementById("speedAnswer").textContent = "";
-      document.getElementById("speedFeedback").textContent = "";
+      if(speedProblems.length===0) return finishSpeed();
+      speedCurrent=speedProblems.pop(); speedAnswered=false;
+      document.getElementById("speedProblem").textContent=speedCurrent.q;
+      document.getElementById("speedAnswer").textContent="";
+      document.getElementById("speedFeedback").textContent="";
       document.getElementById("speedStage").classList.remove("success","error");
-      resetSpeedButtons();
-      updateSpeedStats();
+      resetSpeedButtons(); updateSpeedStats();
     }
 
     function showSpeedAnswer(){
       if(!speedCurrent) return;
-      document.getElementById("speedAnswer").textContent = speedCurrent.a;
-      document.getElementById("speedShowBtn").disabled = true;
+      document.getElementById("speedAnswer").textContent=speedCurrent.a;
+      document.getElementById("speedShowBtn").disabled=true;
     }
 
     function markSpeed(ok){
       if(!speedCurrent || speedAnswered) return;
-      speedAnswered = true;
-      document.getElementById("speedAnswer").textContent = speedCurrent.a;
+      speedAnswered=true;
+      document.getElementById("speedAnswer").textContent=speedCurrent.a;
 
       if(ok){
         speedGood++;
-        document.getElementById("speedFeedback").textContent = "✅ Correct!";
+        document.getElementById("speedFeedback").textContent="✅ Correct!";
         document.getElementById("speedStage").classList.add("success");
       } else {
         speedBad++;
-        document.getElementById("speedFeedback").textContent = "❌ Oops";
+        document.getElementById("speedFeedback").textContent="❌ Oops";
         document.getElementById("speedStage").classList.add("error");
         registerWrong(speedCurrent.q);
       }
 
-      document.getElementById("speedShowBtn").disabled = true;
-      document.getElementById("speedGoodBtn").disabled = true;
-      document.getElementById("speedBadBtn").disabled = true;
-      document.getElementById("speedNextBtn").disabled = false;
-      updateSpeedTimer();
-      updateSpeedStats();
+      document.getElementById("speedShowBtn").disabled=true;
+      document.getElementById("speedGoodBtn").disabled=true;
+      document.getElementById("speedBadBtn").disabled=true;
+      document.getElementById("speedNextBtn").disabled=false;
+      updateSpeedTimer(); updateSpeedStats();
     }
 
     function finishSpeed(){
       clearInterval(speedTimer);
-      const totalTime = speedStartTime ? (Date.now()-speedStartTime)/1000 : 0;
-      const total = speedGood + speedBad;
-      const avg = total ? totalTime/total : 0;
-
-      saveSession({
-        mode:"speed",
-        time:Number(totalTime.toFixed(1)),
-        avg:Number(avg.toFixed(2)),
-        good:speedGood,
-        bad:speedBad
-      });
-
-      document.getElementById("speedProblem").textContent = "🏁 FIN";
-      document.getElementById("speedAnswer").textContent = totalTime.toFixed(1) + "s";
-      document.getElementById("speedFeedback").textContent = `Promedio: ${avg.toFixed(2)}s`;
+      const totalTime=speedStartTime?(Date.now()-speedStartTime)/1000:0;
+      const total=speedGood+speedBad;
+      const avg=total?totalTime/total:0;
+      saveSession({mode:"speed", time:Number(totalTime.toFixed(1)), avg:Number(avg.toFixed(2)), good:speedGood, bad:speedBad});
+      document.getElementById("speedProblem").textContent="🏁 FIN";
+      document.getElementById("speedAnswer").textContent=totalTime.toFixed(1)+"s";
+      document.getElementById("speedFeedback").textContent=`Promedio: ${avg.toFixed(2)}s`;
       document.getElementById("speedStage").classList.remove("success","error");
-
-      renderHistory();
-      renderWeakFacts();
-      drawChart();
+      renderHistory(); renderWeakFacts(); drawChart();
     }
 
     function resetQuiz(){
       clearInterval(quizTimer);
-      quizProblems = [];
-      quizCurrent = null;
-      quizIndex = 0;
-      quizGood = 0;
-      quizBad = 0;
-      quizAnswered = false;
-      document.getElementById("quizTime").textContent = "0.0";
-      document.getElementById("quizGood").textContent = "0";
-      document.getElementById("quizBad").textContent = "0";
-      document.getElementById("quizIndex").textContent = "0";
-      document.getElementById("quizTotal").textContent = "0";
-      document.getElementById("quizProblem").textContent = "—";
-      document.getElementById("quizFeedback").textContent = "";
-      document.getElementById("quizOptions").innerHTML = "";
-      document.getElementById("quizSummary").style.display = "none";
+      quizProblems=[]; quizCurrent=null; quizIndex=0; quizGood=0; quizBad=0; quizAnswered=false;
+      document.getElementById("quizTime").textContent="0.0";
+      document.getElementById("quizGood").textContent="0";
+      document.getElementById("quizBad").textContent="0";
+      document.getElementById("quizIndex").textContent="0";
+      document.getElementById("quizTotal").textContent="0";
+      document.getElementById("quizProblem").textContent="—";
+      document.getElementById("quizFeedback").textContent="";
+      document.getElementById("quizOptions").innerHTML="";
+      document.getElementById("quizSummary").style.display="none";
     }
 
     function startQuiz(){
-      if(!currentChild()){
-        alert("Primero agrega o selecciona un niño.");
-        return;
-      }
-      const facts = buildFacts();
-      if(facts.length===0){
-        alert("Selecciona tablas o específicas.");
-        return;
-      }
-
-      quizProblems = shuffle(facts).slice(0, Math.min(10, facts.length)).map(f=>{
-        const [a,b] = f.split("x").map(Number);
-        return { q:f, a:a*b };
-      });
-
-      quizIndex = 0;
-      quizGood = 0;
-      quizBad = 0;
-      quizStartTime = Date.now();
+      if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
+      const facts=buildFacts();
+      if(facts.length===0) return alert("Selecciona tablas o específicas.");
+      quizProblems=shuffle(facts).slice(0,Math.min(10,facts.length)).map(f=>{ const [a,b]=f.split("x").map(Number); return {q:f,a:a*b}; });
+      quizIndex=0; quizGood=0; quizBad=0; quizStartTime=Date.now();
       clearInterval(quizTimer);
-      quizTimer = setInterval(()=>{
-        const t = (Date.now()-quizStartTime)/1000;
-        document.getElementById("quizTime").textContent = t.toFixed(1);
-      },100);
-
-      document.getElementById("quizTotal").textContent = quizProblems.length;
-      document.getElementById("quizSummary").style.display = "none";
+      quizTimer=setInterval(()=>{ document.getElementById("quizTime").textContent=((Date.now()-quizStartTime)/1000).toFixed(1); },100);
+      document.getElementById("quizTotal").textContent=quizProblems.length;
+      document.getElementById("quizSummary").style.display="none";
       nextQuiz();
     }
 
     function nextQuiz(){
-      if(quizIndex >= quizProblems.length){
-        finishQuiz();
-        return;
+      if(quizIndex>=quizProblems.length) return finishQuiz();
+      quizCurrent=quizProblems[quizIndex]; quizAnswered=false;
+      document.getElementById("quizProblem").textContent=quizCurrent.q;
+      document.getElementById("quizFeedback").textContent="";
+      document.getElementById("quizIndex").textContent=quizIndex+1;
+      document.getElementById("quizGood").textContent=quizGood;
+      document.getElementById("quizBad").textContent=quizBad;
+
+      const correct=quizCurrent.a;
+      let options=new Set([correct]);
+      while(options.size<3){
+        const fake=correct+Math.floor(Math.random()*10)-5;
+        if(fake>0) options.add(fake);
       }
+      options=shuffle([...options]);
 
-      quizCurrent = quizProblems[quizIndex];
-      quizAnswered = false;
-      document.getElementById("quizProblem").textContent = quizCurrent.q;
-      document.getElementById("quizFeedback").textContent = "";
-      document.getElementById("quizIndex").textContent = quizIndex + 1;
-      document.getElementById("quizGood").textContent = quizGood;
-      document.getElementById("quizBad").textContent = quizBad;
-
-      const correct = quizCurrent.a;
-      let options = new Set([correct]);
-
-      while(options.size < 3){
-        const fake = correct + Math.floor(Math.random()*10) - 5;
-        if(fake > 0) options.add(fake);
-      }
-
-      options = shuffle([...options]);
-
-      document.getElementById("quizOptions").innerHTML = options.map(opt => `
+      document.getElementById("quizOptions").innerHTML=options.map(opt=>`
         <button class="quiz-option" onclick="answerQuiz(${opt}, this)">${opt}</button>
       `).join("");
     }
 
     function answerQuiz(value, btn){
       if(quizAnswered) return;
-      quizAnswered = true;
+      quizAnswered=true;
+      const correct=quizCurrent.a;
+      const buttons=[...document.querySelectorAll("#quizOptions .quiz-option")];
 
-      const correct = quizCurrent.a;
-      const buttons = [...document.querySelectorAll("#quizOptions .quiz-option")];
-
-      if(value === correct){
+      if(value===correct){
         quizGood++;
         btn.classList.add("correct");
-        document.getElementById("quizFeedback").textContent = "✅ Correct!";
+        document.getElementById("quizFeedback").textContent="✅ Correct!";
       } else {
         quizBad++;
         btn.classList.add("wrong");
-        buttons.forEach(b=>{
-          if(Number(b.textContent) === correct) b.classList.add("correct");
-        });
-        document.getElementById("quizFeedback").textContent = "❌ Incorrect";
+        buttons.forEach(b=>{ if(Number(b.textContent)===correct) b.classList.add("correct"); });
+        document.getElementById("quizFeedback").textContent="❌ Incorrect";
         registerWrong(quizCurrent.q);
       }
 
-      document.getElementById("quizGood").textContent = quizGood;
-      document.getElementById("quizBad").textContent = quizBad;
-
-      setTimeout(()=>{
-        quizIndex++;
-        nextQuiz();
-      }, 900);
+      document.getElementById("quizGood").textContent=quizGood;
+      document.getElementById("quizBad").textContent=quizBad;
+      setTimeout(()=>{ quizIndex++; nextQuiz(); }, 900);
     }
 
     function finishQuiz(){
       clearInterval(quizTimer);
-      const totalTime = quizStartTime ? (Date.now()-quizStartTime)/1000 : 0;
-      const summary = document.getElementById("quizSummary");
-      const percent = quizProblems.length ? Math.round((quizGood/quizProblems.length)*100) : 0;
-
-      saveSession({
-        mode:"quiz",
-        time:Number(totalTime.toFixed(1)),
-        avg: quizProblems.length ? Number((totalTime/quizProblems.length).toFixed(2)) : 0,
-        good:quizGood,
-        bad:quizBad
-      });
-
-      summary.style.display = "block";
-      summary.innerHTML = `
-        <div class="history-title">Quiz completed</div>
-        <div>Tiempo: ${totalTime.toFixed(1)}s</div>
-        <div>Buenas: ${quizGood}</div>
-        <div>Malas: ${quizBad}</div>
-        <div>Score: ${percent}%</div>
-      `;
-
-      renderHistory();
-      renderWeakFacts();
-      drawChart();
+      const totalTime=quizStartTime?(Date.now()-quizStartTime)/1000:0;
+      const summary=document.getElementById("quizSummary");
+      const percent=quizProblems.length?Math.round((quizGood/quizProblems.length)*100):0;
+      saveSession({mode:"quiz", time:Number(totalTime.toFixed(1)), avg:quizProblems.length?Number((totalTime/quizProblems.length).toFixed(2)):0, good:quizGood, bad:quizBad});
+      summary.style.display="block";
+      summary.innerHTML=`<div class="history-title">Quiz completed</div><div>Tiempo: ${totalTime.toFixed(1)}s</div><div>Buenas: ${quizGood}</div><div>Malas: ${quizBad}</div><div>Score: ${percent}%</div>`;
+      renderHistory(); renderWeakFacts(); drawChart();
     }
 
     function startMemo(pairCount){
-      if(!currentChild()){
-        alert("Primero agrega o selecciona un niño.");
-        return;
-      }
-
-      const facts = shuffle(buildFacts()).slice(0, pairCount);
-      if(facts.length===0){
-        alert("Selecciona tablas o específicas.");
-        return;
-      }
-
-      memoTargetPairs = facts.length;
-      memoMatched = 0;
-      memoMoves = 0;
-      memoFlipped = [];
-      memoBusy = false;
-
-      memoCards = [];
-      facts.forEach((fact, idx) => {
-        const [a,b] = fact.split("x").map(Number);
-        const res = a*b;
-        memoCards.push({ id:`q-${idx}`, pair:fact, type:"q", text:fact, flipped:false, matched:false });
-        memoCards.push({ id:`a-${idx}`, pair:fact, type:"a", text:String(res), flipped:false, matched:false });
+      if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
+      const facts=shuffle(buildFacts()).slice(0,pairCount);
+      if(facts.length===0) return alert("Selecciona tablas o específicas.");
+      memoTargetPairs=facts.length; memoMatched=0; memoMoves=0; memoFlipped=[]; memoBusy=false; memoCards=[];
+      facts.forEach((fact, idx)=>{
+        const [a,b]=fact.split("x").map(Number);
+        const res=a*b;
+        memoCards.push({id:`q-${idx}`,pair:fact,type:"q",text:fact,flipped:false,matched:false});
+        memoCards.push({id:`a-${idx}`,pair:fact,type:"a",text:String(res),flipped:false,matched:false});
       });
-
-      memoCards = shuffle(memoCards);
-      memoStartTime = Date.now();
+      memoCards=shuffle(memoCards);
+      memoStartTime=Date.now();
       clearInterval(memoInterval);
-      memoInterval = setInterval(updateMemoStats, 100);
-      document.getElementById("memoMode").textContent = `${facts.length} pares`;
-      renderMemoBoard();
-      updateMemoStats();
-      document.getElementById("memoFeedback").textContent = "";
+      memoInterval=setInterval(updateMemoStats,100);
+      document.getElementById("memoMode").textContent=`${facts.length} pares`;
+      renderMemoBoard(); updateMemoStats();
+      document.getElementById("memoFeedback").textContent="";
     }
 
     function updateMemoStats(){
-      const t = memoStartTime ? ((Date.now()-memoStartTime)/1000) : 0;
-      document.getElementById("memoTime").textContent = t.toFixed(1);
-      document.getElementById("memoMoves").textContent = memoMoves;
-      document.getElementById("memoPairs").textContent = memoMatched;
-      document.getElementById("memoTarget").textContent = memoTargetPairs;
+      const t=memoStartTime?((Date.now()-memoStartTime)/1000):0;
+      document.getElementById("memoTime").textContent=t.toFixed(1);
+      document.getElementById("memoMoves").textContent=memoMoves;
+      document.getElementById("memoPairs").textContent=memoMatched;
+      document.getElementById("memoTarget").textContent=memoTargetPairs;
     }
 
     function renderMemoBoard(){
-      const box = document.getElementById("memoGrid");
-      if(memoCards.length === 0){
-        box.innerHTML = `<div class="empty" style="grid-column:1/-1">Presiona un nivel para iniciar el memorama.</div>`;
+      const box=document.getElementById("memoGrid");
+      if(memoCards.length===0){
+        box.innerHTML=`<div class="empty" style="grid-column:1/-1">Presiona un nivel para iniciar el memorama.</div>`;
         return;
       }
-
-      box.innerHTML = memoCards.map((card, idx) => {
-        const faceClass = (card.flipped || card.matched) ? "memo-front" : "memo-back";
-        const matchedClass = card.matched ? " memo-matched" : "";
-        const label = (card.flipped || card.matched) ? card.text : "?";
+      box.innerHTML=memoCards.map((card, idx)=>{
+        const faceClass=(card.flipped || card.matched) ? "memo-front" : "memo-back";
+        const matchedClass=card.matched ? " memo-matched" : "";
+        const label=(card.flipped || card.matched) ? card.text : "?";
         return `<div class="memo-card ${faceClass}${matchedClass}" onclick="flipMemo(${idx})">${label}</div>`;
       }).join("");
-
       updateMemoStats();
     }
 
     function flipMemo(index){
       if(memoBusy) return;
-      const card = memoCards[index];
+      const card=memoCards[index];
       if(!card || card.flipped || card.matched) return;
+      card.flipped=true; memoFlipped.push(index); renderMemoBoard();
 
-      card.flipped = true;
-      memoFlipped.push(index);
-      renderMemoBoard();
-
-      if(memoFlipped.length === 2){
-        memoMoves++;
-        memoBusy = true;
-
-        const [i1, i2] = memoFlipped;
-        const c1 = memoCards[i1];
-        const c2 = memoCards[i2];
-        const isMatch = c1.pair === c2.pair && c1.type !== c2.type;
+      if(memoFlipped.length===2){
+        memoMoves++; memoBusy=true;
+        const [i1,i2]=memoFlipped;
+        const c1=memoCards[i1], c2=memoCards[i2];
+        const isMatch=c1.pair===c2.pair && c1.type!==c2.type;
 
         if(isMatch){
-          c1.matched = true;
-          c2.matched = true;
-          memoMatched++;
-          memoFlipped = [];
-          memoBusy = false;
-          renderMemoBoard();
-
-          if(memoMatched === memoTargetPairs) finishMemo();
+          c1.matched=true; c2.matched=true; memoMatched++; memoFlipped=[]; memoBusy=false; renderMemoBoard();
+          if(memoMatched===memoTargetPairs) finishMemo();
         } else {
           setTimeout(()=>{
-            c1.flipped = false;
-            c2.flipped = false;
-            memoFlipped = [];
-            memoBusy = false;
-            renderMemoBoard();
-          }, 700);
+            c1.flipped=false; c2.flipped=false; memoFlipped=[]; memoBusy=false; renderMemoBoard();
+          },700);
         }
       }
     }
 
     function finishMemo(){
       clearInterval(memoInterval);
-      const totalTime = memoStartTime ? ((Date.now()-memoStartTime)/1000) : 0;
-      document.getElementById("memoFeedback").textContent = `🎉 ¡Completado! Tiempo: ${totalTime.toFixed(1)}s · Movimientos: ${memoMoves}`;
-
-      saveSession({
-        mode:"memorama",
-        time:Number(totalTime.toFixed(1)),
-        avg:"",
-        good:memoMatched,
-        bad:Math.max(memoMoves - memoMatched, 0)
-      });
-
-      renderHistory();
-      drawChart();
+      const totalTime=memoStartTime?((Date.now()-memoStartTime)/1000):0;
+      document.getElementById("memoFeedback").textContent=`🎉 ¡Completado! Tiempo: ${totalTime.toFixed(1)}s · Movimientos: ${memoMoves}`;
+      saveSession({mode:"memorama", time:Number(totalTime.toFixed(1)), avg:"", good:memoMatched, bad:Math.max(memoMoves-memoMatched,0)});
+      renderHistory(); drawChart();
     }
 
     function renderHistory(){
-      const box = document.getElementById("history");
-      const db = getDB();
-      const child = currentChild();
-      const items = db[child] || [];
-
+      const box=document.getElementById("history");
+      const db=getDB();
+      const child=currentChild();
+      const items=db[child] || [];
       if(items.length===0){
-        box.innerHTML = `<div class="empty">Todavía no hay sesiones guardadas.</div>`;
+        box.innerHTML=`<div class="empty">Todavía no hay sesiones guardadas.</div>`;
         return;
       }
-
-      box.innerHTML = items.slice().reverse().map(s => `
+      box.innerHTML=items.slice().reverse().map(s=>`
         <div class="history-item">
           <div class="history-title">${child} · ${s.mode}</div>
           <div>${s.time}s ${s.avg !== "" ? `· ${s.avg}s/prom` : ""} ${s.good !== undefined ? `· ✅ ${s.good}` : ""} ${s.bad !== undefined ? `· ❌ ${s.bad}` : ""}</div>
@@ -1546,96 +1002,73 @@
     }
 
     function renderWeakFacts(){
-      const box = document.getElementById("weakFacts");
-      const child = currentChild();
-
+      const box=document.getElementById("weakFacts");
+      const child=currentChild();
       if(!child){
-        box.innerHTML = `<div class="empty">Selecciona un niño.</div>`;
+        box.innerHTML=`<div class="empty">Selecciona un niño.</div>`;
         return;
       }
-
-      const db = getWeakDB();
-      const items = Object.entries(db[child] || {}).sort((a,b)=>b[1]-a[1]);
-
+      const db=getWeakDB();
+      const items=Object.entries(db[child] || {}).sort((a,b)=>b[1]-a[1]);
       if(items.length===0){
-        box.innerHTML = `<div class="empty">Todavía no hay errores guardados.</div>`;
+        box.innerHTML=`<div class="empty">Todavía no hay errores guardados.</div>`;
         return;
       }
-
-      box.innerHTML = items.map(([fact,count]) => `
-        <div class="history-item"><b>${fact}</b> — ${count} fallas</div>
-      `).join("");
+      box.innerHTML=items.map(([fact,count])=>`<div class="history-item"><b>${fact}</b> — ${count} fallas</div>`).join("");
     }
 
     function drawChart(){
-      const canvas = document.getElementById("chart");
-      const ctx = canvas.getContext("2d");
+      const canvas=document.getElementById("chart");
+      const ctx=canvas.getContext("2d");
       ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      const db = getDB();
-      const child = currentChild();
-      const items = db[child] || [];
+      const db=getDB();
+      const child=currentChild();
+      const items=db[child] || [];
       if(items.length===0) return;
 
-      const max = Math.max(...items.map(x => Number(x.time) || 0), 1);
-      const left = 40, bottom = 220, barW = 24, gap = 16;
+      const max=Math.max(...items.map(x=>Number(x.time)||0),1);
+      const left=40, bottom=220, barW=24, gap=16;
 
-      ctx.strokeStyle = "#cbd5e1";
+      ctx.strokeStyle="#cbd5e1";
       ctx.beginPath();
-      ctx.moveTo(left, 20);
-      ctx.lineTo(left, bottom);
-      ctx.lineTo(canvas.width - 20, bottom);
-      ctx.stroke();
+      ctx.moveTo(left,20); ctx.lineTo(left,bottom); ctx.lineTo(canvas.width-20,bottom); ctx.stroke();
 
-      items.forEach((item, i) => {
-        const h = ((Number(item.time)||0) / max) * 160;
-        const x = left + 18 + i*(barW+gap);
-        const y = bottom - h;
+      items.forEach((item,i)=>{
+        const h=((Number(item.time)||0)/max)*160;
+        const x=left+18+i*(barW+gap);
+        const y=bottom-h;
 
-        let color = "#f4b000";
-        if(item.mode === "quiz") color = "#60a5fa";
-        if(item.mode === "memorama") color = "#7a4dff";
-        if(item.mode === "speed") color = "#22c55e";
+        let color="#f4b000";
+        if(item.mode==="quiz") color="#60a5fa";
+        if(item.mode==="memorama") color="#7a4dff";
+        if(item.mode==="speed") color="#22c55e";
 
-        ctx.fillStyle = color;
-        ctx.fillRect(x, y, barW, h);
-        ctx.fillStyle = "#475569";
-        ctx.font = "12px Arial";
+        ctx.fillStyle=color;
+        ctx.fillRect(x,y,barW,h);
+        ctx.fillStyle="#475569";
+        ctx.font="12px Arial";
         ctx.fillText(String(i+1), x+6, bottom+16);
       });
     }
 
     function exportCSV(){
-      const db = getDB();
-      const rows = [["Name","Mode","Time","Average","Good","Bad","Date"]];
-
-      Object.keys(db).forEach(name => {
-        db[name].forEach(r => rows.push([
-          name,
-          r.mode || "",
-          r.time || "",
-          r.avg || "",
-          r.good ?? "",
-          r.bad ?? "",
-          r.date || ""
-        ]));
+      const db=getDB();
+      const rows=[["Name","Mode","Time","Average","Good","Bad","Date"]];
+      Object.keys(db).forEach(name=>{
+        db[name].forEach(r=>rows.push([name,r.mode||"",r.time||"",r.avg||"",r.good??"",r.bad??"",r.date||""]));
       });
-
-      const csv = rows.map(r => r.join(",")).join("\n");
-      const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "math_results.csv";
-      a.click();
+      const csv=rows.map(r=>r.join(",")).join("\n");
+      const blob=new Blob([csv], {type:"text/csv;charset=utf-8;"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url; a.download="math_results.csv"; a.click();
     }
 
     function renderVisual(max=9){
-      const box = document.getElementById("visualGrid");
-      let html = "";
-
+      const box=document.getElementById("visualGrid");
+      let html="";
       for(let t=1;t<=max;t++){
-        const color = visualColors[t] || "#e5e7eb";
+        const color=visualColors[t] || "#e5e7eb";
         html += `<div class="stair-col">`;
         html += `<div class="stair-head" style="background:${color}">${t}</div>`;
         for(let i=1;i<=9;i++){
@@ -1643,14 +1076,10 @@
         }
         html += `</div>`;
       }
-
-      box.innerHTML = html;
+      box.innerHTML=html;
     }
 
-    function resetApp(){
-      localStorage.clear();
-      location.reload();
-    }
+    function resetApp(){ localStorage.clear(); location.reload(); }
 
     loadKids();
     renderTableChips();

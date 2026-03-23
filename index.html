@@ -224,7 +224,7 @@
     <div class="login-card">
       <img src="logo.png" alt="Bright Minds">
       <div class="login-title">Bright Minds Math</div>
-      <div class="login-sub">Acceso privado</div>
+      <div class="login-sub">Bienvenido 👋<br>Empieza a practicar</div>
 
       <div class="row">
         <input id="loginEmail" type="email" placeholder="Correo electrónico">
@@ -247,7 +247,7 @@
           <img src="logo.png" alt="Bright Minds logo">
           <div>
             <h1>Bright Minds Math</h1>
-            <p>Interactive multiplication games for kids</p>
+            <p>Aprende jugando</p>
             <div id="userBadge" class="user-badge"></div>
           </div>
         </div>
@@ -255,7 +255,7 @@
       </div>
 
       <div class="tabs">
-        <button class="tab active" onclick="showTab(0)">Practice</button>
+        <button class="tab active" onclick="showTab(0)">Práctica</button>
         <button class="tab" onclick="showTab(1)">Específicas</button>
         <button class="tab" onclick="showTab(2)">Progreso</button>
         <button class="tab" onclick="showTab(3)">Visual</button>
@@ -265,7 +265,7 @@
         <div class="card hero">
           <img src="logo.png" alt="Bright Minds">
           <div class="hero-title">Bright Minds Math</div>
-          <div class="hero-sub">Practice. Play. Improve.</div>
+          <div class="hero-sub">Practica • Juega • Mejora</div>
         </div>
 
         <div class="grid">
@@ -273,7 +273,7 @@
             <div class="card">
               <h3>Niños</h3>
               <div class="row">
-                <input id="newChild" placeholder="Name">
+                <input id="newChild" placeholder="Agregar nombre">
                 <button class="btn btn-yellow" onclick="addChild()">Agregar</button>
               </div>
               <div style="margin-top:12px">
@@ -282,36 +282,41 @@
             </div>
 
             <div class="card">
-              <h3>Tablas incluidas</h3>
+              <h3>Elige qué practicar</h3>
               <div class="row">
                 <button class="btn btn-soft" onclick="selectAllTables()">Todas</button>
                 <button class="btn btn-soft" onclick="clearAllTables()">Limpiar</button>
                 <button class="btn btn-soft" onclick="selectRange(2,5)">2–5</button>
                 <button class="btn btn-soft" onclick="selectRange(6,10)">6–10</button>
-                <button class="btn btn-soft" onclick="loadWeakToSpecific()">Difíciles</button>
               </div>
+              <div class="row" style="margin-top:10px">
+                <button class="btn btn-soft" onclick="activatePractice()">Práctica</button>
+                <button id="btnWeak" class="btn btn-soft" onclick="loadWeakToSpecific()">Refuerzo</button>
+                <button id="btnToday" class="btn btn-soft" onclick="loadTodayWrongToSpecific()">Repasar</button>
+              </div>
+              <div id="practiceModeLabel" class="subtle" style="margin-top:8px;">Modo práctica inteligente</div>
               <div id="tableChips" class="chips"></div>
             </div>
 
             <div class="card">
-              <h3>Choose how to practice</h3>
+              <h3>Cómo quieres practicar</h3>
               <div class="mode-grid">
-                <div class="mode-card active" id="modeMemorama" onclick="setMode('memorama')">
+                <div class="mode-card" id="modeMemorama" onclick="setMode('memorama')">
                   <div class="mode-icon">🃏</div>
                   <div class="mode-title">Memorama</div>
-                  <div class="subtle">Match the fact and the answer.</div>
+                  <div class="subtle">Encuentra las parejas correctas</div>
                 </div>
 
                 <div class="mode-card" id="modeQuiz" onclick="setMode('quiz')">
                   <div class="mode-icon">✅</div>
-                  <div class="mode-title">Multiple Choice</div>
-                  <div class="subtle">Choose the correct answer.</div>
+                  <div class="mode-title">Elige la respuesta</div>
+                  <div class="subtle">Selecciona la opción correcta</div>
                 </div>
 
-                <div class="mode-card" id="modeSpeed" onclick="setMode('speed')">
+                <div class="mode-card active" id="modeSpeed" onclick="setMode('speed')">
                   <div class="mode-icon">⏱</div>
-                  <div class="mode-title">Speed Challenge</div>
-                  <div class="subtle">Solve as many as you can fast.</div>
+                  <div class="mode-title">Reto rápido</div>
+                  <div class="subtle">Resuelve lo más rápido posible</div>
                 </div>
               </div>
             </div>
@@ -322,14 +327,14 @@
               <div class="stats">
                 <div class="stat"><div class="k">Tiempo</div><div class="v" id="speedTime">0.0</div></div>
                 <div class="stat"><div class="k">Promedio</div><div class="v" id="speedAvg">0.00</div></div>
-                <div class="stat"><div class="k">Buenas</div><div class="v" id="speedGood">0</div></div>
-                <div class="stat"><div class="k">Malas</div><div class="v" id="speedBad">0</div></div>
+                <div class="stat"><div class="k">Correctas</div><div class="v" id="speedGood">0</div></div>
+                <div class="stat"><div class="k">Practicar</div><div class="v" id="speedBad">0</div></div>
                 <div class="stat"><div class="k">Restantes</div><div class="v" id="speedRemaining">0</div></div>
               </div>
 
               <div class="row" style="justify-content:center;margin-bottom:12px">
-                <button class="btn btn-yellow" onclick="startSpeed()">START</button>
-                <button class="btn btn-soft" onclick="resetSpeed()">Reset</button>
+                <button class="btn btn-yellow" onclick="startSpeed()">Iniciar</button>
+                <button class="btn btn-soft" onclick="resetSpeed()">Reiniciar</button>
               </div>
 
               <div id="speedStage" class="stage">
@@ -339,25 +344,25 @@
               </div>
 
               <div class="actions">
-                <button id="speedShowBtn" class="btn btn-soft" onclick="showSpeedAnswer()">SHOW</button>
-                <button id="speedGoodBtn" class="btn btn-green" onclick="markSpeed(true)">BIEN</button>
-                <button id="speedBadBtn" class="btn btn-red" onclick="markSpeed(false)">MAL</button>
-                <button id="speedNextBtn" class="btn btn-dark" onclick="nextSpeed()">NEXT</button>
+                <button id="speedShowBtn" class="btn btn-soft" onclick="showSpeedAnswer()">Mostrar</button>
+                <button id="speedGoodBtn" class="btn btn-green" onclick="markSpeed(true)">Correcto</button>
+                <button id="speedBadBtn" class="btn btn-soft" onclick="markSpeed(false)">Practicar</button>
+                <button id="speedNextBtn" class="btn btn-dark" onclick="nextSpeed()">Siguiente</button>
               </div>
             </div>
 
             <div class="card hidden" id="quizPanel">
               <div class="stats">
                 <div class="stat"><div class="k">Tiempo</div><div class="v" id="quizTime">0.0</div></div>
-                <div class="stat"><div class="k">Buenas</div><div class="v" id="quizGood">0</div></div>
-                <div class="stat"><div class="k">Malas</div><div class="v" id="quizBad">0</div></div>
+                <div class="stat"><div class="k">Correctas</div><div class="v" id="quizGood">0</div></div>
+                <div class="stat"><div class="k">Practicar</div><div class="v" id="quizBad">0</div></div>
                 <div class="stat"><div class="k">Pregunta</div><div class="v" id="quizIndex">0</div></div>
                 <div class="stat"><div class="k">Total</div><div class="v" id="quizTotal">0</div></div>
               </div>
 
               <div class="row" style="justify-content:center;margin-bottom:12px">
-                <button class="btn btn-yellow" onclick="startQuiz()">START QUIZ</button>
-                <button class="btn btn-soft" onclick="resetQuiz()">Reset</button>
+                <button class="btn btn-yellow" onclick="startQuiz()">Iniciar</button>
+                <button class="btn btn-soft" onclick="resetQuiz()">Reiniciar</button>
               </div>
 
               <div class="stage">
@@ -371,9 +376,9 @@
 
             <div class="card hidden" id="memoramaPanel">
               <div class="row">
-                <button class="btn btn-yellow" onclick="startMemo(6)">Fácil (6 pares)</button>
-                <button class="btn btn-soft" onclick="startMemo(8)">Normal (8 pares)</button>
-                <button class="btn btn-soft" onclick="startMemo(10)">Difícil (10 pares)</button>
+                <button class="btn btn-yellow" onclick="startMemo(6)">Fácil</button>
+                <button class="btn btn-soft" onclick="startMemo(8)">Normal</button>
+                <button class="btn btn-soft" onclick="startMemo(10)">Difícil</button>
               </div>
 
               <div class="stats" style="margin-top:14px">
@@ -381,7 +386,7 @@
                 <div class="stat"><div class="k">Movimientos</div><div class="v" id="memoMoves">0</div></div>
                 <div class="stat"><div class="k">Parejas</div><div class="v" id="memoPairs">0</div></div>
                 <div class="stat"><div class="k">Meta</div><div class="v" id="memoTarget">0</div></div>
-                <div class="stat"><div class="k">Modo</div><div class="v" id="memoMode">—</div></div>
+                <div class="stat"><div class="k">Nivel</div><div class="v" id="memoMode">—</div></div>
               </div>
 
               <div id="memoGrid" class="memo-grid"></div>
@@ -390,10 +395,9 @@
           </div>
         </div>
       </div>
-
-      <div class="section">
+            <div class="section">
         <div class="card">
-          <h3>Seleccionar multiplicaciones específicas</h3>
+          <h3>Elige multiplicaciones específicas</h3>
           <div class="row">
             <select id="specificTable" style="max-width:180px" onchange="renderSpecific()">
               <option value="2">Tabla 2</option>
@@ -418,8 +422,8 @@
       <div class="section">
         <div class="card">
           <div class="row" style="justify-content:space-between">
-            <h3 style="margin:0">Progreso</h3>
-            <button class="btn btn-yellow" onclick="exportCSV()">Exportar CSV</button>
+            <h3 style="margin:0">Tu progreso</h3>
+            <button class="btn btn-yellow" onclick="exportCSV()">Exportar resultados</button>
           </div>
           <canvas id="chart" width="900" height="260" style="margin-top:12px"></canvas>
         </div>
@@ -430,7 +434,7 @@
         </div>
 
         <div class="card">
-          <h3>Multiplicaciones difíciles</h3>
+          <h3>Refuerzo</h3>
           <div id="weakFacts"></div>
         </div>
       </div>
@@ -438,8 +442,8 @@
       <div class="section">
         <div class="card">
           <div class="visual-wrap">
-            <div class="visual-title">Times Tables</div>
-            <div class="visual-sub">Ayuda visual escalonada</div>
+            <div class="visual-title">Tablas de multiplicar</div>
+            <div class="visual-sub">Aprende con colores</div>
             <div class="row" style="justify-content:center;margin-bottom:14px">
               <button class="btn btn-soft" onclick="renderVisual(9)">Mostrar 1–9</button>
               <button class="btn btn-soft" onclick="renderVisual(10)">Mostrar 1–10</button>
@@ -493,13 +497,13 @@
 
     function translateFirebaseError(code) {
       const map = {
-        "auth/invalid-email": "Correo inválido.",
-        "auth/missing-password": "Escribe una contraseña.",
-        "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
-        "auth/email-already-in-use": "Ese correo ya está registrado.",
-        "auth/invalid-credential": "Correo o contraseña incorrectos.",
-        "auth/user-not-found": "Usuario no encontrado.",
-        "auth/wrong-password": "Contraseña incorrecta."
+        "auth/invalid-email": "Correo inválido",
+        "auth/missing-password": "Escribe una contraseña",
+        "auth/weak-password": "La contraseña debe tener al menos 6 caracteres",
+        "auth/email-already-in-use": "Ese correo ya está registrado",
+        "auth/invalid-credential": "Correo o contraseña incorrectos",
+        "auth/user-not-found": "Usuario no encontrado",
+        "auth/wrong-password": "Contraseña incorrecta"
       };
       return map[code] || "No se pudo completar la acción.";
     }
@@ -554,6 +558,10 @@
     let selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
     let specificFacts = new Set();
 
+    let weakMode = false;
+    let todayReviewMode = false;
+    let todayWrongFacts = new Set();
+
     let speedProblems = [];
     let speedCurrent = null;
     let speedStartTime = null;
@@ -561,6 +569,7 @@
     let speedGood = 0;
     let speedBad = 0;
     let speedAnswered = false;
+    let speedFinished = false;
 
     let quizProblems = [];
     let quizCurrent = null;
@@ -627,11 +636,35 @@
     function registerWrong(fact){
       const child = currentChild();
       if(!child) return;
+
       const db = getWeakDB();
       if(!db[child]) db[child] = {};
       if(!db[child][fact]) db[child][fact] = 0;
       db[child][fact] += 1;
       saveWeakDB(db);
+
+      todayWrongFacts.add(fact);
+    }
+
+    function registerCorrect(fact) {
+      const child = currentChild();
+      if(!child) return;
+
+      const db = getWeakDB();
+      if(!db[child]) return;
+      if(!db[child][fact]) return;
+
+      db[child][fact] = Math.max(0, db[child][fact] - 0.25);
+
+      if (db[child][fact] === 0) {
+        delete db[child][fact];
+      }
+
+      saveWeakDB(db);
+
+      if (todayWrongFacts.has(fact)) {
+        todayWrongFacts.delete(fact);
+      }
     }
 
     function getWeakFacts(){
@@ -697,22 +730,117 @@
     }
 
     function clearAllSpecific(){ specificFacts = new Set(); renderSpecific(); }
-    function loadWeakToSpecific(){
-      specificFacts = new Set(getWeakFacts());
-      document.getElementById("specificTable").value = "2";
-      renderSpecific();
+
+    function updatePracticeModeLabel(text) {
+      const el = document.getElementById("practiceModeLabel");
+      if (el) el.textContent = text;
     }
 
-    function buildFacts(){
-      let facts = [];
-      if(specificFacts.size > 0){
-        facts = [...specificFacts];
-      } else {
-        [...selectedTables].forEach(t => {
-          for(let i=1;i<=10;i++) facts.push(`${t}x${i}`);
-        });
+    function setModeButtonState(id, active){
+      const btn = document.getElementById(id);
+      if(!btn) return;
+      btn.style.background = active ? "#111827" : "";
+      btn.style.color = active ? "#fff" : "";
+    }
+
+    function syncModeButtons(){
+      setModeButtonState("btnWeak", weakMode);
+      setModeButtonState("btnToday", todayReviewMode);
+    }
+
+    function activatePractice() {
+      weakMode = false;
+      todayReviewMode = false;
+      specificFacts = new Set();
+
+      renderSpecific();
+      updatePracticeModeLabel("Modo práctica inteligente");
+      syncModeButtons();
+    }
+
+    function loadWeakToSpecific() {
+      if (weakMode) {
+        activatePractice();
+        return;
       }
-      return facts;
+
+      const weak = getWeakFacts().slice(0, 10);
+
+      if (weak.length === 0) {
+        alert("Primero practica para activar el modo refuerzo");
+        return;
+      }
+
+      weakMode = true;
+      todayReviewMode = false;
+      specificFacts = new Set(weak);
+
+      renderSpecific();
+      updatePracticeModeLabel(`Modo refuerzo (${weak.length})`);
+      syncModeButtons();
+    }
+
+    function loadTodayWrongToSpecific() {
+      if (todayReviewMode) {
+        activatePractice();
+        return;
+      }
+
+      const today = [...todayWrongFacts];
+
+      if (today.length === 0) {
+        alert("Aún no hay ejercicios para repasar");
+        return;
+      }
+
+      todayReviewMode = true;
+      weakMode = false;
+      specificFacts = new Set(today);
+
+      renderSpecific();
+      updatePracticeModeLabel(`Repaso activo (${today.length})`);
+      syncModeButtons();
+    }
+
+    function buildAdaptiveFacts() {
+      const normalFacts = [];
+
+      [...selectedTables].forEach(t => {
+        for (let i = 1; i <= 10; i++) {
+          normalFacts.push(`${t}x${i}`);
+        }
+      });
+
+      const child = currentChild();
+      const weakDB = getWeakDB();
+      const weakMap = (child && weakDB[child]) ? weakDB[child] : {};
+
+      const weightedWeak = [];
+
+      Object.entries(weakMap).forEach(([fact, count]) => {
+        const repeats = Math.min(Math.ceil(count), 4);
+        for (let i = 0; i < repeats; i++) {
+          weightedWeak.push(fact);
+        }
+      });
+
+      const todayWeighted = [];
+      [...todayWrongFacts].forEach(fact => {
+        todayWeighted.push(fact, fact);
+      });
+
+      const normalTake = shuffle(normalFacts).slice(0, Math.min(20, normalFacts.length));
+      const weakTake = shuffle(weightedWeak).slice(0, Math.min(12, weightedWeak.length));
+      const todayTake = shuffle(todayWeighted).slice(0, Math.min(8, todayWeighted.length));
+
+      return shuffle([...normalTake, ...weakTake, ...todayTake]);
+    }
+
+    function buildFacts() {
+      if (specificFacts.size > 0) {
+        return [...specificFacts];
+      }
+      return buildAdaptiveFacts();
     }
 
     function shuffle(arr){
@@ -753,7 +881,7 @@
 
     function resetSpeed(){
       clearInterval(speedTimer);
-      speedProblems=[]; speedCurrent=null; speedStartTime=null; speedGood=0; speedBad=0; speedAnswered=false;
+      speedProblems=[]; speedCurrent=null; speedStartTime=null; speedGood=0; speedBad=0; speedAnswered=false; speedFinished=false;
       document.getElementById("speedTime").textContent="0.0";
       document.getElementById("speedAvg").textContent="0.00";
       document.getElementById("speedGood").textContent="0";
@@ -768,17 +896,29 @@
 
     function startSpeed(){
       if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
+      todayReviewMode = false;
+      syncModeButtons();
+
       const facts = buildFacts();
       if(facts.length===0) return alert("Selecciona tablas o específicas.");
-      speedProblems = shuffle(facts.map(f=>{ const [a,b]=f.split("x").map(Number); return {q:f,a:a*b}; }));
+
+      speedFinished = false;
+      speedProblems = shuffle(
+        facts.map(f=>{
+          const [a,b]=f.split("x").map(Number);
+          return {q:f,a:a*b};
+        })
+      );
+
       speedGood=0; speedBad=0; speedStartTime=Date.now();
       clearInterval(speedTimer);
       speedTimer=setInterval(updateSpeedTimer,100);
-      nextSpeed(); updateSpeedStats();
+      nextSpeed();
+      updateSpeedStats();
     }
 
     function updateSpeedTimer(){
-      if(!speedStartTime) return;
+      if(!speedStartTime || !speedTimer || speedFinished) return;
       const t=(Date.now()-speedStartTime)/1000;
       document.getElementById("speedTime").textContent=t.toFixed(1);
       const total=speedGood+speedBad;
@@ -792,13 +932,21 @@
     }
 
     function nextSpeed(){
-      if(speedProblems.length===0) return finishSpeed();
-      speedCurrent=speedProblems.pop(); speedAnswered=false;
+      if(speedFinished) return;
+
+      if(speedProblems.length===0){
+        finishSpeed();
+        return;
+      }
+
+      speedCurrent=speedProblems.pop();
+      speedAnswered=false;
       document.getElementById("speedProblem").textContent=speedCurrent.q;
       document.getElementById("speedAnswer").textContent="";
       document.getElementById("speedFeedback").textContent="";
       document.getElementById("speedStage").classList.remove("success","error");
-      resetSpeedButtons(); updateSpeedStats();
+      resetSpeedButtons();
+      updateSpeedStats();
     }
 
     function showSpeedAnswer(){
@@ -808,17 +956,18 @@
     }
 
     function markSpeed(ok){
-      if(!speedCurrent || speedAnswered) return;
+      if(!speedCurrent || speedAnswered || speedFinished) return;
       speedAnswered=true;
       document.getElementById("speedAnswer").textContent=speedCurrent.a;
 
       if(ok){
         speedGood++;
-        document.getElementById("speedFeedback").textContent="✅ Correct!";
+        registerCorrect(speedCurrent.q);
+        document.getElementById("speedFeedback").textContent="¡Muy bien! 🎉";
         document.getElementById("speedStage").classList.add("success");
       } else {
         speedBad++;
-        document.getElementById("speedFeedback").textContent="❌ Oops";
+        document.getElementById("speedFeedback").textContent="💡 Vamos a practicar esta";
         document.getElementById("speedStage").classList.add("error");
         registerWrong(speedCurrent.q);
       }
@@ -827,20 +976,41 @@
       document.getElementById("speedGoodBtn").disabled=true;
       document.getElementById("speedBadBtn").disabled=true;
       document.getElementById("speedNextBtn").disabled=false;
-      updateSpeedTimer(); updateSpeedStats();
+      updateSpeedTimer();
+      updateSpeedStats();
     }
 
     function finishSpeed(){
+      speedFinished = true;
       clearInterval(speedTimer);
+      speedTimer = null;
+
       const totalTime=speedStartTime?(Date.now()-speedStartTime)/1000:0;
       const total=speedGood+speedBad;
       const avg=total?totalTime/total:0;
-      saveSession({mode:"speed", time:Number(totalTime.toFixed(1)), avg:Number(avg.toFixed(2)), good:speedGood, bad:speedBad});
+
+      saveSession({
+        mode:"speed",
+        time:Number(totalTime.toFixed(1)),
+        avg:Number(avg.toFixed(2)),
+        good:speedGood,
+        bad:speedBad
+      });
+
       document.getElementById("speedProblem").textContent="🏁 FIN";
       document.getElementById("speedAnswer").textContent=totalTime.toFixed(1)+"s";
-      document.getElementById("speedFeedback").textContent=`Promedio: ${avg.toFixed(2)}s`;
+      document.getElementById("speedFeedback").textContent=`¡Terminaste! 🎉 Promedio: ${avg.toFixed(2)}s`;
       document.getElementById("speedStage").classList.remove("success","error");
-      renderHistory(); renderWeakFacts(); drawChart();
+
+      document.getElementById("speedShowBtn").disabled = true;
+      document.getElementById("speedGoodBtn").disabled = true;
+      document.getElementById("speedBadBtn").disabled = true;
+      document.getElementById("speedNextBtn").disabled = true;
+
+      updateSpeedStats();
+      renderHistory();
+      renderWeakFacts();
+      drawChart();
     }
 
     function resetQuiz(){
@@ -859,12 +1029,23 @@
 
     function startQuiz(){
       if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
+      todayReviewMode = false;
+      syncModeButtons();
+
       const facts=buildFacts();
       if(facts.length===0) return alert("Selecciona tablas o específicas.");
-      quizProblems=shuffle(facts).slice(0,Math.min(10,facts.length)).map(f=>{ const [a,b]=f.split("x").map(Number); return {q:f,a:a*b}; });
+
+      quizProblems=shuffle(facts).slice(0,Math.min(10,facts.length)).map(f=>{
+        const [a,b]=f.split("x").map(Number);
+        return {q:f,a:a*b};
+      });
+
       quizIndex=0; quizGood=0; quizBad=0; quizStartTime=Date.now();
       clearInterval(quizTimer);
-      quizTimer=setInterval(()=>{ document.getElementById("quizTime").textContent=((Date.now()-quizStartTime)/1000).toFixed(1); },100);
+      quizTimer=setInterval(()=>{
+        document.getElementById("quizTime").textContent=((Date.now()-quizStartTime)/1000).toFixed(1);
+      },100);
+
       document.getElementById("quizTotal").textContent=quizProblems.length;
       document.getElementById("quizSummary").classList.add("hidden");
       nextQuiz();
@@ -872,7 +1053,9 @@
 
     function nextQuiz(){
       if(quizIndex>=quizProblems.length) return finishQuiz();
-      quizCurrent=quizProblems[quizIndex]; quizAnswered=false;
+
+      quizCurrent=quizProblems[quizIndex];
+      quizAnswered=false;
       document.getElementById("quizProblem").textContent=quizCurrent.q;
       document.getElementById("quizFeedback").textContent="";
       document.getElementById("quizIndex").textContent=quizIndex+1;
@@ -900,13 +1083,14 @@
 
       if(value===correct){
         quizGood++;
+        registerCorrect(quizCurrent.q);
         btn.classList.add("correct");
-        document.getElementById("quizFeedback").textContent="✅ Correct!";
+        document.getElementById("quizFeedback").textContent="¡Correcto! 🎉";
       } else {
         quizBad++;
         btn.classList.add("wrong");
         buttons.forEach(b=>{ if(Number(b.textContent)===correct) b.classList.add("correct"); });
-        document.getElementById("quizFeedback").textContent="❌ Incorrect";
+        document.getElementById("quizFeedback").textContent="Casi, inténtalo de nuevo 💡";
         registerWrong(quizCurrent.q);
       }
 
@@ -920,14 +1104,27 @@
       const totalTime=quizStartTime?(Date.now()-quizStartTime)/1000:0;
       const summary=document.getElementById("quizSummary");
       const percent=quizProblems.length?Math.round((quizGood/quizProblems.length)*100):0;
-      saveSession({mode:"quiz", time:Number(totalTime.toFixed(1)), avg:quizProblems.length?Number((totalTime/quizProblems.length).toFixed(2)):0, good:quizGood, bad:quizBad});
+
+      saveSession({
+        mode:"quiz",
+        time:Number(totalTime.toFixed(1)),
+        avg:quizProblems.length?Number((totalTime/quizProblems.length).toFixed(2)):0,
+        good:quizGood,
+        bad:quizBad
+      });
+
       summary.classList.remove("hidden");
-      summary.innerHTML=`<div class="history-title">Quiz completed</div><div>Tiempo: ${totalTime.toFixed(1)}s</div><div>Buenas: ${quizGood}</div><div>Malas: ${quizBad}</div><div>Score: ${percent}%</div>`;
-      renderHistory(); renderWeakFacts(); drawChart();
+      summary.innerHTML=`<div class="history-title">¡Buen trabajo!</div><div>Terminaste el reto</div><div>Tiempo: ${totalTime.toFixed(1)}s</div><div>Correctas: ${quizGood}</div><div>Practicar: ${quizBad}</div><div>Score: ${percent}%</div>`;
+      renderHistory();
+      renderWeakFacts();
+      drawChart();
     }
 
     function startMemo(pairCount){
       if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
+      todayReviewMode = false;
+      syncModeButtons();
+
       const facts=shuffle(buildFacts()).slice(0,pairCount);
       if(facts.length===0) return alert("Selecciona tablas o específicas.");
       memoTargetPairs=facts.length; memoMatched=0; memoMoves=0; memoFlipped=[]; memoBusy=false; memoCards=[];
@@ -942,7 +1139,8 @@
       clearInterval(memoInterval);
       memoInterval=setInterval(updateMemoStats,100);
       document.getElementById("memoMode").textContent=`${facts.length} pares`;
-      renderMemoBoard(); updateMemoStats();
+      renderMemoBoard();
+      updateMemoStats();
       document.getElementById("memoFeedback").textContent="";
     }
 
@@ -957,7 +1155,7 @@
     function renderMemoBoard(){
       const box=document.getElementById("memoGrid");
       if(memoCards.length===0){
-        box.innerHTML=`<div class="empty" style="grid-column:1/-1">Presiona un nivel para iniciar el memorama.</div>`;
+        box.innerHTML=`<div class="empty" style="grid-column:1/-1">Elige un nivel para empezar</div>`;
         return;
       }
       box.innerHTML=memoCards.map((card, idx)=>{
@@ -973,20 +1171,33 @@
       if(memoBusy) return;
       const card=memoCards[index];
       if(!card || card.flipped || card.matched) return;
-      card.flipped=true; memoFlipped.push(index); renderMemoBoard();
+      card.flipped=true;
+      memoFlipped.push(index);
+      renderMemoBoard();
 
       if(memoFlipped.length===2){
-        memoMoves++; memoBusy=true;
+        memoMoves++;
+        memoBusy=true;
         const [i1,i2]=memoFlipped;
         const c1=memoCards[i1], c2=memoCards[i2];
         const isMatch=c1.pair===c2.pair && c1.type!==c2.type;
 
         if(isMatch){
-          c1.matched=true; c2.matched=true; memoMatched++; memoFlipped=[]; memoBusy=false; renderMemoBoard();
+          c1.matched=true;
+          c2.matched=true;
+          memoMatched++;
+          memoFlipped=[];
+          memoBusy=false;
+          renderMemoBoard();
+
           if(memoMatched===memoTargetPairs) finishMemo();
         } else {
           setTimeout(()=>{
-            c1.flipped=false; c2.flipped=false; memoFlipped=[]; memoBusy=false; renderMemoBoard();
+            c1.flipped=false;
+            c2.flipped=false;
+            memoFlipped=[];
+            memoBusy=false;
+            renderMemoBoard();
           },700);
         }
       }
@@ -995,9 +1206,18 @@
     function finishMemo(){
       clearInterval(memoInterval);
       const totalTime=memoStartTime?((Date.now()-memoStartTime)/1000):0;
-      document.getElementById("memoFeedback").textContent=`🎉 ¡Completado! Tiempo: ${totalTime.toFixed(1)}s · Movimientos: ${memoMoves}`;
-      saveSession({mode:"memorama", time:Number(totalTime.toFixed(1)), avg:"", good:memoMatched, bad:Math.max(memoMoves-memoMatched,0)});
-      renderHistory(); drawChart();
+      document.getElementById("memoFeedback").textContent=`¡Lo lograste! 🎉 Tiempo: ${totalTime.toFixed(1)}s · Movimientos: ${memoMoves}`;
+
+      saveSession({
+        mode:"memorama",
+        time:Number(totalTime.toFixed(1)),
+        avg:"",
+        good:memoMatched,
+        bad:Math.max(memoMoves-memoMatched,0)
+      });
+
+      renderHistory();
+      drawChart();
     }
 
     function renderHistory(){
@@ -1006,13 +1226,13 @@
       const child=currentChild();
       const items=db[child] || [];
       if(items.length===0){
-        box.innerHTML=`<div class="empty">Todavía no hay sesiones guardadas.</div>`;
+        box.innerHTML=`<div class="empty">Empieza a practicar para ver tu progreso</div>`;
         return;
       }
       box.innerHTML=items.slice().reverse().map(s=>`
         <div class="history-item">
           <div class="history-title">${child} · ${s.mode}</div>
-          <div>${s.time}s ${s.avg !== "" ? `· ${s.avg}s/prom` : ""} ${s.good !== undefined ? `· ✅ ${s.good}` : ""} ${s.bad !== undefined ? `· ❌ ${s.bad}` : ""}</div>
+          <div>${s.time}s ${s.avg !== "" ? `· ${s.avg}s/prom` : ""} ${s.good !== undefined ? `· ✅ ${s.good}` : ""} ${s.bad !== undefined ? `· 🔁 ${s.bad}` : ""}</div>
           <div class="subtle">${s.date}</div>
         </div>
       `).join("");
@@ -1022,16 +1242,16 @@
       const box=document.getElementById("weakFacts");
       const child=currentChild();
       if(!child){
-        box.innerHTML=`<div class="empty">Selecciona un niño.</div>`;
+        box.innerHTML=`<div class="empty">Selecciona un niño</div>`;
         return;
       }
       const db=getWeakDB();
       const items=Object.entries(db[child] || {}).sort((a,b)=>b[1]-a[1]);
       if(items.length===0){
-        box.innerHTML=`<div class="empty">Todavía no hay errores guardados.</div>`;
+        box.innerHTML=`<div class="empty">Activa refuerzo practicando primero</div>`;
         return;
       }
-      box.innerHTML=items.map(([fact,count])=>`<div class="history-item"><b>${fact}</b> — ${count} fallas</div>`).join("");
+      box.innerHTML=items.map(([fact,count])=>`<div class="history-item"><b>${fact}</b> — ${count} repeticiones</div>`).join("");
     }
 
     function drawChart(){
@@ -1048,7 +1268,10 @@
 
       ctx.strokeStyle="#cbd5e1";
       ctx.beginPath();
-      ctx.moveTo(left,20); ctx.lineTo(left,bottom); ctx.lineTo(canvas.width-20,bottom); ctx.stroke();
+      ctx.moveTo(left,20);
+      ctx.lineTo(left,bottom);
+      ctx.lineTo(canvas.width-20,bottom);
+      ctx.stroke();
 
       items.forEach((item,i)=>{
         const h=((Number(item.time)||0)/max)*160;
@@ -1078,7 +1301,9 @@
       const blob=new Blob([csv], {type:"text/csv;charset=utf-8;"});
       const url=URL.createObjectURL(blob);
       const a=document.createElement("a");
-      a.href=url; a.download="math_results.csv"; a.click();
+      a.href=url;
+      a.download="math_results.csv";
+      a.click();
     }
 
     function renderVisual(max=9){
@@ -1096,8 +1321,6 @@
       box.innerHTML=html;
     }
 
-    function resetApp(){ localStorage.clear(); location.reload(); }
-
     loadKids();
     renderTableChips();
     renderSpecific();
@@ -1105,6 +1328,7 @@
     resetSpeed();
     resetQuiz();
     renderMemoBoard();
+    activatePractice();
     setMode("speed");
   </script>
 </body>

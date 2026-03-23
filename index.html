@@ -82,6 +82,13 @@
       font-size:14px;
     }
 
+    .user-badge{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+
     .ghost-btn{
       background:#fff;
       border:1px solid var(--line);
@@ -524,9 +531,86 @@
       text-align:center;
       padding:18px 0;
     }
+
+    .login-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(247,248,252,.96);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:9999;
+    }
+
+    .login-card{
+      width:min(460px,100%);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+
+    .login-card img{
+      width:110px;
+      max-width:50%;
+      margin-bottom:8px;
+    }
+
+    .login-title{
+      font-size:24px;
+      font-weight:900;
+      margin:4px 0;
+    }
+
+    .login-sub{
+      color:var(--muted);
+      font-weight:600;
+      margin-bottom:16px;
+    }
+
+    .login-actions{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .login-actions .btn{
+      flex:1;
+    }
+
+    .error-text{
+      color:#b91c1c;
+      font-weight:700;
+      margin-top:10px;
+      min-height:22px;
+    }
   </style>
 </head>
 <body>
+
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+      <img src="logo.png" alt="Bright Minds">
+      <div class="login-title">Bright Minds Math</div>
+      <div class="login-sub">Acceso privado</div>
+
+      <div class="row">
+        <input id="loginEmail" type="email" placeholder="Correo electrónico">
+        <input id="loginPassword" type="password" placeholder="Contraseña">
+      </div>
+
+      <div class="login-actions">
+        <button class="btn btn-yellow" onclick="loginUser()">Entrar</button>
+        <button class="btn btn-soft" onclick="registerUser()">Crear cuenta</button>
+      </div>
+
+      <div id="loginError" class="error-text"></div>
+    </div>
+  </div>
+
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
@@ -534,9 +618,10 @@
         <div>
           <h1>Bright Minds Math</h1>
           <p>Interactive multiplication games for kids</p>
+          <div id="userBadge" class="user-badge"></div>
         </div>
       </div>
-      <button class="ghost-btn" onclick="resetApp()">Reset App</button>
+      <button class="ghost-btn" onclick="logoutUser()">Cerrar sesión</button>
     </div>
 
     <div class="tabs">
@@ -546,7 +631,6 @@
       <button class="tab" onclick="showTab(3)">Visual</button>
     </div>
 
-    <!-- PRACTICE -->
     <div class="section active">
       <div class="card hero">
         <img src="logo.png" alt="Bright Minds">
@@ -604,7 +688,6 @@
         </div>
 
         <div>
-          <!-- SPEED -->
           <div class="card" id="speedPanel">
             <div class="stats">
               <div class="stat"><div class="k">Tiempo</div><div class="v" id="speedTime">0.0</div></div>
@@ -633,7 +716,6 @@
             </div>
           </div>
 
-          <!-- QUIZ -->
           <div class="card" id="quizPanel" style="display:none;">
             <div class="stats">
               <div class="stat"><div class="k">Tiempo</div><div class="v" id="quizTime">0.0</div></div>
@@ -657,7 +739,6 @@
             <div id="quizSummary" class="history-item" style="display:none; margin-top:14px;"></div>
           </div>
 
-          <!-- MEMORAMA -->
           <div class="card" id="memoramaPanel" style="display:none;">
             <div class="row">
               <button class="btn btn-yellow" onclick="startMemo(6)">Fácil (6 pares)</button>
@@ -680,7 +761,6 @@
       </div>
     </div>
 
-    <!-- ESPECIFICAS -->
     <div class="section">
       <div class="card">
         <h3>Seleccionar multiplicaciones específicas</h3>
@@ -705,7 +785,6 @@
       </div>
     </div>
 
-    <!-- PROGRESO -->
     <div class="section">
       <div class="card">
         <div class="row" style="justify-content:space-between">
@@ -726,7 +805,6 @@
       </div>
     </div>
 
-    <!-- VISUAL -->
     <div class="section">
       <div class="card">
         <div class="visual-wrap">
@@ -741,6 +819,85 @@
       </div>
     </div>
   </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_STORAGE_BUCKET",
+      messagingSenderId: "TU_MESSAGING_SENDER_ID",
+      appId: "TU_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.registerUser = async function () {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const errorEl = document.getElementById("loginError");
+      errorEl.textContent = "";
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        errorEl.textContent = translateFirebaseError(error.code);
+      }
+    };
+
+    window.loginUser = async function () {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const errorEl = document.getElementById("loginError");
+      errorEl.textContent = "";
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        errorEl.textContent = translateFirebaseError(error.code);
+      }
+    };
+
+    window.logoutUser = async function () {
+      await signOut(auth);
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      const overlay = document.getElementById("loginOverlay");
+      const badge = document.getElementById("userBadge");
+
+      if (user) {
+        overlay.style.display = "none";
+        badge.textContent = user.email || "";
+      } else {
+        overlay.style.display = "flex";
+        badge.textContent = "";
+      }
+    });
+
+    function translateFirebaseError(code) {
+      const map = {
+        "auth/invalid-email": "Correo inválido.",
+        "auth/missing-password": "Escribe una contraseña.",
+        "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
+        "auth/email-already-in-use": "Ese correo ya está registrado.",
+        "auth/invalid-credential": "Correo o contraseña incorrectos.",
+        "auth/user-not-found": "Usuario no encontrado.",
+        "auth/wrong-password": "Contraseña incorrecta."
+      };
+      return map[code] || "No se pudo completar la acción.";
+    }
+  </script>
 
   <script>
     let appMode = "memorama";
@@ -979,7 +1136,6 @@
       saveDB(db);
     }
 
-    // SPEED
     function resetSpeedButtons(){
       document.getElementById("speedShowBtn").disabled = false;
       document.getElementById("speedGoodBtn").disabled = false;
@@ -1115,7 +1271,6 @@
       drawChart();
     }
 
-    // QUIZ
     function resetQuiz(){
       clearInterval(quizTimer);
       quizProblems = [];
@@ -1253,7 +1408,6 @@
       drawChart();
     }
 
-    // MEMO
     function startMemo(pairCount){
       if(!currentChild()){
         alert("Primero agrega o selecciona un niño.");

@@ -511,52 +511,21 @@
       await signOut(auth);
     };
 document.addEventListener("DOMContentLoaded", () => {
-  const buttons = document.querySelectorAll("button");
+  const loginBtn = document.getElementById("loginBtn");
+  const registerBtn = document.getElementById("registerBtn");
 
-  buttons.forEach(btn => {
-    const text = btn.innerText.toLowerCase();
-
-    if (text.includes("crear") || text.includes("create")) {
-      btn.onclick = registerUser;
-    }
-
-    if (text.includes("entrar") || text.includes("login")) {
-      btn.onclick = loginUser;
-    }
-  });
-});
-
-    onAuthStateChanged(auth, (user) => {
-      const overlay = document.getElementById("loginOverlay");
-      const badge = document.getElementById("userBadge");
-
-      if (user) {
-        overlay.style.display = "none";
-        badge.textContent = user.email || "";
-      } else {
-        overlay.style.display = "flex";
-        badge.textContent = "";
-      }
+  if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+      loginUser();
     });
+  }
 
-// 👇 PEGA AQUÍ
-setTimeout(() => {
-  const elements = document.querySelectorAll("*");
-
-  elements.forEach(el => {
-    const text = el.innerText?.toLowerCase();
-
-    if (text === "crear cuenta" || text === "create account") {
-      el.style.pointerEvents = "auto";
-      el.style.opacity = "1";
-      el.onclick = registerUser;
-    }
-
-    if (text === "entrar" || text === "login") {
-      el.onclick = loginUser;
-    }
-  });
-}, 1000);
+  if (registerBtn) {
+    registerBtn.addEventListener("click", () => {
+      registerUser();
+    });
+  }
+});
     function translateFirebaseError(code) {
       const map = {
         "auth/invalid-email": "Correo inválido.",

@@ -753,3 +753,83 @@
           </div>
         </div>
       </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
+    authDomain: "bright-minds-math.firebaseapp.com",
+    projectId: "bright-minds-math",
+    storageBucket: "bright-minds-math.firebasestorage.app",
+    messagingSenderId: "645800687175",
+    appId: "1:645800687175:web:75241f3cac5e5433442362"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const loginScreen = document.getElementById("loginScreen");
+  const appScreen = document.getElementById("appScreen");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const loginEmail = document.getElementById("loginEmail");
+  const loginPassword = document.getElementById("loginPassword");
+  const loginError = document.getElementById("loginError");
+  const userBadge = document.getElementById("userBadge");
+
+  function showError(msg){
+    loginError.textContent = msg;
+  }
+
+  function clearError(){
+    loginError.textContent = "";
+  }
+
+  function translateError(code){
+    const map = {
+      "auth/invalid-email": "Correo inválido",
+      "auth/missing-password": "Escribe contraseña",
+      "auth/invalid-credential": "Correo o contraseña incorrectos",
+      "auth/user-not-found": "Usuario no encontrado",
+      "auth/wrong-password": "Contraseña incorrecta"
+    };
+    return map[code] || "Error al iniciar sesión";
+  }
+
+  async function loginUser(){
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value.trim();
+    clearError();
+
+    try{
+      await signInWithEmailAndPassword(auth, email, password);
+    }catch(e){
+      showError(translateError(e.code));
+    }
+  }
+
+  async function logoutUser(){
+    await signOut(auth);
+  }
+
+  loginBtn.addEventListener("click", loginUser);
+  logoutBtn.addEventListener("click", logoutUser);
+
+  onAuthStateChanged(auth, (user)=>{
+    if(user){
+      loginScreen.classList.add("hidden");
+      appScreen.classList.remove("hidden");
+      userBadge.textContent = user.email;
+    }else{
+      appScreen.classList.add("hidden");
+      loginScreen.classList.remove("hidden");
+      userBadge.textContent = "";
+    }
+  });
+</script>

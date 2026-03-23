@@ -2,12 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Bright Minds Math</title>
 
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
   <meta name="theme-color" content="#f4b000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Bright Minds Math">
 
   <style>
     :root{
@@ -17,203 +20,433 @@
       --muted:#6b7280;
       --line:#e5e7eb;
       --yellow:#f4b000;
+      --purple:#7a4dff;
+      --green:#22c55e;
+      --red:#ef4444;
+      --blue:#60a5fa;
+      --dark:#111827;
       --shadow:0 10px 30px rgba(17,24,39,.08);
     }
-
     *{box-sizing:border-box}
-
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
       background:linear-gradient(180deg,#fbfcff,#eef2ff);
       color:var(--text);
     }
-
-    .screen{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
+    .hidden{display:none !important}
+    .wrap{max-width:1100px;margin:auto;padding:18px}
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      margin-bottom:16px;flex-wrap:wrap
     }
+    .brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .brand img{
+      width:58px;height:58px;border-radius:14px;object-fit:contain;
+      background:#fff;box-shadow:var(--shadow);padding:4px
+    }
+    .brand h1{margin:0;font-size:30px;line-height:1.05}
+    .brand p{margin:4px 0 0;color:var(--muted);font-weight:600;font-size:14px}
+    .user-badge{margin-top:4px;color:var(--muted);font-size:12px;font-weight:700}
+
+    .ghost-btn{
+      background:#fff;border:1px solid var(--line);color:var(--text);
+      padding:10px 14px;border-radius:12px;font-weight:800;cursor:pointer;
+      box-shadow:var(--shadow)
+    }
+
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .tab{
+      background:#e8ebf3;color:#374151;border:none;padding:10px 16px;
+      border-radius:999px;font-weight:800;cursor:pointer
+    }
+    .tab.active{background:var(--yellow);color:#fff}
+
+    .section{display:none}
+    .section.active{display:block}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
 
     .card{
-      width:min(460px,100%);
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:24px;
-      box-shadow:var(--shadow);
-      text-align:center;
+      background:var(--card);border:1px solid var(--line);border-radius:24px;
+      padding:16px;box-shadow:var(--shadow);margin-bottom:16px
+    }
+    .card h3{margin:0 0 12px;font-size:18px}
+    .subtle{color:var(--muted);font-size:13px;font-weight:600}
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+    input, select{
+      width:100%;border:1px solid var(--line);border-radius:14px;
+      padding:12px 14px;font-size:16px;background:#fff;color:var(--text)
     }
 
-    .logo{
-      width:120px;
-      max-width:50%;
-      margin-bottom:8px;
+    .btn{
+      border:none;border-radius:14px;padding:12px 16px;font-weight:800;
+      cursor:pointer;-webkit-appearance:none;appearance:none
+    }
+    .btn-yellow{background:var(--yellow);color:#fff}
+    .btn-soft{background:#eef2ff;color:var(--text)}
+    .btn-green{background:var(--green);color:#fff}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-dark{background:var(--dark);color:#fff}
+
+    .hero{text-align:center;padding:24px 16px}
+    .hero img{width:180px;max-width:70%;margin-bottom:8px}
+    .hero-title{font-size:22px;font-weight:900;margin-bottom:4px}
+    .hero-sub{color:var(--muted);font-weight:700}
+
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{
+      border:1px solid #d1d5db;background:#fff;color:#374151;padding:9px 12px;
+      border-radius:999px;font-weight:800;cursor:pointer;user-select:none;
+      min-width:72px;text-align:center;transition:.15s ease
+    }
+    .chip.active{
+      background:var(--yellow);color:#fff;border-color:var(--yellow);
+      transform:scale(1.03)
     }
 
-    h1{
-      margin:8px 0 4px;
-      font-size:28px;
+    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media (max-width:900px){.mode-grid{grid-template-columns:1fr}}
+
+    .mode-card{
+      border:1px solid var(--line);border-radius:22px;padding:18px;
+      background:linear-gradient(180deg,#fff,#f8fbff);box-shadow:var(--shadow);
+      cursor:pointer;transition:.15s ease
+    }
+    .mode-card.active{
+      border-color:var(--yellow);
+      box-shadow:0 0 0 3px rgba(244,176,0,.15), var(--shadow)
+    }
+    .mode-icon{font-size:34px;margin-bottom:8px}
+    .mode-title{font-size:20px;font-weight:900;margin-bottom:4px}
+
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+    @media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+    .stat{
+      background:#fbfcff;border:1px solid var(--line);border-radius:18px;
+      padding:12px 10px;text-align:center
+    }
+    .stat .k{font-size:12px;color:var(--muted);font-weight:800}
+    .stat .v{font-size:24px;font-weight:900;margin-top:2px}
+
+    .stage{
+      border:1px solid var(--line);border-radius:28px;padding:26px 16px;
+      background:linear-gradient(180deg,#fff,#f8fbff);text-align:center;
+      min-height:300px;display:flex;flex-direction:column;justify-content:center;
+      transition:.2s ease
+    }
+    .stage.success{
+      background:linear-gradient(180deg,#f0fdf4,#dcfce7);border-color:#86efac
+    }
+    .stage.error{
+      background:linear-gradient(180deg,#fff1f2,#ffe4e6);border-color:#fda4af
+    }
+    .problem{
+      font-size:112px;line-height:1;font-weight:900;letter-spacing:2px;
+      color:var(--dark);margin:0 0 12px
+    }
+    @media (max-width:680px){.problem{font-size:76px}}
+    .answer{min-height:54px;font-size:44px;color:var(--green);font-weight:900}
+    .feedback{min-height:30px;font-size:22px;font-weight:900;margin-top:10px}
+    .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:14px}
+
+    .quiz-options{
+      display:grid;grid-template-columns:1fr;gap:12px;max-width:420px;
+      margin:18px auto 0
+    }
+    .quiz-option{
+      border:none;border-radius:18px;padding:16px;font-size:28px;font-weight:900;
+      cursor:pointer;background:#eef2ff;color:#111827;box-shadow:0 6px 12px rgba(0,0,0,.06)
+    }
+    .quiz-option.correct{background:#dcfce7;color:#166534}
+    .quiz-option.wrong{background:#fee2e2;color:#991b1b}
+
+    .memo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+    @media (max-width:700px){.memo-grid{grid-template-columns:repeat(3,1fr)}}
+    .memo-card{
+      height:92px;border-radius:18px;border:1px solid var(--line);
+      display:flex;align-items:center;justify-content:center;font-weight:900;
+      font-size:28px;cursor:pointer;user-select:none;box-shadow:var(--shadow);
+      background:#fff;color:#fff
+    }
+    .memo-back{background:linear-gradient(180deg,var(--purple),#5f37d6);color:#fff;font-size:18px}
+    .memo-front{background:#fff;color:var(--dark)}
+    .memo-matched{background:#dcfce7 !important;color:#166534 !important;border-color:#86efac}
+
+    .specific-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px;margin-top:12px}
+    .history-item{border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;background:#fff}
+    .history-title{font-weight:900;margin-bottom:6px}
+
+    .visual-wrap{background:#fff9f1;border:1px solid #efe4d2;border-radius:24px;padding:18px}
+    .visual-title{text-align:center;font-weight:900;font-size:32px;color:#334155;margin-bottom:6px}
+    .visual-sub{text-align:center;color:#64748b;font-weight:700;margin-bottom:16px}
+    .stairs{display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding-bottom:6px}
+    .stair-col{display:flex;flex-direction:column;gap:8px;min-width:110px}
+    .stair-head{
+      border-radius:16px;text-align:center;padding:10px 0;font-size:42px;
+      font-weight:900;color:#334155;box-shadow:0 4px 10px rgba(0,0,0,.07)
+    }
+    .stair-cell{
+      border-radius:14px;text-align:center;padding:11px 8px;font-size:19px;
+      font-weight:800;color:#334155;box-shadow:0 3px 8px rgba(0,0,0,.05);
+      white-space:nowrap
+    }
+    @media (max-width:680px){
+      .stair-col{min-width:96px}
+      .stair-head{font-size:34px}
+      .stair-cell{font-size:16px}
     }
 
-    .sub{
-      color:var(--muted);
-      font-weight:600;
-      margin-bottom:18px;
-    }
+    canvas{background:#fff;border-radius:18px;width:100%}
+    .empty{color:var(--muted);font-weight:700;text-align:center;padding:18px 0}
 
-    input{
-      width:100%;
-      padding:14px 16px;
-      border:1px solid var(--line);
-      border-radius:14px;
-      font-size:16px;
-      margin-bottom:12px;
+    .login-screen{
+      min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px
     }
-
-    .actions{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:6px;
+    .login-card{
+      width:min(460px,100%);background:#fff;border:1px solid var(--line);
+      border-radius:24px;padding:22px;box-shadow:var(--shadow);text-align:center
     }
-
-    button{
-      border:none;
-      border-radius:14px;
-      padding:14px 16px;
-      font-size:16px;
-      font-weight:800;
-      cursor:pointer;
-      -webkit-appearance:none;
-      appearance:none;
-    }
-
-    .primary{
-      background:var(--yellow);
-      color:white;
-    }
-
-    .secondary{
-      background:#eef2ff;
-      color:var(--text);
-    }
-
-    .test-btn{
-      margin-top:10px;
-      width:100%;
-      background:#111827;
-      color:white;
-    }
-
-    .error{
-      min-height:24px;
-      margin-top:12px;
-      color:#b91c1c;
-      font-weight:700;
-    }
-
-    .hidden{
-      display:none !important;
-    }
-
-    .app-wrap{
-      max-width:900px;
-      margin:auto;
-      padding:24px;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .brand img{
-      width:56px;
-      height:56px;
-      border-radius:14px;
-      object-fit:contain;
-      background:white;
-      padding:4px;
-      box-shadow:var(--shadow);
-    }
-
-    .email{
-      color:var(--muted);
-      font-size:13px;
-      font-weight:700;
-      margin-top:4px;
-    }
-
-    .box{
-      background:white;
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:24px;
-      box-shadow:var(--shadow);
-    }
-
-    .demo{
-      margin-top:18px;
-      font-size:42px;
-      font-weight:900;
-    }
+    .login-card img{width:110px;max-width:50%;margin-bottom:8px}
+    .login-title{font-size:24px;font-weight:900;margin:4px 0}
+    .login-sub{color:var(--muted);font-weight:600;margin-bottom:16px}
+    .login-actions{display:flex;gap:10px;margin-top:12px}
+    .login-actions .btn{flex:1}
+    .error-text{color:#b91c1c;font-weight:700;margin-top:10px;min-height:22px}
   </style>
 </head>
 <body>
 
-  <!-- LOGIN -->
-  <div id="loginScreen" class="screen">
-    <div class="card">
-      <img src="logo.png" alt="Bright Minds" class="logo">
-      <h1>Bright Minds Math</h1>
-      <div class="sub">Acceso privado</div>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <img src="logo.png" alt="Bright Minds">
+      <div class="login-title">Bright Minds Math</div>
+      <div class="login-sub">Acceso privado</div>
 
-      <input id="loginEmail" type="email" placeholder="Correo electrónico">
-      <input id="loginPassword" type="password" placeholder="Contraseña">
-
-      <div class="actions">
-        <button id="loginBtn" type="button" class="primary">Entrar</button>
-        <button id="registerBtn" type="button" class="secondary">Crear cuenta</button>
+      <div class="row">
+        <input id="loginEmail" type="email" placeholder="Correo electrónico">
+        <input id="loginPassword" type="password" placeholder="Contraseña">
       </div>
 
-      <button id="testBtn" type="button" class="test-btn">Test Firebase</button>
+      <div class="login-actions">
+        <button id="loginBtn" type="button" class="btn btn-yellow">Entrar</button>
+        <button id="registerBtn" type="button" class="btn btn-soft">Crear cuenta</button>
+      </div>
 
-      <div id="loginError" class="error"></div>
+      <div id="loginError" class="error-text"></div>
     </div>
   </div>
 
-  <!-- APP -->
   <div id="appScreen" class="hidden">
-    <div class="app-wrap">
+    <div class="wrap">
       <div class="topbar">
         <div class="brand">
-          <img src="logo.png" alt="Bright Minds">
+          <img src="logo.png" alt="Bright Minds logo">
           <div>
-            <h1 style="font-size:26px; margin:0;">Bright Minds Math</h1>
-            <div id="userEmail" class="email"></div>
+            <h1>Bright Minds Math</h1>
+            <p>Interactive multiplication games for kids</p>
+            <div id="userBadge" class="user-badge"></div>
           </div>
         </div>
-
-        <button id="logoutBtn" type="button" class="secondary">Cerrar sesión</button>
+        <button id="logoutBtn" type="button" class="ghost-btn">Cerrar sesión</button>
       </div>
 
-      <div class="box">
-        <h2 style="margin-top:0;">✅ Login funcionando</h2>
-        <p>Si estás viendo esta pantalla, Firebase ya está conectado correctamente.</p>
-        <div class="demo">2 × 4 = 8</div>
+      <div class="tabs">
+        <button class="tab active" onclick="showTab(0)">Practice</button>
+        <button class="tab" onclick="showTab(1)">Específicas</button>
+        <button class="tab" onclick="showTab(2)">Progreso</button>
+        <button class="tab" onclick="showTab(3)">Visual</button>
+      </div>
+
+      <div class="section active">
+        <div class="card hero">
+          <img src="logo.png" alt="Bright Minds">
+          <div class="hero-title">Bright Minds Math</div>
+          <div class="hero-sub">Practice. Play. Improve.</div>
+        </div>
+
+        <div class="grid">
+          <div>
+            <div class="card">
+              <h3>Niños</h3>
+              <div class="row">
+                <input id="newChild" placeholder="Name">
+                <button class="btn btn-yellow" onclick="addChild()">Agregar</button>
+              </div>
+              <div style="margin-top:12px">
+                <select id="childSelect" onchange="renderHistory(); renderWeakFacts(); drawChart();"></select>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Tablas incluidas</h3>
+              <div class="row">
+                <button class="btn btn-soft" onclick="selectAllTables()">Todas</button>
+                <button class="btn btn-soft" onclick="clearAllTables()">Limpiar</button>
+                <button class="btn btn-soft" onclick="selectRange(2,5)">2–5</button>
+                <button class="btn btn-soft" onclick="selectRange(6,10)">6–10</button>
+                <button class="btn btn-soft" onclick="loadWeakToSpecific()">Difíciles</button>
+              </div>
+              <div id="tableChips" class="chips"></div>
+            </div>
+
+            <div class="card">
+              <h3>Choose how to practice</h3>
+              <div class="mode-grid">
+                <div class="mode-card active" id="modeMemorama" onclick="setMode('memorama')">
+                  <div class="mode-icon">🃏</div>
+                  <div class="mode-title">Memorama</div>
+                  <div class="subtle">Match the fact and the answer.</div>
+                </div>
+
+                <div class="mode-card" id="modeQuiz" onclick="setMode('quiz')">
+                  <div class="mode-icon">✅</div>
+                  <div class="mode-title">Multiple Choice</div>
+                  <div class="subtle">Choose the correct answer.</div>
+                </div>
+
+                <div class="mode-card" id="modeSpeed" onclick="setMode('speed')">
+                  <div class="mode-icon">⏱</div>
+                  <div class="mode-title">Speed Challenge</div>
+                  <div class="subtle">Solve as many as you can fast.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" id="speedPanel">
+              <div class="stats">
+                <div class="stat"><div class="k">Tiempo</div><div class="v" id="speedTime">0.0</div></div>
+                <div class="stat"><div class="k">Promedio</div><div class="v" id="speedAvg">0.00</div></div>
+                <div class="stat"><div class="k">Buenas</div><div class="v" id="speedGood">0</div></div>
+                <div class="stat"><div class="k">Malas</div><div class="v" id="speedBad">0</div></div>
+                <div class="stat"><div class="k">Restantes</div><div class="v" id="speedRemaining">0</div></div>
+              </div>
+
+              <div class="row" style="justify-content:center;margin-bottom:12px">
+                <button class="btn btn-yellow" onclick="startSpeed()">START</button>
+                <button class="btn btn-soft" onclick="resetSpeed()">Reset</button>
+              </div>
+
+              <div id="speedStage" class="stage">
+                <div id="speedProblem" class="problem">—</div>
+                <div id="speedAnswer" class="answer"></div>
+                <div id="speedFeedback" class="feedback"></div>
+              </div>
+
+              <div class="actions">
+                <button id="speedShowBtn" class="btn btn-soft" onclick="showSpeedAnswer()">SHOW</button>
+                <button id="speedGoodBtn" class="btn btn-green" onclick="markSpeed(true)">BIEN</button>
+                <button id="speedBadBtn" class="btn btn-red" onclick="markSpeed(false)">MAL</button>
+                <button id="speedNextBtn" class="btn btn-dark" onclick="nextSpeed()">NEXT</button>
+              </div>
+            </div>
+
+            <div class="card hidden" id="quizPanel">
+              <div class="stats">
+                <div class="stat"><div class="k">Tiempo</div><div class="v" id="quizTime">0.0</div></div>
+                <div class="stat"><div class="k">Buenas</div><div class="v" id="quizGood">0</div></div>
+                <div class="stat"><div class="k">Malas</div><div class="v" id="quizBad">0</div></div>
+                <div class="stat"><div class="k">Pregunta</div><div class="v" id="quizIndex">0</div></div>
+                <div class="stat"><div class="k">Total</div><div class="v" id="quizTotal">0</div></div>
+              </div>
+
+              <div class="row" style="justify-content:center;margin-bottom:12px">
+                <button class="btn btn-yellow" onclick="startQuiz()">START QUIZ</button>
+                <button class="btn btn-soft" onclick="resetQuiz()">Reset</button>
+              </div>
+
+              <div class="stage">
+                <div id="quizProblem" class="problem">—</div>
+                <div id="quizFeedback" class="feedback"></div>
+                <div id="quizOptions" class="quiz-options"></div>
+              </div>
+
+              <div id="quizSummary" class="history-item hidden" style="margin-top:14px;"></div>
+            </div>
+
+            <div class="card hidden" id="memoramaPanel">
+              <div class="row">
+                <button class="btn btn-yellow" onclick="startMemo(6)">Fácil (6 pares)</button>
+                <button class="btn btn-soft" onclick="startMemo(8)">Normal (8 pares)</button>
+                <button class="btn btn-soft" onclick="startMemo(10)">Difícil (10 pares)</button>
+              </div>
+
+              <div class="stats" style="margin-top:14px">
+                <div class="stat"><div class="k">Tiempo</div><div class="v" id="memoTime">0.0</div></div>
+                <div class="stat"><div class="k">Movimientos</div><div class="v" id="memoMoves">0</div></div>
+                <div class="stat"><div class="k">Parejas</div><div class="v" id="memoPairs">0</div></div>
+                <div class="stat"><div class="k">Meta</div><div class="v" id="memoTarget">0</div></div>
+                <div class="stat"><div class="k">Modo</div><div class="v" id="memoMode">—</div></div>
+              </div>
+
+              <div id="memoGrid" class="memo-grid"></div>
+              <div id="memoFeedback" class="subtle" style="text-align:center;margin-top:12px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <h3>Seleccionar multiplicaciones específicas</h3>
+          <div class="row">
+            <select id="specificTable" style="max-width:180px" onchange="renderSpecific()">
+              <option value="2">Tabla 2</option>
+              <option value="3">Tabla 3</option>
+              <option value="4">Tabla 4</option>
+              <option value="5">Tabla 5</option>
+              <option value="6">Tabla 6</option>
+              <option value="7">Tabla 7</option>
+              <option value="8">Tabla 8</option>
+              <option value="9">Tabla 9</option>
+              <option value="10">Tabla 10</option>
+            </select>
+            <button class="btn btn-soft" onclick="selectAllSpecificCurrent()">Seleccionar toda la tabla</button>
+            <button class="btn btn-soft" onclick="clearSpecificCurrent()">Limpiar esta tabla</button>
+            <button class="btn btn-soft" onclick="clearAllSpecific()">Limpiar todo</button>
+          </div>
+          <div id="specificGrid" class="specific-grid"></div>
+          <div class="subtle" id="specificCount" style="margin-top:10px">Específicas seleccionadas: 0</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <h3 style="margin:0">Progreso</h3>
+            <button class="btn btn-yellow" onclick="exportCSV()">Exportar CSV</button>
+          </div>
+          <canvas id="chart" width="900" height="260" style="margin-top:12px"></canvas>
+        </div>
+
+        <div class="card">
+          <h3>Historial</h3>
+          <div id="history"></div>
+        </div>
+
+        <div class="card">
+          <h3>Multiplicaciones difíciles</h3>
+          <div id="weakFacts"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <div class="visual-wrap">
+            <div class="visual-title">Times Tables</div>
+            <div class="visual-sub">Ayuda visual escalonada</div>
+            <div class="row" style="justify-content:center;margin-bottom:14px">
+              <button class="btn btn-soft" onclick="renderVisual(9)">Mostrar 1–9</button>
+              <button class="btn btn-soft" onclick="renderVisual(10)">Mostrar 1–10</button>
+            </div>
+            <div id="visualGrid" class="stairs"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -247,9 +480,8 @@
     const loginBtn = document.getElementById("loginBtn");
     const registerBtn = document.getElementById("registerBtn");
     const logoutBtn = document.getElementById("logoutBtn");
-    const testBtn = document.getElementById("testBtn");
     const loginError = document.getElementById("loginError");
-    const userEmail = document.getElementById("userEmail");
+    const userBadge = document.getElementById("userBadge");
 
     function showError(message) {
       loginError.textContent = message;
@@ -300,34 +532,580 @@
       await signOut(auth);
     }
 
-    function testFirebase() {
-      alert("Firebase conectado correctamente");
-    }
-
-    loginBtn.addEventListener("click", registerSafeLogin);
-    registerBtn.addEventListener("click", registerSafeRegister);
+    loginBtn.addEventListener("click", loginUser);
+    registerBtn.addEventListener("click", registerUser);
     logoutBtn.addEventListener("click", logoutUser);
-    testBtn.addEventListener("click", testFirebase);
-
-    async function registerSafeLogin() {
-      await loginUser();
-    }
-
-    async function registerSafeRegister() {
-      await registerUser();
-    }
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loginScreen.classList.add("hidden");
         appScreen.classList.remove("hidden");
-        userEmail.textContent = user.email || "";
+        userBadge.textContent = user.email || "";
       } else {
         appScreen.classList.add("hidden");
         loginScreen.classList.remove("hidden");
-        userEmail.textContent = "";
+        userBadge.textContent = "";
       }
     });
+  </script>
+
+  <script>
+    let appMode = "speed";
+    let selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
+    let specificFacts = new Set();
+
+    let speedProblems = [];
+    let speedCurrent = null;
+    let speedStartTime = null;
+    let speedTimer = null;
+    let speedGood = 0;
+    let speedBad = 0;
+    let speedAnswered = false;
+
+    let quizProblems = [];
+    let quizCurrent = null;
+    let quizIndex = 0;
+    let quizGood = 0;
+    let quizBad = 0;
+    let quizAnswered = false;
+    let quizStartTime = null;
+    let quizTimer = null;
+
+    let memoCards = [];
+    let memoFlipped = [];
+    let memoMatched = 0;
+    let memoMoves = 0;
+    let memoStartTime = null;
+    let memoInterval = null;
+    let memoBusy = false;
+    let memoTargetPairs = 0;
+
+    const visualColors = {
+      1:"#F6E7A1",2:"#A9D8F3",3:"#BFE7C6",4:"#CFE77A",5:"#F6B8A8",
+      6:"#F3A28C",7:"#B9DD6F",8:"#A8D85E",9:"#F08D7A",10:"#D7C4F3"
+    };
+
+    function showTab(i){
+      document.querySelectorAll(".section").forEach((s,idx)=>s.classList.toggle("active", idx===i));
+      document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active", idx===i));
+      if(i===2){ renderHistory(); renderWeakFacts(); drawChart(); }
+      if(i===1) renderSpecific();
+      if(i===3) renderVisual(9);
+    }
+
+    function getKids(){ return JSON.parse(localStorage.getItem("kids") || "[]"); }
+    function saveKids(list){ localStorage.setItem("kids", JSON.stringify(list)); }
+
+    function loadKids(){
+      const sel = document.getElementById("childSelect");
+      const kids = getKids();
+      if(kids.length === 0){
+        sel.innerHTML = `<option value="">Sin niños</option>`;
+      } else {
+        sel.innerHTML = kids.map(n => `<option>${n}</option>`).join("");
+      }
+    }
+
+    function addChild(){
+      const input = document.getElementById("newChild");
+      const name = input.value.trim();
+      if(!name) return;
+      const list = getKids();
+      if(!list.includes(name)) list.push(name);
+      saveKids(list);
+      loadKids();
+      document.getElementById("childSelect").value = name;
+      input.value = "";
+    }
+
+    function currentChild(){ return document.getElementById("childSelect").value; }
+    function getDB(){ return JSON.parse(localStorage.getItem("db") || "{}"); }
+    function saveDB(db){ localStorage.setItem("db", JSON.stringify(db)); }
+    function getWeakDB(){ return JSON.parse(localStorage.getItem("weakDB") || "{}"); }
+    function saveWeakDB(db){ localStorage.setItem("weakDB", JSON.stringify(db)); }
+
+    function registerWrong(fact){
+      const child = currentChild();
+      if(!child) return;
+      const db = getWeakDB();
+      if(!db[child]) db[child] = {};
+      if(!db[child][fact]) db[child][fact] = 0;
+      db[child][fact] += 1;
+      saveWeakDB(db);
+    }
+
+    function getWeakFacts(){
+      const child = currentChild();
+      if(!child) return [];
+      const db = getWeakDB();
+      const facts = db[child] || {};
+      return Object.entries(facts).sort((a,b)=>b[1]-a[1]).map(([fact])=>fact);
+    }
+
+    function renderTableChips(){
+      const box = document.getElementById("tableChips");
+      let html = "";
+      for(let i=2;i<=10;i++){
+        html += `<div class="chip ${selectedTables.has(i) ? "active" : ""}" onclick="toggleTable(${i})">Tabla ${i}</div>`;
+      }
+      box.innerHTML = html;
+    }
+
+    function toggleTable(n){
+      selectedTables.has(n) ? selectedTables.delete(n) : selectedTables.add(n);
+      renderTableChips();
+    }
+
+    function selectAllTables(){ selectedTables = new Set([2,3,4,5,6,7,8,9,10]); renderTableChips(); }
+    function clearAllTables(){ selectedTables = new Set(); renderTableChips(); }
+    function selectRange(a,b){
+      selectedTables = new Set();
+      for(let i=a;i<=b;i++) selectedTables.add(i);
+      renderTableChips();
+    }
+
+    function factsForTable(t){
+      const arr = [];
+      for(let i=1;i<=10;i++) arr.push(`${t}x${i}`);
+      return arr;
+    }
+
+    function renderSpecific(){
+      const table = Number(document.getElementById("specificTable").value);
+      const box = document.getElementById("specificGrid");
+      box.innerHTML = factsForTable(table).map(f => `
+        <div class="chip ${specificFacts.has(f) ? "active" : ""}" onclick="toggleSpecific('${f}')">${f}</div>
+      `).join("");
+      document.getElementById("specificCount").textContent = `Específicas seleccionadas: ${specificFacts.size}`;
+    }
+
+    function toggleSpecific(f){
+      specificFacts.has(f) ? specificFacts.delete(f) : specificFacts.add(f);
+      renderSpecific();
+    }
+
+    function selectAllSpecificCurrent(){
+      const table = Number(document.getElementById("specificTable").value);
+      factsForTable(table).forEach(f => specificFacts.add(f));
+      renderSpecific();
+    }
+
+    function clearSpecificCurrent(){
+      const table = Number(document.getElementById("specificTable").value);
+      factsForTable(table).forEach(f => specificFacts.delete(f));
+      renderSpecific();
+    }
+
+    function clearAllSpecific(){ specificFacts = new Set(); renderSpecific(); }
+    function loadWeakToSpecific(){
+      specificFacts = new Set(getWeakFacts());
+      document.getElementById("specificTable").value = "2";
+      renderSpecific();
+    }
+
+    function buildFacts(){
+      let facts = [];
+      if(specificFacts.size > 0){
+        facts = [...specificFacts];
+      } else {
+        [...selectedTables].forEach(t => {
+          for(let i=1;i<=10;i++) facts.push(`${t}x${i}`);
+        });
+      }
+      return facts;
+    }
+
+    function shuffle(arr){
+      const copy = [...arr];
+      for(let i=copy.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function setMode(mode){
+      appMode = mode;
+      document.getElementById("modeMemorama").classList.toggle("active", mode==="memorama");
+      document.getElementById("modeQuiz").classList.toggle("active", mode==="quiz");
+      document.getElementById("modeSpeed").classList.toggle("active", mode==="speed");
+
+      document.getElementById("memoramaPanel").classList.toggle("hidden", mode!=="memorama");
+      document.getElementById("quizPanel").classList.toggle("hidden", mode!=="quiz");
+      document.getElementById("speedPanel").classList.toggle("hidden", mode!=="speed");
+    }
+
+    function saveSession(obj){
+      const child = currentChild();
+      if(!child) return;
+      const db = getDB();
+      if(!db[child]) db[child] = [];
+      db[child].push({ date:new Date().toLocaleString(), ...obj });
+      saveDB(db);
+    }
+
+    function resetSpeedButtons(){
+      document.getElementById("speedShowBtn").disabled = false;
+      document.getElementById("speedGoodBtn").disabled = false;
+      document.getElementById("speedBadBtn").disabled = false;
+      document.getElementById("speedNextBtn").disabled = true;
+    }
+
+    function resetSpeed(){
+      clearInterval(speedTimer);
+      speedProblems=[]; speedCurrent=null; speedStartTime=null; speedGood=0; speedBad=0; speedAnswered=false;
+      document.getElementById("speedTime").textContent="0.0";
+      document.getElementById("speedAvg").textContent="0.00";
+      document.getElementById("speedGood").textContent="0";
+      document.getElementById("speedBad").textContent="0";
+      document.getElementById("speedRemaining").textContent="0";
+      document.getElementById("speedProblem").textContent="—";
+      document.getElementById("speedAnswer").textContent="";
+      document.getElementById("speedFeedback").textContent="";
+      document.getElementById("speedStage").classList.remove("success","error");
+      resetSpeedButtons();
+    }
+
+    function startSpeed(){
+      if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
+      const facts = buildFacts();
+      if(facts.length===0) return alert("Selecciona tablas o específicas.");
+      speedProblems = shuffle(facts.map(f=>{ const [a,b]=f.split("x").map(Number); return {q:f,a:a*b}; }));
+      speedGood=0; speedBad=0; speedStartTime=Date.now();
+      clearInterval(speedTimer);
+      speedTimer=setInterval(updateSpeedTimer,100);
+      nextSpeed(); updateSpeedStats();
+    }
+
+    function updateSpeedTimer(){
+      if(!speedStartTime) return;
+      const t=(Date.now()-speedStartTime)/1000;
+      document.getElementById("speedTime").textContent=t.toFixed(1);
+      const total=speedGood+speedBad;
+      document.getElementById("speedAvg").textContent=total?(t/total).toFixed(2):"0.00";
+    }
+
+    function updateSpeedStats(){
+      document.getElementById("speedGood").textContent=speedGood;
+      document.getElementById("speedBad").textContent=speedBad;
+      document.getElementById("speedRemaining").textContent=speedProblems.length;
+    }
+
+    function nextSpeed(){
+      if(speedProblems.length===0) return finishSpeed();
+      speedCurrent=speedProblems.pop(); speedAnswered=false;
+      document.getElementById("speedProblem").textContent=speedCurrent.q;
+      document.getElementById("speedAnswer").textContent="";
+      document.getElementById("speedFeedback").textContent="";
+      document.getElementById("speedStage").classList.remove("success","error");
+      resetSpeedButtons(); updateSpeedStats();
+    }
+
+    function showSpeedAnswer(){
+      if(!speedCurrent) return;
+      document.getElementById("speedAnswer").textContent=speedCurrent.a;
+      document.getElementById("speedShowBtn").disabled=true;
+    }
+
+    function markSpeed(ok){
+      if(!speedCurrent || speedAnswered) return;
+      speedAnswered=true;
+      document.getElementById("speedAnswer").textContent=speedCurrent.a;
+
+      if(ok){
+        speedGood++;
+        document.getElementById("speedFeedback").textContent="✅ Correct!";
+        document.getElementById("speedStage").classList.add("success");
+      } else {
+        speedBad++;
+        document.getElementById("speedFeedback").textContent="❌ Oops";
+        document.getElementById("speedStage").classList.add("error");
+        registerWrong(speedCurrent.q);
+      }
+
+      document.getElementById("speedShowBtn").disabled=true;
+      document.getElementById("speedGoodBtn").disabled=true;
+      document.getElementById("speedBadBtn").disabled=true;
+      document.getElementById("speedNextBtn").disabled=false;
+      updateSpeedTimer(); updateSpeedStats();
+    }
+
+    function finishSpeed(){
+      clearInterval(speedTimer);
+      const totalTime=speedStartTime?(Date.now()-speedStartTime)/1000:0;
+      const total=speedGood+speedBad;
+      const avg=total?totalTime/total:0;
+      saveSession({mode:"speed", time:Number(totalTime.toFixed(1)), avg:Number(avg.toFixed(2)), good:speedGood, bad:speedBad});
+      document.getElementById("speedProblem").textContent="🏁 FIN";
+      document.getElementById("speedAnswer").textContent=totalTime.toFixed(1)+"s";
+      document.getElementById("speedFeedback").textContent=`Promedio: ${avg.toFixed(2)}s`;
+      document.getElementById("speedStage").classList.remove("success","error");
+      renderHistory(); renderWeakFacts(); drawChart();
+    }
+
+    function resetQuiz(){
+      clearInterval(quizTimer);
+      quizProblems=[]; quizCurrent=null; quizIndex=0; quizGood=0; quizBad=0; quizAnswered=false;
+      document.getElementById("quizTime").textContent="0.0";
+      document.getElementById("quizGood").textContent="0";
+      document.getElementById("quizBad").textContent="0";
+      document.getElementById("quizIndex").textContent="0";
+      document.getElementById("quizTotal").textContent="0";
+      document.getElementById("quizProblem").textContent="—";
+      document.getElementById("quizFeedback").textContent="";
+      document.getElementById("quizOptions").innerHTML="";
+      document.getElementById("quizSummary").classList.add("hidden");
+    }
+
+    function startQuiz(){
+      if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
+      const facts=buildFacts();
+      if(facts.length===0) return alert("Selecciona tablas o específicas.");
+      quizProblems=shuffle(facts).slice(0,Math.min(10,facts.length)).map(f=>{ const [a,b]=f.split("x").map(Number); return {q:f,a:a*b}; });
+      quizIndex=0; quizGood=0; quizBad=0; quizStartTime=Date.now();
+      clearInterval(quizTimer);
+      quizTimer=setInterval(()=>{ document.getElementById("quizTime").textContent=((Date.now()-quizStartTime)/1000).toFixed(1); },100);
+      document.getElementById("quizTotal").textContent=quizProblems.length;
+      document.getElementById("quizSummary").classList.add("hidden");
+      nextQuiz();
+    }
+
+    function nextQuiz(){
+      if(quizIndex>=quizProblems.length) return finishQuiz();
+      quizCurrent=quizProblems[quizIndex]; quizAnswered=false;
+      document.getElementById("quizProblem").textContent=quizCurrent.q;
+      document.getElementById("quizFeedback").textContent="";
+      document.getElementById("quizIndex").textContent=quizIndex+1;
+      document.getElementById("quizGood").textContent=quizGood;
+      document.getElementById("quizBad").textContent=quizBad;
+
+      const correct=quizCurrent.a;
+      let options=new Set([correct]);
+      while(options.size<3){
+        const fake=correct+Math.floor(Math.random()*10)-5;
+        if(fake>0) options.add(fake);
+      }
+      options=shuffle([...options]);
+
+      document.getElementById("quizOptions").innerHTML=options.map(opt=>`
+        <button class="quiz-option" onclick="answerQuiz(${opt}, this)">${opt}</button>
+      `).join("");
+    }
+
+    function answerQuiz(value, btn){
+      if(quizAnswered) return;
+      quizAnswered=true;
+      const correct=quizCurrent.a;
+      const buttons=[...document.querySelectorAll("#quizOptions .quiz-option")];
+
+      if(value===correct){
+        quizGood++;
+        btn.classList.add("correct");
+        document.getElementById("quizFeedback").textContent="✅ Correct!";
+      } else {
+        quizBad++;
+        btn.classList.add("wrong");
+        buttons.forEach(b=>{ if(Number(b.textContent)===correct) b.classList.add("correct"); });
+        document.getElementById("quizFeedback").textContent="❌ Incorrect";
+        registerWrong(quizCurrent.q);
+      }
+
+      document.getElementById("quizGood").textContent=quizGood;
+      document.getElementById("quizBad").textContent=quizBad;
+      setTimeout(()=>{ quizIndex++; nextQuiz(); }, 900);
+    }
+
+    function finishQuiz(){
+      clearInterval(quizTimer);
+      const totalTime=quizStartTime?(Date.now()-quizStartTime)/1000:0;
+      const summary=document.getElementById("quizSummary");
+      const percent=quizProblems.length?Math.round((quizGood/quizProblems.length)*100):0;
+      saveSession({mode:"quiz", time:Number(totalTime.toFixed(1)), avg:quizProblems.length?Number((totalTime/quizProblems.length).toFixed(2)):0, good:quizGood, bad:quizBad});
+      summary.classList.remove("hidden");
+      summary.innerHTML=`<div class="history-title">Quiz completed</div><div>Tiempo: ${totalTime.toFixed(1)}s</div><div>Buenas: ${quizGood}</div><div>Malas: ${quizBad}</div><div>Score: ${percent}%</div>`;
+      renderHistory(); renderWeakFacts(); drawChart();
+    }
+
+    function startMemo(pairCount){
+      if(!currentChild()) return alert("Primero agrega o selecciona un niño.");
+      const facts=shuffle(buildFacts()).slice(0,pairCount);
+      if(facts.length===0) return alert("Selecciona tablas o específicas.");
+      memoTargetPairs=facts.length; memoMatched=0; memoMoves=0; memoFlipped=[]; memoBusy=false; memoCards=[];
+      facts.forEach((fact, idx)=>{
+        const [a,b]=fact.split("x").map(Number);
+        const res=a*b;
+        memoCards.push({id:`q-${idx}`,pair:fact,type:"q",text:fact,flipped:false,matched:false});
+        memoCards.push({id:`a-${idx}`,pair:fact,type:"a",text:String(res),flipped:false,matched:false});
+      });
+      memoCards=shuffle(memoCards);
+      memoStartTime=Date.now();
+      clearInterval(memoInterval);
+      memoInterval=setInterval(updateMemoStats,100);
+      document.getElementById("memoMode").textContent=`${facts.length} pares`;
+      renderMemoBoard(); updateMemoStats();
+      document.getElementById("memoFeedback").textContent="";
+    }
+
+    function updateMemoStats(){
+      const t=memoStartTime?((Date.now()-memoStartTime)/1000):0;
+      document.getElementById("memoTime").textContent=t.toFixed(1);
+      document.getElementById("memoMoves").textContent=memoMoves;
+      document.getElementById("memoPairs").textContent=memoMatched;
+      document.getElementById("memoTarget").textContent=memoTargetPairs;
+    }
+
+    function renderMemoBoard(){
+      const box=document.getElementById("memoGrid");
+      if(memoCards.length===0){
+        box.innerHTML=`<div class="empty" style="grid-column:1/-1">Presiona un nivel para iniciar el memorama.</div>`;
+        return;
+      }
+      box.innerHTML=memoCards.map((card, idx)=>{
+        const faceClass=(card.flipped || card.matched) ? "memo-front" : "memo-back";
+        const matchedClass=card.matched ? " memo-matched" : "";
+        const label=(card.flipped || card.matched) ? card.text : "?";
+        return `<div class="memo-card ${faceClass}${matchedClass}" onclick="flipMemo(${idx})">${label}</div>`;
+      }).join("");
+      updateMemoStats();
+    }
+
+    function flipMemo(index){
+      if(memoBusy) return;
+      const card=memoCards[index];
+      if(!card || card.flipped || card.matched) return;
+      card.flipped=true; memoFlipped.push(index); renderMemoBoard();
+
+      if(memoFlipped.length===2){
+        memoMoves++; memoBusy=true;
+        const [i1,i2]=memoFlipped;
+        const c1=memoCards[i1], c2=memoCards[i2];
+        const isMatch=c1.pair===c2.pair && c1.type!==c2.type;
+
+        if(isMatch){
+          c1.matched=true; c2.matched=true; memoMatched++; memoFlipped=[]; memoBusy=false; renderMemoBoard();
+          if(memoMatched===memoTargetPairs) finishMemo();
+        } else {
+          setTimeout(()=>{
+            c1.flipped=false; c2.flipped=false; memoFlipped=[]; memoBusy=false; renderMemoBoard();
+          },700);
+        }
+      }
+    }
+
+    function finishMemo(){
+      clearInterval(memoInterval);
+      const totalTime=memoStartTime?((Date.now()-memoStartTime)/1000):0;
+      document.getElementById("memoFeedback").textContent=`🎉 ¡Completado! Tiempo: ${totalTime.toFixed(1)}s · Movimientos: ${memoMoves}`;
+      saveSession({mode:"memorama", time:Number(totalTime.toFixed(1)), avg:"", good:memoMatched, bad:Math.max(memoMoves-memoMatched,0)});
+      renderHistory(); drawChart();
+    }
+
+    function renderHistory(){
+      const box=document.getElementById("history");
+      const db=getDB();
+      const child=currentChild();
+      const items=db[child] || [];
+      if(items.length===0){
+        box.innerHTML=`<div class="empty">Todavía no hay sesiones guardadas.</div>`;
+        return;
+      }
+      box.innerHTML=items.slice().reverse().map(s=>`
+        <div class="history-item">
+          <div class="history-title">${child} · ${s.mode}</div>
+          <div>${s.time}s ${s.avg !== "" ? `· ${s.avg}s/prom` : ""} ${s.good !== undefined ? `· ✅ ${s.good}` : ""} ${s.bad !== undefined ? `· ❌ ${s.bad}` : ""}</div>
+          <div class="subtle">${s.date}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderWeakFacts(){
+      const box=document.getElementById("weakFacts");
+      const child=currentChild();
+      if(!child){
+        box.innerHTML=`<div class="empty">Selecciona un niño.</div>`;
+        return;
+      }
+      const db=getWeakDB();
+      const items=Object.entries(db[child] || {}).sort((a,b)=>b[1]-a[1]);
+      if(items.length===0){
+        box.innerHTML=`<div class="empty">Todavía no hay errores guardados.</div>`;
+        return;
+      }
+      box.innerHTML=items.map(([fact,count])=>`<div class="history-item"><b>${fact}</b> — ${count} fallas</div>`).join("");
+    }
+
+    function drawChart(){
+      const canvas=document.getElementById("chart");
+      const ctx=canvas.getContext("2d");
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const db=getDB();
+      const child=currentChild();
+      const items=db[child] || [];
+      if(items.length===0) return;
+
+      const max=Math.max(...items.map(x=>Number(x.time)||0),1);
+      const left=40, bottom=220, barW=24, gap=16;
+
+      ctx.strokeStyle="#cbd5e1";
+      ctx.beginPath();
+      ctx.moveTo(left,20); ctx.lineTo(left,bottom); ctx.lineTo(canvas.width-20,bottom); ctx.stroke();
+
+      items.forEach((item,i)=>{
+        const h=((Number(item.time)||0)/max)*160;
+        const x=left+18+i*(barW+gap);
+        const y=bottom-h;
+
+        let color="#f4b000";
+        if(item.mode==="quiz") color="#60a5fa";
+        if(item.mode==="memorama") color="#7a4dff";
+        if(item.mode==="speed") color="#22c55e";
+
+        ctx.fillStyle=color;
+        ctx.fillRect(x,y,barW,h);
+        ctx.fillStyle="#475569";
+        ctx.font="12px Arial";
+        ctx.fillText(String(i+1), x+6, bottom+16);
+      });
+    }
+
+    function exportCSV(){
+      const db=getDB();
+      const rows=[["Name","Mode","Time","Average","Good","Bad","Date"]];
+      Object.keys(db).forEach(name=>{
+        db[name].forEach(r=>rows.push([name,r.mode||"",r.time||"",r.avg||"",r.good??"",r.bad??"",r.date||""]));
+      });
+      const csv=rows.map(r=>r.join(",")).join("\n");
+      const blob=new Blob([csv], {type:"text/csv;charset=utf-8;"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url; a.download="math_results.csv"; a.click();
+    }
+
+    function renderVisual(max=9){
+      const box=document.getElementById("visualGrid");
+      let html="";
+      for(let t=1;t<=max;t++){
+        const color=visualColors[t] || "#e5e7eb";
+        html += `<div class="stair-col">`;
+        html += `<div class="stair-head" style="background:${color}">${t}</div>`;
+        for(let i=1;i<=9;i++){
+          html += `<div class="stair-cell" style="background:${color}">${t} × ${i} = ${t*i}</div>`;
+        }
+        html += `</div>`;
+      }
+      box.innerHTML=html;
+    }
+
+    function resetApp(){ localStorage.clear(); location.reload(); }
+
+    loadKids();
+    renderTableChips();
+    renderSpecific();
+    renderVisual(9);
+    resetSpeed();
+    resetQuiz();
+    renderMemoBoard();
+    setMode("speed");
   </script>
 </body>
 </html>

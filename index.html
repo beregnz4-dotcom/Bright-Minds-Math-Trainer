@@ -653,8 +653,7 @@
       onAuthStateChanged,
       signOut
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
-    const firebaseConfig = {
+const firebaseConfig = {
       apiKey: "TU_API_KEY",
       authDomain: "TU_AUTH_DOMAIN",
       projectId: "TU_PROJECT_ID",
@@ -662,6 +661,7 @@
       messagingSenderId: "TU_ID",
       appId: "TU_APP_ID"
     };
+    
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);

@@ -766,3 +766,586 @@ const firebaseConfig = {
     function currentChild(){
       return document.getElementById("childSelect").value;
     }
+<script>
+  // ---------- STORAGE ----------
+  function getHistoryDB() {
+    return JSON.parse(localStorage.getItem("bm_history") || "{}");
+  }
+
+  function saveHistoryDB(db) {
+    localStorage.setItem("bm_history", JSON.stringify(db));
+  }
+
+  function getWeakDB() {
+    return JSON.parse(localStorage.getItem("bm_weak") || "{}");
+  }
+
+  function saveWeakDB(db) {
+    localStorage.setItem("bm_weak", JSON.stringify(db));
+  }
+
+  function childHistory() {
+    const db = getHistoryDB();
+    return db[currentChild()] || [];
+  }
+
+  function childWeakMap() {
+    const db = getWeakDB();
+    return db[currentChild()] || {};
+  }
+
+  function setChildWeakMap(map) {
+    const db = getWeakDB();
+    db[currentChild()] = map;
+    saveWeakDB(db);
+    weakMap = map;
+  }
+
+  function pushHistory(item) {
+    const db = getHistoryDB();
+    if (!db[currentChild()]) db[currentChild()] = [];
+    db[currentChild()].push(item);
+    saveHistoryDB(db);
+  }
+
+  // ---------- HELPERS ----------
+  function shuffle(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function allFacts() {
+    const arr = [];
+    for (let a = 2; a <= 10; a++) {
+      if (!selectedTables.has(a)) continue;
+      for (let b = 1; b <= 10; b++) {
+        const fact = `${a}x${b}`;
+        if (specificFacts.size && !specificFacts.has(fact)) continue;
+        arr.push({ a, b, fact, answer: a * b });
+      }
+    }
+    return arr;
+  }
+
+  function weightedFacts() {
+    const base = allFacts();
+    weakMap = childWeakMap();
+
+    const pool = [];
+    base.forEach(item => {
+      const weight = Math.max(1, Math.ceil(weakMap[item.fact] || 1));
+      for (let i = 0; i < weight; i++) pool.push(item);
+    });
+    return pool;
+  }
+
+  function updateWeak(fact, delta) {
+    weakMap = childWeakMap();
+    weakMap[fact] = (weakMap[fact] || 0) + delta;
+    if (weakMap[fact] <= 0) delete weakMap[fact];
+    setChildWeakMap(weakMap);
+  }
+
+  function updateMainStats() {
+    document.getElementById("good").textContent = good;
+    document.getElementById("bad").textContent = bad;
+    document.getElementById("time").textContent = timer ? ((Date.now() - startTime) / 1000).toFixed(1) : "0.0";
+    document.getElementById("avg").textContent = totalAnswered ? (((Date.now() - startTime) / 1000) / totalAnswered).toFixed(2) : "0.00";
+    document.getElementById("remaining").textContent = problems.length;
+  }
+
+  function renderTableChips() {
+    let html = "";
+    for (let i = 2; i <= 10; i++) {
+      html += `<div class="chip ${selectedTables.has(i) ? "active" : ""}" onclick="toggleTable(${i})">Tabla ${i}</div>`;
+    }
+    document.getElementById("tableChips").innerHTML = html;
+  }
+
+  function renderSpecific() {
+    const table = Number(document.getElementById("specificTable").value);
+    const box = document.getElementById("specificGrid");
+
+    box.innerHTML = "";
+    for (let i = 1; i <= 10; i++) {
+      const fact = `${table}x${i}`;
+      box.innerHTML += `<div class="chip ${specificFacts.has(fact) ? "active" : ""}" onclick="toggleSpecific('${fact}')">${fact}</div>`;
+    }
+
+    document.getElementById("specificCount").textContent = `Específicas seleccionadas: ${specificFacts.size}`;
+  }
+
+  function renderVisual() {
+    const box = document.getElementById("visualGrid");
+    let html = "";
+
+    for (let t = 1; t <= 10; t++) {
+      html += `<div class="stair-col">`;
+      html += `<div class="stair-head">${t}</div>`;
+      for (let i = 1; i <= 10; i++) {
+        html += `<div class="stair-cell">${t} × ${i} = ${t * i}</div>`;
+      }
+      html += `</div>`;
+    }
+
+    box.innerHTML = html;
+  }
+
+  function renderHistory() {
+    const items = childHistory().slice().reverse();
+    const box = document.getElementById("history");
+
+    if (!items.length) {
+      box.innerHTML = `<div class="empty">Todavía no hay sesiones guardadas.</div>`;
+      return;
+    }
+
+    box.innerHTML = items.map(item => `
+      <div class="history-item">
+        <strong>${item.mode}</strong><br>
+        ✅ ${item.good} · ❌ ${item.bad} · ⏱ ${item.time}s · 📊 ${item.avg}s/prom<br>
+        <span class="muted">${item.date}</span>
+      </div>
+    `).join("");
+  }
+
+  function renderWeakFacts() {
+    weakMap = childWeakMap();
+    const entries = Object.entries(weakMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12);
+
+    const box = document.getElementById("weakFacts");
+
+    if (!entries.length) {
+      box.innerHTML = `<div class="empty">Todavía no hay ejercicios para refuerzo.</div>`;
+      return;
+    }
+
+    box.innerHTML = entries.map(([fact, count]) => `
+      <div class="history-item">${fact} · prioridad ${Number(count).toFixed(2)}</div>
+    `).join("");
+  }
+
+  function drawChart() {
+    const canvas = document.getElementById("chart");
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const items = childHistory();
+    if (!items.length) return;
+
+    const max = Math.max(...items.map(x => Number(x.time) || 0), 1);
+    const left = 40, bottom = 220, barW = 28, gap = 16;
+
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.beginPath();
+    ctx.moveTo(left, 20);
+    ctx.lineTo(left, bottom);
+    ctx.lineTo(canvas.width - 20, bottom);
+    ctx.stroke();
+
+    items.slice(-12).forEach((item, i) => {
+      const h = ((Number(item.time) || 0) / max) * 160;
+      const x = left + 18 + i * (barW + gap);
+      const y = bottom - h;
+
+      let color = "#f4b000";
+      if (item.mode === "Choose") color = "#60a5fa";
+      if (item.mode === "Memorama") color = "#7a4dff";
+
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, barW, h);
+      ctx.fillStyle = "#475569";
+      ctx.font = "12px Arial";
+      ctx.fillText(String(i + 1), x + 8, bottom + 16);
+    });
+  }
+
+  // ---------- TABLE / SPECIFIC ACTIONS ----------
+  window.toggleTable = function(n) {
+    if (selectedTables.has(n)) selectedTables.delete(n);
+    else selectedTables.add(n);
+    renderTableChips();
+  };
+
+  window.toggleSpecific = function(fact) {
+    if (specificFacts.has(fact)) specificFacts.delete(fact);
+    else specificFacts.add(fact);
+    renderSpecific();
+  };
+
+  window.selectAllSpecific = function() {
+    const table = Number(document.getElementById("specificTable").value);
+    for (let i = 1; i <= 10; i++) specificFacts.add(`${table}x${i}`);
+    renderSpecific();
+  };
+
+  window.clearSpecific = function() {
+    specificFacts.clear();
+    renderSpecific();
+  };
+
+  // ---------- PRACTICE ----------
+  let totalAnswered = 0;
+
+  function nextSpeedQuestion() {
+    if (!problems.length) {
+      finishSpeed();
+      return;
+    }
+    current = problems.pop();
+    document.getElementById("problem").textContent = `${current.a} × ${current.b}`;
+    document.getElementById("realAnswer").textContent = "";
+    document.getElementById("feedback").textContent = "";
+    updateMainStats();
+  }
+
+  window.startGame = function() {
+    if (!currentChild()) {
+      alert("Primero agrega o selecciona un alumno.");
+      return;
+    }
+
+    good = 0;
+    bad = 0;
+    totalAnswered = 0;
+    problems = shuffle(weightedFacts()).slice(0, 20);
+    todayWrong = [];
+    startTime = Date.now();
+
+    clearInterval(timer);
+    timer = setInterval(updateMainStats, 100);
+
+    nextSpeedQuestion();
+  };
+
+  window.resetGame = function() {
+    clearInterval(timer);
+    timer = null;
+    problems = [];
+    current = null;
+    good = 0;
+    bad = 0;
+    totalAnswered = 0;
+    document.getElementById("problem").textContent = "—";
+    document.getElementById("realAnswer").textContent = "";
+    document.getElementById("feedback").textContent = "";
+    updateMainStats();
+  };
+
+  window.showAnswer = function() {
+    if (!current) return;
+    document.getElementById("realAnswer").textContent = current.answer;
+  };
+
+  window.markManual = function(ok) {
+    if (!current) return;
+
+    document.getElementById("realAnswer").textContent = current.answer;
+    totalAnswered++;
+
+    if (ok) {
+      good++;
+      updateWeak(current.fact, -0.25);
+      document.getElementById("feedback").textContent = "¡Muy bien!";
+    } else {
+      bad++;
+      updateWeak(current.fact, 1);
+      todayWrong.push(current.fact);
+      document.getElementById("feedback").textContent = "Vamos a practicar esta";
+    }
+
+    updateMainStats();
+  };
+
+  window.nextQuestion = function() {
+    if (!current) return;
+    nextSpeedQuestion();
+  };
+
+  function finishSpeed() {
+    clearInterval(timer);
+    timer = null;
+
+    const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
+    const avg = totalAnswered ? (totalTime / totalAnswered).toFixed(2) : "0.00";
+
+    pushHistory({
+      mode: "Practice",
+      good,
+      bad,
+      time: totalTime,
+      avg,
+      date: new Date().toLocaleString()
+    });
+
+    renderHistory();
+    renderWeakFacts();
+    drawChart();
+
+    document.getElementById("feedback").textContent = "Fin";
+  }
+
+  // ---------- QUIZ ----------
+  function buildQuizOptions(correct) {
+    let opts = new Set([correct]);
+    while (opts.size < 3) {
+      const fake = correct + Math.floor(Math.random() * 10) - 5;
+      if (fake > 0) opts.add(fake);
+    }
+    return shuffle([...opts]);
+  }
+
+  function nextQuizQuestion() {
+    if (quizQuestions.length === 0) {
+      finishQuiz();
+      return;
+    }
+
+    current = quizQuestions.pop();
+    document.getElementById("quizProblem").textContent = `${current.a} × ${current.b}`;
+    document.getElementById("quizIndex").textContent = quizDone + 1;
+    document.getElementById("quizGood").textContent = quizGood;
+    document.getElementById("quizBad").textContent = quizBad;
+    document.getElementById("quizFeedback").textContent = "";
+
+    const opts = buildQuizOptions(current.answer);
+    document.getElementById("quizOptions").innerHTML = opts.map(opt =>
+      `<button class="quiz-option" onclick="answerQuiz(${opt}, this)">${opt}</button>`
+    ).join("");
+  }
+
+  let quizQuestions = [];
+  let quizGood = 0;
+  let quizBad = 0;
+  let quizDone = 0;
+  let quizStart = null;
+  let quizTicker = null;
+
+  window.startQuiz = function() {
+    if (!currentChild()) {
+      alert("Primero agrega o selecciona un alumno.");
+      return;
+    }
+
+    quizQuestions = shuffle(weightedFacts()).slice(0, 10);
+    quizGood = 0;
+    quizBad = 0;
+    quizDone = 0;
+    quizStart = Date.now();
+
+    clearInterval(quizTicker);
+    quizTicker = setInterval(() => {
+      document.getElementById("quizTime").textContent = ((Date.now() - quizStart) / 1000).toFixed(1);
+    }, 100);
+
+    document.getElementById("quizTotal").textContent = quizQuestions.length;
+    document.getElementById("quizSummary").classList.add("hidden");
+
+    nextQuizQuestion();
+  };
+
+  window.resetQuiz = function() {
+    clearInterval(quizTicker);
+    quizQuestions = [];
+    quizGood = 0;
+    quizBad = 0;
+    quizDone = 0;
+    document.getElementById("quizTime").textContent = "0.0";
+    document.getElementById("quizGood").textContent = "0";
+    document.getElementById("quizBad").textContent = "0";
+    document.getElementById("quizIndex").textContent = "0";
+    document.getElementById("quizTotal").textContent = "0";
+    document.getElementById("quizProblem").textContent = "—";
+    document.getElementById("quizFeedback").textContent = "";
+    document.getElementById("quizOptions").innerHTML = "";
+    document.getElementById("quizSummary").classList.add("hidden");
+  };
+
+  window.answerQuiz = function(value, btn) {
+    if (!current) return;
+
+    const buttons = [...document.querySelectorAll("#quizOptions .quiz-option")];
+    quizDone++;
+
+    if (value === current.answer) {
+      quizGood++;
+      updateWeak(current.fact, -0.25);
+      btn.classList.add("correct");
+      document.getElementById("quizFeedback").textContent = "¡Correcto!";
+    } else {
+      quizBad++;
+      updateWeak(current.fact, 1);
+      todayWrong.push(current.fact);
+      btn.classList.add("wrong");
+      buttons.forEach(b => {
+        if (Number(b.textContent) === current.answer) b.classList.add("correct");
+      });
+      document.getElementById("quizFeedback").textContent = "Casi";
+    }
+
+    document.getElementById("quizGood").textContent = quizGood;
+    document.getElementById("quizBad").textContent = quizBad;
+
+    setTimeout(nextQuizQuestion, 700);
+  };
+
+  function finishQuiz() {
+    clearInterval(quizTicker);
+    const totalTime = ((Date.now() - quizStart) / 1000).toFixed(1);
+    const avg = quizDone ? (totalTime / quizDone).toFixed(2) : "0.00";
+
+    pushHistory({
+      mode: "Choose",
+      good: quizGood,
+      bad: quizBad,
+      time: totalTime,
+      avg,
+      date: new Date().toLocaleString()
+    });
+
+    renderHistory();
+    renderWeakFacts();
+    drawChart();
+
+    const summary = document.getElementById("quizSummary");
+    summary.classList.remove("hidden");
+    summary.innerHTML = `
+      <strong>Quiz completado</strong><br>
+      ✅ ${quizGood} · ❌ ${quizBad}<br>
+      ⏱ ${totalTime}s · 📊 ${avg}s/prom
+    `;
+  }
+
+  // ---------- MEMORAMA ----------
+  let memoCards = [];
+  let memoFlipped = [];
+  let memoMoves = 0;
+  let memoMatched = 0;
+  let memoTarget = 0;
+  let memoStart = null;
+  let memoTicker = null;
+
+  function renderMemo() {
+    const grid = document.getElementById("memoGrid");
+    if (!memoCards.length) {
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Elige un nivel para empezar</div>`;
+      return;
+    }
+
+    grid.innerHTML = memoCards.map((card, index) => {
+      const faceClass = card.matched ? "memo-card memo-front memo-matched"
+        : card.flipped ? "memo-card memo-front"
+        : "memo-card memo-back";
+      const label = card.flipped || card.matched ? card.text : "?";
+      return `<div class="${faceClass}" onclick="flipMemo(${index})">${label}</div>`;
+    }).join("");
+
+    document.getElementById("memoMoves").textContent = memoMoves;
+    document.getElementById("memoPairs").textContent = memoMatched;
+    document.getElementById("memoTarget").textContent = memoTarget;
+  }
+
+  window.startMemo = function(pairCount) {
+    if (!currentChild()) {
+      alert("Primero agrega o selecciona un alumno.");
+      return;
+    }
+
+    const facts = shuffle(allFacts()).slice(0, pairCount);
+    memoCards = [];
+    facts.forEach((f, idx) => {
+      memoCards.push({ text:`${f.a}x${f.b}`, pair:idx, flipped:false, matched:false });
+      memoCards.push({ text:`${f.answer}`, pair:idx, flipped:false, matched:false });
+    });
+
+    memoCards = shuffle(memoCards);
+    memoFlipped = [];
+    memoMoves = 0;
+    memoMatched = 0;
+    memoTarget = pairCount;
+    memoStart = Date.now();
+
+    clearInterval(memoTicker);
+    memoTicker = setInterval(() => {
+      document.getElementById("memoTime").textContent = ((Date.now() - memoStart) / 1000).toFixed(1);
+    }, 100);
+
+    document.getElementById("memoMode").textContent = `${pairCount} pares`;
+    document.getElementById("memoFeedback").textContent = "";
+
+    renderMemo();
+  };
+
+  window.flipMemo = function(index) {
+    const card = memoCards[index];
+    if (!card || card.flipped || card.matched) return;
+    if (memoFlipped.length >= 2) return;
+
+    card.flipped = true;
+    memoFlipped.push(index);
+    renderMemo();
+
+    if (memoFlipped.length === 2) {
+      memoMoves++;
+
+      const [i1, i2] = memoFlipped;
+      const c1 = memoCards[i1];
+      const c2 = memoCards[i2];
+
+      if (c1.pair === c2.pair) {
+        c1.matched = true;
+        c2.matched = true;
+        memoMatched++;
+        memoFlipped = [];
+        renderMemo();
+
+        if (memoMatched === memoTarget) {
+          clearInterval(memoTicker);
+          const totalTime = ((Date.now() - memoStart) / 1000).toFixed(1);
+          const avg = memoTarget ? (totalTime / memoTarget).toFixed(2) : "0.00";
+
+          pushHistory({
+            mode: "Memorama",
+            good: memoMatched,
+            bad: Math.max(0, memoMoves - memoMatched),
+            time: totalTime,
+            avg,
+            date: new Date().toLocaleString()
+          });
+
+          renderHistory();
+          drawChart();
+
+          document.getElementById("memoFeedback").textContent = `¡Completado! ⏱ ${totalTime}s`;
+        }
+      } else {
+        setTimeout(() => {
+          c1.flipped = false;
+          c2.flipped = false;
+          memoFlipped = [];
+          renderMemo();
+        }, 700);
+      }
+    }
+  };
+
+  // ---------- VISUAL / INIT ----------
+  loadKids();
+  renderTableChips();
+  renderSpecific();
+  renderVisual();
+  renderHistory();
+  renderWeakFacts();
+  drawChart();
+  resetQuiz();
+  setMode("speed");
+
+  </script>
+</body>
+</html>

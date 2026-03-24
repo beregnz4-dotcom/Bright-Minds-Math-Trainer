@@ -2,237 +2,461 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bright Minds Math</title>
-
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <meta name="theme-color" content="#f4b000">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Bright Minds Math">
 
   <style>
     :root{
-      --bg:#f7f8fc;
+      --bg:#f5f7fb;
       --card:#ffffff;
       --text:#1f2937;
       --muted:#6b7280;
       --line:#e5e7eb;
       --yellow:#f4b000;
-      --purple:#7a4dff;
+      --soft:#eef2ff;
       --green:#22c55e;
       --red:#ef4444;
       --blue:#60a5fa;
+      --purple:#7a4dff;
       --dark:#111827;
-      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --shadow:0 10px 24px rgba(0,0,0,.08);
     }
+
     *{box-sizing:border-box}
+
     body{
       margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      background:linear-gradient(180deg,#fbfcff,#eef2ff);
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);
       color:var(--text);
     }
+
     .hidden{display:none !important}
-    .wrap{max-width:1100px;margin:auto;padding:18px}
-    .topbar{
-      display:flex;justify-content:space-between;align-items:center;gap:12px;
-      margin-bottom:16px;flex-wrap:wrap
+
+    .login-screen{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
     }
-    .brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-    .brand img{
-      width:58px;height:58px;border-radius:14px;object-fit:contain;
-      background:#fff;box-shadow:var(--shadow);padding:4px
+
+    .login-card{
+      width:min(430px,100%);
+      background:#fff;
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:24px;
     }
-    .brand h1{margin:0;font-size:30px;line-height:1.05}
-    .brand p{margin:4px 0 0;color:var(--muted);font-weight:600;font-size:14px}
-    .user-badge{margin-top:4px;color:var(--muted);font-size:12px;font-weight:700}
-    .ghost-btn{
-      background:#fff;border:1px solid var(--line);color:var(--text);
-      padding:10px 14px;border-radius:12px;font-weight:800;cursor:pointer;
-      box-shadow:var(--shadow)
+
+    .login-card h1{
+      margin:0 0 8px;
+      font-size:28px;
     }
-    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-    .tab{
-      background:#e8ebf3;color:#374151;border:none;padding:10px 16px;
-      border-radius:999px;font-weight:800;cursor:pointer
+
+    .login-card p{
+      margin:0 0 18px;
+      color:var(--muted);
     }
-    .tab.active{background:var(--yellow);color:#fff}
-    .section{display:none}
-    .section.active{display:block}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr}}
-    .card{
-      background:var(--card);border:1px solid var(--line);border-radius:24px;
-      padding:16px;box-shadow:var(--shadow);margin-bottom:16px
-    }
-    .card h3{margin:0 0 12px;font-size:18px}
-    .subtle{color:var(--muted);font-size:13px;font-weight:600}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
     input, select{
-      width:100%;border:1px solid var(--line);border-radius:14px;
-      padding:12px 14px;font-size:16px;background:#fff;color:var(--text)
+      width:100%;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      margin:8px 0;
+      font-size:16px;
+      background:#fff;
     }
+
     .btn{
-      border:none;border-radius:14px;padding:12px 16px;font-weight:800;
-      cursor:pointer;-webkit-appearance:none;appearance:none
+      border:none;
+      border-radius:10px;
+      padding:12px 16px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:15px;
     }
+
     .btn-yellow{background:var(--yellow);color:#fff}
-    .btn-soft{background:#eef2ff;color:var(--text)}
+    .btn-soft{background:var(--soft);color:var(--text)}
     .btn-green{background:var(--green);color:#fff}
     .btn-red{background:var(--red);color:#fff}
+    .btn-blue{background:var(--blue);color:#fff}
     .btn-dark{background:var(--dark);color:#fff}
-    .hero{text-align:center;padding:24px 16px}
-    .hero img{width:180px;max-width:70%;margin-bottom:8px}
-    .hero-title{font-size:22px;font-weight:900;margin-bottom:4px}
-    .hero-sub{color:var(--muted);font-weight:700}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+
+    .topbar{
+      background:#fff;
+      box-shadow:var(--shadow);
+      padding:14px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .wrap{
+      max-width:1140px;
+      margin:auto;
+      padding:18px;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .tab{
+      border:none;
+      border-radius:999px;
+      padding:10px 16px;
+      font-weight:700;
+      cursor:pointer;
+      background:#dfe5ef;
+      color:#374151;
+    }
+
+    .tab.active{
+      background:var(--yellow);
+      color:#fff;
+    }
+
+    .section{display:none}
+    .section.active{display:block}
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:16px;
+      margin-bottom:16px;
+    }
+
+    .card h3{
+      margin:0 0 12px;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .hero{
+      text-align:center;
+      padding:20px;
+    }
+
+    .hero h2{
+      margin:0 0 8px;
+      font-size:30px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
     .chip{
-      border:1px solid #d1d5db;background:#fff;color:#374151;padding:9px 12px;
-      border-radius:999px;font-weight:800;cursor:pointer;user-select:none;
-      min-width:72px;text-align:center;transition:.15s ease
+      border:1px solid #d1d5db;
+      background:#fff;
+      border-radius:999px;
+      padding:8px 12px;
+      font-weight:700;
+      cursor:pointer;
+      user-select:none;
     }
+
     .chip.active{
-      background:var(--yellow);color:#fff;border-color:var(--yellow);
-      transform:scale(1.03)
+      background:var(--yellow);
+      color:#fff;
+      border-color:var(--yellow);
     }
-    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    @media (max-width:900px){.mode-grid{grid-template-columns:1fr}}
+
+    .mode-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    @media (max-width:900px){
+      .mode-grid{grid-template-columns:1fr}
+    }
+
     .mode-card{
-      border:1px solid var(--line);border-radius:22px;padding:18px;
-      background:linear-gradient(180deg,#fff,#f8fbff);box-shadow:var(--shadow);
-      cursor:pointer;transition:.15s ease
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+      cursor:pointer;
     }
+
     .mode-card.active{
       border-color:var(--yellow);
-      box-shadow:0 0 0 3px rgba(244,176,0,.15), var(--shadow)
+      box-shadow:0 0 0 3px rgba(244,176,0,.15);
     }
-    .mode-icon{font-size:34px;margin-bottom:8px}
-    .mode-title{font-size:20px;font-weight:900;margin-bottom:4px}
-    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
-    @media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+    .mode-title{
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+
+    .muted{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:10px;
+      margin-bottom:16px;
+    }
+
+    @media (max-width:900px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+    }
+
     .stat{
-      background:#fbfcff;border:1px solid var(--line);border-radius:18px;
-      padding:12px 10px;text-align:center
+      background:#fbfcff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      text-align:center;
     }
-    .stat .k{font-size:12px;color:var(--muted);font-weight:800}
-    .stat .v{font-size:24px;font-weight:900;margin-top:2px}
+
+    .stat .k{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .stat .v{
+      font-size:24px;
+      font-weight:800;
+      margin-top:4px;
+    }
+
     .stage{
-      border:1px solid var(--line);border-radius:28px;padding:26px 16px;
-      background:linear-gradient(180deg,#fff,#f8fbff);text-align:center;
-      min-height:300px;display:flex;flex-direction:column;justify-content:center;
-      transition:.2s ease
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:24px 16px;
+      text-align:center;
+      min-height:240px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      background:#fff;
     }
-    .stage.success{
-      background:linear-gradient(180deg,#f0fdf4,#dcfce7);border-color:#86efac
-    }
-    .stage.error{
-      background:linear-gradient(180deg,#fff1f2,#ffe4e6);border-color:#fda4af
-    }
+
     .problem{
-      font-size:112px;line-height:1;font-weight:900;letter-spacing:2px;
-      color:var(--dark);margin:0 0 12px
+      font-size:84px;
+      font-weight:900;
+      line-height:1;
+      margin-bottom:12px;
     }
-    @media (max-width:680px){.problem{font-size:76px}}
-    .answer{min-height:54px;font-size:44px;color:var(--green);font-weight:900}
-    .feedback{min-height:30px;font-size:22px;font-weight:900;margin-top:10px}
-    .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:14px}
+
+    @media (max-width:700px){
+      .problem{font-size:58px}
+    }
+
+    .answer{
+      min-height:40px;
+      font-size:36px;
+      color:var(--green);
+      font-weight:900;
+    }
+
+    .feedback{
+      min-height:26px;
+      font-weight:800;
+      margin-top:8px;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+      margin-top:14px;
+    }
+
     .quiz-options{
-      display:grid;grid-template-columns:1fr;gap:12px;max-width:420px;
-      margin:18px auto 0
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      max-width:420px;
+      margin:18px auto 0;
     }
+
     .quiz-option{
-      border:none;border-radius:18px;padding:16px;font-size:28px;font-weight:900;
-      cursor:pointer;background:#eef2ff;color:#111827;box-shadow:0 6px 12px rgba(0,0,0,.06)
+      border:none;
+      border-radius:12px;
+      padding:16px;
+      font-size:24px;
+      font-weight:800;
+      cursor:pointer;
+      background:#eef2ff;
+      color:#111827;
     }
-    .quiz-option.correct{background:#dcfce7;color:#166534}
-    .quiz-option.wrong{background:#fee2e2;color:#991b1b}
-    .memo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
-    @media (max-width:700px){.memo-grid{grid-template-columns:repeat(3,1fr)}}
+
+    .quiz-option.correct{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .quiz-option.wrong{
+      background:#fee2e2;
+      color:#991b1b;
+    }
+
+    .memo-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-top:14px;
+    }
+
+    @media (max-width:700px){
+      .memo-grid{grid-template-columns:repeat(3,1fr)}
+    }
+
     .memo-card{
-      height:92px;border-radius:18px;border:1px solid var(--line);
-      display:flex;align-items:center;justify-content:center;font-weight:900;
-      font-size:28px;cursor:pointer;user-select:none;box-shadow:var(--shadow);
-      background:#fff;color:#fff
+      height:88px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:26px;
+      cursor:pointer;
+      user-select:none;
+      background:#fff;
     }
-    .memo-back{background:linear-gradient(180deg,var(--purple),#5f37d6);color:#fff;font-size:18px}
-    .memo-front{background:#fff;color:var(--dark)}
-    .memo-matched{background:#dcfce7 !important;color:#166534 !important;border-color:#86efac}
-    .specific-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px;margin-top:12px}
-    .history-item{border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;background:#fff}
-    .history-title{font-weight:900;margin-bottom:6px}
-    .visual-wrap{background:#fff9f1;border:1px solid #efe4d2;border-radius:24px;padding:18px}
-    .visual-title{text-align:center;font-weight:900;font-size:32px;color:#334155;margin-bottom:6px}
-    .visual-sub{text-align:center;color:#64748b;font-weight:700;margin-bottom:16px}
-    .stairs{display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding-bottom:6px}
-    .stair-col{display:flex;flex-direction:column;gap:8px;min-width:110px}
+
+    .memo-back{
+      background:linear-gradient(180deg,var(--purple),#5f37d6);
+      color:#fff;
+      font-size:18px;
+    }
+
+    .memo-front{
+      background:#fff;
+      color:var(--dark);
+    }
+
+    .memo-matched{
+      background:#dcfce7 !important;
+      color:#166534 !important;
+      border-color:#86efac;
+    }
+
+    .history-item{
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+      margin-bottom:8px;
+      background:#fff;
+    }
+
+    .empty{
+      color:var(--muted);
+      font-weight:700;
+      text-align:center;
+      padding:16px 0;
+    }
+
+    .stair-wrap{
+      overflow-x:auto;
+    }
+
+    .stairs{
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+    }
+
+    .stair-col{
+      min-width:110px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
     .stair-head{
-      border-radius:16px;text-align:center;padding:10px 0;font-size:42px;
-      font-weight:900;color:#334155;box-shadow:0 4px 10px rgba(0,0,0,.07)
+      background:#f4b000;
+      color:#fff;
+      font-weight:900;
+      text-align:center;
+      border-radius:12px;
+      padding:10px 0;
+      font-size:32px;
     }
+
     .stair-cell{
-      border-radius:14px;text-align:center;padding:11px 8px;font-size:19px;
-      font-weight:800;color:#334155;box-shadow:0 3px 8px rgba(0,0,0,.05);
-      white-space:nowrap
+      background:#fff8e5;
+      border-radius:10px;
+      text-align:center;
+      padding:10px 8px;
+      font-weight:700;
+      border:1px solid #f5df9f;
+      white-space:nowrap;
     }
-    @media (max-width:680px){
-      .stair-col{min-width:96px}
-      .stair-head{font-size:34px}
-      .stair-cell{font-size:16px}
+
+    canvas{
+      width:100%;
+      background:#fff;
+      border-radius:14px;
     }
-    canvas{background:#fff;border-radius:18px;width:100%}
-    .empty{color:var(--muted);font-weight:700;text-align:center;padding:18px 0}
-    .login-screen{
-      min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px
-    }
-    .login-card{
-      width:min(460px,100%);background:#fff;border:1px solid var(--line);
-      border-radius:24px;padding:22px;box-shadow:var(--shadow);text-align:center
-    }
-    .login-card img{width:110px;max-width:50%;margin-bottom:8px}
-    .login-title{font-size:24px;font-weight:900;margin:4px 0}
-    .login-sub{color:var(--muted);font-weight:600;margin-bottom:16px}
-    .login-actions{display:flex;gap:10px;margin-top:12px}
-    .login-actions .btn{flex:1}
-    .error-text{color:#b91c1c;font-weight:700;margin-top:10px;min-height:22px}
   </style>
 </head>
 <body>
 
   <div id="loginScreen" class="login-screen">
     <div class="login-card">
-      <img src="logo.png" alt="Bright Minds">
-      <div class="login-title">Bright Minds Math</div>
-      <div class="login-sub">Acceso privado · Solo alumnos</div>
+      <h1>Bright Minds Math</h1>
+      <p>Acceso privado · Solo alumnos</p>
 
-      <div class="row">
-        <input id="loginEmail" type="email" placeholder="Correo electrónico">
-        <input id="loginPassword" type="password" placeholder="Contraseña">
-      </div>
+      <input id="loginEmail" type="email" placeholder="Correo electrónico">
+      <input id="loginPassword" type="password" placeholder="Contraseña">
 
-      <div class="login-actions">
-        <button id="loginBtn" type="button" class="btn btn-yellow">Entrar</button>
-      </div>
-
-      <div id="loginError" class="error-text"></div>
+      <button id="loginBtn" class="btn btn-yellow" style="width:100%">Entrar</button>
+      <div id="loginError" style="margin-top:10px;color:#b91c1c;font-weight:700;"></div>
     </div>
   </div>
 
   <div id="appScreen" class="hidden">
-    <div class="wrap">
-      <div class="topbar">
-        <div class="brand">
-          <img src="logo.png" alt="Bright Minds logo">
-          <div>
-            <h1>Bright Minds Math</h1>
-            <p>Aprende jugando</p>
-            <div id="userBadge" class="user-badge"></div>
-          </div>
-        </div>
-        <button id="logoutBtn" type="button" class="ghost-btn">Cerrar sesión</button>
-      </div>
+    <div class="topbar">
+      <div id="userBadge" style="font-weight:700;"></div>
+      <button id="logoutBtn" class="btn btn-soft">Salir</button>
+    </div>
 
+    <div class="wrap">
       <div class="tabs">
         <button class="tab active" onclick="showTab(0)">Práctica</button>
         <button class="tab" onclick="showTab(1)">Específicas</button>
@@ -242,26 +466,23 @@
 
       <div class="section active">
         <div class="card hero">
-          <img src="logo.png" alt="Bright Minds">
-          <div class="hero-title">Bright Minds Math</div>
-          <div class="hero-sub">Practica • Juega • Mejora</div>
+          <h2>Multiplicaciones</h2>
+          <p>Practica · Elige · Memoriza · Mejora</p>
         </div>
 
         <div class="grid">
           <div>
             <div class="card">
-              <h3>Niños</h3>
+              <h3>Alumno</h3>
               <div class="row">
                 <input id="newChild" placeholder="Agregar nombre">
                 <button class="btn btn-yellow" onclick="addChild()">Agregar</button>
               </div>
-              <div style="margin-top:12px">
-                <select id="childSelect" onchange="renderHistory(); renderWeakFacts(); drawChart();"></select>
-              </div>
+              <select id="childSelect" onchange="renderHistory(); drawChart();"></select>
             </div>
 
             <div class="card">
-              <h3>Elige qué practicar</h3>
+              <h3>Tablas</h3>
               <div class="row">
                 <button class="btn btn-soft" onclick="selectAllTables()">Todas</button>
                 <button class="btn btn-soft" onclick="clearAllTables()">Limpiar</button>
@@ -270,32 +491,27 @@
               </div>
               <div class="row" style="margin-top:10px">
                 <button class="btn btn-soft" onclick="activatePractice()">Práctica</button>
-                <button id="btnWeak" class="btn btn-soft" onclick="loadWeakToSpecific()">Refuerzo</button>
-                <button id="btnToday" class="btn btn-soft" onclick="loadTodayWrongToSpecific()">Repasar</button>
+                <button class="btn btn-soft" onclick="loadWeakToSpecific()">Refuerzo</button>
+                <button class="btn btn-soft" onclick="loadTodayWrongToSpecific()">Repasar</button>
               </div>
-              <div id="practiceModeLabel" class="subtle" style="margin-top:8px;">Modo práctica inteligente</div>
+              <div id="modeLabel" class="muted" style="margin-top:8px;">Modo práctica inteligente</div>
               <div id="tableChips" class="chips"></div>
             </div>
 
             <div class="card">
-              <h3>Cómo quieres practicar</h3>
+              <h3>Modo</h3>
               <div class="mode-grid">
-                <div class="mode-card" id="modeMemorama" onclick="setMode('memorama')">
-                  <div class="mode-icon">🃏</div>
-                  <div class="mode-title">Memorama</div>
-                  <div class="subtle">Encuentra las parejas correctas</div>
-                </div>
-
-                <div class="mode-card" id="modeQuiz" onclick="setMode('quiz')">
-                  <div class="mode-icon">✅</div>
-                  <div class="mode-title">Elige la respuesta</div>
-                  <div class="subtle">Selecciona la opción correcta</div>
-                </div>
-
                 <div class="mode-card active" id="modeSpeed" onclick="setMode('speed')">
-                  <div class="mode-icon">⏱</div>
-                  <div class="mode-title">Reto rápido</div>
-                  <div class="subtle">Resuelve lo más rápido posible</div>
+                  <div class="mode-title">Practice</div>
+                  <div class="muted">Mostrar y marcar</div>
+                </div>
+                <div class="mode-card" id="modeQuiz" onclick="setMode('quiz')">
+                  <div class="mode-title">Choose</div>
+                  <div class="muted">Elige entre 3 opciones</div>
+                </div>
+                <div class="mode-card" id="modeMemorama" onclick="setMode('memorama')">
+                  <div class="mode-title">Memorama</div>
+                  <div class="muted">Encuentra las parejas</div>
                 </div>
               </div>
             </div>
@@ -304,29 +520,29 @@
           <div>
             <div class="card" id="speedPanel">
               <div class="stats">
-                <div class="stat"><div class="k">Tiempo</div><div class="v" id="speedTime">0.0</div></div>
-                <div class="stat"><div class="k">Promedio</div><div class="v" id="speedAvg">0.00</div></div>
-                <div class="stat"><div class="k">Correctas</div><div class="v" id="speedGood">0</div></div>
-                <div class="stat"><div class="k">Practicar</div><div class="v" id="speedBad">0</div></div>
-                <div class="stat"><div class="k">Restantes</div><div class="v" id="speedRemaining">0</div></div>
+                <div class="stat"><div class="k">Tiempo</div><div class="v" id="time">0.0</div></div>
+                <div class="stat"><div class="k">Promedio</div><div class="v" id="avg">0.00</div></div>
+                <div class="stat"><div class="k">Correctas</div><div class="v" id="good">0</div></div>
+                <div class="stat"><div class="k">Practicar</div><div class="v" id="bad">0</div></div>
+                <div class="stat"><div class="k">Restantes</div><div class="v" id="remaining">0</div></div>
               </div>
 
               <div class="row" style="justify-content:center;margin-bottom:12px">
-                <button class="btn btn-yellow" onclick="startSpeed()">Iniciar</button>
-                <button class="btn btn-soft" onclick="resetSpeed()">Reiniciar</button>
+                <button class="btn btn-yellow" onclick="startGame()">Iniciar</button>
+                <button class="btn btn-soft" onclick="resetGame()">Reiniciar</button>
               </div>
 
-              <div id="speedStage" class="stage">
-                <div id="speedProblem" class="problem">—</div>
-                <div id="speedAnswer" class="answer"></div>
-                <div id="speedFeedback" class="feedback"></div>
+              <div class="stage">
+                <div id="problem" class="problem">—</div>
+                <div id="realAnswer" class="answer"></div>
+                <div id="feedback" class="feedback"></div>
               </div>
 
               <div class="actions">
-                <button id="speedShowBtn" class="btn btn-soft" onclick="showSpeedAnswer()">Mostrar</button>
-                <button id="speedGoodBtn" class="btn btn-green" onclick="markSpeed(true)">Correcto</button>
-                <button id="speedBadBtn" class="btn btn-soft" onclick="markSpeed(false)">Practicar</button>
-                <button id="speedNextBtn" class="btn btn-dark" onclick="nextSpeed()">Siguiente</button>
+                <button class="btn btn-soft" onclick="showAnswer()">Mostrar</button>
+                <button class="btn btn-green" onclick="markManual(true)">Correcto</button>
+                <button class="btn btn-soft" onclick="markManual(false)">Practicar</button>
+                <button class="btn btn-soft" onclick="nextQuestion()">Siguiente</button>
               </div>
             </div>
 
@@ -369,17 +585,18 @@
               </div>
 
               <div id="memoGrid" class="memo-grid"></div>
-              <div id="memoFeedback" class="subtle" style="text-align:center;margin-top:12px"></div>
+              <div id="memoFeedback" class="muted" style="text-align:center;margin-top:12px"></div>
             </div>
           </div>
         </div>
       </div>
-
-            <div class="section">
+            <!-- SECCIÓN ESPECÍFICAS -->
+      <div class="section">
         <div class="card">
-          <h3>Elige multiplicaciones específicas</h3>
+          <h3>Selecciona operaciones específicas</h3>
+
           <div class="row">
-            <select id="specificTable" style="max-width:180px" onchange="renderSpecific()">
+            <select id="specificTable" onchange="renderSpecific()">
               <option value="2">Tabla 2</option>
               <option value="3">Tabla 3</option>
               <option value="4">Tabla 4</option>
@@ -390,710 +607,162 @@
               <option value="9">Tabla 9</option>
               <option value="10">Tabla 10</option>
             </select>
-            <button class="btn btn-soft" onclick="selectAllSpecificCurrent()">Seleccionar toda la tabla</button>
-            <button class="btn btn-soft" onclick="clearSpecificCurrent()">Limpiar esta tabla</button>
-            <button class="btn btn-soft" onclick="clearAllSpecific()">Limpiar todo</button>
+
+            <button class="btn btn-soft" onclick="selectAllSpecific()">Todas</button>
+            <button class="btn btn-soft" onclick="clearSpecific()">Limpiar</button>
           </div>
-          <div id="specificGrid" class="specific-grid"></div>
-          <div class="subtle" id="specificCount" style="margin-top:10px">Específicas seleccionadas: 0</div>
+
+          <div id="specificGrid" class="chips"></div>
+          <div id="specificCount" class="muted"></div>
         </div>
       </div>
 
+      <!-- PROGRESO -->
       <div class="section">
-        <div class="card">
-          <div class="row" style="justify-content:space-between">
-            <h3 style="margin:0">Tu progreso</h3>
-            <button class="btn btn-yellow" onclick="exportCSV()">Exportar resultados</button>
-          </div>
-          <canvas id="chart" width="900" height="260" style="margin-top:12px"></canvas>
-        </div>
-
         <div class="card">
           <h3>Historial</h3>
           <div id="history"></div>
         </div>
 
         <div class="card">
-          <h3>Refuerzo</h3>
-          <div id="weakFacts"></div>
+          <h3>Gráfica</h3>
+          <canvas id="chart" height="260"></canvas>
         </div>
       </div>
 
+      <!-- VISUAL -->
       <div class="section">
         <div class="card">
-          <div class="visual-wrap">
-            <div class="visual-title">Tablas de multiplicar</div>
-            <div class="visual-sub">Aprende con colores</div>
-            <div class="row" style="justify-content:center;margin-bottom:14px">
-              <button class="btn btn-soft" onclick="renderVisual(9)">Mostrar 1–9</button>
-              <button class="btn btn-soft" onclick="renderVisual(10)">Mostrar 1–10</button>
-            </div>
+          <h3>Tablas de multiplicar</h3>
+          <div class="stair-wrap">
             <div id="visualGrid" class="stairs"></div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
+  <!-- FIREBASE -->
   <script type="module">
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import {
       getAuth,
       signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
+      onAuthStateChanged,
+      signOut
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      doc,
-      setDoc,
-      getDoc,
-      getDocs,
-      query,
-      orderBy,
-      limit,
-      increment,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
-      authDomain: "bright-minds-math.firebaseapp.com",
-      projectId: "bright-minds-math",
-      storageBucket: "bright-minds-math.firebasestorage.app",
-      messagingSenderId: "645800687175",
-      appId: "1:645800687175:web:75241f3cac5e5433442362"
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_BUCKET",
+      messagingSenderId: "TU_ID",
+      appId: "TU_APP_ID"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
 
-    window.auth = auth;
-    window.db = db;
+    // LOGIN
+    document.getElementById("loginBtn").onclick = async () => {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      const errorEl = document.getElementById("loginError");
 
-    const loginScreen = document.getElementById("loginScreen");
-    const appScreen = document.getElementById("appScreen");
-    const loginEmail = document.getElementById("loginEmail");
-    const loginPassword = document.getElementById("loginPassword");
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const loginError = document.getElementById("loginError");
-    const userBadge = document.getElementById("userBadge");
-
-    function showError(message) {
-      loginError.textContent = message;
-    }
-
-    function clearError() {
-      loginError.textContent = "";
-    }
-
-    function translateFirebaseError(code) {
-      const map = {
-        "auth/invalid-email": "Correo inválido",
-        "auth/missing-password": "Escribe una contraseña",
-        "auth/invalid-credential": "Correo o contraseña incorrectos",
-        "auth/user-not-found": "Usuario no encontrado",
-        "auth/wrong-password": "Contraseña incorrecta"
-      };
-      return map[code] || "No se pudo completar la acción.";
-    }
-
-    async function ensureUserProfile(user) {
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-
-      if (!snap.exists()) {
-        await setDoc(userRef, {
-          email: user.email,
-          active: true,
-          createdAt: serverTimestamp()
-        });
-      }
-    }
-
-    async function loginUser() {
-      const email = loginEmail.value.trim();
-      const password = loginPassword.value.trim();
-      clearError();
+      errorEl.textContent = "";
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
-      } catch (error) {
-        showError(translateFirebaseError(error.code));
+      } catch (e) {
+        errorEl.textContent = "Error al iniciar sesión";
       }
-    }
+    };
 
-    async function logoutUser() {
-      await signOut(auth);
-    }
+    document.getElementById("logoutBtn").onclick = () => signOut(auth);
 
-    loginBtn.addEventListener("click", loginUser);
-    logoutBtn.addEventListener("click", logoutUser);
-
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
-        await ensureUserProfile(user);
-        loginScreen.classList.add("hidden");
-        appScreen.classList.remove("hidden");
-        userBadge.textContent = user.email || "";
-        if (window.loadCloudData) {
-          await window.loadCloudData();
-        }
+        document.getElementById("loginScreen").classList.add("hidden");
+        document.getElementById("appScreen").classList.remove("hidden");
+        document.getElementById("userBadge").textContent = user.email;
+
+        initApp();
       } else {
-        appScreen.classList.add("hidden");
-        loginScreen.classList.remove("hidden");
-        userBadge.textContent = "";
+        document.getElementById("loginScreen").classList.remove("hidden");
+        document.getElementById("appScreen").classList.add("hidden");
       }
     });
 
-    window.firestoreApi = {
-      collection,
-      doc,
-      setDoc,
-      getDoc,
-      getDocs,
-      query,
-      orderBy,
-      limit,
-      increment,
-      serverTimestamp
-    };
-  </script>
+    // VARIABLES
+    let selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
+    let specificFacts = new Set();
+    let mode = "speed";
 
-    <script>
-    const MAX = 10;
+    let problems = [];
+    let current = null;
+    let good = 0;
+    let bad = 0;
+    let startTime = null;
+    let timer = null;
 
-    const state = {
-      running: false,
-      current: null,
-      startTime: null,
-      timer: null,
-      good: 0,
-      bad: 0,
-      total: 0,
-      remaining: 0,
-      selectedTables: new Set([2,3,4,5,6,7,8,9,10]),
-      specific: new Set(),
-      history: [],
-      weakMap: {}
-    };
+    let weakMap = {};
+    let todayWrong = [];
 
-    const el = {
-      a: document.getElementById("a"),
-      b: document.getElementById("b"),
-      input: document.getElementById("answer"),
-      start: document.getElementById("startBtn"),
-      reset: document.getElementById("resetBtn"),
-      good: document.getElementById("good"),
-      bad: document.getElementById("bad"),
-      time: document.getElementById("time"),
-      avg: document.getElementById("avg"),
-      remaining: document.getElementById("remaining"),
-      feedback: document.getElementById("feedback"),
-      history: document.getElementById("history"),
-      weakFacts: document.getElementById("weakFacts")
+    // INIT
+    function initApp(){
+      loadKids();
+      renderTableChips();
+      renderSpecific();
+      renderVisual();
+    }
+
+    // TAB
+    window.showTab = function(i){
+      document.querySelectorAll(".section").forEach((s,idx)=>{
+        s.classList.toggle("active", idx===i);
+      });
+      document.querySelectorAll(".tab").forEach((t,idx)=>{
+        t.classList.toggle("active", idx===i);
+      });
+      drawChart();
     };
 
-    function allFacts() {
-      const arr = [];
-      for (let a = 2; a <= MAX; a++) {
-        for (let b = 1; b <= 10; b++) {
-          arr.push([a, b]);
-        }
-      }
-      return arr;
-    }
+    // MODE
+    window.setMode = function(m){
+      mode = m;
 
-    function pickNext() {
-      const pool = [];
+      document.getElementById("speedPanel").classList.toggle("hidden", m!=="speed");
+      document.getElementById("quizPanel").classList.toggle("hidden", m!=="quiz");
+      document.getElementById("memoramaPanel").classList.toggle("hidden", m!=="memorama");
 
-      allFacts().forEach(([a, b]) => {
-        if (!state.selectedTables.has(a)) return;
-
-        const key = `${a}x${b}`;
-        if (state.specific.size > 0 && !state.specific.has(key)) return;
-
-        const weight = state.weakMap[key] || 1;
-        for (let i = 0; i < weight; i++) {
-          pool.push([a, b]);
-        }
-      });
-
-      if (pool.length === 0) return null;
-
-      return pool[Math.floor(Math.random() * pool.length)];
-    }
-
-    function updateUI() {
-      el.good.textContent = state.good;
-      el.bad.textContent = state.bad;
-      el.remaining.textContent = state.remaining;
-      el.avg.textContent = state.total ? (state.time / state.total).toFixed(2) : "0.00";
-      el.time.textContent = state.time.toFixed(1);
-    }
-
-    function startGame() {
-      state.running = true;
-      state.good = 0;
-      state.bad = 0;
-      state.total = 0;
-      state.time = 0;
-      state.remaining = 100;
-      state.startTime = Date.now();
-
-      nextQuestion();
-
-      state.timer = setInterval(() => {
-        state.time = (Date.now() - state.startTime) / 1000;
-        updateUI();
-      }, 100);
-    }
-
-    function stopGame() {
-      state.running = false;
-      clearInterval(state.timer);
-    }
-
-    function nextQuestion() {
-      const next = pickNext();
-
-      if (!next) {
-        stopGame();
-        return;
-      }
-
-      state.current = next;
-      el.a.textContent = next[0];
-      el.b.textContent = next[1];
-      el.input.value = "";
-      el.input.focus();
-    }
-
-    function markWeak(a, b) {
-      const key = `${a}x${b}`;
-      state.weakMap[key] = (state.weakMap[key] || 1) + 2;
-    }
-
-    function handleAnswer() {
-      if (!state.running) return;
-
-      const val = parseInt(el.input.value);
-      if (isNaN(val)) return;
-
-      const [a, b] = state.current;
-      const correct = a * b;
-
-      state.total++;
-
-      if (val === correct) {
-        state.good++;
-        el.feedback.textContent = "Correcto";
-      } else {
-        state.bad++;
-        el.feedback.textContent = `Error → ${correct}`;
-        markWeak(a, b);
-      }
-
-      state.remaining--;
-
-      saveResult(a, b, val === correct);
-
-      if (state.remaining <= 0) {
-        stopGame();
-        saveSession();
-        return;
-      }
-
-      nextQuestion();
-      updateUI();
-    }
-
-    el.input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        handleAnswer();
-      }
-    });
-
-    el.start.addEventListener("click", startGame);
-    el.reset.addEventListener("click", () => location.reload());
-
-    async function saveResult(a, b, correct) {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const ref = firestoreApi.doc(db, "users", user.uid, "stats", `${a}x${b}`);
-
-      await firestoreApi.setDoc(ref, {
-        correct: firestoreApi.increment(correct ? 1 : 0),
-        wrong: firestoreApi.increment(correct ? 0 : 1),
-        updatedAt: firestoreApi.serverTimestamp()
-      }, { merge: true });
-    }
-
-    async function saveSession() {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const ref = firestoreApi.doc(
-        firestoreApi.collection(db, "users", user.uid, "sessions")
-      );
-
-      await firestoreApi.setDoc(ref, {
-        good: state.good,
-        bad: state.bad,
-        total: state.total,
-        time: state.time,
-        createdAt: firestoreApi.serverTimestamp()
-      });
-    }
-
-    window.loadCloudData = async function () {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const q = firestoreApi.query(
-        firestoreApi.collection(db, "users", user.uid, "sessions"),
-        firestoreApi.orderBy("createdAt", "desc"),
-        firestoreApi.limit(10)
-      );
-
-      const snap = await firestoreApi.getDocs(q);
-
-      el.history.innerHTML = "";
-
-      snap.forEach(docu => {
-        const d = docu.data();
-        const div = document.createElement("div");
-        div.textContent = `✔ ${d.good} / ❌ ${d.bad} (${d.time.toFixed(1)}s)`;
-        el.history.appendChild(div);
-      });
+      document.getElementById("modeSpeed").classList.toggle("active", m==="speed");
+      document.getElementById("modeQuiz").classList.toggle("active", m==="quiz");
+      document.getElementById("modeMemorama").classList.toggle("active", m==="memorama");
     };
 
-    updateUI();
-  </script>
-</body>
-</html>
-<script>
-  // ===== Utilidades UI adicionales =====
-  function renderWeakFacts() {
-    const entries = Object.entries(state.weakMap)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 12);
+    // NIÑOS
+    function getKids(){ return JSON.parse(localStorage.getItem("kids") || "[]"); }
+    function saveKids(x){ localStorage.setItem("kids", JSON.stringify(x)); }
 
-    if (!el.weakFacts) return;
-
-    el.weakFacts.innerHTML = "";
-
-    if (entries.length === 0) {
-      el.weakFacts.textContent = "Todavía no hay ejercicios para refuerzo.";
-      return;
+    function loadKids(){
+      const sel = document.getElementById("childSelect");
+      sel.innerHTML = getKids().map(n=>`<option>${n}</option>`).join("");
     }
 
-    entries.forEach(([fact, weight]) => {
-      const div = document.createElement("div");
-      div.textContent = `${fact} · prioridad ${weight}`;
-      el.weakFacts.appendChild(div);
-    });
-  }
+    window.addChild = function(){
+      const name = document.getElementById("newChild").value.trim();
+      if(!name) return;
 
-  function saveWeakLocalBackup() {
-    localStorage.setItem("brightmath_weakmap", JSON.stringify(state.weakMap));
-  }
+      const list = getKids();
+      if(!list.includes(name)) list.push(name);
 
-  function loadWeakLocalBackup() {
-    try {
-      const raw = localStorage.getItem("brightmath_weakmap");
-      if (!raw) return;
-      state.weakMap = JSON.parse(raw) || {};
-    } catch (_) {
-      state.weakMap = {};
+      saveKids(list);
+      loadKids();
+    };
+
+    function currentChild(){
+      return document.getElementById("childSelect").value;
     }
-  }
-
-  // ===== Botones de modos =====
-  window.activatePractice = function () {
-    state.specific = new Set();
-    renderWeakFacts();
-    el.feedback.textContent = "Modo práctica activado";
-  };
-
-  window.loadWeakToSpecific = function () {
-    const weakFacts = Object.entries(state.weakMap)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([fact]) => fact);
-
-    if (weakFacts.length === 0) {
-      el.feedback.textContent = "Todavía no hay ejercicios de refuerzo";
-      return;
-    }
-
-    state.specific = new Set(weakFacts);
-    el.feedback.textContent = "Modo refuerzo activado";
-  };
-
-  window.loadTodayWrongToSpecific = function () {
-    const weakFacts = Object.entries(state.weakMap)
-      .filter(([, weight]) => weight >= 3)
-      .map(([fact]) => fact);
-
-    if (weakFacts.length === 0) {
-      el.feedback.textContent = "Todavía no hay ejercicios para repasar";
-      return;
-    }
-
-    state.specific = new Set(weakFacts);
-    el.feedback.textContent = "Modo repasar activado";
-  };
-
-  // ===== Tablas =====
-  window.selectAllTables = function () {
-    state.selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
-    renderTableChipsSafe();
-  };
-
-  window.clearAllTables = function () {
-    state.selectedTables = new Set();
-    renderTableChipsSafe();
-  };
-
-  window.selectRange = function (start, end) {
-    state.selectedTables = new Set();
-    for (let i = start; i <= end; i++) state.selectedTables.add(i);
-    renderTableChipsSafe();
-  };
-
-  window.toggleTable = function (n) {
-    if (state.selectedTables.has(n)) state.selectedTables.delete(n);
-    else state.selectedTables.add(n);
-    renderTableChipsSafe();
-  };
-
-  function renderTableChipsSafe() {
-    const box = document.getElementById("tableChips");
-    if (!box) return;
-
-    let html = "";
-    for (let i = 2; i <= 10; i++) {
-      html += `
-        <div class="chip ${state.selectedTables.has(i) ? "active" : ""}" onclick="toggleTable(${i})">
-          Tabla ${i}
-        </div>
-      `;
-    }
-    box.innerHTML = html;
-  }
-
-  // ===== Específicas =====
-  window.renderSpecific = function () {
-    const sel = document.getElementById("specificTable");
-    const grid = document.getElementById("specificGrid");
-    const count = document.getElementById("specificCount");
-    if (!sel || !grid || !count) return;
-
-    const table = Number(sel.value);
-    let html = "";
-
-    for (let i = 1; i <= 10; i++) {
-      const fact = `${table}x${i}`;
-      html += `
-        <div class="chip ${state.specific.has(fact) ? "active" : ""}" onclick="toggleSpecific('${fact}')">
-          ${fact}
-        </div>
-      `;
-    }
-
-    grid.innerHTML = html;
-    count.textContent = `Específicas seleccionadas: ${state.specific.size}`;
-  };
-
-  window.toggleSpecific = function (fact) {
-    if (state.specific.has(fact)) state.specific.delete(fact);
-    else state.specific.add(fact);
-    renderSpecific();
-  };
-
-  window.selectAllSpecificCurrent = function () {
-    const sel = document.getElementById("specificTable");
-    if (!sel) return;
-    const table = Number(sel.value);
-    for (let i = 1; i <= 10; i++) {
-      state.specific.add(`${table}x${i}`);
-    }
-    renderSpecific();
-  };
-
-  window.clearSpecificCurrent = function () {
-    const sel = document.getElementById("specificTable");
-    if (!sel) return;
-    const table = Number(sel.value);
-    for (let i = 1; i <= 10; i++) {
-      state.specific.delete(`${table}x${i}`);
-    }
-    renderSpecific();
-  };
-
-  window.clearAllSpecific = function () {
-    state.specific = new Set();
-    renderSpecific();
-  };
-
-  // ===== Tabs =====
-  window.showTab = function (index) {
-    document.querySelectorAll(".section").forEach((s, i) => {
-      s.classList.toggle("active", i === index);
-    });
-
-    document.querySelectorAll(".tab").forEach((t, i) => {
-      t.classList.toggle("active", i === index);
-    });
-
-    if (index === 2) {
-      renderWeakFacts();
-    }
-  };
-
-  // ===== Visual =====
-  window.renderVisual = function (max = 10) {
-    const box = document.getElementById("visualGrid");
-    if (!box) return;
-
-    let html = "";
-    for (let t = 1; t <= max; t++) {
-      html += `<div class="stair-col">`;
-      html += `<div class="stair-head">${t}</div>`;
-      for (let i = 1; i <= 10; i++) {
-        html += `<div class="stair-cell">${t} × ${i} = ${t * i}</div>`;
-      }
-      html += `</div>`;
-    }
-    box.innerHTML = html;
-  };
-
-  // ===== Memorama básico =====
-  window.setMode = function(mode) {
-    document.getElementById("speedPanel")?.classList.add("hidden");
-    document.getElementById("quizPanel")?.classList.add("hidden");
-    document.getElementById("memoramaPanel")?.classList.add("hidden");
-
-    document.getElementById("modeSpeed")?.classList.remove("active");
-    document.getElementById("modeQuiz")?.classList.remove("active");
-    document.getElementById("modeMemorama")?.classList.remove("active");
-
-    if (mode === "speed") {
-      document.getElementById("speedPanel")?.classList.remove("hidden");
-      document.getElementById("modeSpeed")?.classList.add("active");
-    }
-    if (mode === "quiz") {
-      document.getElementById("quizPanel")?.classList.remove("hidden");
-      document.getElementById("modeQuiz")?.classList.add("active");
-    }
-    if (mode === "memorama") {
-      document.getElementById("memoramaPanel")?.classList.remove("hidden");
-      document.getElementById("modeMemorama")?.classList.add("active");
-    }
-  };
-
-  window.startMemo = function(pairCount = 6) {
-    const grid = document.getElementById("memoGrid");
-    const mode = document.getElementById("memoMode");
-    const pairs = document.getElementById("memoPairs");
-    const target = document.getElementById("memoTarget");
-    const moves = document.getElementById("memoMoves");
-    const time = document.getElementById("memoTime");
-    const feedback = document.getElementById("memoFeedback");
-
-    if (!grid) return;
-
-    const all = allFacts()
-      .filter(([a]) => state.selectedTables.has(a))
-      .slice(0, pairCount);
-
-    let cards = [];
-    all.forEach(([a, b], idx) => {
-      cards.push({ id:`q${idx}`, value:`${a}x${b}`, pair: idx });
-      cards.push({ id:`a${idx}`, value:`${a*b}`, pair: idx });
-    });
-
-    cards = shuffle(cards);
-
-    let flipped = [];
-    let matched = 0;
-    let movementCount = 0;
-    const start = Date.now();
-
-    mode.textContent = `${pairCount} pares`;
-    pairs.textContent = "0";
-    target.textContent = String(pairCount);
-    moves.textContent = "0";
-    feedback.textContent = "";
-    time.textContent = "0.0";
-
-    const timer = setInterval(() => {
-      time.textContent = ((Date.now() - start) / 1000).toFixed(1);
-      if (matched === pairCount) clearInterval(timer);
-    }, 100);
-
-    grid.innerHTML = cards.map((c, i) => `
-      <div class="memo-card memo-back" data-index="${i}">?</div>
-    `).join("");
-
-    const nodes = [...grid.querySelectorAll(".memo-card")];
-
-    nodes.forEach(node => {
-      node.addEventListener("click", () => {
-        const i = Number(node.dataset.index);
-        if (node.classList.contains("memo-matched")) return;
-        if (flipped.includes(i)) return;
-        if (flipped.length === 2) return;
-
-        node.textContent = cards[i].value;
-        node.classList.remove("memo-back");
-        node.classList.add("memo-front");
-        flipped.push(i);
-
-        if (flipped.length === 2) {
-          movementCount++;
-          moves.textContent = String(movementCount);
-
-          const [i1, i2] = flipped;
-          const same = cards[i1].pair === cards[i2].pair;
-
-          if (same) {
-            nodes[i1].classList.add("memo-matched");
-            nodes[i2].classList.add("memo-matched");
-            matched++;
-            pairs.textContent = String(matched);
-            flipped = [];
-
-            if (matched === pairCount) {
-              feedback.textContent = "¡Memorama completado! 🎉";
-            }
-          } else {
-            setTimeout(() => {
-              [i1, i2].forEach(idx => {
-                nodes[idx].textContent = "?";
-                nodes[idx].classList.remove("memo-front");
-                nodes[idx].classList.add("memo-back");
-              });
-              flipped = [];
-            }, 700);
-          }
-        }
-      });
-    });
-  };
-
-  // ===== Fix final =====
-  loadWeakLocalBackup();
-  renderWeakFacts();
-  renderTableChipsSafe();
-  renderSpecific();
-  renderVisual(10);
-  setMode("speed");
-</script>
-</body>
-</html>

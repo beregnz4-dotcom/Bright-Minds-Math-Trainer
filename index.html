@@ -27,554 +27,175 @@
       --dark:#111827;
       --shadow:0 10px 30px rgba(17,24,39,.08);
     }
-
     *{box-sizing:border-box}
-
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
       background:linear-gradient(180deg,#fbfcff,#eef2ff);
       color:var(--text);
     }
-
     .hidden{display:none !important}
-
-    .wrap{
-      max-width:1100px;
-      margin:auto;
-      padding:18px;
-    }
-
+    .wrap{max-width:1100px;margin:auto;padding:18px}
     .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:16px;
-      flex-wrap:wrap;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      margin-bottom:16px;flex-wrap:wrap
     }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
+    .brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
     .brand img{
-      width:58px;
-      height:58px;
-      border-radius:14px;
-      object-fit:contain;
-      background:#fff;
-      box-shadow:var(--shadow);
-      padding:4px;
+      width:58px;height:58px;border-radius:14px;object-fit:contain;
+      background:#fff;box-shadow:var(--shadow);padding:4px
     }
-
-    .brand h1{
-      margin:0;
-      font-size:30px;
-      line-height:1.05;
-    }
-
-    .brand p{
-      margin:4px 0 0;
-      color:var(--muted);
-      font-weight:600;
-      font-size:14px;
-    }
-
-    .user-badge{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:700;
-    }
-
+    .brand h1{margin:0;font-size:30px;line-height:1.05}
+    .brand p{margin:4px 0 0;color:var(--muted);font-weight:600;font-size:14px}
+    .user-badge{margin-top:4px;color:var(--muted);font-size:12px;font-weight:700}
     .ghost-btn{
-      background:#fff;
-      border:1px solid var(--line);
-      color:var(--text);
-      padding:10px 14px;
-      border-radius:12px;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:var(--shadow);
+      background:#fff;border:1px solid var(--line);color:var(--text);
+      padding:10px 14px;border-radius:12px;font-weight:800;cursor:pointer;
+      box-shadow:var(--shadow)
     }
-
-    .tabs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:16px;
-    }
-
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
     .tab{
-      background:#e8ebf3;
-      color:#374151;
-      border:none;
-      padding:10px 16px;
-      border-radius:999px;
-      font-weight:800;
-      cursor:pointer;
+      background:#e8ebf3;color:#374151;border:none;padding:10px 16px;
+      border-radius:999px;font-weight:800;cursor:pointer
     }
-
-    .tab.active{
-      background:var(--yellow);
-      color:#fff;
-    }
-
+    .tab.active{background:var(--yellow);color:#fff}
     .section{display:none}
     .section.active{display:block}
-
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:16px;
-    }
-
-    @media (max-width:900px){
-      .grid{grid-template-columns:1fr}
-    }
-
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
     .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:16px;
-      box-shadow:var(--shadow);
-      margin-bottom:16px;
+      background:var(--card);border:1px solid var(--line);border-radius:24px;
+      padding:16px;box-shadow:var(--shadow);margin-bottom:16px
     }
-
-    .card h3{
-      margin:0 0 12px;
-      font-size:18px;
-    }
-
-    .subtle{
-      color:var(--muted);
-      font-size:13px;
-      font-weight:600;
-    }
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-
+    .card h3{margin:0 0 12px;font-size:18px}
+    .subtle{color:var(--muted);font-size:13px;font-weight:600}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     input, select{
-      width:100%;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px 14px;
-      font-size:16px;
-      background:#fff;
-      color:var(--text);
+      width:100%;border:1px solid var(--line);border-radius:14px;
+      padding:12px 14px;font-size:16px;background:#fff;color:var(--text)
     }
-
     .btn{
-      border:none;
-      border-radius:14px;
-      padding:12px 16px;
-      font-weight:800;
-      cursor:pointer;
-      -webkit-appearance:none;
-      appearance:none;
+      border:none;border-radius:14px;padding:12px 16px;font-weight:800;
+      cursor:pointer;-webkit-appearance:none;appearance:none
     }
-
     .btn-yellow{background:var(--yellow);color:#fff}
     .btn-soft{background:#eef2ff;color:var(--text)}
     .btn-green{background:var(--green);color:#fff}
     .btn-red{background:var(--red);color:#fff}
     .btn-dark{background:var(--dark);color:#fff}
-
-    .hero{
-      text-align:center;
-      padding:24px 16px;
-    }
-
-    .hero img{
-      width:180px;
-      max-width:70%;
-      margin-bottom:8px;
-    }
-
-    .hero-title{
-      font-size:22px;
-      font-weight:900;
-      margin-bottom:4px;
-    }
-
-    .hero-sub{
-      color:var(--muted);
-      font-weight:700;
-    }
-
-    .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-
+    .hero{text-align:center;padding:24px 16px}
+    .hero img{width:180px;max-width:70%;margin-bottom:8px}
+    .hero-title{font-size:22px;font-weight:900;margin-bottom:4px}
+    .hero-sub{color:var(--muted);font-weight:700}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .chip{
-      border:1px solid #d1d5db;
-      background:#fff;
-      color:#374151;
-      padding:9px 12px;
-      border-radius:999px;
-      font-weight:800;
-      cursor:pointer;
-      user-select:none;
-      min-width:72px;
-      text-align:center;
-      transition:.15s ease;
+      border:1px solid #d1d5db;background:#fff;color:#374151;padding:9px 12px;
+      border-radius:999px;font-weight:800;cursor:pointer;user-select:none;
+      min-width:72px;text-align:center;transition:.15s ease
     }
-
     .chip.active{
-      background:var(--yellow);
-      color:#fff;
-      border-color:var(--yellow);
-      transform:scale(1.03);
+      background:var(--yellow);color:#fff;border-color:var(--yellow);
+      transform:scale(1.03)
     }
-
-    .mode-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-    }
-
-    @media (max-width:900px){
-      .mode-grid{grid-template-columns:1fr}
-    }
-
+    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media (max-width:900px){.mode-grid{grid-template-columns:1fr}}
     .mode-card{
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:18px;
-      background:linear-gradient(180deg,#fff,#f8fbff);
-      box-shadow:var(--shadow);
-      cursor:pointer;
-      transition:.15s ease;
+      border:1px solid var(--line);border-radius:22px;padding:18px;
+      background:linear-gradient(180deg,#fff,#f8fbff);box-shadow:var(--shadow);
+      cursor:pointer;transition:.15s ease
     }
-
     .mode-card.active{
       border-color:var(--yellow);
-      box-shadow:0 0 0 3px rgba(244,176,0,.15), var(--shadow);
+      box-shadow:0 0 0 3px rgba(244,176,0,.15), var(--shadow)
     }
-
-    .mode-icon{
-      font-size:34px;
-      margin-bottom:8px;
-    }
-
-    .mode-title{
-      font-size:20px;
-      font-weight:900;
-      margin-bottom:4px;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:10px;
-      margin-bottom:16px;
-    }
-
-    @media (max-width:900px){
-      .stats{grid-template-columns:repeat(2,1fr)}
-    }
-
+    .mode-icon{font-size:34px;margin-bottom:8px}
+    .mode-title{font-size:20px;font-weight:900;margin-bottom:4px}
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+    @media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
     .stat{
-      background:#fbfcff;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px 10px;
-      text-align:center;
+      background:#fbfcff;border:1px solid var(--line);border-radius:18px;
+      padding:12px 10px;text-align:center
     }
-
-    .stat .k{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:800;
-    }
-
-    .stat .v{
-      font-size:24px;
-      font-weight:900;
-      margin-top:2px;
-    }
-
+    .stat .k{font-size:12px;color:var(--muted);font-weight:800}
+    .stat .v{font-size:24px;font-weight:900;margin-top:2px}
     .stage{
-      border:1px solid var(--line);
-      border-radius:28px;
-      padding:26px 16px;
-      background:linear-gradient(180deg,#fff,#f8fbff);
-      text-align:center;
-      min-height:300px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      transition:.2s ease;
+      border:1px solid var(--line);border-radius:28px;padding:26px 16px;
+      background:linear-gradient(180deg,#fff,#f8fbff);text-align:center;
+      min-height:300px;display:flex;flex-direction:column;justify-content:center;
+      transition:.2s ease
     }
-
     .stage.success{
-      background:linear-gradient(180deg,#f0fdf4,#dcfce7);
-      border-color:#86efac;
+      background:linear-gradient(180deg,#f0fdf4,#dcfce7);border-color:#86efac
     }
-
     .stage.error{
-      background:linear-gradient(180deg,#fff1f2,#ffe4e6);
-      border-color:#fda4af;
+      background:linear-gradient(180deg,#fff1f2,#ffe4e6);border-color:#fda4af
     }
-
     .problem{
-      font-size:112px;
-      line-height:1;
-      font-weight:900;
-      letter-spacing:2px;
-      color:var(--dark);
-      margin:0 0 12px;
+      font-size:112px;line-height:1;font-weight:900;letter-spacing:2px;
+      color:var(--dark);margin:0 0 12px
     }
-
-    @media (max-width:680px){
-      .problem{font-size:76px}
-    }
-
-    .answer{
-      min-height:54px;
-      font-size:44px;
-      color:var(--green);
-      font-weight:900;
-    }
-
-    .feedback{
-      min-height:30px;
-      font-size:22px;
-      font-weight:900;
-      margin-top:10px;
-    }
-
-    .actions{
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:14px;
-    }
-
+    @media (max-width:680px){.problem{font-size:76px}}
+    .answer{min-height:54px;font-size:44px;color:var(--green);font-weight:900}
+    .feedback{min-height:30px;font-size:22px;font-weight:900;margin-top:10px}
+    .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:14px}
     .quiz-options{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      max-width:420px;
-      margin:18px auto 0;
+      display:grid;grid-template-columns:1fr;gap:12px;max-width:420px;
+      margin:18px auto 0
     }
-
     .quiz-option{
-      border:none;
-      border-radius:18px;
-      padding:16px;
-      font-size:28px;
-      font-weight:900;
-      cursor:pointer;
-      background:#eef2ff;
-      color:#111827;
-      box-shadow:0 6px 12px rgba(0,0,0,.06);
+      border:none;border-radius:18px;padding:16px;font-size:28px;font-weight:900;
+      cursor:pointer;background:#eef2ff;color:#111827;box-shadow:0 6px 12px rgba(0,0,0,.06)
     }
-
     .quiz-option.correct{background:#dcfce7;color:#166534}
     .quiz-option.wrong{background:#fee2e2;color:#991b1b}
-
-    .memo-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-      margin-top:14px;
-    }
-
-    @media (max-width:700px){
-      .memo-grid{grid-template-columns:repeat(3,1fr)}
-    }
-
+    .memo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+    @media (max-width:700px){.memo-grid{grid-template-columns:repeat(3,1fr)}}
     .memo-card{
-      height:92px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      font-size:28px;
-      cursor:pointer;
-      user-select:none;
-      box-shadow:var(--shadow);
-      background:#fff;
-      color:#fff;
+      height:92px;border-radius:18px;border:1px solid var(--line);
+      display:flex;align-items:center;justify-content:center;font-weight:900;
+      font-size:28px;cursor:pointer;user-select:none;box-shadow:var(--shadow);
+      background:#fff;color:#fff
     }
-
-    .memo-back{
-      background:linear-gradient(180deg,var(--purple),#5f37d6);
-      color:#fff;
-      font-size:18px;
-    }
-
-    .memo-front{
-      background:#fff;
-      color:var(--dark);
-    }
-
-    .memo-matched{
-      background:#dcfce7 !important;
-      color:#166534 !important;
-      border-color:#86efac;
-    }
-
-    .specific-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(92px,1fr));
-      gap:8px;
-      margin-top:12px;
-    }
-
-    .history-item{
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      margin-bottom:10px;
-      background:#fff;
-    }
-
-    .history-title{
-      font-weight:900;
-      margin-bottom:6px;
-    }
-
-    .visual-wrap{
-      background:#fff9f1;
-      border:1px solid #efe4d2;
-      border-radius:24px;
-      padding:18px;
-    }
-
-    .visual-title{
-      text-align:center;
-      font-weight:900;
-      font-size:32px;
-      color:#334155;
-      margin-bottom:6px;
-    }
-
-    .visual-sub{
-      text-align:center;
-      color:#64748b;
-      font-weight:700;
-      margin-bottom:16px;
-    }
-
-    .stairs{
-      display:flex;
-      align-items:flex-end;
-      gap:10px;
-      overflow-x:auto;
-      padding-bottom:6px;
-    }
-
-    .stair-col{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      min-width:110px;
-    }
-
+    .memo-back{background:linear-gradient(180deg,var(--purple),#5f37d6);color:#fff;font-size:18px}
+    .memo-front{background:#fff;color:var(--dark)}
+    .memo-matched{background:#dcfce7 !important;color:#166534 !important;border-color:#86efac}
+    .specific-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px;margin-top:12px}
+    .history-item{border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;background:#fff}
+    .history-title{font-weight:900;margin-bottom:6px}
+    .visual-wrap{background:#fff9f1;border:1px solid #efe4d2;border-radius:24px;padding:18px}
+    .visual-title{text-align:center;font-weight:900;font-size:32px;color:#334155;margin-bottom:6px}
+    .visual-sub{text-align:center;color:#64748b;font-weight:700;margin-bottom:16px}
+    .stairs{display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding-bottom:6px}
+    .stair-col{display:flex;flex-direction:column;gap:8px;min-width:110px}
     .stair-head{
-      border-radius:16px;
-      text-align:center;
-      padding:10px 0;
-      font-size:42px;
-      font-weight:900;
-      color:#334155;
-      box-shadow:0 4px 10px rgba(0,0,0,.07);
+      border-radius:16px;text-align:center;padding:10px 0;font-size:42px;
+      font-weight:900;color:#334155;box-shadow:0 4px 10px rgba(0,0,0,.07)
     }
-
     .stair-cell{
-      border-radius:14px;
-      text-align:center;
-      padding:11px 8px;
-      font-size:19px;
-      font-weight:800;
-      color:#334155;
-      box-shadow:0 3px 8px rgba(0,0,0,.05);
-      white-space:nowrap;
+      border-radius:14px;text-align:center;padding:11px 8px;font-size:19px;
+      font-weight:800;color:#334155;box-shadow:0 3px 8px rgba(0,0,0,.05);
+      white-space:nowrap
     }
-
-    canvas{
-      background:#fff;
-      border-radius:18px;
-      width:100%;
+    @media (max-width:680px){
+      .stair-col{min-width:96px}
+      .stair-head{font-size:34px}
+      .stair-cell{font-size:16px}
     }
-
-    .empty{
-      color:var(--muted);
-      font-weight:700;
-      text-align:center;
-      padding:18px 0;
-    }
-
+    canvas{background:#fff;border-radius:18px;width:100%}
+    .empty{color:var(--muted);font-weight:700;text-align:center;padding:18px 0}
     .login-screen{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
+      min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px
     }
-
     .login-card{
-      width:min(460px,100%);
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:22px;
-      box-shadow:var(--shadow);
-      text-align:center;
+      width:min(460px,100%);background:#fff;border:1px solid var(--line);
+      border-radius:24px;padding:22px;box-shadow:var(--shadow);text-align:center
     }
-
-    .login-card img{
-      width:110px;
-      max-width:50%;
-      margin-bottom:8px;
-    }
-
-    .login-title{
-      font-size:24px;
-      font-weight:900;
-      margin:4px 0;
-    }
-
-    .login-sub{
-      color:var(--muted);
-      font-weight:600;
-      margin-bottom:16px;
-    }
-
-    .login-actions{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .login-actions .btn{
-      flex:1;
-    }
-
-    .error-text{
-      color:#b91c1c;
-      font-weight:700;
-      margin-top:10px;
-      min-height:22px;
-    }
+    .login-card img{width:110px;max-width:50%;margin-bottom:8px}
+    .login-title{font-size:24px;font-weight:900;margin:4px 0}
+    .login-sub{color:var(--muted);font-weight:600;margin-bottom:16px}
+    .login-actions{display:flex;gap:10px;margin-top:12px}
+    .login-actions .btn{flex:1}
+    .error-text{color:#b91c1c;font-weight:700;margin-top:10px;min-height:22px}
   </style>
 </head>
 <body>
@@ -753,83 +374,726 @@
           </div>
         </div>
       </div>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import {
-    getAuth,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
-    authDomain: "bright-minds-math.firebaseapp.com",
-    projectId: "bright-minds-math",
-    storageBucket: "bright-minds-math.firebasestorage.app",
-    messagingSenderId: "645800687175",
-    appId: "1:645800687175:web:75241f3cac5e5433442362"
+            <div class="section">
+        <div class="card">
+          <h3>Elige multiplicaciones específicas</h3>
+          <div class="row">
+            <select id="specificTable" style="max-width:180px" onchange="renderSpecific()">
+              <option value="2">Tabla 2</option>
+              <option value="3">Tabla 3</option>
+              <option value="4">Tabla 4</option>
+              <option value="5">Tabla 5</option>
+              <option value="6">Tabla 6</option>
+              <option value="7">Tabla 7</option>
+              <option value="8">Tabla 8</option>
+              <option value="9">Tabla 9</option>
+              <option value="10">Tabla 10</option>
+            </select>
+            <button class="btn btn-soft" onclick="selectAllSpecificCurrent()">Seleccionar toda la tabla</button>
+            <button class="btn btn-soft" onclick="clearSpecificCurrent()">Limpiar esta tabla</button>
+            <button class="btn btn-soft" onclick="clearAllSpecific()">Limpiar todo</button>
+          </div>
+          <div id="specificGrid" class="specific-grid"></div>
+          <div class="subtle" id="specificCount" style="margin-top:10px">Específicas seleccionadas: 0</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <h3 style="margin:0">Tu progreso</h3>
+            <button class="btn btn-yellow" onclick="exportCSV()">Exportar resultados</button>
+          </div>
+          <canvas id="chart" width="900" height="260" style="margin-top:12px"></canvas>
+        </div>
+
+        <div class="card">
+          <h3>Historial</h3>
+          <div id="history"></div>
+        </div>
+
+        <div class="card">
+          <h3>Refuerzo</h3>
+          <div id="weakFacts"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <div class="visual-wrap">
+            <div class="visual-title">Tablas de multiplicar</div>
+            <div class="visual-sub">Aprende con colores</div>
+            <div class="row" style="justify-content:center;margin-bottom:14px">
+              <button class="btn btn-soft" onclick="renderVisual(9)">Mostrar 1–9</button>
+              <button class="btn btn-soft" onclick="renderVisual(10)">Mostrar 1–10</button>
+            </div>
+            <div id="visualGrid" class="stairs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      doc,
+      setDoc,
+      getDoc,
+      getDocs,
+      query,
+      orderBy,
+      limit,
+      increment,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
+      authDomain: "bright-minds-math.firebaseapp.com",
+      projectId: "bright-minds-math",
+      storageBucket: "bright-minds-math.firebasestorage.app",
+      messagingSenderId: "645800687175",
+      appId: "1:645800687175:web:75241f3cac5e5433442362"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.auth = auth;
+    window.db = db;
+
+    const loginScreen = document.getElementById("loginScreen");
+    const appScreen = document.getElementById("appScreen");
+    const loginEmail = document.getElementById("loginEmail");
+    const loginPassword = document.getElementById("loginPassword");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginError = document.getElementById("loginError");
+    const userBadge = document.getElementById("userBadge");
+
+    function showError(message) {
+      loginError.textContent = message;
+    }
+
+    function clearError() {
+      loginError.textContent = "";
+    }
+
+    function translateFirebaseError(code) {
+      const map = {
+        "auth/invalid-email": "Correo inválido",
+        "auth/missing-password": "Escribe una contraseña",
+        "auth/invalid-credential": "Correo o contraseña incorrectos",
+        "auth/user-not-found": "Usuario no encontrado",
+        "auth/wrong-password": "Contraseña incorrecta"
+      };
+      return map[code] || "No se pudo completar la acción.";
+    }
+
+    async function ensureUserProfile(user) {
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+
+      if (!snap.exists()) {
+        await setDoc(userRef, {
+          email: user.email,
+          active: true,
+          createdAt: serverTimestamp()
+        });
+      }
+    }
+
+    async function loginUser() {
+      const email = loginEmail.value.trim();
+      const password = loginPassword.value.trim();
+      clearError();
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        showError(translateFirebaseError(error.code));
+      }
+    }
+
+    async function logoutUser() {
+      await signOut(auth);
+    }
+
+    loginBtn.addEventListener("click", loginUser);
+    logoutBtn.addEventListener("click", logoutUser);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await ensureUserProfile(user);
+        loginScreen.classList.add("hidden");
+        appScreen.classList.remove("hidden");
+        userBadge.textContent = user.email || "";
+        if (window.loadCloudData) {
+          await window.loadCloudData();
+        }
+      } else {
+        appScreen.classList.add("hidden");
+        loginScreen.classList.remove("hidden");
+        userBadge.textContent = "";
+      }
+    });
+
+    window.firestoreApi = {
+      collection,
+      doc,
+      setDoc,
+      getDoc,
+      getDocs,
+      query,
+      orderBy,
+      limit,
+      increment,
+      serverTimestamp
+    };
+  </script>
+
+    <script>
+    const MAX = 10;
+
+    const state = {
+      running: false,
+      current: null,
+      startTime: null,
+      timer: null,
+      good: 0,
+      bad: 0,
+      total: 0,
+      remaining: 0,
+      selectedTables: new Set([2,3,4,5,6,7,8,9,10]),
+      specific: new Set(),
+      history: [],
+      weakMap: {}
+    };
+
+    const el = {
+      a: document.getElementById("a"),
+      b: document.getElementById("b"),
+      input: document.getElementById("answer"),
+      start: document.getElementById("startBtn"),
+      reset: document.getElementById("resetBtn"),
+      good: document.getElementById("good"),
+      bad: document.getElementById("bad"),
+      time: document.getElementById("time"),
+      avg: document.getElementById("avg"),
+      remaining: document.getElementById("remaining"),
+      feedback: document.getElementById("feedback"),
+      history: document.getElementById("history"),
+      weakFacts: document.getElementById("weakFacts")
+    };
+
+    function allFacts() {
+      const arr = [];
+      for (let a = 2; a <= MAX; a++) {
+        for (let b = 1; b <= 10; b++) {
+          arr.push([a, b]);
+        }
+      }
+      return arr;
+    }
+
+    function pickNext() {
+      const pool = [];
+
+      allFacts().forEach(([a, b]) => {
+        if (!state.selectedTables.has(a)) return;
+
+        const key = `${a}x${b}`;
+        if (state.specific.size > 0 && !state.specific.has(key)) return;
+
+        const weight = state.weakMap[key] || 1;
+        for (let i = 0; i < weight; i++) {
+          pool.push([a, b]);
+        }
+      });
+
+      if (pool.length === 0) return null;
+
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function updateUI() {
+      el.good.textContent = state.good;
+      el.bad.textContent = state.bad;
+      el.remaining.textContent = state.remaining;
+      el.avg.textContent = state.total ? (state.time / state.total).toFixed(2) : "0.00";
+      el.time.textContent = state.time.toFixed(1);
+    }
+
+    function startGame() {
+      state.running = true;
+      state.good = 0;
+      state.bad = 0;
+      state.total = 0;
+      state.time = 0;
+      state.remaining = 100;
+      state.startTime = Date.now();
+
+      nextQuestion();
+
+      state.timer = setInterval(() => {
+        state.time = (Date.now() - state.startTime) / 1000;
+        updateUI();
+      }, 100);
+    }
+
+    function stopGame() {
+      state.running = false;
+      clearInterval(state.timer);
+    }
+
+    function nextQuestion() {
+      const next = pickNext();
+
+      if (!next) {
+        stopGame();
+        return;
+      }
+
+      state.current = next;
+      el.a.textContent = next[0];
+      el.b.textContent = next[1];
+      el.input.value = "";
+      el.input.focus();
+    }
+
+    function markWeak(a, b) {
+      const key = `${a}x${b}`;
+      state.weakMap[key] = (state.weakMap[key] || 1) + 2;
+    }
+
+    function handleAnswer() {
+      if (!state.running) return;
+
+      const val = parseInt(el.input.value);
+      if (isNaN(val)) return;
+
+      const [a, b] = state.current;
+      const correct = a * b;
+
+      state.total++;
+
+      if (val === correct) {
+        state.good++;
+        el.feedback.textContent = "Correcto";
+      } else {
+        state.bad++;
+        el.feedback.textContent = `Error → ${correct}`;
+        markWeak(a, b);
+      }
+
+      state.remaining--;
+
+      saveResult(a, b, val === correct);
+
+      if (state.remaining <= 0) {
+        stopGame();
+        saveSession();
+        return;
+      }
+
+      nextQuestion();
+      updateUI();
+    }
+
+    el.input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleAnswer();
+      }
+    });
+
+    el.start.addEventListener("click", startGame);
+    el.reset.addEventListener("click", () => location.reload());
+
+    async function saveResult(a, b, correct) {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const ref = firestoreApi.doc(db, "users", user.uid, "stats", `${a}x${b}`);
+
+      await firestoreApi.setDoc(ref, {
+        correct: firestoreApi.increment(correct ? 1 : 0),
+        wrong: firestoreApi.increment(correct ? 0 : 1),
+        updatedAt: firestoreApi.serverTimestamp()
+      }, { merge: true });
+    }
+
+    async function saveSession() {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const ref = firestoreApi.doc(
+        firestoreApi.collection(db, "users", user.uid, "sessions")
+      );
+
+      await firestoreApi.setDoc(ref, {
+        good: state.good,
+        bad: state.bad,
+        total: state.total,
+        time: state.time,
+        createdAt: firestoreApi.serverTimestamp()
+      });
+    }
+
+    window.loadCloudData = async function () {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const q = firestoreApi.query(
+        firestoreApi.collection(db, "users", user.uid, "sessions"),
+        firestoreApi.orderBy("createdAt", "desc"),
+        firestoreApi.limit(10)
+      );
+
+      const snap = await firestoreApi.getDocs(q);
+
+      el.history.innerHTML = "";
+
+      snap.forEach(docu => {
+        const d = docu.data();
+        const div = document.createElement("div");
+        div.textContent = `✔ ${d.good} / ❌ ${d.bad} (${d.time.toFixed(1)}s)`;
+        el.history.appendChild(div);
+      });
+    };
+
+    updateUI();
+  </script>
+</body>
+</html>
+<script>
+  // ===== Utilidades UI adicionales =====
+  function renderWeakFacts() {
+    const entries = Object.entries(state.weakMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12);
+
+    if (!el.weakFacts) return;
+
+    el.weakFacts.innerHTML = "";
+
+    if (entries.length === 0) {
+      el.weakFacts.textContent = "Todavía no hay ejercicios para refuerzo.";
+      return;
+    }
+
+    entries.forEach(([fact, weight]) => {
+      const div = document.createElement("div");
+      div.textContent = `${fact} · prioridad ${weight}`;
+      el.weakFacts.appendChild(div);
+    });
+  }
+
+  function saveWeakLocalBackup() {
+    localStorage.setItem("brightmath_weakmap", JSON.stringify(state.weakMap));
+  }
+
+  function loadWeakLocalBackup() {
+    try {
+      const raw = localStorage.getItem("brightmath_weakmap");
+      if (!raw) return;
+      state.weakMap = JSON.parse(raw) || {};
+    } catch (_) {
+      state.weakMap = {};
+    }
+  }
+
+  // ===== Botones de modos =====
+  window.activatePractice = function () {
+    state.specific = new Set();
+    renderWeakFacts();
+    el.feedback.textContent = "Modo práctica activado";
   };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  window.loadWeakToSpecific = function () {
+    const weakFacts = Object.entries(state.weakMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([fact]) => fact);
 
-  const loginScreen = document.getElementById("loginScreen");
-  const appScreen = document.getElementById("appScreen");
-  const loginBtn = document.getElementById("loginBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const loginEmail = document.getElementById("loginEmail");
-  const loginPassword = document.getElementById("loginPassword");
-  const loginError = document.getElementById("loginError");
-  const userBadge = document.getElementById("userBadge");
-
-  function showError(msg){
-    loginError.textContent = msg;
-  }
-
-  function clearError(){
-    loginError.textContent = "";
-  }
-
-  function translateError(code){
-    const map = {
-      "auth/invalid-email": "Correo inválido",
-      "auth/missing-password": "Escribe contraseña",
-      "auth/invalid-credential": "Correo o contraseña incorrectos",
-      "auth/user-not-found": "Usuario no encontrado",
-      "auth/wrong-password": "Contraseña incorrecta"
-    };
-    return map[code] || "Error al iniciar sesión";
-  }
-
-  async function loginUser(){
-    const email = loginEmail.value.trim();
-    const password = loginPassword.value.trim();
-    clearError();
-
-    try{
-      await signInWithEmailAndPassword(auth, email, password);
-    }catch(e){
-      showError(translateError(e.code));
+    if (weakFacts.length === 0) {
+      el.feedback.textContent = "Todavía no hay ejercicios de refuerzo";
+      return;
     }
-  }
 
-  async function logoutUser(){
-    await signOut(auth);
-  }
+    state.specific = new Set(weakFacts);
+    el.feedback.textContent = "Modo refuerzo activado";
+  };
 
-  loginBtn.addEventListener("click", loginUser);
-  logoutBtn.addEventListener("click", logoutUser);
+  window.loadTodayWrongToSpecific = function () {
+    const weakFacts = Object.entries(state.weakMap)
+      .filter(([, weight]) => weight >= 3)
+      .map(([fact]) => fact);
 
-  onAuthStateChanged(auth, (user)=>{
-    if(user){
-      loginScreen.classList.add("hidden");
-      appScreen.classList.remove("hidden");
-      userBadge.textContent = user.email;
-    }else{
-      appScreen.classList.add("hidden");
-      loginScreen.classList.remove("hidden");
-      userBadge.textContent = "";
+    if (weakFacts.length === 0) {
+      el.feedback.textContent = "Todavía no hay ejercicios para repasar";
+      return;
     }
-  });
+
+    state.specific = new Set(weakFacts);
+    el.feedback.textContent = "Modo repasar activado";
+  };
+
+  // ===== Tablas =====
+  window.selectAllTables = function () {
+    state.selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
+    renderTableChipsSafe();
+  };
+
+  window.clearAllTables = function () {
+    state.selectedTables = new Set();
+    renderTableChipsSafe();
+  };
+
+  window.selectRange = function (start, end) {
+    state.selectedTables = new Set();
+    for (let i = start; i <= end; i++) state.selectedTables.add(i);
+    renderTableChipsSafe();
+  };
+
+  window.toggleTable = function (n) {
+    if (state.selectedTables.has(n)) state.selectedTables.delete(n);
+    else state.selectedTables.add(n);
+    renderTableChipsSafe();
+  };
+
+  function renderTableChipsSafe() {
+    const box = document.getElementById("tableChips");
+    if (!box) return;
+
+    let html = "";
+    for (let i = 2; i <= 10; i++) {
+      html += `
+        <div class="chip ${state.selectedTables.has(i) ? "active" : ""}" onclick="toggleTable(${i})">
+          Tabla ${i}
+        </div>
+      `;
+    }
+    box.innerHTML = html;
+  }
+
+  // ===== Específicas =====
+  window.renderSpecific = function () {
+    const sel = document.getElementById("specificTable");
+    const grid = document.getElementById("specificGrid");
+    const count = document.getElementById("specificCount");
+    if (!sel || !grid || !count) return;
+
+    const table = Number(sel.value);
+    let html = "";
+
+    for (let i = 1; i <= 10; i++) {
+      const fact = `${table}x${i}`;
+      html += `
+        <div class="chip ${state.specific.has(fact) ? "active" : ""}" onclick="toggleSpecific('${fact}')">
+          ${fact}
+        </div>
+      `;
+    }
+
+    grid.innerHTML = html;
+    count.textContent = `Específicas seleccionadas: ${state.specific.size}`;
+  };
+
+  window.toggleSpecific = function (fact) {
+    if (state.specific.has(fact)) state.specific.delete(fact);
+    else state.specific.add(fact);
+    renderSpecific();
+  };
+
+  window.selectAllSpecificCurrent = function () {
+    const sel = document.getElementById("specificTable");
+    if (!sel) return;
+    const table = Number(sel.value);
+    for (let i = 1; i <= 10; i++) {
+      state.specific.add(`${table}x${i}`);
+    }
+    renderSpecific();
+  };
+
+  window.clearSpecificCurrent = function () {
+    const sel = document.getElementById("specificTable");
+    if (!sel) return;
+    const table = Number(sel.value);
+    for (let i = 1; i <= 10; i++) {
+      state.specific.delete(`${table}x${i}`);
+    }
+    renderSpecific();
+  };
+
+  window.clearAllSpecific = function () {
+    state.specific = new Set();
+    renderSpecific();
+  };
+
+  // ===== Tabs =====
+  window.showTab = function (index) {
+    document.querySelectorAll(".section").forEach((s, i) => {
+      s.classList.toggle("active", i === index);
+    });
+
+    document.querySelectorAll(".tab").forEach((t, i) => {
+      t.classList.toggle("active", i === index);
+    });
+
+    if (index === 2) {
+      renderWeakFacts();
+    }
+  };
+
+  // ===== Visual =====
+  window.renderVisual = function (max = 10) {
+    const box = document.getElementById("visualGrid");
+    if (!box) return;
+
+    let html = "";
+    for (let t = 1; t <= max; t++) {
+      html += `<div class="stair-col">`;
+      html += `<div class="stair-head">${t}</div>`;
+      for (let i = 1; i <= 10; i++) {
+        html += `<div class="stair-cell">${t} × ${i} = ${t * i}</div>`;
+      }
+      html += `</div>`;
+    }
+    box.innerHTML = html;
+  };
+
+  // ===== Memorama básico =====
+  window.setMode = function(mode) {
+    document.getElementById("speedPanel")?.classList.add("hidden");
+    document.getElementById("quizPanel")?.classList.add("hidden");
+    document.getElementById("memoramaPanel")?.classList.add("hidden");
+
+    document.getElementById("modeSpeed")?.classList.remove("active");
+    document.getElementById("modeQuiz")?.classList.remove("active");
+    document.getElementById("modeMemorama")?.classList.remove("active");
+
+    if (mode === "speed") {
+      document.getElementById("speedPanel")?.classList.remove("hidden");
+      document.getElementById("modeSpeed")?.classList.add("active");
+    }
+    if (mode === "quiz") {
+      document.getElementById("quizPanel")?.classList.remove("hidden");
+      document.getElementById("modeQuiz")?.classList.add("active");
+    }
+    if (mode === "memorama") {
+      document.getElementById("memoramaPanel")?.classList.remove("hidden");
+      document.getElementById("modeMemorama")?.classList.add("active");
+    }
+  };
+
+  window.startMemo = function(pairCount = 6) {
+    const grid = document.getElementById("memoGrid");
+    const mode = document.getElementById("memoMode");
+    const pairs = document.getElementById("memoPairs");
+    const target = document.getElementById("memoTarget");
+    const moves = document.getElementById("memoMoves");
+    const time = document.getElementById("memoTime");
+    const feedback = document.getElementById("memoFeedback");
+
+    if (!grid) return;
+
+    const all = allFacts()
+      .filter(([a]) => state.selectedTables.has(a))
+      .slice(0, pairCount);
+
+    let cards = [];
+    all.forEach(([a, b], idx) => {
+      cards.push({ id:`q${idx}`, value:`${a}x${b}`, pair: idx });
+      cards.push({ id:`a${idx}`, value:`${a*b}`, pair: idx });
+    });
+
+    cards = shuffle(cards);
+
+    let flipped = [];
+    let matched = 0;
+    let movementCount = 0;
+    const start = Date.now();
+
+    mode.textContent = `${pairCount} pares`;
+    pairs.textContent = "0";
+    target.textContent = String(pairCount);
+    moves.textContent = "0";
+    feedback.textContent = "";
+    time.textContent = "0.0";
+
+    const timer = setInterval(() => {
+      time.textContent = ((Date.now() - start) / 1000).toFixed(1);
+      if (matched === pairCount) clearInterval(timer);
+    }, 100);
+
+    grid.innerHTML = cards.map((c, i) => `
+      <div class="memo-card memo-back" data-index="${i}">?</div>
+    `).join("");
+
+    const nodes = [...grid.querySelectorAll(".memo-card")];
+
+    nodes.forEach(node => {
+      node.addEventListener("click", () => {
+        const i = Number(node.dataset.index);
+        if (node.classList.contains("memo-matched")) return;
+        if (flipped.includes(i)) return;
+        if (flipped.length === 2) return;
+
+        node.textContent = cards[i].value;
+        node.classList.remove("memo-back");
+        node.classList.add("memo-front");
+        flipped.push(i);
+
+        if (flipped.length === 2) {
+          movementCount++;
+          moves.textContent = String(movementCount);
+
+          const [i1, i2] = flipped;
+          const same = cards[i1].pair === cards[i2].pair;
+
+          if (same) {
+            nodes[i1].classList.add("memo-matched");
+            nodes[i2].classList.add("memo-matched");
+            matched++;
+            pairs.textContent = String(matched);
+            flipped = [];
+
+            if (matched === pairCount) {
+              feedback.textContent = "¡Memorama completado! 🎉";
+            }
+          } else {
+            setTimeout(() => {
+              [i1, i2].forEach(idx => {
+                nodes[idx].textContent = "?";
+                nodes[idx].classList.remove("memo-front");
+                nodes[idx].classList.add("memo-back");
+              });
+              flipped = [];
+            }, 700);
+          }
+        }
+      });
+    });
+  };
+
+  // ===== Fix final =====
+  loadWeakLocalBackup();
+  renderWeakFacts();
+  renderTableChipsSafe();
+  renderSpecific();
+  renderVisual(10);
+  setMode("speed");
 </script>
+</body>
+</html>

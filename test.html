@@ -705,18 +705,22 @@ async function ensureUserProfile(user){
 
     document.getElementById("logoutBtn").onclick = () => signOut(auth);
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById("loginScreen").classList.add("hidden");
-        document.getElementById("appScreen").classList.remove("hidden");
-        document.getElementById("userBadge").textContent = user.email;
+    onAuthStateChanged(auth, async (user) => {
+  if (user) {
 
-        initApp();
-      } else {
-        document.getElementById("loginScreen").classList.remove("hidden");
-        document.getElementById("appScreen").classList.add("hidden");
-      }
-    });
+    await ensureUserProfile(user); // 🔥 ESTA ES LA NUEVA LÍNEA
+
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("appScreen").style.display = "block";
+    document.getElementById("userBadge").textContent = user.email;
+
+    initApp();
+
+  } else {
+    document.getElementById("loginScreen").style.display = "block";
+    document.getElementById("appScreen").style.display = "none";
+  }
+});
 
     // VARIABLES
     let selectedTables = new Set([2,3,4,5,6,7,8,9,10]);

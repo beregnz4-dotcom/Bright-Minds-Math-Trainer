@@ -673,7 +673,21 @@ const firebaseConfig = {
 const db = getFirestore(app);
     
     const auth = getAuth(app);
+async function ensureUserProfile(user){
+  const ref = doc(db, "users", user.uid, "profile", "main");
+  const snap = await getDoc(ref);
 
+  if(!snap.exists()){
+    await setDoc(ref, {
+      email: user.email || "",
+      xp: 0,
+      level: 1,
+      createdAt: serverTimestamp()
+    });
+  }
+}
+
+    
     // LOGIN
     document.getElementById("loginBtn").onclick = async () => {
       const email = document.getElementById("loginEmail").value;

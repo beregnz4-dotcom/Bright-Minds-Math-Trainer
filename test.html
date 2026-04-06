@@ -1681,9 +1681,15 @@ await loadCloudData();
               avg: memoState.target ? Number((memoState.seconds / memoState.target).toFixed(2)) : 0
             });
 
-            await addXP(10);
-            await updateDailyChallenge("memo");
-            await loadCloudData();
+            const xpEarned = calculateXPReward("memo", {
+  moves: memoState.moves,
+  time: Number(memoState.seconds.toFixed(1)),
+  target: memoState.target
+});
+
+await addXP(xpEarned);
+await updateDailyChallenge("memo");
+await loadCloudData();
           }
         }else{
           setTimeout(() => {

@@ -1121,15 +1121,31 @@ async function loadKidsFromCloud(selectedName = ""){
       childSelect.value = selectedName || kids[0];
     }
 
-    function addChild(){
-      const name = newChild.value.trim();
-      if(!name) return;
+    async function addChild(){
+  const name = newChild.value.trim();
+  if(!name) return;
 
-      const list = getKids();
-      if(!list.includes(name)){
-        list.push(name);
-        saveKids(list);
-      }
+  const list = getKids();
+  if(!list.includes(name)){
+    list.push(name);
+    saveKids(list);
+  }
+
+  await saveChildToCloud(name);
+
+  const user = auth.currentUser;
+  if(user){
+    await setDoc(doc(db, "users", user.uid, "profile", "main"), {
+      childName: name,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  }
+
+  await loadKidsFromCloud(name);
+  childSelect.value = name;
+  childSelect.dispatchEvent(new Event("change"));
+  newChild.value = "";
+}
 
       loadKids(name);
       childSelect.value = name;

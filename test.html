@@ -1844,37 +1844,38 @@ function resetBlast(){
 }
 
     async function finishBlast(){
-      clearInterval(blastState.timer);
-blastState.current = null;
-      const summary = document.getElementById("blastSummary");
-      summary.classList.remove("hidden");
-      summary.innerHTML = `
-        <div style="font-weight:900;font-size:20px">🔥 Fin de Math Blast</div>
-        <div style="margin-top:8px">Puntaje: <strong>${blastState.score}</strong></div>
-        <div>Racha: <strong>${blastState.streak}</strong></div>
-      `;
+  clearInterval(blastState.timer);
+  blastState.current = null;
 
-      await saveSession({
-  mode: "Math Blast",
-  good: blastState.score,
-  bad: 0,
-  total: 0,
-  time: 30,
-  avg: 0,
-  score: blastState.score
-});
+  const summary = document.getElementById("blastSummary");
+  summary.classList.remove("hidden");
+  summary.innerHTML = `
+    <div style="font-weight:900;font-size:20px">🔥 Fin de Math Blast</div>
+    <div style="margin-top:8px">Puntaje: <strong>${blastState.score}</strong></div>
+    <div>Racha: <strong>${blastState.streak}</strong></div>
+  `;
 
-const xpEarned = calculateXPReward("blast", {
-  score: blastState.score,
-  streak: blastState.streak,
-  reachedGoal: blastState.score >= 120
-});
+  const xpEarned = calculateXPReward("blast", {
+    score: blastState.score,
+    streak: blastState.streak,
+    reachedGoal: blastState.score >= 120
+  });
 
-await addXP(xpEarned);
-      openBlastOverlay(blastState.score, xpEarned);
-await updateDailyChallenge("blast", blastState.score);
-await loadCloudData();
-    }
+  await saveSession({
+    mode: "Math Blast",
+    good: blastState.score,
+    bad: 0,
+    total: 0,
+    time: 30,
+    avg: 0,
+    score: blastState.score
+  });
+
+  await addXP(xpEarned);
+  openBlastOverlay(blastState.score, xpEarned);
+  await updateDailyChallenge("blast", blastState.score);
+  await loadCloudData();
+}
 
     function renderHistory(){
       historyEl.innerHTML = "";

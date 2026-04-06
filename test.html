@@ -1765,32 +1765,34 @@ await loadCloudData();
     }
 
     async function answerBlast(value){
-      if(!blastState.current || blastState.time <= 0) return;
-    
+  if(!blastState.current || blastState.time <= 0) return;
 
-      const buttons = [...document.querySelectorAll("#blastGrid .blast-btn")];
-      buttons.forEach(b => b.disabled = true);
+  const buttons = [...document.querySelectorAll("#blastGrid .blast-btn")];
+  buttons.forEach(b => b.disabled = true);
 
-      if(value === blastState.current.correct){
-        blastState.score += 10;
-        blastState.streak++;
-        document.getElementById("blastFeedback").textContent = "¡Blast! 🚀";
-        await updateWeak(blastState.current.fact, -0.25);
-        await addXP(3);
-      }else{
-        blastState.streak = 0;
-        document.getElementById("blastFeedback").textContent = "Casi";
-        await updateWeak(blastState.current.fact, 1);
-        state.todayWrongFacts.add(blastState.current.fact);
-      }
+  if(value === blastState.current.correct){
+    blastState.score += 10;
+    blastState.streak++;
+    document.getElementById("blastFeedback").textContent = "¡Blast! 🚀";
+    await updateWeak(blastState.current.fact, -0.25);
+  }else{
+    blastState.streak = 0;
+    document.getElementById("blastFeedback").textContent = "Casi";
+    await updateWeak(blastState.current.fact, 1);
+    state.todayWrongFacts.add(blastState.current.fact);
+  }
 
-      document.getElementById("blastScore").textContent = blastState.score;
-      document.getElementById("blastStreak").textContent = blastState.streak;
-      document.getElementById("blastCombo").textContent =
-        blastState.streak >= 5 ? "x3" : blastState.streak >= 3 ? "x2" : "x1";
+  document.getElementById("blastScore").textContent = blastState.score;
+  document.getElementById("blastStreak").textContent = blastState.streak;
+  document.getElementById("blastCombo").textContent =
+    blastState.streak >= 5 ? "x3" : blastState.streak >= 3 ? "x2" : "x1";
 
-      setTimeout(nextBlastQuestion, 350);
+  setTimeout(() => {
+    if(blastState.time > 0){
+      nextBlastQuestion();
     }
+  }, 350);
+}
 
     async function finishBlast(){
       clearInterval(blastState.timer);

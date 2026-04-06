@@ -1073,6 +1073,7 @@ function addChild(){
   if(!list.includes(name)) list.push(name);
 
   saveKids(list);
+  console.log("Kids guardados:", list);
   loadKids();
 
   childSelect.value = name;

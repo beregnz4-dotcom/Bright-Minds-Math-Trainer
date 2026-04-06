@@ -1301,23 +1301,26 @@ function calculateXPReward(mode, stats = {}){
       const childId = currentChildId();
 
       if(childId){
-        const weakRef = doc(db, "users", user.uid, "children", childId, "weakFacts", "main");
-        const weakSnap = await getDoc(weakRef);
-        state.weakMap = weakSnap.exists() ? (weakSnap.data().facts || {}) : {};
+  const weakRef = doc(db, "users", user.uid, "children", childId, "weakFacts", "main");
+  const weakSnap = await getDoc(weakRef);
+  state.weakMap = weakSnap.exists() ? (weakSnap.data().facts || {}) : {};
 
-        const q = query(
-          collection(db, "users", user.uid, "children", childId, "sessions"),
-          orderBy("createdAt", "desc"),
-          limit(30)
-        );
+  const q = query(
+    collection(db, "users", user.uid, "children", childId, "sessions"),
+    orderBy("createdAt", "desc"),
+    limit(30)
+  );
 
-        const snap = await getDocs(q);
-        state.sessions = [];
-        snap.forEach(d => state.sessions.push(d.data()));
-      } else {
-        state.weakMap = {};
-        state.sessions = [];
-      }
+  const snap = await getDocs(q);
+  state.sessions = [];
+  snap.forEach(d => state.sessions.push(d.data()));
+
+  await loadChildProgress();
+} else {
+  state.weakMap = {};
+  state.sessions = [];
+  updateProfileUI(0, 1);
+}
 
       renderHistory();
       renderWeakFacts();

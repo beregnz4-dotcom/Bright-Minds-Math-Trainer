@@ -1051,7 +1051,54 @@
         console.error("Error guardando kids:", e);
       }
     }
+    
+function makeChildId(name){
+  return name
+    .toLowerCase()
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
 
+async function saveChildToCloud(name){
+  const user = auth.currentUser;
+  if(!user) return;
+
+  const childId = makeChildId(name);
+  if(!childId) return;
+
+  const ref = doc(db, "users", user.uid, "children", childId);
+
+  await setDoc(ref, {
+    name,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+}
+
+async function loadKidsFromCloud(selectedName = ""){
+  const user = auth.currentUser;
+  if(!user){
+    loadKids(selectedName);
+    return;
+  }
+
+  const ref = collection(db, "users", user.uid, "children");
+  const snap = await getDocs(ref);
+
+  const kids = [];
+  snap.forEach(d => {
+    const data = d.data();
+    if(data?.name) kids.push(data.name);
+  });
+
+  kids.sort((a,b) => a.localeCompare(b));
+
+  saveKids(kids);
+  loadKids(selectedName);
+}
     function loadKids(selectedName = ""){
       const kids = getKids();
       childSelect.innerHTML = "";

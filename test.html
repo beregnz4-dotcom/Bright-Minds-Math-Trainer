@@ -1054,8 +1054,15 @@ function saveKids(list){
 }
 
 function loadKids(){
-  const list = getKids();
-  childSelect.innerHTML = list.map(n => `<option>${n}</option>`).join("");
+  const kids = getKids();
+  childSelect.innerHTML = "";
+
+  kids.forEach(k => {
+    const opt = document.createElement("option");
+    opt.value = k;
+    opt.textContent = k;
+    childSelect.appendChild(opt);
+  });
 }
 
 function addChild(){

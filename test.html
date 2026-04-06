@@ -1424,16 +1424,23 @@ function calculateXPReward(mode, stats = {}){
       const avg = state.totalAnswered ? Number((totalTime / state.totalAnswered).toFixed(2)) : 0;
 
       await saveSession({
-        mode: "Practice",
-        good: state.good,
-        bad: state.bad,
-        total: state.totalAnswered,
-        time: totalTime,
-        avg
-      });
+  mode: "Practice",
+  good: state.good,
+  bad: state.bad,
+  total: state.totalAnswered,
+  time: totalTime,
+  avg
+});
 
-      await updateDailyChallenge("practice");
-      await loadCloudData();
+const xpEarned = calculateXPReward("practice", {
+  correct: state.good,
+  total: state.totalAnswered,
+  avgTime: avg
+});
+
+await addXP(xpEarned);
+await updateDailyChallenge("practice");
+await loadCloudData();
 
       document.getElementById("feedback").textContent = "Fin";
     }

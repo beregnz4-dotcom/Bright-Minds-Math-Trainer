@@ -395,6 +395,61 @@
       margin-top:16px;border:1px solid var(--line);border-radius:16px;
       padding:16px;background:#fff;text-align:center;
     }
+        .blast-summary{
+      margin-top:16px;border:1px solid var(--line);border-radius:16px;
+      padding:16px;background:#fff;text-align:center;
+    }
+
+    /* PEGA AQUÍ */
+    .blast-pop{
+      position:fixed;
+      top:90px;
+      right:20px;
+      background:#111827;
+      color:#fff;
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:800;
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
+      z-index:10000;
+      opacity:0;
+      transform:translateY(-8px) scale(.96);
+      transition:all .25s ease;
+      pointer-events:none;
+    }
+
+    .blast-pop.show{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    .blast-hit{
+      animation:blastHit .28s ease;
+    }
+
+    @keyframes blastHit{
+      0%{transform:scale(1)}
+      45%{transform:scale(1.08)}
+      100%{transform:scale(1)}
+    }
+
+    .blast-wrong{
+      animation:blastWrong .28s ease;
+    }
+
+    @keyframes blastWrong{
+      0%{transform:translateX(0)}
+      25%{transform:translateX(-5px)}
+      50%{transform:translateX(5px)}
+      75%{transform:translateX(-3px)}
+      100%{transform:translateX(0)}
+    }
+
+    .combo-glow{
+      box-shadow:0 0 0 4px rgba(244,176,0,.18), 0 12px 28px rgba(244,176,0,.28);
+      transition:box-shadow .2s ease;
+    }
+  </style>
   </style>
 </head>
 <body>

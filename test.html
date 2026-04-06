@@ -2058,6 +2058,15 @@ await loadCloudData();
     resetBlast();
     setMode("speed");
     showTab(0);
+document.getElementById("blastPlayAgainBtn")?.addEventListener("click", () => {
+  closeBlastOverlay();
+  startBlast();
+});
+
+document.getElementById("blastCloseBtn")?.addEventListener("click", () => {
+  closeBlastOverlay();
+});
+    
   </script>
 </body>
 </html>

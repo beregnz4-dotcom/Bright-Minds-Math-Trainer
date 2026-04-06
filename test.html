@@ -937,7 +937,51 @@
         showLevelUp(newLevel);
       }
     }
+function calculateXPReward(mode, stats = {}){
+  let xp = 0;
 
+  if(mode === "practice"){
+    xp = stats.correct || 0;
+
+    const accuracy = stats.total ? (stats.correct / stats.total) : 0;
+    const avgTime = stats.avgTime || 999;
+
+    if(accuracy >= 0.9) xp += 3;
+    if(avgTime <= 2.0) xp += 2;
+  }
+
+  if(mode === "quiz"){
+    xp = (stats.correct || 0) * 2;
+
+    const accuracy = stats.total ? (stats.correct / stats.total) : 0;
+    const avgTime = stats.avgTime || 999;
+
+    if(accuracy >= 0.8) xp += 4;
+    if(avgTime <= 2.5) xp += 2;
+  }
+
+  if(mode === "memo"){
+    xp = 8;
+
+    const moves = stats.moves || 999;
+    const time = stats.time || 999;
+
+    if(moves <= stats.target * 2) xp += 3;
+    if(time <= 25) xp += 2;
+  }
+
+  if(mode === "blast"){
+    xp = Math.floor((stats.score || 0) / 20);
+
+    const streak = stats.streak || 0;
+    const reachedGoal = !!stats.reachedGoal;
+
+    if(streak >= 5) xp += 3;
+    if(reachedGoal) xp += 10;
+  }
+
+  return Math.max(1, xp);
+}
     async function saveChildToCloud(name){
       const user = auth.currentUser;
       if(!user) return;

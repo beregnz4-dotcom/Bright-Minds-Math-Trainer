@@ -1454,34 +1454,33 @@ function calculateXPReward(mode, stats = {}){
     }
 
     async function finishSpeed(){
-      clearInterval(state.timer);
-      state.timer = null;
+  clearInterval(state.timer);
+  state.timer = null;
 
-      const totalTime = Number(((Date.now() - state.startTime)/1000).toFixed(1));
-      const avg = state.totalAnswered ? Number((totalTime / state.totalAnswered).toFixed(2)) : 0;
+  const totalTime = Number(((Date.now() - state.startTime)/1000).toFixed(1));
+  const avg = state.totalAnswered ? Number((totalTime / state.totalAnswered).toFixed(2)) : 0;
 
-      await saveSession({
-  mode: "Practice",
-  good: state.good,
-  bad: state.bad,
-  total: state.totalAnswered,
-  time: totalTime,
-  avg
-});
+  await saveSession({
+    mode: "Practice",
+    good: state.good,
+    bad: state.bad,
+    total: state.totalAnswered,
+    time: totalTime,
+    avg
+  });
 
-const xpEarned = calculateXPReward("practice", {
-  correct: state.good,
-  total: state.totalAnswered,
-  avgTime: avg
-});
+  const xpEarned = calculateXPReward("practice", {
+    correct: state.good,
+    total: state.totalAnswered,
+    avgTime: avg
+  });
 
-await addXP(xpEarned);
-      openBlastOverlay(blastState.score, xpEarned);
-await updateDailyChallenge("practice");
-await loadCloudData();
+  await addXP(xpEarned);
+  await updateDailyChallenge("practice");
+  await loadCloudData();
 
-      document.getElementById("feedback").textContent = "Fin";
-    }
+  document.getElementById("feedback").textContent = "Fin";
+}
 
     function resetQuiz(){
       clearInterval(state.quizTimer);

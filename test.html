@@ -1401,26 +1401,25 @@ function calculateXPReward(mode, stats = {}){
     }
 
     async function markManual(ok){
-      if(!state.current) return;
+  if(!state.current) return;
 
-      document.getElementById("realAnswer").textContent = state.current.correct;
-      state.totalAnswered++;
+  document.getElementById("realAnswer").textContent = state.current.correct;
+  state.totalAnswered++;
 
-      if(ok){
-        state.good++;
-        await updateWeak(state.current.fact, -0.25);
-        document.getElementById("feedback").textContent = "¡Muy bien!";
-        await addXP(3);
-      }else{
-        state.bad++;
-        await updateWeak(state.current.fact, 1);
-        state.todayWrongFacts.add(state.current.fact);
-        document.getElementById("feedback").textContent = "Vamos a practicar esta";
-      }
+  if(ok){
+    state.good++;
+    await updateWeak(state.current.fact, -0.25);
+    document.getElementById("feedback").textContent = "¡Muy bien!";
+  }else{
+    state.bad++;
+    await updateWeak(state.current.fact, 1);
+    state.todayWrongFacts.add(state.current.fact);
+    document.getElementById("feedback").textContent = "Vamos a practicar esta";
+  }
 
-      updateMainStats();
-      renderWeakFacts();
-    }
+  updateMainStats();
+  renderWeakFacts();
+}
 
     function nextQuestion(){
       if(!state.current) return;

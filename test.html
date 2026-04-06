@@ -1044,7 +1044,8 @@ function todayKey(){
 // ======================
 // KIDS (local simple)
 // ======================
-
+const childSelect = document.getElementById("childSelect");
+const newChild = document.getElementById("newChild");
 function getKids(){
   try{
     return JSON.parse(localStorage.getItem("kids") || "[]");

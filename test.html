@@ -913,30 +913,39 @@
     }
 
     async function addXP(amount){
-      const user = auth.currentUser;
-      if(!user) return;
+  const user = auth.currentUser;
+  if(!user) return;
 
-      const ref = doc(db, "users", user.uid, "profile", "main");
-      const snap = await getDoc(ref);
-      if(!snap.exists()) return;
+  const childId = currentChildId();
+  if(!childId) return;
 
-      const data = snap.data();
-      const oldLevel = data.level || 1;
-      const newXP = (data.xp || 0) + amount;
-      const newLevel = calculateLevel(newXP);
+  const ref = doc(db, "users", user.uid, "children", childId, "progress", "main");
+  const snap = await getDoc(ref);
 
-      await setDoc(ref, {
-        xp: newXP,
-        level: newLevel,
-        updatedAt: serverTimestamp()
-      }, { merge: true });
+  let oldXP = 0;
+  let oldLevel = 1;
 
-      updateProfileUI(newXP, newLevel);
+  if(snap.exists()){
+    const data = snap.data();
+    oldXP = data.xp || 0;
+    oldLevel = data.level || 1;
+  }
 
-      if(newLevel > oldLevel){
-        showLevelUp(newLevel);
-      }
-    }
+  const newXP = oldXP + amount;
+  const newLevel = calculateLevel(newXP);
+
+  await setDoc(ref, {
+    xp: newXP,
+    level: newLevel,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+
+  updateProfileUI(newXP, newLevel);
+
+  if(newLevel > oldLevel){
+    showLevelUp(newLevel);
+  }
+}
 function calculateXPReward(mode, stats = {}){
   let xp = 0;
 

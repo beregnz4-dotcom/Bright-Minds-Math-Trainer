@@ -610,6 +610,33 @@
               </div>
 
               <div id="blastSummary" class="blast-summary hidden"></div>
+          <div id="blastOverlay" class="hidden" style="
+  position:fixed;
+  inset:0;
+  background:rgba(17,24,39,.72);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  z-index:9999;
+">
+  <div style="
+    width:min(420px,100%);
+    background:#fff;
+    border-radius:24px;
+    padding:24px;
+    text-align:center;
+  ">
+    <div id="blastOverlayTitle" style="font-size:30px;font-weight:900;">⏱ Time Up!</div>
+    <div id="blastOverlayScore" style="font-size:52px;font-weight:900;margin:10px 0;">0</div>
+    <div id="blastOverlayXP">XP: 0</div>
+
+    <div style="margin-top:16px;">
+      <button id="blastPlayAgainBtn" class="btn btn-yellow">Play Again</button>
+      <button id="blastCloseBtn" class="btn btn-soft">Close</button>
+    </div>
+  </div>
+</div>
             </div>
           </div>
         </div>

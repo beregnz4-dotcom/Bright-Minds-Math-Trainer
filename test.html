@@ -1061,7 +1061,10 @@ function makeChildId(name){
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "");
 }
-
+function currentChildId(){
+  const name = currentChild();
+  return makeChildId(name || "");
+}
 async function saveChildToCloud(name){
   const user = auth.currentUser;
   if(!user) return;

@@ -1297,15 +1297,14 @@ function calculateXPReward(mode, stats = {}){
       const profileRef = doc(db, "users", user.uid, "profile", "main");
       const profileSnap = await getDoc(profileRef);
 
-      if(profileSnap.exists()){
-        const profile = profileSnap.data();
-        updateProfileUI(profile.xp || 0, profile.level || 1);
+    if(profileSnap.exists()){
+  const profile = profileSnap.data();
 
-        await loadKidsFromCloud(profile.childName || "");
-        if(profile.childName) childSelect.value = profile.childName;
-      } else {
-        await loadKidsFromCloud();
-      }
+  await loadKidsFromCloud(profile.childName || "");
+  if(profile.childName) childSelect.value = profile.childName;
+} else {
+  await loadKidsFromCloud();
+}
 
       const childId = currentChildId();
 

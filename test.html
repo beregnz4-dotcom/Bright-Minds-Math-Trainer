@@ -1556,16 +1556,23 @@ await loadCloudData();
       const avg = state.quizIndex ? Number((totalTime / state.quizIndex).toFixed(2)) : 0;
 
       await saveSession({
-        mode: "Choose",
-        good: state.quizGood,
-        bad: state.quizBad,
-        total: state.quizIndex,
-        time: totalTime,
-        avg
-      });
+  mode: "Choose",
+  good: state.quizGood,
+  bad: state.quizBad,
+  total: state.quizIndex,
+  time: totalTime,
+  avg
+});
 
-      await updateDailyChallenge("quiz", state.quizGood);
-      await loadCloudData();
+const xpEarned = calculateXPReward("quiz", {
+  correct: state.quizGood,
+  total: state.quizIndex,
+  avgTime: avg
+});
+
+await addXP(xpEarned);
+await updateDailyChallenge("quiz", state.quizGood);
+await loadCloudData();
 
       const summary = document.getElementById("quizSummary");
       summary.classList.remove("hidden");

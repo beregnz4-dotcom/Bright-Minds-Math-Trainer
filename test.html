@@ -1733,6 +1733,7 @@ await addXP(xpEarned);
 await updateDailyChallenge("quiz", state.quizGood);
 await loadCloudData();
 
+      beep("good");
       const summary = document.getElementById("quizSummary");
       summary.classList.remove("hidden");
       summary.innerHTML = `

@@ -848,7 +848,25 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+async function addXP(amount){
+  const user = auth.currentUser;
+  if(!user) return;
 
+  const ref = doc(db, "users", user.uid, "profile", "main");
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    const data = snap.data();
+    const newXP = (data.xp || 0) + amount;
+
+    await setDoc(ref, {
+      xp: newXP,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    console.log("XP actualizado:", newXP);
+  }
+}
     window.auth = auth;
     window.db = db;
 

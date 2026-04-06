@@ -436,7 +436,7 @@
     }
 
     .blast-card{
-      background: linear-gradient(180deg, #fff, #fff7ed);
+      background:linear-gradient(180deg,#fff,#fff7ed);
     }
 
     .blast-header{
@@ -555,21 +555,17 @@
 </head>
 <body>
 
-  <!-- LOGIN -->
   <div id="loginScreen" class="login-screen">
     <div class="login-card">
       <h1>Bright Minds Math</h1>
       <p>Acceso privado · Solo alumnos</p>
-
       <input id="loginEmail" type="email" placeholder="Correo electrónico">
       <input id="loginPassword" type="password" placeholder="Contraseña">
-
       <button id="loginBtn" class="btn btn-yellow" style="width:100%">Entrar</button>
       <div id="loginError" style="margin-top:10px;color:#b91c1c;font-weight:700;"></div>
     </div>
   </div>
 
-  <!-- APP -->
   <div id="appScreen" class="hidden">
     <div class="topbar">
       <div id="userBadge" style="font-weight:700;"></div>
@@ -581,14 +577,14 @@
         <h3>🔥 Desafío diario</h3>
         <div id="profileStats">XP: 0 · Nivel: 1</div>
         <div style="margin-top:8px;">
-  <div id="levelLabel" class="muted">Progreso al siguiente nivel</div>
-  <div style="width:100%;height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;">
-    <div id="levelBar" style="height:12px;width:0%;background:#7a4dff;border-radius:999px;"></div>
-  </div>
-</div>
+          <div id="levelLabel" class="muted">Progreso al siguiente nivel</div>
+          <div style="width:100%;height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;">
+            <div id="levelBar" style="height:12px;width:0%;background:#7a4dff;border-radius:999px;"></div>
+          </div>
+        </div>
         <div id="levelUpBox" class="hidden" style="margin-top:10px;padding:12px;border-radius:12px;background:#fef3c7;font-weight:800;text-align:center;">
-  🎉 LEVEL UP!
-</div>
+          🎉 LEVEL UP!
+        </div>
         <div id="dailyChallengeText">Cargando reto...</div>
         <div id="dailyChallengeStatus" class="muted" style="margin-top:8px;"></div>
       </div>
@@ -612,7 +608,7 @@
               <h3>Alumno</h3>
               <div class="row">
                 <input id="newChild" placeholder="Agregar nombre">
-                <button class="btn btn-yellow" onclick="addChild()">Agregar alumno</button>
+                <button id="addChildBtn" class="btn btn-yellow">Agregar alumno</button>
               </div>
               <select id="childSelect" onchange="renderHistory(); renderWeakFacts(); drawChart();"></select>
             </div>
@@ -772,122 +768,125 @@
           </div>
         </div>
       </div>
-      <div class="section">
-        <div class="card">
-          <h3>Operaciones específicas</h3>
-          <div class="row">
-            <select id="specificTable" onchange="renderSpecific()">
-              <option value="2">Tabla 2</option>
-              <option value="3">Tabla 3</option>
-              <option value="4">Tabla 4</option>
-              <option value="5">Tabla 5</option>
-              <option value="6">Tabla 6</option>
-              <option value="7">Tabla 7</option>
-              <option value="8">Tabla 8</option>
-              <option value="9">Tabla 9</option>
-              <option value="10">Tabla 10</option>
-            </select>
-            <button class="btn btn-soft" onclick="selectAllSpecificCurrent()">Seleccionar toda la tabla</button>
-            <button class="btn btn-soft" onclick="clearSpecificCurrent()">Limpiar esta tabla</button>
-            <button class="btn btn-soft" onclick="clearAllSpecific()">Limpiar todo</button>
-          </div>
+      <script type="module">
 
-          <div id="specificGrid" class="chips"></div>
-          <div id="specificCount" class="muted" style="margin-top:10px;">Específicas seleccionadas: 0</div>
-        </div>
-      </div>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-      <div class="section">
-        <div class="card">
-          <h3>Historial</h3>
-          <div id="history"></div>
-        </div>
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-        <div class="card">
-          <h3>Gráfica</h3>
-          <canvas id="chart" width="900" height="260"></canvas>
-        </div>
+// ======================
+// FIREBASE CONFIG
+// ======================
 
-        <div class="card">
-          <h3>Refuerzo</h3>
-          <div id="weakFacts"></div>
-        </div>
-      </div>
+const firebaseConfig = {
+  apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
+  authDomain: "bright-minds-math.firebaseapp.com",
+  projectId: "bright-minds-math",
+  storageBucket: "bright-minds-math.firebasestorage.app",
+  messagingSenderId: "645800687175",
+  appId: "1:645800687175:web:75241f3cac5e5433442362"
+};
 
-      <div class="section">
-        <div class="card">
-          <h3>Tablas visuales</h3>
-          <div class="stair-wrap">
-            <div id="visualGrid" class="stairs"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      getDoc,
-      collection,
-      getDocs,
-      query,
-      orderBy,
-      limit,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+// ======================
+// ELEMENTOS
+// ======================
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
-      authDomain: "bright-minds-math.firebaseapp.com",
-      projectId: "bright-minds-math",
-      storageBucket: "bright-minds-math.firebasestorage.app",
-      messagingSenderId: "645800687175",
-      appId: "1:645800687175:web:75241f3cac5e5433442362"
-    };
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    function calculateLevel(xp){
-  if(xp >= 500) return 5;
-  if(xp >= 300) return 4;
-  if(xp >= 150) return 3;
-  if(xp >= 50) return 2;
-  return 1;
-}
-    function getLevelProgress(xp){
-  let min = 0;
-  let max = 50;
+const loginEmail = document.getElementById("loginEmail");
+const loginPassword = document.getElementById("loginPassword");
+const loginError = document.getElementById("loginError");
 
-  if(xp >= 500){
-    return { level: 5, percent: 100, text: "Nivel máximo" };
-  } else if(xp >= 300){
-    min = 300; max = 500;
-  } else if(xp >= 150){
-    min = 150; max = 300;
-  } else if(xp >= 50){
-    min = 50; max = 150;
+const loginScreen = document.getElementById("loginScreen");
+const appScreen = document.getElementById("appScreen");
+const userBadge = document.getElementById("userBadge");
+
+// 🔥 BOTÓN FIX (sin onclick)
+document.getElementById("addChildBtn")
+  .addEventListener("click", addChild);
+
+// ======================
+// LOGIN
+// ======================
+
+loginBtn.onclick = async () => {
+  loginError.textContent = "";
+
+  try{
+    await signInWithEmailAndPassword(
+      auth,
+      loginEmail.value.trim(),
+      loginPassword.value.trim()
+    );
+  }catch(e){
+    loginError.textContent = "Error al iniciar sesión";
   }
+};
 
-  const percent = ((xp - min) / (max - min)) * 100;
+logoutBtn.onclick = async () => {
+  await signOut(auth);
+};
 
-  return {
-    percent: Math.max(0, Math.min(100, percent)),
-    text: `${xp - min} / ${max - min} XP al siguiente nivel`
-  };
+// ======================
+// PERFIL
+// ======================
+
+async function ensureUserProfile(user){
+  const ref = doc(db, "users", user.uid, "profile", "main");
+  const snap = await getDoc(ref);
+
+  if(!snap.exists()){
+    await setDoc(ref, {
+      xp: 0,
+      level: 1,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+  }
 }
-    function showLevelUp(newLevel){
+
+// ======================
+// XP Y NIVELES
+// ======================
+
+function calculateLevel(xp){
+  return Math.floor(xp / 50) + 1;
+}
+
+function getLevelProgress(xp){
+  return xp % 50;
+}
+
+function updateLevelUI(xp, level){
+  document.getElementById("profileStats").textContent =
+    `XP: ${xp} · Nivel: ${level}`;
+
+  const progress = getLevelProgress(xp);
+  const percent = (progress / 50) * 100;
+
+  document.getElementById("levelBar").style.width = percent + "%";
+}
+
+function showLevelUp(newLevel){
   const box = document.getElementById("levelUpBox");
+
   box.textContent = `🎉 LEVEL UP! Nivel ${newLevel}`;
   box.classList.remove("hidden");
 
@@ -895,6 +894,11 @@
     box.classList.add("hidden");
   }, 2500);
 }
+
+// ======================
+// ADD XP
+// ======================
+
 async function addXP(amount){
   const user = auth.currentUser;
   if(!user) return;
@@ -905,6 +909,7 @@ async function addXP(amount){
   if(snap.exists()){
     const data = snap.data();
 
+    const oldLevel = data.level || 1;
     const newXP = (data.xp || 0) + amount;
     const newLevel = calculateLevel(newXP);
 
@@ -914,138 +919,81 @@ async function addXP(amount){
       updatedAt: serverTimestamp()
     }, { merge: true });
 
-    console.log("XP:", newXP, "Nivel:", newLevel);
+    updateLevelUI(newXP, newLevel);
+
+    if(newLevel > oldLevel){
+      showLevelUp(newLevel);
+    }
   }
 }
-    window.auth = auth;
-    window.db = db;
 
-    const state = {
-      selectedTables: new Set([2,3,4,5,6,7,8,9,10]),
-      specificFacts: new Set(),
-      sessions: [],
-      weakMap: {},
-      todayWrongFacts: new Set(),
+// ======================
+// AUTH STATE
+// ======================
 
-      running: false,
-      current: null,
-      problems: [],
-      good: 0,
-      bad: 0,
-      totalAnswered: 0,
-      startTime: null,
-      timer: null,
+onAuthStateChanged(auth, async (user) => {
+  if(user){
+    await ensureUserProfile(user);
 
-      quizRunning: false,
-      quizQuestions: [],
-      quizCurrent: null,
-      quizGood: 0,
-      quizBad: 0,
-      quizIndex: 0,
-      quizStartTime: null,
-      quizTimer: null,
+    loginScreen.classList.add("hidden");
+    appScreen.classList.remove("hidden");
 
-      memoCards: [],
-      memoFlipped: [],
-      memoMatched: 0,
-      memoMoves: 0,
-      memoTarget: 0,
-      memoBusy: false,
-      memoStartTime: null,
-      memoTimer: null
-    };
+    userBadge.textContent = user.email;
 
-    const loginScreen = document.getElementById("loginScreen");
-    const appScreen = document.getElementById("appScreen");
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const loginEmail = document.getElementById("loginEmail");
-    const loginPassword = document.getElementById("loginPassword");
-    const loginError = document.getElementById("loginError");
-    const userBadge = document.getElementById("userBadge");
+    // cargar datos
+    const ref = doc(db, "users", user.uid, "profile", "main");
+    const snap = await getDoc(ref);
 
-    const newChild = document.getElementById("newChild");
-    const childSelect = document.getElementById("childSelect");
-    const tableChips = document.getElementById("tableChips");
-    const modeLabel = document.getElementById("modeLabel");
-    const historyEl = document.getElementById("history");
-    const weakFactsEl = document.getElementById("weakFacts");
-
-    function translateFirebaseError(code){
-      const map = {
-        "auth/invalid-email": "Correo inválido",
-        "auth/missing-password": "Escribe contraseña",
-        "auth/invalid-credential": "Correo o contraseña incorrectos",
-        "auth/user-not-found": "Usuario no encontrado",
-        "auth/wrong-password": "Contraseña incorrecta"
-      };
-      return map[code] || "No se pudo iniciar sesión";
+    if(snap.exists()){
+      const data = snap.data();
+      updateLevelUI(data.xp || 0, data.level || 1);
     }
 
-    async function ensureUserProfile(user){
-      const ref = doc(db, "users", user.uid, "profile", "main");
-      const snap = await getDoc(ref);
+  }else{
+    appScreen.classList.add("hidden");
+    loginScreen.classList.remove("hidden");
+  }
+});
 
-      if(!snap.exists()){
-        await setDoc(ref, {
-          email: user.email || "",
-          childName: "",
-          xp: 0,
-          level: 1,
-          streak: 0,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-      }
-    }
-
-    loginBtn.onclick = async () => {
-      loginError.textContent = "";
-      try{
-        await signInWithEmailAndPassword(
-          auth,
-          loginEmail.value.trim(),
-          loginPassword.value.trim()
-        );
-      }catch(e){
-        loginError.textContent = translateFirebaseError(e.code);
-      }
-    };
-
-    logoutBtn.onclick = async () => {
-      await signOut(auth);
-    };
-
-    onAuthStateChanged(auth, async (user) => {
-      if(user){
-        await ensureUserProfile(user);
-        loginScreen.classList.add("hidden");
-        appScreen.classList.remove("hidden");
-        userBadge.textContent = user.email || "";
-        await loadCloudData();
-      }else{
-        appScreen.classList.add("hidden");
-        loginScreen.classList.remove("hidden");
-        userBadge.textContent = "";
-      }
-    });
-  </script>
-
-  <script>
+</script>
+<script type="module">
 // ======================
-// UTILIDADES GENERALES
+// ESTADO
 // ======================
 
-function todayKey(){
-  const d = new Date();
-  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-}
+const state = {
+  kids: [],
+  challenge: { done:false, progress:0, target:5, text:"Haz 5 correctas hoy" },
+  currentProblem: null,
+  correct: 0,
+  wrong: 0,
+  total: 0,
+  timer: null,
+  seconds: 0,
+  quizIndex: 0,
+  quizQuestions: [],
+  quizGood: 0,
+  quizBad: 0,
+  currentTab: 0
+};
 
-// ======================
-// KIDS (local simple)
-// ======================
 const childSelect = document.getElementById("childSelect");
 const newChild = document.getElementById("newChild");
+
+// ======================
+// TABS
+// ======================
+
+window.showTab = function(index){
+  document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active", i===index));
+  document.querySelectorAll(".section").forEach((s,i)=>s.classList.toggle("active", i===index));
+  state.currentTab = index;
+};
+
+// ======================
+// KIDS
+// ======================
+
 function getKids(){
   try{
     return JSON.parse(localStorage.getItem("kids") || "[]");
@@ -1055,13 +1003,7 @@ function getKids(){
 }
 
 function saveKids(list){
-  try{
-    localStorage.setItem("kids", JSON.stringify(list));
-    console.log("Guardado OK:", list);
-  }catch(e){
-    console.error("Error guardando kids:", e);
-    alert("No se pudo guardar el alumno en este navegador.");
-  }
+  localStorage.setItem("kids", JSON.stringify(list));
 }
 
 function loadKids(selectedName = ""){
@@ -1086,12 +1028,11 @@ function loadKids(selectedName = ""){
   childSelect.value = selectedName || kids[0];
 }
 
-function addChild(){
+window.addChild = function addChild(){
   const name = newChild.value.trim();
   if(!name) return;
 
   const list = getKids();
-
   if(!list.includes(name)){
     list.push(name);
     saveKids(list);
@@ -1099,158 +1040,367 @@ function addChild(){
 
   loadKids(name);
   childSelect.value = name;
-  childSelect.dispatchEvent(new Event("change"));
   newChild.value = "";
-
   alert("Alumno guardado: " + JSON.stringify(getKids()));
-}
-
-function currentChild(){
-  return childSelect.value;
-}
+};
 
 // ======================
-// TABLAS
+// CHALLENGE
 // ======================
-
-function renderTableChips(){
-  tableChips.innerHTML = "";
-  for(let i=2;i<=10;i++){
-    const chip = document.createElement("div");
-    chip.className = "chip " + (state.selectedTables.has(i) ? "active":"");
-    chip.textContent = "Tabla " + i;
-
-    chip.onclick = () => {
-      if(state.selectedTables.has(i)){
-        state.selectedTables.delete(i);
-      }else{
-        state.selectedTables.add(i);
-      }
-      renderTableChips();
-    };
-
-    tableChips.appendChild(chip);
-  }
-}
-
-function selectAllTables(){
-  state.selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
-  renderTableChips();
-}
-
-function clearAllTables(){
-  state.selectedTables = new Set();
-  renderTableChips();
-}
-
-function selectRange(a,b){
-  state.selectedTables = new Set();
-  for(let i=a;i<=b;i++) state.selectedTables.add(i);
-  renderTableChips();
-}
-
-// ======================
-// DAILY CHALLENGE
-// ======================
-
-function getChallengeDB(){
-  return JSON.parse(localStorage.getItem("bm_challenge") || "{}");
-}
-
-function saveChallengeDB(db){
-  localStorage.setItem("bm_challenge", JSON.stringify(db));
-}
-
-function buildDailyChallenge(){
-  const key = todayKey();
-  const db = getChallengeDB();
-
-  if(db.date === key) return db;
-
-  const options = [
-    {id:"practice", text:"Completa 1 práctica", target:1, progress:0},
-    {id:"quiz", text:"Haz 5 correctas", target:5, progress:0},
-    {id:"blast", text:"Logra 100 puntos", target:100, progress:0},
-    {id:"memo", text:"Completa memorama", target:1, progress:0}
-  ];
-
-  const challenge = options[Math.floor(Math.random()*options.length)];
-
-  const newDB = {date:key, challenge, done:false};
-  saveChallengeDB(newDB);
-  return newDB;
-}
 
 function renderDailyChallenge(){
-  const db = buildDailyChallenge();
-  const ch = db.challenge;
+  document.getElementById("dailyChallengeText").textContent = state.challenge.text;
+  document.getElementById("dailyChallengeStatus").textContent =
+    state.challenge.done
+      ? "✅ Completado"
+      : `Progreso: ${state.challenge.progress}/${state.challenge.target}`;
+}
 
-  document.getElementById("dailyChallengeText").textContent = ch.text;
+async function updateDailyChallenge(type, value=1){
+  if(state.challenge.done) return;
 
-  if(db.done){
-    document.getElementById("dailyChallengeStatus").textContent = "✅ Completado";
-  }else{
-    document.getElementById("dailyChallengeStatus").textContent =
-      `Progreso: ${ch.progress}/${ch.target}`;
+  if(type==="practice"){
+    state.challenge.progress += 1;
+    await addXP(2);
   }
-}
 
-function updateDailyChallenge(type, value=1){
-  const db = buildDailyChallenge();
-  const ch = db.challenge;
-
-  if(db.done) return;
-
-  if(type==="practice") ch.progress++;
   if(type==="quiz"){
-  ch.progress += value;
+    state.challenge.progress += value;
+    await addXP(5);
+  }
 
-  addXP(50);  // 🔥 AQUÍ EXACTO
-}
-  if(type==="blast") ch.progress = value;
-  if(type==="memo") ch.progress++;
-
-  if(ch.progress >= ch.target){
-    db.done = true;
+  if(state.challenge.progress >= state.challenge.target){
+    state.challenge.done = true;
+    await addXP(20);
     alert("🎉 Desafío completado");
   }
 
-  saveChallengeDB(db);
   renderDailyChallenge();
 }
+
 // ======================
-// FACTS / SPECIFIC
+// PRACTICE
 // ======================
 
-function allFacts(){
-  const arr = [];
-  for(let a=2; a<=10; a++){
-    if(!state.selectedTables.has(a)) continue;
-    for(let b=1; b<=10; b++){
-      const fact = `${a}x${b}`;
-      if(state.specificFacts.size && !state.specificFacts.has(fact)) continue;
-      arr.push({
-        a,
-        b,
-        fact,
-        correct: a*b
-      });
-    }
-  }
-  return arr;
+function randomProblem(){
+  const a = Math.floor(Math.random()*9) + 2;
+  const b = Math.floor(Math.random()*10) + 1;
+  return { a, b, answer: a*b };
 }
 
-function weightedFacts(){
-  const base = allFacts();
-  const pool = [];
+function updatePracticeStats(){
+  document.getElementById("time").textContent = state.seconds.toFixed(1);
+  document.getElementById("good").textContent = state.correct;
+  document.getElementById("bad").textContent = state.wrong;
+  document.getElementById("avg").textContent = state.total ? (state.seconds / state.total).toFixed(2) : "0.00";
+  document.getElementById("remaining").textContent = Math.max(0, 10 - state.total);
+}
 
-  base.forEach(item => {
-    const weight = Math.max(1, Math.ceil(state.weakMap[item.fact] || 1));
-    for(let i=0; i<weight; i++) pool.push(item);
+function nextPractice(){
+  if(state.total >= 10){
+    clearInterval(state.timer);
+    document.getElementById("feedback").textContent = "Fin";
+    updateDailyChallenge("practice");
+    return;
+  }
+
+  state.currentProblem = randomProblem();
+  document.getElementById("problem").textContent = `${state.currentProblem.a} × ${state.currentProblem.b}`;
+  document.getElementById("realAnswer").textContent = "";
+  document.getElementById("feedback").textContent = "";
+}
+
+window.startGame = function(){
+  state.correct = 0;
+  state.wrong = 0;
+  state.total = 0;
+  state.seconds = 0;
+  clearInterval(state.timer);
+  state.timer = setInterval(() => {
+    state.seconds += 0.1;
+    updatePracticeStats();
+  }, 100);
+  updatePracticeStats();
+  nextPractice();
+};
+
+window.resetGame = function(){
+  clearInterval(state.timer);
+  state.correct = 0;
+  state.wrong = 0;
+  state.total = 0;
+  state.seconds = 0;
+  document.getElementById("problem").textContent = "—";
+  document.getElementById("realAnswer").textContent = "";
+  document.getElementById("feedback").textContent = "";
+  updatePracticeStats();
+};
+
+window.showAnswer = function(){
+  if(!state.currentProblem) return;
+  document.getElementById("realAnswer").textContent = state.currentProblem.answer;
+};
+
+window.markManual = async function(ok){
+  if(!state.currentProblem) return;
+
+  document.getElementById("realAnswer").textContent = state.currentProblem.answer;
+  state.total++;
+
+  if(ok){
+    state.correct++;
+    document.getElementById("feedback").textContent = "¡Muy bien!";
+    await addXP(3);
+  }else{
+    state.wrong++;
+    document.getElementById("feedback").textContent = "Vamos a practicar esta";
+  }
+
+  updatePracticeStats();
+};
+
+window.nextQuestion = function(){
+  nextPractice();
+};
+
+// ======================
+// QUIZ
+// ======================
+
+function quizOptions(correct){
+  const set = new Set([correct]);
+  while(set.size < 3){
+    const fake = correct + Math.floor(Math.random()*10) - 5;
+    if(fake > 0) set.add(fake);
+  }
+  return [...set].sort(() => Math.random() - 0.5);
+}
+
+function nextQuiz(){
+  if(state.quizIndex >= state.quizQuestions.length){
+    document.getElementById("quizSummary").classList.remove("hidden");
+    document.getElementById("quizSummary").innerHTML =
+      `✅ ${state.quizGood} · ❌ ${state.quizBad}`;
+    updateDailyChallenge("quiz", state.quizGood);
+    return;
+  }
+
+  const q = state.quizQuestions[state.quizIndex];
+  document.getElementById("quizProblem").textContent = `${q.a} × ${q.b}`;
+  document.getElementById("quizFeedback").textContent = "";
+  document.getElementById("quizIndex").textContent = state.quizIndex + 1;
+  document.getElementById("quizGood").textContent = state.quizGood;
+  document.getElementById("quizBad").textContent = state.quizBad;
+
+  const opts = quizOptions(q.answer);
+  document.getElementById("quizOptions").innerHTML = opts.map(opt => `
+    <button class="quiz-option" onclick="answerQuiz(${opt})">${opt}</button>
+  `).join("");
+}
+
+window.startQuiz = function(){
+  state.quizQuestions = Array.from({length:10}, () => randomProblem());
+  state.quizIndex = 0;
+  state.quizGood = 0;
+  state.quizBad = 0;
+  document.getElementById("quizTotal").textContent = "10";
+  document.getElementById("quizSummary").classList.add("hidden");
+  nextQuiz();
+};
+
+window.resetQuiz = function(){
+  document.getElementById("quizProblem").textContent = "—";
+  document.getElementById("quizFeedback").textContent = "";
+  document.getElementById("quizOptions").innerHTML = "";
+  document.getElementById("quizIndex").textContent = "0";
+  document.getElementById("quizGood").textContent = "0";
+  document.getElementById("quizBad").textContent = "0";
+  document.getElementById("quizTotal").textContent = "0";
+  document.getElementById("quizSummary").classList.add("hidden");
+};
+
+window.answerQuiz = async function(value){
+  const q = state.quizQuestions[state.quizIndex];
+  if(!q) return;
+
+  if(value === q.answer){
+    state.quizGood++;
+    document.getElementById("quizFeedback").textContent = "¡Correcto!";
+    await addXP(5);
+  }else{
+    state.quizBad++;
+    document.getElementById("quizFeedback").textContent = "Casi";
+  }
+
+  state.quizIndex++;
+  setTimeout(nextQuiz, 500);
+};
+</script>
+<script type="module">
+// ======================
+// MEMORAMA
+// ======================
+
+const memoState = {
+  cards: [],
+  flipped: [],
+  pairs: 0,
+  moves: 0,
+  target: 0,
+  busy: false,
+  timer: null,
+  seconds: 0
+};
+
+function renderMemo(){
+  const grid = document.getElementById("memoGrid");
+
+  if(!memoState.cards.length){
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Elige un nivel para empezar</div>`;
+    return;
+  }
+
+  grid.innerHTML = memoState.cards.map((card, index) => {
+    const visible = card.flipped || card.matched;
+    const cls = card.matched
+      ? "memo-card memo-front memo-matched"
+      : visible
+      ? "memo-card memo-front"
+      : "memo-card memo-back";
+
+    const label = visible ? card.text : "?";
+    return `<div class="${cls}" onclick="flipMemo(${index})">${label}</div>`;
+  }).join("");
+
+  document.getElementById("memoMoves").textContent = memoState.moves;
+  document.getElementById("memoPairs").textContent = memoState.pairs;
+  document.getElementById("memoTarget").textContent = memoState.target;
+}
+
+window.startMemo = function(pairCount){
+  const facts = Array.from({length: pairCount}, () => randomProblem());
+  memoState.cards = [];
+  memoState.flipped = [];
+  memoState.pairs = 0;
+  memoState.moves = 0;
+  memoState.target = pairCount;
+  memoState.busy = false;
+  memoState.seconds = 0;
+
+  facts.forEach((f, i) => {
+    memoState.cards.push({
+      text: `${f.a}x${f.b}`,
+      pair: i,
+      flipped: false,
+      matched: false
+    });
+    memoState.cards.push({
+      text: `${f.answer}`,
+      pair: i,
+      flipped: false,
+      matched: false
+    });
   });
 
-  return pool;
+  memoState.cards.sort(() => Math.random() - 0.5);
+
+  clearInterval(memoState.timer);
+  memoState.timer = setInterval(() => {
+    memoState.seconds += 0.1;
+    document.getElementById("memoTime").textContent = memoState.seconds.toFixed(1);
+  }, 100);
+
+  document.getElementById("memoMode").textContent = `${pairCount} pares`;
+  document.getElementById("memoFeedback").textContent = "Encuentra todas las parejas";
+
+  renderMemo();
+};
+
+window.flipMemo = async function(index){
+  if(memoState.busy) return;
+
+  const card = memoState.cards[index];
+  if(!card || card.flipped || card.matched) return;
+
+  card.flipped = true;
+  memoState.flipped.push(index);
+  renderMemo();
+
+  if(memoState.flipped.length === 2){
+    memoState.busy = true;
+    memoState.moves++;
+
+    const [i1, i2] = memoState.flipped;
+    const c1 = memoState.cards[i1];
+    const c2 = memoState.cards[i2];
+
+    if(c1.pair === c2.pair){
+      c1.matched = true;
+      c2.matched = true;
+      memoState.pairs++;
+      memoState.flipped = [];
+      memoState.busy = false;
+      renderMemo();
+
+      if(memoState.pairs === memoState.target){
+        clearInterval(memoState.timer);
+        document.getElementById("memoFeedback").textContent =
+          `🏁 Completado · ${memoState.seconds.toFixed(1)}s`;
+        await addXP(10);
+        updateDailyChallenge("memo");
+      }
+    }else{
+      setTimeout(() => {
+        c1.flipped = false;
+        c2.flipped = false;
+        memoState.flipped = [];
+        memoState.busy = false;
+        renderMemo();
+      }, 700);
+    }
+  }
+};
+
+// ======================
+// TABLAS / ESPECÍFICAS
+// ======================
+
+const selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
+const specificFacts = new Set();
+
+function renderTableChips(){
+  const box = document.getElementById("tableChips");
+  box.innerHTML = "";
+
+  for(let i=2; i<=10; i++){
+    const chip = document.createElement("div");
+    chip.className = "chip " + (selectedTables.has(i) ? "active" : "");
+    chip.textContent = `Tabla ${i}`;
+    chip.onclick = () => {
+      if(selectedTables.has(i)) selectedTables.delete(i);
+      else selectedTables.add(i);
+      renderTableChips();
+    };
+    box.appendChild(chip);
+  }
 }
+
+window.selectAllTables = function(){
+  selectedTables.clear();
+  for(let i=2; i<=10; i++) selectedTables.add(i);
+  renderTableChips();
+};
+
+window.clearAllTables = function(){
+  selectedTables.clear();
+  renderTableChips();
+};
+
+window.selectRange = function(a,b){
+  selectedTables.clear();
+  for(let i=a; i<=b; i++) selectedTables.add(i);
+  renderTableChips();
+};
 
 function renderSpecific(){
   const table = Number(document.getElementById("specificTable").value);
@@ -1260,767 +1410,311 @@ function renderSpecific(){
   let html = "";
   for(let i=1; i<=10; i++){
     const fact = `${table}x${i}`;
-    html += `<div class="chip ${state.specificFacts.has(fact) ? "active":""}" onclick="toggleSpecific('${fact}')">${fact}</div>`;
+    html += `<div class="chip ${specificFacts.has(fact) ? "active": ""}" onclick="toggleSpecific('${fact}')">${fact}</div>`;
   }
 
   grid.innerHTML = html;
-  count.textContent = `Específicas seleccionadas: ${state.specificFacts.size}`;
+  count.textContent = `Específicas seleccionadas: ${specificFacts.size}`;
 }
 
-function toggleSpecific(fact){
-  if(state.specificFacts.has(fact)) state.specificFacts.delete(fact);
-  else state.specificFacts.add(fact);
+window.toggleSpecific = function(fact){
+  if(specificFacts.has(fact)) specificFacts.delete(fact);
+  else specificFacts.add(fact);
   renderSpecific();
-}
+};
 
-function selectAllSpecificCurrent(){
+window.selectAllSpecificCurrent = function(){
   const table = Number(document.getElementById("specificTable").value);
-  for(let i=1; i<=10; i++){
-    state.specificFacts.add(`${table}x${i}`);
-  }
+  for(let i=1; i<=10; i++) specificFacts.add(`${table}x${i}`);
   renderSpecific();
-}
+};
 
-function clearSpecificCurrent(){
+window.clearSpecificCurrent = function(){
   const table = Number(document.getElementById("specificTable").value);
-  for(let i=1; i<=10; i++){
-    state.specificFacts.delete(`${table}x${i}`);
-  }
+  for(let i=1; i<=10; i++) specificFacts.delete(`${table}x${i}`);
   renderSpecific();
-}
+};
 
-function clearAllSpecific(){
-  state.specificFacts.clear();
+window.clearAllSpecific = function(){
+  specificFacts.clear();
   renderSpecific();
-}
+};
 
-function activatePractice(){
-  state.specificFacts.clear();
-  modeLabel.textContent = "Modo práctica inteligente";
+window.activatePractice = function(){
+  specificFacts.clear();
+  document.getElementById("modeLabel").textContent = "Modo práctica inteligente";
   renderSpecific();
-}
+};
 
-function loadWeakToSpecific(){
-  const weak = Object.entries(state.weakMap)
-    .sort((a,b)=>b[1]-a[1])
-    .slice(0,10)
-    .map(([fact])=>fact);
+window.loadWeakToSpecific = function(){
+  document.getElementById("modeLabel").textContent = "Modo refuerzo activado";
+};
 
-  if(!weak.length){
-    modeLabel.textContent = "Todavía no hay ejercicios de refuerzo";
-    return;
-  }
-
-  state.specificFacts = new Set(weak);
-  modeLabel.textContent = "Modo refuerzo activado";
-  renderSpecific();
-}
-
-function loadTodayWrongToSpecific(){
-  if(!state.todayWrongFacts.size){
-    modeLabel.textContent = "Todavía no hay ejercicios para repasar";
-    return;
-  }
-
-  state.specificFacts = new Set([...state.todayWrongFacts]);
-  modeLabel.textContent = "Modo repasar activado";
-  renderSpecific();
-}
+window.loadTodayWrongToSpecific = function(){
+  document.getElementById("modeLabel").textContent = "Modo repasar activado";
+};
 
 // ======================
-// FIRESTORE SAVE/LOAD
+// VISUAL
 // ======================
 
-async function saveSession(obj){
-  const user = auth.currentUser;
-  if(!user) return;
+function renderVisual(){
+  const box = document.getElementById("visualGrid");
+  let html = "";
 
-  const sessionRef = doc(collection(db, "users", user.uid, "sessions"));
-
-  await setDoc(sessionRef, {
-    child: currentChild(),
-    mode: obj.mode || "",
-    good: obj.good || 0,
-    bad: obj.bad || 0,
-    total: obj.total || 0,
-    time: obj.time || 0,
-    avg: obj.avg || 0,
-    score: obj.score || 0,
-    createdAt: serverTimestamp()
-  });
-}
-
-async function updateWeak(fact, delta){
-  const user = auth.currentUser;
-  if(!user) return;
-
-  const weakRef = doc(db, "users", user.uid, "weakFacts", "main");
-  const snap = await getDoc(weakRef);
-
-  let facts = snap.exists() ? (snap.data().facts || {}) : {};
-  facts[fact] = (facts[fact] || 0) + delta;
-  if(facts[fact] <= 0) delete facts[fact];
-
-  state.weakMap = facts;
-
-  await setDoc(weakRef, {
-    facts,
-    updatedAt: serverTimestamp()
-  }, { merge:true });
-}
-
-async function loadCloudData(){
-  const user = auth.currentUser;
-  if(!user) return;
-
-  // profile
-  const profileRef = doc(db, "users", user.uid, "profile", "main");
-  const profileSnap = await getDoc(profileRef);
-
-  if(profileSnap.exists()){
-    const profile = profileSnap.data();
-    document.getElementById("profileStats").textContent =
-  `XP: ${profile.xp || 0} · Nivel: ${profile.level || 1}`;
-    if(profile.childName){
-      const kids = getKids();
-      if(!kids.includes(profile.childName)){
-        kids.push(profile.childName);
-        saveKids(kids);
-      }
-      loadKids();
-      childSelect.value = profile.childName;
-    } else {
-      loadKids();
+  for(let t=1; t<=10; t++){
+    html += `<div class="stair-col">`;
+    html += `<div class="stair-head">${t}</div>`;
+    for(let i=1; i<=10; i++){
+      html += `<div class="stair-cell">${t} × ${i} = ${t*i}</div>`;
     }
-  } else {
-    loadKids();
+    html += `</div>`;
   }
 
-  // weak facts
-  const weakRef = doc(db, "users", user.uid, "weakFacts", "main");
-  const weakSnap = await getDoc(weakRef);
-  state.weakMap = weakSnap.exists() ? (weakSnap.data().facts || {}) : {};
+  box.innerHTML = html;
+}
 
-  // sessions
-  const q = query(
-    collection(db, "users", user.uid, "sessions"),
-    orderBy("createdAt", "desc"),
-    limit(30)
-  );
+// ======================
+// HISTORIAL SIMPLE
+// ======================
 
-  const snap = await getDocs(q);
-  state.sessions = [];
-  snap.forEach(d => state.sessions.push(d.data()));
+const historyItems = [];
 
+function pushHistory(item){
+  historyItems.unshift(item);
+  if(historyItems.length > 20) historyItems.pop();
   renderHistory();
-  renderWeakFacts();
   drawChart();
-  renderDailyChallenge();
 }
-
-// ======================
-// PRACTICE
-// ======================
-
-function updateMainStats(){
-  document.getElementById("good").textContent = state.good;
-  document.getElementById("bad").textContent = state.bad;
-  document.getElementById("time").textContent = state.timer
-    ? ((Date.now() - state.startTime)/1000).toFixed(1)
-    : "0.0";
-  document.getElementById("avg").textContent = state.totalAnswered
-    ? (((Date.now() - state.startTime)/1000) / state.totalAnswered).toFixed(2)
-    : "0.00";
-  document.getElementById("remaining").textContent = state.problems.length;
-}
-
-function nextSpeedQuestion(){
-  if(!state.problems.length){
-    finishSpeed();
-    return;
-  }
-
-  state.current = state.problems.pop();
-  document.getElementById("problem").textContent = `${state.current.a} × ${state.current.b}`;
-  document.getElementById("realAnswer").textContent = "";
-  document.getElementById("feedback").textContent = "";
-  updateMainStats();
-}
-
-function startGame(){
-  if(!currentChild()){
-    alert("Primero agrega o selecciona un alumno.");
-    return;
-  }
-
-  state.good = 0;
-  state.bad = 0;
-  state.totalAnswered = 0;
-  state.problems = shuffle(weightedFacts()).slice(0,20);
-  state.todayWrongFacts = new Set();
-  state.startTime = Date.now();
-
-  clearInterval(state.timer);
-  state.timer = setInterval(updateMainStats, 100);
-
-  nextSpeedQuestion();
-}
-
-function resetGame(){
-  clearInterval(state.timer);
-  state.timer = null;
-  state.problems = [];
-  state.current = null;
-  state.good = 0;
-  state.bad = 0;
-  state.totalAnswered = 0;
-
-  document.getElementById("problem").textContent = "—";
-  document.getElementById("realAnswer").textContent = "";
-  document.getElementById("feedback").textContent = "";
-  updateMainStats();
-}
-
-function showAnswer(){
-  if(!state.current) return;
-  document.getElementById("realAnswer").textContent = state.current.correct;
-}
-
-async function markManual(ok){
-  if(!state.current) return;
-
-  document.getElementById("realAnswer").textContent = state.current.correct;
-  state.totalAnswered++;
-
-  if(ok){
-    state.good++;
-    await updateWeak(state.current.fact, -0.25);
-    document.getElementById("feedback").textContent = "¡Muy bien!";
-  }else{
-    state.bad++;
-    await updateWeak(state.current.fact, 1);
-    state.todayWrongFacts.add(state.current.fact);
-    document.getElementById("feedback").textContent = "Vamos a practicar esta";
-  }
-
-  updateMainStats();
-  renderWeakFacts();
-}
-
-function nextQuestion(){
-  if(!state.current) return;
-  nextSpeedQuestion();
-}
-
-async function finishSpeed(){
-  clearInterval(state.timer);
-  state.timer = null;
-
-  const totalTime = Number(((Date.now() - state.startTime)/1000).toFixed(1));
-  const avg = state.totalAnswered ? Number((totalTime / state.totalAnswered).toFixed(2)) : 0;
-
-  await saveSession({
-    mode: "Practice",
-    good: state.good,
-    bad: state.bad,
-    total: state.totalAnswered,
-    time: totalTime,
-    avg
-  });
-
-  updateDailyChallenge("practice");
-  await loadCloudData();
-
-  document.getElementById("feedback").textContent = "Fin";
-}
-
-// ======================
-// EXPONER A WINDOW
-// ======================
-
-window.addChild = addChild;
-window.selectAllTables = selectAllTables;
-window.clearAllTables = clearAllTables;
-window.selectRange = selectRange;
-window.activatePractice = activatePractice;
-window.loadWeakToSpecific = loadWeakToSpecific;
-window.loadTodayWrongToSpecific = loadTodayWrongToSpecific;
-window.renderSpecific = renderSpecific;
-window.toggleSpecific = toggleSpecific;
-window.selectAllSpecificCurrent = selectAllSpecificCurrent;
-window.clearSpecificCurrent = clearSpecificCurrent;
-window.clearAllSpecific = clearAllSpecific;
-
-window.startGame = startGame;
-window.resetGame = resetGame;
-window.showAnswer = showAnswer;
-window.markManual = markManual;
-window.nextQuestion = nextQuestion;
-// ======================
-// CHOOSE / QUIZ
-// ======================
-
-function resetQuiz(){
-  clearInterval(state.quizTimer);
-  state.quizRunning = false;
-  state.quizQuestions = [];
-  state.quizCurrent = null;
-  state.quizGood = 0;
-  state.quizBad = 0;
-  state.quizIndex = 0;
-
-  document.getElementById("quizTime").textContent = "0.0";
-  document.getElementById("quizGood").textContent = "0";
-  document.getElementById("quizBad").textContent = "0";
-  document.getElementById("quizIndex").textContent = "0";
-  document.getElementById("quizTotal").textContent = "0";
-  document.getElementById("quizProblem").textContent = "—";
-  document.getElementById("quizFeedback").textContent = "";
-  document.getElementById("quizOptions").innerHTML = "";
-  document.getElementById("quizSummary").classList.add("hidden");
-}
-
-function buildQuizOptions(correct){
-  let options = new Set([correct]);
-  while(options.size < 3){
-    const fake = correct + Math.floor(Math.random()*10) - 5;
-    if(fake > 0) options.add(fake);
-  }
-  return shuffle([...options]);
-}
-
-function nextQuizQuestion(){
-  if(!state.quizQuestions.length){
-    finishQuiz();
-    return;
-  }
-
-  state.quizCurrent = state.quizQuestions.pop();
-  state.quizIndex++;
-
-  document.getElementById("quizProblem").textContent =
-    `${state.quizCurrent.a} × ${state.quizCurrent.b}`;
-
-  document.getElementById("quizIndex").textContent = state.quizIndex;
-  document.getElementById("quizGood").textContent = state.quizGood;
-  document.getElementById("quizBad").textContent = state.quizBad;
-  document.getElementById("quizFeedback").textContent = "";
-
-  const options = buildQuizOptions(state.quizCurrent.correct);
-  document.getElementById("quizOptions").innerHTML = options.map(opt => `
-    <button class="quiz-option" onclick="answerQuiz(${opt}, this)">${opt}</button>
-  `).join("");
-}
-
-function startQuiz(){
-  if(!currentChild()){
-    alert("Primero agrega o selecciona un alumno.");
-    return;
-  }
-
-  state.quizQuestions = shuffle(weightedFacts()).slice(0,10);
-  state.quizCurrent = null;
-  state.quizGood = 0;
-  state.quizBad = 0;
-  state.quizIndex = 0;
-  state.quizStartTime = Date.now();
-  state.todayWrongFacts = new Set();
-
-  clearInterval(state.quizTimer);
-  state.quizTimer = setInterval(() => {
-    document.getElementById("quizTime").textContent =
-      ((Date.now() - state.quizStartTime)/1000).toFixed(1);
-  }, 100);
-
-  document.getElementById("quizTotal").textContent = state.quizQuestions.length;
-  document.getElementById("quizSummary").classList.add("hidden");
-
-  nextQuizQuestion();
-}
-
-async function answerQuiz(value, btn){
-  if(!state.quizCurrent) return;
-
-  const correct = state.quizCurrent.correct;
-  const buttons = [...document.querySelectorAll("#quizOptions .quiz-option")];
-
-  if(value === correct){
-    state.quizGood++;
-    await updateWeak(state.quizCurrent.fact, -0.25);
-    btn.classList.add("correct");
-    document.getElementById("quizFeedback").textContent = "¡Correcto!";
-  }else{
-    state.quizBad++;
-    await updateWeak(state.quizCurrent.fact, 1);
-    state.todayWrongFacts.add(state.quizCurrent.fact);
-    btn.classList.add("wrong");
-    buttons.forEach(b => {
-      if(Number(b.textContent) === correct) b.classList.add("correct");
-    });
-    document.getElementById("quizFeedback").textContent = "Casi";
-  }
-
-  document.getElementById("quizGood").textContent = state.quizGood;
-  document.getElementById("quizBad").textContent = state.quizBad;
-
-  setTimeout(nextQuizQuestion, 700);
-}
-
-async function finishQuiz(){
-  clearInterval(state.quizTimer);
-
-  const totalTime = Number(((Date.now() - state.quizStartTime)/1000).toFixed(1));
-  const avg = state.quizIndex ? Number((totalTime / state.quizIndex).toFixed(2)) : 0;
-
-  await saveSession({
-    mode: "Choose",
-    good: state.quizGood,
-    bad: state.quizBad,
-    total: state.quizIndex,
-    time: totalTime,
-    avg
-  });
-
-  updateDailyChallenge("quiz", state.quizGood);
-  await loadCloudData();
-
-  const summary = document.getElementById("quizSummary");
-  summary.classList.remove("hidden");
-  summary.innerHTML = `
-    <strong>Quiz completado</strong><br>
-    ✅ ${state.quizGood} · ❌ ${state.quizBad}<br>
-    ⏱ ${totalTime}s · 📊 ${avg}s/prom
-  `;
-}
-
-// ======================
-// MEMORAMA
-// ======================
-
-function renderMemoBoard(){
-  const grid = document.getElementById("memoGrid");
-
-  if(!state.memoCards.length){
-    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Elige un nivel para empezar</div>`;
-    return;
-  }
-
-  grid.innerHTML = state.memoCards.map((card, index) => {
-    const show = card.flipped || card.matched;
-    const cls = card.matched
-      ? "memo-card memo-front memo-matched"
-      : show
-      ? "memo-card memo-front"
-      : "memo-card memo-back";
-
-    const label = show ? card.text : "?";
-
-    return `<div class="${cls}" onclick="flipMemo(${index})">${label}</div>`;
-  }).join("");
-
-  document.getElementById("memoMoves").textContent = state.memoMoves;
-  document.getElementById("memoPairs").textContent = state.memoMatched;
-  document.getElementById("memoTarget").textContent = state.memoTarget;
-}
-
-function startMemo(pairCount){
-  if(!currentChild()){
-    alert("Primero agrega o selecciona un alumno.");
-    return;
-  }
-
-  const facts = shuffle(allFacts()).slice(0, pairCount);
-  state.memoCards = [];
-
-  facts.forEach((f, idx) => {
-    state.memoCards.push({
-      text: `${f.a}x${f.b}`,
-      pair: idx,
-      flipped: false,
-      matched: false
-    });
-    state.memoCards.push({
-      text: `${f.correct}`,
-      pair: idx,
-      flipped: false,
-      matched: false
-    });
-  });
-
-  state.memoCards = shuffle(state.memoCards);
-  state.memoFlipped = [];
-  state.memoMatched = 0;
-  state.memoMoves = 0;
-  state.memoTarget = pairCount;
-  state.memoBusy = false;
-  state.memoStartTime = Date.now();
-
-  clearInterval(state.memoTimer);
-  state.memoTimer = setInterval(() => {
-    document.getElementById("memoTime").textContent =
-      ((Date.now() - state.memoStartTime)/1000).toFixed(1);
-  }, 100);
-
-  document.getElementById("memoMode").textContent = `${pairCount} pares`;
-  document.getElementById("memoFeedback").textContent = "Encuentra todas las parejas";
-
-  renderMemoBoard();
-}
-
-async function flipMemo(index){
-  if(state.memoBusy) return;
-
-  const card = state.memoCards[index];
-  if(!card || card.flipped || card.matched) return;
-
-  card.flipped = true;
-  state.memoFlipped.push(index);
-  renderMemoBoard();
-
-  if(state.memoFlipped.length === 2){
-    state.memoBusy = true;
-    state.memoMoves++;
-
-    const [i1, i2] = state.memoFlipped;
-    const c1 = state.memoCards[i1];
-    const c2 = state.memoCards[i2];
-
-    if(c1.pair === c2.pair){
-      c1.matched = true;
-      c2.matched = true;
-      state.memoMatched++;
-      state.memoFlipped = [];
-      state.memoBusy = false;
-      renderMemoBoard();
-
-      if(state.memoMatched === state.memoTarget){
-        await finishMemo();
-      }
-    }else{
-      setTimeout(() => {
-        c1.flipped = false;
-        c2.flipped = false;
-        state.memoFlipped = [];
-        state.memoBusy = false;
-        renderMemoBoard();
-      }, 700);
-    }
-  }
-}
-
-async function finishMemo(){
-  clearInterval(state.memoTimer);
-
-  const totalTime = Number(((Date.now() - state.memoStartTime)/1000).toFixed(1));
-  const avg = state.memoTarget ? Number((totalTime / state.memoTarget).toFixed(2)) : 0;
-
-  document.getElementById("memoFeedback").textContent =
-    `🏁 Completado · ${totalTime}s`;
-
-  await saveSession({
-    mode: "Memorama",
-    good: state.memoMatched,
-    bad: Math.max(0, state.memoMoves - state.memoMatched),
-    total: state.memoTarget,
-    time: totalTime,
-    avg
-  });
-
-  updateDailyChallenge("memo");
-  await loadCloudData();
-}
-// ======================
-// MATH BLAST (GAME)
-// ======================
-
-function startBlast(){
-  if(!currentChild()){
-    alert("Primero agrega o selecciona un alumno.");
-    return;
-  }
-
-  state.blastScore = 0;
-  state.blastStreak = 0;
-  state.blastTime = 30;
-
-  document.getElementById("blastScore").textContent = "0";
-  document.getElementById("blastStreak").textContent = "0";
-  document.getElementById("blastTime").textContent = "30";
-
-  nextBlastQuestion();
-
-  clearInterval(state.blastTimer);
-  state.blastTimer = setInterval(() => {
-    state.blastTime--;
-    document.getElementById("blastTime").textContent = state.blastTime;
-
-    if(state.blastTime <= 0){
-      finishBlast();
-    }
-  }, 1000);
-}
-
-function nextBlastQuestion(){
-  const facts = weightedFacts();
-  state.blastCurrent = facts[Math.floor(Math.random()*facts.length)];
-
-  document.getElementById("blastProblem").textContent =
-    `${state.blastCurrent.a} × ${state.blastCurrent.b}`;
-
-  const options = [];
-  options.push(state.blastCurrent.correct);
-
-  while(options.length < 3){
-    const fake = state.blastCurrent.correct + Math.floor(Math.random()*10) - 5;
-    if(fake > 0 && !options.includes(fake)) options.push(fake);
-  }
-
-  const shuffled = shuffle(options);
-
-  document.getElementById("blastOptions").innerHTML = shuffled.map(opt => `
-    <button class="quiz-option" onclick="answerBlast(${opt})">${opt}</button>
-  `).join("");
-}
-
-async function answerBlast(value){
-  if(!state.blastCurrent) return;
-
-  if(value === state.blastCurrent.correct){
-    state.blastScore += 10;
-    state.blastStreak++;
-    await updateWeak(state.blastCurrent.fact, -0.25);
-  }else{
-    state.blastStreak = 0;
-    await updateWeak(state.blastCurrent.fact, 1);
-    state.todayWrongFacts.add(state.blastCurrent.fact);
-  }
-
-  document.getElementById("blastScore").textContent = state.blastScore;
-  document.getElementById("blastStreak").textContent = state.blastStreak;
-
-  nextBlastQuestion();
-}
-
-async function finishBlast(){
-  clearInterval(state.blastTimer);
-
-  await saveSession({
-    mode: "Blast",
-    good: state.blastScore,
-    bad: 0,
-    total: 0,
-    time: 30,
-    avg: 0
-  });
-
-  updateDailyChallenge("blast", state.blastScore);
-  await loadCloudData();
-
-  alert(`🔥 Puntaje: ${state.blastScore}`);
-}
-
-// ======================
-// HISTORIAL + GRÁFICA
-// ======================
 
 function renderHistory(){
   const box = document.getElementById("history");
 
-  if(!state.sessions.length){
+  if(!historyItems.length){
     box.innerHTML = `<div class="empty">Sin sesiones aún</div>`;
     return;
   }
 
-  box.innerHTML = state.sessions.map(s => `
+  box.innerHTML = historyItems.map(item => `
     <div class="history-item">
-      <b>${s.mode}</b> · ${s.time}s · ✅ ${s.good} · ❌ ${s.bad}
+      <b>${item.mode}</b> · ⏱ ${item.time} · ✅ ${item.good} · ❌ ${item.bad}
     </div>
   `).join("");
-}
-
-function renderWeakFacts(){
-  const box = document.getElementById("weakFacts");
-
-  const items = Object.entries(state.weakMap)
-    .sort((a,b)=>b[1]-a[1])
-    .slice(0,10);
-
-  if(!items.length){
-    box.innerHTML = `<div class="empty">Sin áreas de refuerzo</div>`;
-    return;
-  }
-
-  box.innerHTML = items.map(([fact,count]) =>
-    `<div class="history-item">${fact} — ${count}</div>`
-  ).join("");
 }
 
 function drawChart(){
   const canvas = document.getElementById("chart");
   const ctx = canvas.getContext("2d");
-
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  if(!state.sessions.length) return;
+  if(!historyItems.length) return;
 
-  const max = Math.max(...state.sessions.map(s=>s.time || 1),1);
+  const max = Math.max(...historyItems.map(x => Number(x.good) || 1), 1);
 
-  state.sessions.forEach((s,i)=>{
-    const h = (s.time/max) * 150;
+  historyItems.slice(0,12).reverse().forEach((item, i) => {
+    const h = ((Number(item.good) || 0) / max) * 150;
+    const x = 40 + i * 60;
+    const y = 210 - h;
+
     ctx.fillStyle = "#7a4dff";
-    ctx.fillRect(20 + i*30, 200-h, 20, h);
+    ctx.fillRect(x, y, 30, h);
+
+    ctx.fillStyle = "#475569";
+    ctx.font = "12px Arial";
+    ctx.fillText(String(i+1), x + 8, 230);
   });
+}
+
+function renderWeakFacts(){
+  const box = document.getElementById("weakFacts");
+  box.innerHTML = `<div class="empty">Refuerzo inteligente próximamente</div>`;
 }
 
 // ======================
 // MODOS
 // ======================
 
-function setMode(mode){
-  document.getElementById("practicePanel").style.display = mode==="practice" ? "block":"none";
-  document.getElementById("quizPanel").style.display = mode==="quiz" ? "block":"none";
-  document.getElementById("memoPanel").style.display = mode==="memo" ? "block":"none";
-  document.getElementById("blastPanel").style.display = mode==="blast" ? "block":"none";
+window.setMode = function(mode){
+  document.getElementById("speedPanel").classList.toggle("hidden", mode !== "speed");
+  document.getElementById("quizPanel").classList.toggle("hidden", mode !== "quiz");
+  document.getElementById("memoramaPanel").classList.toggle("hidden", mode !== "memorama");
+  document.getElementById("blastPanel").classList.toggle("hidden", mode !== "blast");
+
+  document.getElementById("modeSpeed").classList.toggle("active", mode === "speed");
+  document.getElementById("modeQuiz").classList.toggle("active", mode === "quiz");
+  document.getElementById("modeMemorama").classList.toggle("active", mode === "memorama");
+  document.getElementById("modeBlast").classList.toggle("active", mode === "blast");
+};
+</script>
+      
+      <script type="module">
+// ======================
+// MATH BLAST
+// ======================
+
+const blastState = {
+  score: 0,
+  streak: 0,
+  time: 30,
+  current: null,
+  timer: null
+};
+
+function nextBlastQuestion(){
+  const q = randomProblem();
+  blastState.current = q;
+
+  document.getElementById("blastPrompt").textContent = `${q.a} × ${q.b}`;
+  document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";
+
+  const options = new Set([q.answer]);
+  while(options.size < 9){
+    const fake = q.answer + Math.floor(Math.random()*12) - 6;
+    if(fake > 0) options.add(fake);
+  }
+
+  const shuffled = [...options].sort(() => Math.random() - 0.5);
+
+  document.getElementById("blastGrid").innerHTML = shuffled.map(opt => `
+    <button class="blast-btn" onclick="answerBlast(${opt})">${opt}</button>
+  `).join("");
 }
 
-// ======================
-// EXPORT
-// ======================
+window.startBlast = function(){
+  blastState.score = 0;
+  blastState.streak = 0;
+  blastState.time = 30;
 
-function exportCSV(){
-  const rows = [["Mode","Time","Good","Bad"]];
+  document.getElementById("blastScore").textContent = "0";
+  document.getElementById("blastStreak").textContent = "0";
+  document.getElementById("blastTime").textContent = "30";
+  document.getElementById("blastCombo").textContent = "x1";
+  document.getElementById("blastSummary").classList.add("hidden");
 
-  state.sessions.forEach(s=>{
-    rows.push([s.mode, s.time, s.good, s.bad]);
+  nextBlastQuestion();
+
+  clearInterval(blastState.timer);
+  blastState.timer = setInterval(() => {
+    blastState.time--;
+    document.getElementById("blastTime").textContent = blastState.time;
+
+    if(blastState.time <= 0){
+      finishBlast();
+    }
+  }, 1000);
+};
+
+window.resetBlast = function(){
+  clearInterval(blastState.timer);
+  blastState.score = 0;
+  blastState.streak = 0;
+  blastState.time = 30;
+
+  document.getElementById("blastScore").textContent = "0";
+  document.getElementById("blastStreak").textContent = "0";
+  document.getElementById("blastTime").textContent = "30";
+  document.getElementById("blastCombo").textContent = "x1";
+  document.getElementById("blastPrompt").textContent = "—";
+  document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";
+  document.getElementById("blastGrid").innerHTML = "";
+  document.getElementById("blastSummary").classList.add("hidden");
+};
+
+window.answerBlast = async function(value){
+  if(!blastState.current) return;
+
+  const buttons = [...document.querySelectorAll("#blastGrid .blast-btn")];
+  buttons.forEach(b => b.disabled = true);
+
+  if(value === blastState.current.answer){
+    blastState.score += 10;
+    blastState.streak++;
+    document.getElementById("blastFeedback").textContent = "¡Blast! 🚀";
+    await addXP(3);
+  }else{
+    blastState.streak = 0;
+    document.getElementById("blastFeedback").textContent = "Casi";
+  }
+
+  document.getElementById("blastScore").textContent = blastState.score;
+  document.getElementById("blastStreak").textContent = blastState.streak;
+  document.getElementById("blastCombo").textContent =
+    blastState.streak >= 5 ? "x3" : blastState.streak >= 3 ? "x2" : "x1";
+
+  setTimeout(nextBlastQuestion, 350);
+};
+
+function finishBlast(){
+  clearInterval(blastState.timer);
+
+  const summary = document.getElementById("blastSummary");
+  summary.classList.remove("hidden");
+  summary.innerHTML = `
+    <div style="font-weight:900;font-size:20px">🔥 Fin de Math Blast</div>
+    <div style="margin-top:8px">Puntaje: <strong>${blastState.score}</strong></div>
+    <div>Racha: <strong>${blastState.streak}</strong></div>
+  `;
+
+  updateDailyChallenge("quiz", Math.min(5, Math.floor(blastState.score / 20)));
+
+  pushHistory({
+    mode: "Blast",
+    time: "30s",
+    good: blastState.score,
+    bad: 0
   });
-
-  const csv = rows.map(r=>r.join(",")).join("\n");
-
-  const blob = new Blob([csv], {type:"text/csv"});
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "results.csv";
-  a.click();
 }
 
 // ======================
-// INIT FINAL
+// HOOKS PARA HISTORIAL
+// ======================
+
+const _finishSpeedOriginal = window.nextQuestion;
+window.nextQuestion = function(){
+  if(state.total >= 10){
+    pushHistory({
+      mode: "Practice",
+      time: `${state.seconds.toFixed(1)}s`,
+      good: state.correct,
+      bad: state.wrong
+    });
+  }
+  _finishSpeedOriginal();
+};
+
+const _answerQuizOriginal = window.answerQuiz;
+window.answerQuiz = async function(value){
+  const beforeIndex = state.quizIndex;
+  await _answerQuizOriginal(value);
+
+  if(beforeIndex === 9){
+    pushHistory({
+      mode: "Choose",
+      time: `${document.getElementById("quizTime").textContent}s`,
+      good: state.quizGood,
+      bad: state.quizBad
+    });
+  }
+};
+
+// ======================
+// INICIALIZACIÓN FINAL
 // ======================
 
 loadKids();
 renderTableChips();
 renderSpecific();
+renderVisual();
 renderDailyChallenge();
+renderHistory();
+renderWeakFacts();
+drawChart();
+resetGame();
+resetQuiz();
+resetBlast();
+setMode("speed");
+showTab(0);
+</script>
 
-window.startQuiz = startQuiz;
-window.answerQuiz = answerQuiz;
-window.addChild = addChild;    
-window.startMemo = startMemo;
-window.flipMemo = flipMemo;
-window.startBlast = startBlast;
-window.answerBlast = answerBlast;
-window.setMode = setMode;
-window.exportCSV = exportCSV;
-
+</body>
+</html>

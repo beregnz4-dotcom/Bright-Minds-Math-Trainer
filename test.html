@@ -1307,6 +1307,8 @@ async function loadCloudData(){
 
   if(profileSnap.exists()){
     const profile = profileSnap.data();
+    document.getElementById("profileStats").textContent =
+  `XP: ${profile.xp || 0} · Nivel: ${profile.level || 1}`;
     if(profile.childName){
       const kids = getKids();
       if(!kids.includes(profile.childName)){

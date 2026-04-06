@@ -2005,7 +2005,19 @@ childSelect.value = profile.childName;
     }
 
     document.getElementById("addChildBtn").addEventListener("click", addChild);
+childSelect.addEventListener("change", async () => {
+  const user = auth.currentUser;
+  if(!user) return;
 
+  await setDoc(doc(db, "users", user.uid, "profile", "main"), {
+    childName: childSelect.value,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+
+  renderHistory();
+  renderWeakFacts();
+  drawChart();
+});
     window.addChild = addChild;
     window.selectAllTables = selectAllTables;
     window.clearAllTables = clearAllTables;

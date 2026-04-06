@@ -1818,12 +1818,13 @@ await loadCloudData();
         const c2 = memoState.cards[i2];
 
         if(c1.pair === c2.pair){
-          c1.matched = true;
-          c2.matched = true;
-          memoState.pairs++;
-          memoState.flipped = [];
-          memoState.busy = false;
-          renderMemo();
+  c1.matched = true;
+  c2.matched = true;
+  memoState.pairs++;
+  memoState.flipped = [];
+  memoState.busy = false;
+  beep("good");
+  renderMemo();
 
           if(memoState.pairs === memoState.target){
             clearInterval(memoState.timer);
@@ -1848,15 +1849,16 @@ await addXP(xpEarned);
 await updateDailyChallenge("memo");
 await loadCloudData();
           }
-        }else{
-          setTimeout(() => {
-            c1.flipped = false;
-            c2.flipped = false;
-            memoState.flipped = [];
-            memoState.busy = false;
-            renderMemo();
-          }, 700);
-        }
+       }else{
+  beep("bad");
+  setTimeout(() => {
+    c1.flipped = false;
+    c2.flipped = false;
+    memoState.flipped = [];
+    memoState.busy = false;
+    renderMemo();
+  }, 700);
+}
       }
     }
 

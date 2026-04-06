@@ -1599,7 +1599,8 @@ function calculateXPReward(mode, stats = {}){
   await updateDailyChallenge("practice");
   await loadCloudData();
 
-  document.getElementById("feedback").textContent = "Fin";
+  beep("good");
+      document.getElementById("feedback").textContent = "Fin";
 }
 
     function resetQuiz(){

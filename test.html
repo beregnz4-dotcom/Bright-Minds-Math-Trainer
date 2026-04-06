@@ -1765,7 +1765,8 @@ await loadCloudData();
     }
 
     async function answerBlast(value){
-      if(!blastState.current) return;
+      if(!blastState.current || blastState.time <= 0) return;
+    
 
       const buttons = [...document.querySelectorAll("#blastGrid .blast-btn")];
       buttons.forEach(b => b.disabled = true);

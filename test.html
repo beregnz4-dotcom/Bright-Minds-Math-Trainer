@@ -1139,7 +1139,11 @@ function updateDailyChallenge(type, value=1){
   if(db.done) return;
 
   if(type==="practice") ch.progress++;
-  if(type==="quiz") ch.progress += value;
+  if(type==="quiz"){
+  ch.progress += value;
+
+  addXP(5);  // 🔥 AQUÍ EXACTO
+}
   if(type==="blast") ch.progress = value;
   if(type==="memo") ch.progress++;
 

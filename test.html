@@ -886,6 +886,15 @@
     text: `${xp - min} / ${max - min} XP al siguiente nivel`
   };
 }
+    function showLevelUp(newLevel){
+  const box = document.getElementById("levelUpBox");
+  box.textContent = `🎉 LEVEL UP! Nivel ${newLevel}`;
+  box.classList.remove("hidden");
+
+  setTimeout(() => {
+    box.classList.add("hidden");
+  }, 2500);
+}
 async function addXP(amount){
   const user = auth.currentUser;
   if(!user) return;

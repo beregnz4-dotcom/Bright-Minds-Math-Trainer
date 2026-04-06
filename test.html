@@ -1811,19 +1811,7 @@ function resetBlast(){
   document.getElementById("blastSummary").classList.add("hidden");
   closeBlastOverlay();
 }
-      blastState.score = 0;
-      blastState.streak = 0;
-      blastState.time = 30;
-
-      document.getElementById("blastScore").textContent = "0";
-      document.getElementById("blastStreak").textContent = "0";
-      document.getElementById("blastTime").textContent = "30";
-      document.getElementById("blastCombo").textContent = "x1";
-      document.getElementById("blastPrompt").textContent = "—";
-      document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";
-      document.getElementById("blastGrid").innerHTML = "";
-      document.getElementById("blastSummary").classList.add("hidden");
-    }
+   
 
     async function answerBlast(value){
   if(!blastState.current || blastState.time <= 0) return;

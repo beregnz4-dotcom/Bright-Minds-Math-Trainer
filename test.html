@@ -1722,3 +1722,196 @@ async function finishMemo(){
   updateDailyChallenge("memo");
   await loadCloudData();
 }
+// ======================
+// MATH BLAST (GAME)
+// ======================
+
+function startBlast(){
+  if(!currentChild()){
+    alert("Primero agrega o selecciona un alumno.");
+    return;
+  }
+
+  state.blastScore = 0;
+  state.blastStreak = 0;
+  state.blastTime = 30;
+
+  document.getElementById("blastScore").textContent = "0";
+  document.getElementById("blastStreak").textContent = "0";
+  document.getElementById("blastTime").textContent = "30";
+
+  nextBlastQuestion();
+
+  clearInterval(state.blastTimer);
+  state.blastTimer = setInterval(() => {
+    state.blastTime--;
+    document.getElementById("blastTime").textContent = state.blastTime;
+
+    if(state.blastTime <= 0){
+      finishBlast();
+    }
+  }, 1000);
+}
+
+function nextBlastQuestion(){
+  const facts = weightedFacts();
+  state.blastCurrent = facts[Math.floor(Math.random()*facts.length)];
+
+  document.getElementById("blastProblem").textContent =
+    `${state.blastCurrent.a} × ${state.blastCurrent.b}`;
+
+  const options = [];
+  options.push(state.blastCurrent.correct);
+
+  while(options.length < 3){
+    const fake = state.blastCurrent.correct + Math.floor(Math.random()*10) - 5;
+    if(fake > 0 && !options.includes(fake)) options.push(fake);
+  }
+
+  const shuffled = shuffle(options);
+
+  document.getElementById("blastOptions").innerHTML = shuffled.map(opt => `
+    <button class="quiz-option" onclick="answerBlast(${opt})">${opt}</button>
+  `).join("");
+}
+
+async function answerBlast(value){
+  if(!state.blastCurrent) return;
+
+  if(value === state.blastCurrent.correct){
+    state.blastScore += 10;
+    state.blastStreak++;
+    await updateWeak(state.blastCurrent.fact, -0.25);
+  }else{
+    state.blastStreak = 0;
+    await updateWeak(state.blastCurrent.fact, 1);
+    state.todayWrongFacts.add(state.blastCurrent.fact);
+  }
+
+  document.getElementById("blastScore").textContent = state.blastScore;
+  document.getElementById("blastStreak").textContent = state.blastStreak;
+
+  nextBlastQuestion();
+}
+
+async function finishBlast(){
+  clearInterval(state.blastTimer);
+
+  await saveSession({
+    mode: "Blast",
+    good: state.blastScore,
+    bad: 0,
+    total: 0,
+    time: 30,
+    avg: 0
+  });
+
+  updateDailyChallenge("blast", state.blastScore);
+  await loadCloudData();
+
+  alert(`🔥 Puntaje: ${state.blastScore}`);
+}
+
+// ======================
+// HISTORIAL + GRÁFICA
+// ======================
+
+function renderHistory(){
+  const box = document.getElementById("history");
+
+  if(!state.sessions.length){
+    box.innerHTML = `<div class="empty">Sin sesiones aún</div>`;
+    return;
+  }
+
+  box.innerHTML = state.sessions.map(s => `
+    <div class="history-item">
+      <b>${s.mode}</b> · ${s.time}s · ✅ ${s.good} · ❌ ${s.bad}
+    </div>
+  `).join("");
+}
+
+function renderWeakFacts(){
+  const box = document.getElementById("weakFacts");
+
+  const items = Object.entries(state.weakMap)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,10);
+
+  if(!items.length){
+    box.innerHTML = `<div class="empty">Sin áreas de refuerzo</div>`;
+    return;
+  }
+
+  box.innerHTML = items.map(([fact,count]) =>
+    `<div class="history-item">${fact} — ${count}</div>`
+  ).join("");
+}
+
+function drawChart(){
+  const canvas = document.getElementById("chart");
+  const ctx = canvas.getContext("2d");
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  if(!state.sessions.length) return;
+
+  const max = Math.max(...state.sessions.map(s=>s.time || 1),1);
+
+  state.sessions.forEach((s,i)=>{
+    const h = (s.time/max) * 150;
+    ctx.fillStyle = "#7a4dff";
+    ctx.fillRect(20 + i*30, 200-h, 20, h);
+  });
+}
+
+// ======================
+// MODOS
+// ======================
+
+function setMode(mode){
+  document.getElementById("practicePanel").style.display = mode==="practice" ? "block":"none";
+  document.getElementById("quizPanel").style.display = mode==="quiz" ? "block":"none";
+  document.getElementById("memoPanel").style.display = mode==="memo" ? "block":"none";
+  document.getElementById("blastPanel").style.display = mode==="blast" ? "block":"none";
+}
+
+// ======================
+// EXPORT
+// ======================
+
+function exportCSV(){
+  const rows = [["Mode","Time","Good","Bad"]];
+
+  state.sessions.forEach(s=>{
+    rows.push([s.mode, s.time, s.good, s.bad]);
+  });
+
+  const csv = rows.map(r=>r.join(",")).join("\n");
+
+  const blob = new Blob([csv], {type:"text/csv"});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "results.csv";
+  a.click();
+}
+
+// ======================
+// INIT FINAL
+// ======================
+
+loadKids();
+renderTableChips();
+renderSpecific();
+renderDailyChallenge();
+
+window.startQuiz = startQuiz;
+window.answerQuiz = answerQuiz;
+window.startMemo = startMemo;
+window.flipMemo = flipMemo;
+window.startBlast = startBlast;
+window.answerBlast = answerBlast;
+window.setMode = setMode;
+window.exportCSV = exportCSV;

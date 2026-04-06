@@ -1939,22 +1939,39 @@ function resetBlast(){
   const buttons = [...document.querySelectorAll("#blastGrid .blast-btn")];
   buttons.forEach(b => b.disabled = true);
 
+  let earnedXP = 0;
+
   if(value === blastState.current.correct){
     blastState.score += 10;
     blastState.streak++;
-    document.getElementById("blastFeedback").textContent = "¡Blast! 🚀";
+    earnedXP = blastState.streak >= 5 ? 4 : blastState.streak >= 3 ? 3 : 2;
+
+    document.getElementById("blastFeedback").textContent = blastState.streak >= 5
+      ? "🔥 SUPER COMBO"
+      : blastState.streak >= 3
+      ? "⚡ Combo"
+      : "¡Blast! 🚀";
+
     await updateWeak(blastState.current.fact, -0.25);
+    beep("good");
+    pulseBlastArea(true);
+    showXPPop(earnedXP);
+    await addXP(earnedXP);
   }else{
     blastState.streak = 0;
     document.getElementById("blastFeedback").textContent = "Casi";
     await updateWeak(blastState.current.fact, 1);
     state.todayWrongFacts.add(blastState.current.fact);
+    beep("bad");
+    pulseBlastArea(false);
   }
 
   document.getElementById("blastScore").textContent = blastState.score;
   document.getElementById("blastStreak").textContent = blastState.streak;
   document.getElementById("blastCombo").textContent =
     blastState.streak >= 5 ? "x3" : blastState.streak >= 3 ? "x2" : "x1";
+
+  updateComboGlow();
 
   setTimeout(() => {
     if(blastState.time > 0){

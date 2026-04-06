@@ -862,6 +862,27 @@
   if(xp >= 50) return 2;
   return 1;
 }
+    function getLevelProgress(xp){
+  let min = 0;
+  let max = 50;
+
+  if(xp >= 500){
+    return { level: 5, percent: 100, text: "Nivel máximo" };
+  } else if(xp >= 300){
+    min = 300; max = 500;
+  } else if(xp >= 150){
+    min = 150; max = 300;
+  } else if(xp >= 50){
+    min = 50; max = 150;
+  }
+
+  const percent = ((xp - min) / (max - min)) * 100;
+
+  return {
+    percent: Math.max(0, Math.min(100, percent)),
+    text: `${xp - min} / ${max - min} XP al siguiente nivel`
+  };
+}
 async function addXP(amount){
   const user = auth.currentUser;
   if(!user) return;

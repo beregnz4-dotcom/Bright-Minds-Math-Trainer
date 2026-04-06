@@ -964,3 +964,152 @@
   </script>
 
   <script>
+// ======================
+// UTILIDADES GENERALES
+// ======================
+
+function todayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+// ======================
+// KIDS (local simple)
+// ======================
+
+function getKids(){
+  return JSON.parse(localStorage.getItem("kids") || "[]");
+}
+
+function saveKids(list){
+  localStorage.setItem("kids", JSON.stringify(list));
+}
+
+function loadKids(){
+  const list = getKids();
+  childSelect.innerHTML = list.map(n => `<option>${n}</option>`).join("");
+}
+
+function addChild(){
+  const name = newChild.value.trim();
+  if(!name) return;
+
+  const list = getKids();
+  if(!list.includes(name)) list.push(name);
+
+  saveKids(list);
+  loadKids();
+
+  childSelect.value = name;
+  newChild.value = "";
+}
+
+function currentChild(){
+  return childSelect.value;
+}
+
+// ======================
+// TABLAS
+// ======================
+
+function renderTableChips(){
+  tableChips.innerHTML = "";
+  for(let i=2;i<=10;i++){
+    const chip = document.createElement("div");
+    chip.className = "chip " + (state.selectedTables.has(i) ? "active":"");
+    chip.textContent = "Tabla " + i;
+
+    chip.onclick = () => {
+      if(state.selectedTables.has(i)){
+        state.selectedTables.delete(i);
+      }else{
+        state.selectedTables.add(i);
+      }
+      renderTableChips();
+    };
+
+    tableChips.appendChild(chip);
+  }
+}
+
+function selectAllTables(){
+  state.selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
+  renderTableChips();
+}
+
+function clearAllTables(){
+  state.selectedTables = new Set();
+  renderTableChips();
+}
+
+function selectRange(a,b){
+  state.selectedTables = new Set();
+  for(let i=a;i<=b;i++) state.selectedTables.add(i);
+  renderTableChips();
+}
+
+// ======================
+// DAILY CHALLENGE
+// ======================
+
+function getChallengeDB(){
+  return JSON.parse(localStorage.getItem("bm_challenge") || "{}");
+}
+
+function saveChallengeDB(db){
+  localStorage.setItem("bm_challenge", JSON.stringify(db));
+}
+
+function buildDailyChallenge(){
+  const key = todayKey();
+  const db = getChallengeDB();
+
+  if(db.date === key) return db;
+
+  const options = [
+    {id:"practice", text:"Completa 1 práctica", target:1, progress:0},
+    {id:"quiz", text:"Haz 5 correctas", target:5, progress:0},
+    {id:"blast", text:"Logra 100 puntos", target:100, progress:0},
+    {id:"memo", text:"Completa memorama", target:1, progress:0}
+  ];
+
+  const challenge = options[Math.floor(Math.random()*options.length)];
+
+  const newDB = {date:key, challenge, done:false};
+  saveChallengeDB(newDB);
+  return newDB;
+}
+
+function renderDailyChallenge(){
+  const db = buildDailyChallenge();
+  const ch = db.challenge;
+
+  document.getElementById("dailyChallengeText").textContent = ch.text;
+
+  if(db.done){
+    document.getElementById("dailyChallengeStatus").textContent = "✅ Completado";
+  }else{
+    document.getElementById("dailyChallengeStatus").textContent =
+      `Progreso: ${ch.progress}/${ch.target}`;
+  }
+}
+
+function updateDailyChallenge(type, value=1){
+  const db = buildDailyChallenge();
+  const ch = db.challenge;
+
+  if(db.done) return;
+
+  if(type==="practice") ch.progress++;
+  if(type==="quiz") ch.progress += value;
+  if(type==="blast") ch.progress = value;
+  if(type==="memo") ch.progress++;
+
+  if(ch.progress >= ch.target){
+    db.done = true;
+    alert("🎉 Desafío completado");
+  }
+
+  saveChallengeDB(db);
+  renderDailyChallenge();
+}

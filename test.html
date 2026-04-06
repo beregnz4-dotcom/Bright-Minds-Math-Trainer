@@ -1803,17 +1803,24 @@ await loadCloudData();
       `;
 
       await saveSession({
-        mode: "Math Blast",
-        good: blastState.score,
-        bad: 0,
-        total: 0,
-        time: 30,
-        avg: 0,
-        score: blastState.score
-      });
+  mode: "Math Blast",
+  good: blastState.score,
+  bad: 0,
+  total: 0,
+  time: 30,
+  avg: 0,
+  score: blastState.score
+});
 
-      await updateDailyChallenge("blast", blastState.score);
-      await loadCloudData();
+const xpEarned = calculateXPReward("blast", {
+  score: blastState.score,
+  streak: blastState.streak,
+  reachedGoal: blastState.score >= 120
+});
+
+await addXP(xpEarned);
+await updateDailyChallenge("blast", blastState.score);
+await loadCloudData();
     }
 
     function renderHistory(){

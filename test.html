@@ -1785,6 +1785,15 @@ await loadCloudData();
     }
 
     function resetBlast(){
+      function openBlastOverlay(score, xp){
+  document.getElementById("blastOverlay").classList.remove("hidden");
+  document.getElementById("blastOverlayScore").textContent = score;
+  document.getElementById("blastOverlayXP").textContent = "XP: " + xp;
+}
+
+function closeBlastOverlay(){
+  document.getElementById("blastOverlay").classList.add("hidden");
+}
       clearInterval(blastState.timer);
       blastState.score = 0;
       blastState.streak = 0;

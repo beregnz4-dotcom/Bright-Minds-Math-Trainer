@@ -1523,34 +1523,33 @@ await loadCloudData();
     }
 
     async function answerQuiz(value, btn){
-      if(!state.quizCurrent) return;
+  if(!state.quizCurrent) return;
 
-      const correct = state.quizCurrent.correct;
-      const buttons = [...document.querySelectorAll("#quizOptions .quiz-option")];
-      buttons.forEach(b => b.disabled = true);
+  const correct = state.quizCurrent.correct;
+  const buttons = [...document.querySelectorAll("#quizOptions .quiz-option")];
+  buttons.forEach(b => b.disabled = true);
 
-      if(value === correct){
-        state.quizGood++;
-        await updateWeak(state.quizCurrent.fact, -0.25);
-        btn.classList.add("correct");
-        document.getElementById("quizFeedback").textContent = "¡Correcto!";
-        await addXP(5);
-      }else{
-        state.quizBad++;
-        await updateWeak(state.quizCurrent.fact, 1);
-        state.todayWrongFacts.add(state.quizCurrent.fact);
-        btn.classList.add("wrong");
-        buttons.forEach(b => {
-          if(Number(b.textContent) === correct) b.classList.add("correct");
-        });
-        document.getElementById("quizFeedback").textContent = "Casi";
-      }
+  if(value === correct){
+    state.quizGood++;
+    await updateWeak(state.quizCurrent.fact, -0.25);
+    btn.classList.add("correct");
+    document.getElementById("quizFeedback").textContent = "¡Correcto!";
+  }else{
+    state.quizBad++;
+    await updateWeak(state.quizCurrent.fact, 1);
+    state.todayWrongFacts.add(state.quizCurrent.fact);
+    btn.classList.add("wrong");
+    buttons.forEach(b => {
+      if(Number(b.textContent) === correct) b.classList.add("correct");
+    });
+    document.getElementById("quizFeedback").textContent = "Casi";
+  }
 
-      document.getElementById("quizGood").textContent = state.quizGood;
-      document.getElementById("quizBad").textContent = state.quizBad;
+  document.getElementById("quizGood").textContent = state.quizGood;
+  document.getElementById("quizBad").textContent = state.quizBad;
 
-      setTimeout(nextQuizQuestion, 700);
-    }
+  setTimeout(nextQuizQuestion, 700);
+}
 
     async function finishQuiz(){
       clearInterval(state.quizTimer);

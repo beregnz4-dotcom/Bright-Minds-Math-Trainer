@@ -16,14 +16,12 @@
       --soft:#eef2ff;
       --green:#22c55e;
       --red:#ef4444;
-      --blue:#60a5fa;
       --purple:#7a4dff;
       --dark:#111827;
       --shadow:0 10px 24px rgba(0,0,0,.08);
     }
 
     *{box-sizing:border-box}
-
     body{
       margin:0;
       font-family:Arial, Helvetica, sans-serif;
@@ -49,15 +47,8 @@
       padding:24px;
     }
 
-    .login-card h1{
-      margin:0 0 8px;
-      font-size:28px;
-    }
-
-    .login-card p{
-      margin:0 0 18px;
-      color:var(--muted);
-    }
+    .login-card h1{margin:0 0 8px;font-size:28px}
+    .login-card p{margin:0 0 18px;color:var(--muted)}
 
     input, select{
       width:100%;
@@ -81,9 +72,6 @@
     .btn-yellow{background:var(--yellow);color:#fff}
     .btn-soft{background:var(--soft);color:var(--text)}
     .btn-green{background:var(--green);color:#fff}
-    .btn-red{background:var(--red);color:#fff}
-    .btn-blue{background:var(--blue);color:#fff}
-    .btn-dark{background:var(--dark);color:#fff}
 
     .topbar{
       background:#fff;
@@ -145,9 +133,7 @@
       margin-bottom:16px;
     }
 
-    .card h3{
-      margin:0 0 12px;
-    }
+    .card h3{margin:0 0 12px}
 
     .row{
       display:flex;
@@ -161,16 +147,8 @@
       padding:20px;
     }
 
-    .hero h2{
-      margin:0 0 8px;
-      font-size:30px;
-    }
-
-    .hero p{
-      margin:0;
-      color:var(--muted);
-      font-weight:700;
-    }
+    .hero h2{margin:0 0 8px;font-size:30px}
+    .hero p{margin:0;color:var(--muted);font-weight:700}
 
     .chips{
       display:flex;
@@ -275,14 +253,14 @@
     }
 
     .problem{
-      font-size:84px;
+      font-size:72px;
       font-weight:900;
       line-height:1;
       margin-bottom:12px;
     }
 
     @media (max-width:700px){
-      .problem{font-size:58px}
+      .problem{font-size:54px}
     }
 
     .answer{
@@ -325,15 +303,8 @@
       color:#111827;
     }
 
-    .quiz-option.correct{
-      background:#dcfce7;
-      color:#166534;
-    }
-
-    .quiz-option.wrong{
-      background:#fee2e2;
-      color:#991b1b;
-    }
+    .quiz-option.correct{background:#dcfce7;color:#166534}
+    .quiz-option.wrong{background:#fee2e2;color:#991b1b}
 
     .memo-grid{
       display:grid;
@@ -360,22 +331,9 @@
       background:#fff;
     }
 
-    .memo-back{
-      background:linear-gradient(180deg,var(--purple),#5f37d6);
-      color:#fff;
-      font-size:18px;
-    }
-
-    .memo-front{
-      background:#fff;
-      color:var(--dark);
-    }
-
-    .memo-matched{
-      background:#dcfce7 !important;
-      color:#166534 !important;
-      border-color:#86efac;
-    }
+    .memo-back{background:linear-gradient(180deg,var(--purple),#5f37d6);color:#fff;font-size:18px}
+    .memo-front{background:#fff;color:var(--dark)}
+    .memo-matched{background:#dcfce7 !important;color:#166534 !important;border-color:#86efac}
 
     .history-item{
       border:1px solid var(--line);
@@ -392,164 +350,50 @@
       padding:16px 0;
     }
 
-    .stair-wrap{
-      overflow-x:auto;
-    }
-
-    .stairs{
-      display:flex;
-      gap:10px;
-      align-items:flex-end;
-    }
-
-    .stair-col{
-      min-width:110px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
+    .stair-wrap{overflow-x:auto}
+    .stairs{display:flex;gap:10px;align-items:flex-end}
+    .stair-col{min-width:110px;display:flex;flex-direction:column;gap:8px}
     .stair-head{
-      background:#f4b000;
-      color:#fff;
-      font-weight:900;
-      text-align:center;
-      border-radius:12px;
-      padding:10px 0;
-      font-size:32px;
+      background:#f4b000;color:#fff;font-weight:900;text-align:center;
+      border-radius:12px;padding:10px 0;font-size:32px;
     }
-
     .stair-cell{
-      background:#fff8e5;
-      border-radius:10px;
-      text-align:center;
-      padding:10px 8px;
-      font-weight:700;
-      border:1px solid #f5df9f;
-      white-space:nowrap;
+      background:#fff8e5;border-radius:10px;text-align:center;
+      padding:10px 8px;font-weight:700;border:1px solid #f5df9f;white-space:nowrap;
     }
 
-    canvas{
-      width:100%;
-      background:#fff;
-      border-radius:14px;
-    }
+    canvas{width:100%;background:#fff;border-radius:14px}
 
-    .blast-card{
-      background:linear-gradient(180deg,#fff,#fff7ed);
-    }
-
+    .blast-card{background:linear-gradient(180deg,#fff,#fff7ed)}
     .blast-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:14px;
-      flex-wrap:wrap;
+      display:flex;justify-content:space-between;align-items:center;
+      gap:12px;margin-bottom:14px;flex-wrap:wrap;
     }
-
-    .blast-title{
-      font-size:24px;
-      font-weight:900;
-    }
-
-    .blast-sub{
-      color:var(--muted);
-      font-weight:700;
-      font-size:13px;
-      margin-top:4px;
-    }
-
+    .blast-title{font-size:24px;font-weight:900}
+    .blast-sub{color:var(--muted);font-weight:700;font-size:13px;margin-top:4px}
     .blast-goal-box{
-      background:#111827;
-      color:#fff;
-      border-radius:14px;
-      padding:10px 14px;
-      min-width:88px;
-      text-align:center;
+      background:#111827;color:#fff;border-radius:14px;
+      padding:10px 14px;min-width:88px;text-align:center;
     }
-
-    .blast-goal-label{
-      font-size:11px;
-      opacity:.8;
-      font-weight:700;
-    }
-
-    .blast-goal-value{
-      font-size:24px;
-      font-weight:900;
-      margin-top:2px;
-    }
-
+    .blast-goal-label{font-size:11px;opacity:.8;font-weight:700}
+    .blast-goal-value{font-size:24px;font-weight:900;margin-top:2px}
     .blast-stage{
-      border:1px solid #fde7b0;
-      background:linear-gradient(180deg,#fffdf7,#fff4d6);
-      border-radius:20px;
-      padding:22px 14px;
-      text-align:center;
+      border:1px solid #fde7b0;background:linear-gradient(180deg,#fffdf7,#fff4d6);
+      border-radius:20px;padding:22px 14px;text-align:center;
     }
-
-    .blast-label{
-      font-size:14px;
-      font-weight:800;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-
-    .blast-feedback{
-      min-height:28px;
-      font-size:18px;
-      font-weight:900;
-      margin:8px 0 14px;
-    }
-
+    .blast-label{font-size:14px;font-weight:800;color:var(--muted);margin-bottom:6px}
+    .blast-feedback{min-height:28px;font-size:18px;font-weight:900;margin:8px 0 14px}
     .blast-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      max-width:520px;
-      margin:0 auto;
+      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+      max-width:520px;margin:0 auto;
     }
-
     .blast-btn{
-      border:none;
-      border-radius:16px;
-      padding:18px 10px;
-      font-size:28px;
-      font-weight:900;
-      cursor:pointer;
-      background:#eef2ff;
-      color:#111827;
-      box-shadow:0 6px 12px rgba(0,0,0,.06);
-      transition:transform .08s ease;
+      border:none;border-radius:16px;padding:18px 10px;font-size:28px;font-weight:900;
+      cursor:pointer;background:#eef2ff;color:#111827;box-shadow:0 6px 12px rgba(0,0,0,.06);
     }
-
-    .blast-btn:active{
-      transform:scale(.97);
-    }
-
-    .blast-btn.correct{
-      background:#dcfce7;
-      color:#166534;
-    }
-
-    .blast-btn.wrong{
-      background:#fee2e2;
-      color:#991b1b;
-    }
-
     .blast-summary{
-      margin-top:16px;
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:16px;
-      background:#fff;
-      text-align:center;
-    }
-
-    .blast-stars{
-      font-size:26px;
-      margin-top:8px;
+      margin-top:16px;border:1px solid var(--line);border-radius:16px;
+      padding:16px;background:#fff;text-align:center;
     }
   </style>
 </head>
@@ -612,7 +456,7 @@
                 <input id="newChild" placeholder="Agregar nombre">
                 <button id="addChildBtn" class="btn btn-yellow">Agregar alumno</button>
               </div>
-              <select id="childSelect" onchange="renderHistory(); renderWeakFacts(); drawChart();"></select>
+              <select id="childSelect"></select>
             </div>
 
             <div class="card">
@@ -738,7 +582,7 @@
                 </div>
               </div>
 
-              <div class="history-item" id="blastRecordBox">
+              <div class="history-item">
                 <strong>Récord personal</strong><br>
                 Puntaje: <span id="blastBestScore">0</span> ·
                 Combo: <span id="blastBestCombo">x0</span> ·
@@ -747,10 +591,10 @@
 
               <div class="stats">
                 <div class="stat"><div class="k">Tiempo</div><div class="v" id="blastTime">30</div></div>
-                <div class="stat"><div class="k">Vidas</div><div class="v" id="blastLives">3</div></div>
                 <div class="stat"><div class="k">Puntos</div><div class="v" id="blastScore">0</div></div>
                 <div class="stat"><div class="k">Combo</div><div class="v" id="blastCombo">x1</div></div>
                 <div class="stat"><div class="k">Racha</div><div class="v" id="blastStreak">0</div></div>
+                <div class="stat"><div class="k">Meta</div><div class="v" id="blastGoal2">120</div></div>
               </div>
 
               <div class="row" style="justify-content:center;margin-bottom:12px">
@@ -831,7 +675,8 @@
       signInWithEmailAndPassword,
       signOut,
       onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-import {
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
       getFirestore,
       doc,
       setDoc,
@@ -881,6 +726,25 @@
       quizTimer: null
     };
 
+    const memoState = {
+      cards: [],
+      flipped: [],
+      pairs: 0,
+      moves: 0,
+      target: 0,
+      busy: false,
+      timer: null,
+      seconds: 0
+    };
+
+    const blastState = {
+      score: 0,
+      streak: 0,
+      time: 30,
+      current: null,
+      timer: null
+    };
+
     const loginScreen = document.getElementById("loginScreen");
     const appScreen = document.getElementById("appScreen");
     const loginBtn = document.getElementById("loginBtn");
@@ -906,6 +770,15 @@
         "auth/wrong-password": "Contraseña incorrecta"
       };
       return map[code] || "No se pudo iniciar sesión";
+    }
+
+    function shuffle(arr){
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
+
+    function todayKey(){
+      const d = new Date();
+      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
     }
 
     function calculateLevel(xp){
@@ -941,99 +814,24 @@
       const box = document.getElementById("levelUpBox");
       box.textContent = `🎉 LEVEL UP! Nivel ${newLevel}`;
       box.classList.remove("hidden");
-
-      setTimeout(() => {
-        box.classList.add("hidden");
-      }, 2500);
-    }
-        async function ensureUserProfile(user){
-      const ref = doc(db, "users", user.uid, "profile", "main");
-      const snap = await getDoc(ref);
-
-      if(!snap.exists()){
-        await setDoc(ref, {
-          email: user.email || "",
-          childName: "",
-          xp: 0,
-          level: 1,
-          streak: 0,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-      }
-    }
-
-    async function addXP(amount){
-      const user = auth.currentUser;
-      if(!user) return;
-
-      const ref = doc(db, "users", user.uid, "profile", "main");
-      const snap = await getDoc(ref);
-
-      if(snap.exists()){
-        const data = snap.data();
-
-        const oldLevel = data.level || 1;
-        const newXP = (data.xp || 0) + amount;
-        const newLevel = calculateLevel(newXP);
-
-        await setDoc(ref, {
-          xp: newXP,
-          level: newLevel,
-          updatedAt: serverTimestamp()
-        }, { merge: true });
-
-        updateProfileUI(newXP, newLevel);
-
-        if(newLevel > oldLevel){
-          showLevelUp(newLevel);
-        }
-      }
+      setTimeout(() => box.classList.add("hidden"), 2500);
     }
 
     function updateProfileUI(xp, level){
-      document.getElementById("profileStats").textContent =
-        `XP: ${xp || 0} · Nivel: ${level || 1}`;
-
+      document.getElementById("profileStats").textContent = `XP: ${xp || 0} · Nivel: ${level || 1}`;
       const progress = getLevelProgress(xp || 0);
       document.getElementById("levelBar").style.width = `${progress.percent}%`;
       document.getElementById("levelLabel").textContent = progress.text;
     }
 
-    loginBtn.onclick = async () => {
-      loginError.textContent = "";
-      try{
-        await signInWithEmailAndPassword(
-          auth,
-          loginEmail.value.trim(),
-          loginPassword.value.trim()
-        );
-      }catch(e){
-        loginError.textContent = translateFirebaseError(e.code);
-      }
-    };
-
-    logoutBtn.onclick = async () => {
-      await signOut(auth);
-    };
-
-    onAuthStateChanged(auth, async (user) => {
-      if(user){
-        await ensureUserProfile(user);
-        loginScreen.classList.add("hidden");
-        appScreen.classList.remove("hidden");
-        userBadge.textContent = user.email || "";
-        await loadCloudData();
-      }else{
-        appScreen.classList.add("hidden");
-        loginScreen.classList.remove("hidden");
-        userBadge.textContent = "";
-      }
-    });
-
-    function todayKey(){
-      const d = new Date();
-      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    function makeChildId(name){
+      return name
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
     }
 
     function getKids(){
@@ -1045,63 +843,9 @@
     }
 
     function saveKids(list){
-      try{
-        localStorage.setItem("kids", JSON.stringify(list));
-      }catch(e){
-        console.error("Error guardando kids:", e);
-      }
+      localStorage.setItem("kids", JSON.stringify(list));
     }
-    
-function makeChildId(name){
-  return name
-    .toLowerCase()
-    .trim()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
-function currentChildId(){
-  const name = currentChild();
-  return makeChildId(name || "");
-}
-async function saveChildToCloud(name){
-  const user = auth.currentUser;
-  if(!user) return;
 
-  const childId = makeChildId(name);
-  if(!childId) return;
-
-  const ref = doc(db, "users", user.uid, "children", childId);
-
-  await setDoc(ref, {
-    name,
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp()
-  }, { merge: true });
-}
-
-async function loadKidsFromCloud(selectedName = ""){
-  const user = auth.currentUser;
-  if(!user){
-    loadKids(selectedName);
-    return;
-  }
-
-  const ref = collection(db, "users", user.uid, "children");
-  const snap = await getDocs(ref);
-
-  const kids = [];
-  snap.forEach(d => {
-    const data = d.data();
-    if(data?.name) kids.push(data.name);
-  });
-
-  kids.sort((a,b) => a.localeCompare(b));
-
-  saveKids(kids);
-  loadKids(selectedName);
-}
     function loadKids(selectedName = ""){
       const kids = getKids();
       childSelect.innerHTML = "";
@@ -1124,40 +868,112 @@ async function loadKidsFromCloud(selectedName = ""){
       childSelect.value = selectedName || kids[0];
     }
 
-    async function addChild(){
-  const name = newChild.value.trim();
-  if(!name) return;
+    function currentChild(){
+      return childSelect.value;
+    }
 
-  const list = getKids();
-  if(!list.includes(name)){
-    list.push(name);
-    saveKids(list);
-  }
+    function currentChildId(){
+      return makeChildId(currentChild() || "");
+    }
 
-  await saveChildToCloud(name);
+    async function ensureUserProfile(user){
+      const ref = doc(db, "users", user.uid, "profile", "main");
+      const snap = await getDoc(ref);
 
-  const user = auth.currentUser;
-  if(user){
-    await setDoc(doc(db, "users", user.uid, "profile", "main"), {
-      childName: name,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-  }
+      if(!snap.exists()){
+        await setDoc(ref, {
+          email: user.email || "",
+          childName: "",
+          xp: 0,
+          level: 1,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+      }
+    }
 
-  await loadKidsFromCloud(name);
-  childSelect.value = name;
-  childSelect.dispatchEvent(new Event("change"));
-  newChild.value = "";
-}
+    async function addXP(amount){
+      const user = auth.currentUser;
+      if(!user) return;
 
-      loadKids(name);
+      const ref = doc(db, "users", user.uid, "profile", "main");
+      const snap = await getDoc(ref);
+      if(!snap.exists()) return;
+
+      const data = snap.data();
+      const oldLevel = data.level || 1;
+      const newXP = (data.xp || 0) + amount;
+      const newLevel = calculateLevel(newXP);
+
+      await setDoc(ref, {
+        xp: newXP,
+        level: newLevel,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      updateProfileUI(newXP, newLevel);
+
+      if(newLevel > oldLevel){
+        showLevelUp(newLevel);
+      }
+    }
+
+    async function saveChildToCloud(name){
+      const user = auth.currentUser;
+      if(!user) return;
+
+      const childId = makeChildId(name);
+      if(!childId) return;
+
+      await setDoc(doc(db, "users", user.uid, "children", childId), {
+        name,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+
+    async function loadKidsFromCloud(selectedName = ""){
+      const user = auth.currentUser;
+      if(!user){
+        loadKids(selectedName);
+        return;
+      }
+
+      const snap = await getDocs(collection(db, "users", user.uid, "children"));
+      const kids = [];
+      snap.forEach(d => {
+        const data = d.data();
+        if(data?.name) kids.push(data.name);
+      });
+
+      kids.sort((a,b) => a.localeCompare(b));
+      saveKids(kids);
+      loadKids(selectedName);
+    }
+        async function addChild(){
+      const name = newChild.value.trim();
+      if(!name) return;
+
+      const list = getKids();
+      if(!list.includes(name)){
+        list.push(name);
+        saveKids(list);
+      }
+
+      await saveChildToCloud(name);
+
+      const user = auth.currentUser;
+      if(user){
+        await setDoc(doc(db, "users", user.uid, "profile", "main"), {
+          childName: name,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      }
+
+      await loadKidsFromCloud(name);
       childSelect.value = name;
       childSelect.dispatchEvent(new Event("change"));
       newChild.value = "";
-    }
-
-    function currentChild(){
-      return childSelect.value;
     }
 
     function getChallengeDB(){
@@ -1192,7 +1008,6 @@ async function loadKidsFromCloud(selectedName = ""){
     function renderDailyChallenge(){
       const dbx = buildDailyChallenge();
       const ch = dbx.challenge;
-
       document.getElementById("dailyChallengeText").textContent = ch.text;
       document.getElementById("dailyChallengeStatus").textContent =
         ch.done ? "✅ Completado" : `Progreso: ${ch.progress}/${ch.target}`;
@@ -1201,7 +1016,6 @@ async function loadKidsFromCloud(selectedName = ""){
     async function updateDailyChallenge(type, value=1){
       const dbx = buildDailyChallenge();
       const ch = dbx.challenge;
-
       if(ch.done) return;
 
       if(ch.id === "practice_1" && type === "practice"){
@@ -1247,19 +1061,13 @@ async function loadKidsFromCloud(selectedName = ""){
       return arr;
     }
 
-    function shuffle(arr){
-      return [...arr].sort(() => Math.random() - 0.5);
-    }
-
     function weightedFacts(){
       const base = allFacts();
       const pool = [];
-
       base.forEach(item => {
         const weight = Math.max(1, Math.ceil(state.weakMap[item.fact] || 1));
-        for(let i=0; i<weight; i++) pool.push(item);
+        for(let i=0;i<weight;i++) pool.push(item);
       });
-
       return pool;
     }
 
@@ -1269,13 +1077,11 @@ async function loadKidsFromCloud(selectedName = ""){
         const chip = document.createElement("div");
         chip.className = "chip " + (state.selectedTables.has(i) ? "active" : "");
         chip.textContent = "Tabla " + i;
-
         chip.onclick = () => {
           if(state.selectedTables.has(i)) state.selectedTables.delete(i);
           else state.selectedTables.add(i);
           renderTableChips();
         };
-
         tableChips.appendChild(chip);
       }
     }
@@ -1371,7 +1177,10 @@ async function loadKidsFromCloud(selectedName = ""){
       const user = auth.currentUser;
       if(!user) return;
 
-      const sessionRef = doc(collection(db, "users", user.uid, "sessions"));
+      const childId = currentChildId();
+      if(!childId) return;
+
+      const sessionRef = doc(collection(db, "users", user.uid, "children", childId, "sessions"));
 
       await setDoc(sessionRef, {
         child: currentChild(),
@@ -1390,7 +1199,10 @@ async function loadKidsFromCloud(selectedName = ""){
       const user = auth.currentUser;
       if(!user) return;
 
-      const weakRef = doc(db, "users", user.uid, "weakFacts", "main");
+      const childId = currentChildId();
+      if(!childId) return;
+
+      const weakRef = doc(db, "users", user.uid, "children", childId, "weakFacts", "main");
       const snap = await getDoc(weakRef);
 
       let facts = snap.exists() ? (snap.data().facts || {}) : {};
@@ -1416,41 +1228,40 @@ async function loadKidsFromCloud(selectedName = ""){
         const profile = profileSnap.data();
         updateProfileUI(profile.xp || 0, profile.level || 1);
 
-        if(profile.childName){
-          const kids = getKids();
-          if(!kids.includes(profile.childName)){
-            kids.push(profile.childName);
-            saveKids(kids);
-          }
-          loadKids(profile.childName);
-childSelect.value = profile.childName;
-        } else {
-          loadKids();
-        }
+        await loadKidsFromCloud(profile.childName || "");
+        if(profile.childName) childSelect.value = profile.childName;
       } else {
-        loadKids();
+        await loadKidsFromCloud();
       }
 
-      const weakRef = doc(db, "users", user.uid, "weakFacts", "main");
-      const weakSnap = await getDoc(weakRef);
-      state.weakMap = weakSnap.exists() ? (weakSnap.data().facts || {}) : {};
+      const childId = currentChildId();
 
-      const q = query(
-        collection(db, "users", user.uid, "sessions"),
-        orderBy("createdAt", "desc"),
-        limit(30)
-      );
+      if(childId){
+        const weakRef = doc(db, "users", user.uid, "children", childId, "weakFacts", "main");
+        const weakSnap = await getDoc(weakRef);
+        state.weakMap = weakSnap.exists() ? (weakSnap.data().facts || {}) : {};
 
-      const snap = await getDocs(q);
-      state.sessions = [];
-      snap.forEach(d => state.sessions.push(d.data()));
+        const q = query(
+          collection(db, "users", user.uid, "children", childId, "sessions"),
+          orderBy("createdAt", "desc"),
+          limit(30)
+        );
+
+        const snap = await getDocs(q);
+        state.sessions = [];
+        snap.forEach(d => state.sessions.push(d.data()));
+      } else {
+        state.weakMap = {};
+        state.sessions = [];
+      }
 
       renderHistory();
       renderWeakFacts();
       drawChart();
       renderDailyChallenge();
     }
-        function updateMainStats(){
+
+    function updateMainStats(){
       document.getElementById("good").textContent = state.good;
       document.getElementById("bad").textContent = state.bad;
       document.getElementById("time").textContent = state.timer
@@ -1600,9 +1411,7 @@ childSelect.value = profile.childName;
       state.quizCurrent = state.quizQuestions.pop();
       state.quizIndex++;
 
-      document.getElementById("quizProblem").textContent =
-        `${state.quizCurrent.a} × ${state.quizCurrent.b}`;
-
+      document.getElementById("quizProblem").textContent = `${state.quizCurrent.a} × ${state.quizCurrent.b}`;
       document.getElementById("quizIndex").textContent = state.quizIndex;
       document.getElementById("quizGood").textContent = state.quizGood;
       document.getElementById("quizBad").textContent = state.quizBad;
@@ -1630,8 +1439,7 @@ childSelect.value = profile.childName;
 
       clearInterval(state.quizTimer);
       state.quizTimer = setInterval(() => {
-        document.getElementById("quizTime").textContent =
-          ((Date.now() - state.quizStartTime)/1000).toFixed(1);
+        document.getElementById("quizTime").textContent = ((Date.now() - state.quizStartTime)/1000).toFixed(1);
       }, 100);
 
       document.getElementById("quizTotal").textContent = state.quizQuestions.length;
@@ -1697,18 +1505,7 @@ childSelect.value = profile.childName;
       `;
     }
 
-    const memoState = {
-      cards: [],
-      flipped: [],
-      pairs: 0,
-      moves: 0,
-      target: 0,
-      busy: false,
-      timer: null,
-      seconds: 0
-    };
-
-    function renderMemo(){
+        function renderMemo(){
       const grid = document.getElementById("memoGrid");
 
       if(!memoState.cards.length){
@@ -1749,18 +1546,8 @@ childSelect.value = profile.childName;
       memoState.seconds = 0;
 
       facts.forEach((f, i) => {
-        memoState.cards.push({
-          text: `${f.a}x${f.b}`,
-          pair: i,
-          flipped: false,
-          matched: false
-        });
-        memoState.cards.push({
-          text: `${f.correct}`,
-          pair: i,
-          flipped: false,
-          matched: false
-        });
+        memoState.cards.push({ text: `${f.a}x${f.b}`, pair: i, flipped: false, matched: false });
+        memoState.cards.push({ text: `${f.correct}`, pair: i, flipped: false, matched: false });
       });
 
       memoState.cards = shuffle(memoState.cards);
@@ -1805,8 +1592,7 @@ childSelect.value = profile.childName;
 
           if(memoState.pairs === memoState.target){
             clearInterval(memoState.timer);
-            document.getElementById("memoFeedback").textContent =
-              `🏁 Completado · ${memoState.seconds.toFixed(1)}s`;
+            document.getElementById("memoFeedback").textContent = `🏁 Completado · ${memoState.seconds.toFixed(1)}s`;
 
             await saveSession({
               mode: "Memorama",
@@ -1833,21 +1619,11 @@ childSelect.value = profile.childName;
       }
     }
 
-    const blastState = {
-      score: 0,
-      streak: 0,
-      time: 30,
-      current: null,
-      timer: null
-    };
-
     function nextBlastQuestion(){
       const facts = weightedFacts();
       blastState.current = facts[Math.floor(Math.random()*facts.length)];
 
-      document.getElementById("blastPrompt").textContent =
-        `${blastState.current.a} × ${blastState.current.b}`;
-
+      document.getElementById("blastPrompt").textContent = `${blastState.current.a} × ${blastState.current.b}`;
       document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";
 
       const options = new Set([blastState.current.correct]);
@@ -1884,10 +1660,7 @@ childSelect.value = profile.childName;
       blastState.timer = setInterval(() => {
         blastState.time--;
         document.getElementById("blastTime").textContent = blastState.time;
-
-        if(blastState.time <= 0){
-          finishBlast();
-        }
+        if(blastState.time <= 0) finishBlast();
       }, 1000);
     }
 
@@ -1962,17 +1735,12 @@ childSelect.value = profile.childName;
     function renderHistory(){
       historyEl.innerHTML = "";
 
-      const child = currentChild();
-      const items = child
-        ? state.sessions.filter(s => !s.child || s.child === child)
-        : state.sessions;
-
-      if(!items.length){
+      if(!state.sessions.length){
         historyEl.innerHTML = `<div class="empty">Todavía no hay sesiones guardadas.</div>`;
         return;
       }
 
-      items.forEach(s=>{
+      state.sessions.forEach(s => {
         const div = document.createElement("div");
         div.className = "history-item";
 
@@ -1991,16 +1759,14 @@ childSelect.value = profile.childName;
     function renderWeakFacts(){
       weakFactsEl.innerHTML = "";
 
-      const entries = Object.entries(state.weakMap)
-        .sort((a,b)=>b[1]-a[1])
-        .slice(0,12);
+      const entries = Object.entries(state.weakMap).sort((a,b)=>b[1]-a[1]).slice(0,12);
 
       if(!entries.length){
         weakFactsEl.innerHTML = `<div class="empty">Todavía no hay ejercicios para refuerzo.</div>`;
         return;
       }
 
-      entries.forEach(([fact,count])=>{
+      entries.forEach(([fact,count]) => {
         const div = document.createElement("div");
         div.className = "history-item";
         div.textContent = `${fact} · prioridad ${Number(count).toFixed(2)}`;
@@ -2013,16 +1779,12 @@ childSelect.value = profile.childName;
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0,0,canvas.width,canvas.height);
 
-      const child = currentChild();
-      const items = child
-        ? state.sessions.filter(s => !s.child || s.child === child).slice(0,12).reverse()
-        : state.sessions.slice(0,12).reverse();
+      if(!state.sessions.length) return;
 
-      if(!items.length) return;
-
+      const items = state.sessions.slice(0,12).reverse();
       const max = Math.max(...items.map(i => Number(i.good) || 1), 1);
 
-      items.forEach((item, idx)=>{
+      items.forEach((item, idx) => {
         const h = ((Number(item.good) || 0) / max) * 150;
         const x = 40 + idx * 60;
         const y = 210 - h;
@@ -2069,21 +1831,47 @@ childSelect.value = profile.childName;
       document.querySelectorAll(".section").forEach((s,i)=>s.classList.toggle("active", i===index));
     }
 
+    loginBtn.onclick = async () => {
+      loginError.textContent = "";
+      try{
+        await signInWithEmailAndPassword(auth, loginEmail.value.trim(), loginPassword.value.trim());
+      }catch(e){
+        loginError.textContent = translateFirebaseError(e.code);
+      }
+    };
+
+    logoutBtn.onclick = async () => {
+      await signOut(auth);
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+      if(user){
+        await ensureUserProfile(user);
+        loginScreen.classList.add("hidden");
+        appScreen.classList.remove("hidden");
+        userBadge.textContent = user.email || "";
+        await loadCloudData();
+      }else{
+        appScreen.classList.add("hidden");
+        loginScreen.classList.remove("hidden");
+        userBadge.textContent = "";
+      }
+    });
+
     document.getElementById("addChildBtn").addEventListener("click", addChild);
-childSelect.addEventListener("change", async () => {
-  const user = auth.currentUser;
-  if(!user) return;
 
-  await setDoc(doc(db, "users", user.uid, "profile", "main"), {
-    childName: childSelect.value,
-    updatedAt: serverTimestamp()
-  }, { merge: true });
+    childSelect.addEventListener("change", async () => {
+      const user = auth.currentUser;
+      if(!user) return;
 
-  renderHistory();
-  renderWeakFacts();
-  drawChart();
-});
-    window.addChild = addChild;
+      await setDoc(doc(db, "users", user.uid, "profile", "main"), {
+        childName: childSelect.value,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      await loadCloudData();
+    });
+
     window.selectAllTables = selectAllTables;
     window.clearAllTables = clearAllTables;
     window.selectRange = selectRange;
@@ -2130,6 +1918,5 @@ childSelect.addEventListener("change", async () => {
     setMode("speed");
     showTab(0);
   </script>
-
 </body>
 </html>

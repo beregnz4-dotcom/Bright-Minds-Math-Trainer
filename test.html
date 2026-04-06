@@ -1046,16 +1046,34 @@ function todayKey(){
 // ======================
 
 function getKids(){
-  return JSON.parse(localStorage.getItem("kids") || "[]");
+  try{
+    return JSON.parse(localStorage.getItem("kids") || "[]");
+  }catch(e){
+    return [];
+  }
 }
 
 function saveKids(list){
-  localStorage.setItem("kids", JSON.stringify(list));
+  try{
+    localStorage.setItem("kids", JSON.stringify(list));
+    console.log("Guardado OK:", list);
+  }catch(e){
+    console.error("Error guardando kids:", e);
+    alert("No se pudo guardar el alumno en este navegador.");
+  }
 }
 
-function loadKids(){
+function loadKids(selectedName = ""){
   const kids = getKids();
   childSelect.innerHTML = "";
+
+  if(!kids.length){
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "Selecciona un alumno";
+    childSelect.appendChild(opt);
+    return;
+  }
 
   kids.forEach(k => {
     const opt = document.createElement("option");
@@ -1063,6 +1081,8 @@ function loadKids(){
     opt.textContent = k;
     childSelect.appendChild(opt);
   });
+
+  childSelect.value = selectedName || kids[0];
 }
 
 function addChild(){
@@ -1070,14 +1090,18 @@ function addChild(){
   if(!name) return;
 
   const list = getKids();
-  if(!list.includes(name)) list.push(name);
 
-  saveKids(list);
-  console.log("Kids guardados:", list);
-  loadKids();
+  if(!list.includes(name)){
+    list.push(name);
+    saveKids(list);
+  }
 
+  loadKids(name);
   childSelect.value = name;
+  childSelect.dispatchEvent(new Event("change"));
   newChild.value = "";
+
+  alert("Alumno guardado: " + JSON.stringify(getKids()));
 }
 
 function currentChild(){

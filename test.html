@@ -1785,8 +1785,7 @@ await loadCloudData();
       }, 1000);
     }
 
-    function resetBlast(){
-      function openBlastOverlay(score, xp){
+    function openBlastOverlay(score, xp){
   document.getElementById("blastOverlay").classList.remove("hidden");
   document.getElementById("blastOverlayScore").textContent = score;
   document.getElementById("blastOverlayXP").textContent = "XP: " + xp;
@@ -1795,7 +1794,24 @@ await loadCloudData();
 function closeBlastOverlay(){
   document.getElementById("blastOverlay").classList.add("hidden");
 }
-      clearInterval(blastState.timer);
+
+function resetBlast(){
+  clearInterval(blastState.timer);
+  blastState.score = 0;
+  blastState.streak = 0;
+  blastState.time = 30;
+  blastState.current = null;
+
+  document.getElementById("blastScore").textContent = "0";
+  document.getElementById("blastStreak").textContent = "0";
+  document.getElementById("blastTime").textContent = "30";
+  document.getElementById("blastCombo").textContent = "x1";
+  document.getElementById("blastPrompt").textContent = "—";
+  document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";
+  document.getElementById("blastGrid").innerHTML = "";
+  document.getElementById("blastSummary").classList.add("hidden");
+  closeBlastOverlay();
+}
       blastState.score = 0;
       blastState.streak = 0;
       blastState.time = 30;

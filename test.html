@@ -1113,3 +1113,339 @@ function updateDailyChallenge(type, value=1){
   saveChallengeDB(db);
   renderDailyChallenge();
 }
+// ======================
+// FACTS / SPECIFIC
+// ======================
+
+function allFacts(){
+  const arr = [];
+  for(let a=2; a<=10; a++){
+    if(!state.selectedTables.has(a)) continue;
+    for(let b=1; b<=10; b++){
+      const fact = `${a}x${b}`;
+      if(state.specificFacts.size && !state.specificFacts.has(fact)) continue;
+      arr.push({
+        a,
+        b,
+        fact,
+        correct: a*b
+      });
+    }
+  }
+  return arr;
+}
+
+function weightedFacts(){
+  const base = allFacts();
+  const pool = [];
+
+  base.forEach(item => {
+    const weight = Math.max(1, Math.ceil(state.weakMap[item.fact] || 1));
+    for(let i=0; i<weight; i++) pool.push(item);
+  });
+
+  return pool;
+}
+
+function renderSpecific(){
+  const table = Number(document.getElementById("specificTable").value);
+  const grid = document.getElementById("specificGrid");
+  const count = document.getElementById("specificCount");
+
+  let html = "";
+  for(let i=1; i<=10; i++){
+    const fact = `${table}x${i}`;
+    html += `<div class="chip ${state.specificFacts.has(fact) ? "active":""}" onclick="toggleSpecific('${fact}')">${fact}</div>`;
+  }
+
+  grid.innerHTML = html;
+  count.textContent = `Específicas seleccionadas: ${state.specificFacts.size}`;
+}
+
+function toggleSpecific(fact){
+  if(state.specificFacts.has(fact)) state.specificFacts.delete(fact);
+  else state.specificFacts.add(fact);
+  renderSpecific();
+}
+
+function selectAllSpecificCurrent(){
+  const table = Number(document.getElementById("specificTable").value);
+  for(let i=1; i<=10; i++){
+    state.specificFacts.add(`${table}x${i}`);
+  }
+  renderSpecific();
+}
+
+function clearSpecificCurrent(){
+  const table = Number(document.getElementById("specificTable").value);
+  for(let i=1; i<=10; i++){
+    state.specificFacts.delete(`${table}x${i}`);
+  }
+  renderSpecific();
+}
+
+function clearAllSpecific(){
+  state.specificFacts.clear();
+  renderSpecific();
+}
+
+function activatePractice(){
+  state.specificFacts.clear();
+  modeLabel.textContent = "Modo práctica inteligente";
+  renderSpecific();
+}
+
+function loadWeakToSpecific(){
+  const weak = Object.entries(state.weakMap)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,10)
+    .map(([fact])=>fact);
+
+  if(!weak.length){
+    modeLabel.textContent = "Todavía no hay ejercicios de refuerzo";
+    return;
+  }
+
+  state.specificFacts = new Set(weak);
+  modeLabel.textContent = "Modo refuerzo activado";
+  renderSpecific();
+}
+
+function loadTodayWrongToSpecific(){
+  if(!state.todayWrongFacts.size){
+    modeLabel.textContent = "Todavía no hay ejercicios para repasar";
+    return;
+  }
+
+  state.specificFacts = new Set([...state.todayWrongFacts]);
+  modeLabel.textContent = "Modo repasar activado";
+  renderSpecific();
+}
+
+// ======================
+// FIRESTORE SAVE/LOAD
+// ======================
+
+async function saveSession(obj){
+  const user = auth.currentUser;
+  if(!user) return;
+
+  const sessionRef = doc(collection(db, "users", user.uid, "sessions"));
+
+  await setDoc(sessionRef, {
+    child: currentChild(),
+    mode: obj.mode || "",
+    good: obj.good || 0,
+    bad: obj.bad || 0,
+    total: obj.total || 0,
+    time: obj.time || 0,
+    avg: obj.avg || 0,
+    score: obj.score || 0,
+    createdAt: serverTimestamp()
+  });
+}
+
+async function updateWeak(fact, delta){
+  const user = auth.currentUser;
+  if(!user) return;
+
+  const weakRef = doc(db, "users", user.uid, "weakFacts", "main");
+  const snap = await getDoc(weakRef);
+
+  let facts = snap.exists() ? (snap.data().facts || {}) : {};
+  facts[fact] = (facts[fact] || 0) + delta;
+  if(facts[fact] <= 0) delete facts[fact];
+
+  state.weakMap = facts;
+
+  await setDoc(weakRef, {
+    facts,
+    updatedAt: serverTimestamp()
+  }, { merge:true });
+}
+
+async function loadCloudData(){
+  const user = auth.currentUser;
+  if(!user) return;
+
+  // profile
+  const profileRef = doc(db, "users", user.uid, "profile", "main");
+  const profileSnap = await getDoc(profileRef);
+
+  if(profileSnap.exists()){
+    const profile = profileSnap.data();
+    if(profile.childName){
+      const kids = getKids();
+      if(!kids.includes(profile.childName)){
+        kids.push(profile.childName);
+        saveKids(kids);
+      }
+      loadKids();
+      childSelect.value = profile.childName;
+    } else {
+      loadKids();
+    }
+  } else {
+    loadKids();
+  }
+
+  // weak facts
+  const weakRef = doc(db, "users", user.uid, "weakFacts", "main");
+  const weakSnap = await getDoc(weakRef);
+  state.weakMap = weakSnap.exists() ? (weakSnap.data().facts || {}) : {};
+
+  // sessions
+  const q = query(
+    collection(db, "users", user.uid, "sessions"),
+    orderBy("createdAt", "desc"),
+    limit(30)
+  );
+
+  const snap = await getDocs(q);
+  state.sessions = [];
+  snap.forEach(d => state.sessions.push(d.data()));
+
+  renderHistory();
+  renderWeakFacts();
+  drawChart();
+  renderDailyChallenge();
+}
+
+// ======================
+// PRACTICE
+// ======================
+
+function updateMainStats(){
+  document.getElementById("good").textContent = state.good;
+  document.getElementById("bad").textContent = state.bad;
+  document.getElementById("time").textContent = state.timer
+    ? ((Date.now() - state.startTime)/1000).toFixed(1)
+    : "0.0";
+  document.getElementById("avg").textContent = state.totalAnswered
+    ? (((Date.now() - state.startTime)/1000) / state.totalAnswered).toFixed(2)
+    : "0.00";
+  document.getElementById("remaining").textContent = state.problems.length;
+}
+
+function nextSpeedQuestion(){
+  if(!state.problems.length){
+    finishSpeed();
+    return;
+  }
+
+  state.current = state.problems.pop();
+  document.getElementById("problem").textContent = `${state.current.a} × ${state.current.b}`;
+  document.getElementById("realAnswer").textContent = "";
+  document.getElementById("feedback").textContent = "";
+  updateMainStats();
+}
+
+function startGame(){
+  if(!currentChild()){
+    alert("Primero agrega o selecciona un alumno.");
+    return;
+  }
+
+  state.good = 0;
+  state.bad = 0;
+  state.totalAnswered = 0;
+  state.problems = shuffle(weightedFacts()).slice(0,20);
+  state.todayWrongFacts = new Set();
+  state.startTime = Date.now();
+
+  clearInterval(state.timer);
+  state.timer = setInterval(updateMainStats, 100);
+
+  nextSpeedQuestion();
+}
+
+function resetGame(){
+  clearInterval(state.timer);
+  state.timer = null;
+  state.problems = [];
+  state.current = null;
+  state.good = 0;
+  state.bad = 0;
+  state.totalAnswered = 0;
+
+  document.getElementById("problem").textContent = "—";
+  document.getElementById("realAnswer").textContent = "";
+  document.getElementById("feedback").textContent = "";
+  updateMainStats();
+}
+
+function showAnswer(){
+  if(!state.current) return;
+  document.getElementById("realAnswer").textContent = state.current.correct;
+}
+
+async function markManual(ok){
+  if(!state.current) return;
+
+  document.getElementById("realAnswer").textContent = state.current.correct;
+  state.totalAnswered++;
+
+  if(ok){
+    state.good++;
+    await updateWeak(state.current.fact, -0.25);
+    document.getElementById("feedback").textContent = "¡Muy bien!";
+  }else{
+    state.bad++;
+    await updateWeak(state.current.fact, 1);
+    state.todayWrongFacts.add(state.current.fact);
+    document.getElementById("feedback").textContent = "Vamos a practicar esta";
+  }
+
+  updateMainStats();
+  renderWeakFacts();
+}
+
+function nextQuestion(){
+  if(!state.current) return;
+  nextSpeedQuestion();
+}
+
+async function finishSpeed(){
+  clearInterval(state.timer);
+  state.timer = null;
+
+  const totalTime = Number(((Date.now() - state.startTime)/1000).toFixed(1));
+  const avg = state.totalAnswered ? Number((totalTime / state.totalAnswered).toFixed(2)) : 0;
+
+  await saveSession({
+    mode: "Practice",
+    good: state.good,
+    bad: state.bad,
+    total: state.totalAnswered,
+    time: totalTime,
+    avg
+  });
+
+  updateDailyChallenge("practice");
+  await loadCloudData();
+
+  document.getElementById("feedback").textContent = "Fin";
+}
+
+// ======================
+// EXPONER A WINDOW
+// ======================
+
+window.addChild = addChild;
+window.selectAllTables = selectAllTables;
+window.clearAllTables = clearAllTables;
+window.selectRange = selectRange;
+window.activatePractice = activatePractice;
+window.loadWeakToSpecific = loadWeakToSpecific;
+window.loadTodayWrongToSpecific = loadTodayWrongToSpecific;
+window.renderSpecific = renderSpecific;
+window.toggleSpecific = toggleSpecific;
+window.selectAllSpecificCurrent = selectAllSpecificCurrent;
+window.clearSpecificCurrent = clearSpecificCurrent;
+window.clearAllSpecific = clearAllSpecific;
+
+window.startGame = startGame;
+window.resetGame = resetGame;
+window.showAnswer = showAnswer;
+window.markManual = markManual;
+window.nextQuestion = nextQuestion;

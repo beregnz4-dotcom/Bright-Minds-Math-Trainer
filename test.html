@@ -823,6 +823,26 @@
       document.getElementById("levelBar").style.width = `${progress.percent}%`;
       document.getElementById("levelLabel").textContent = progress.text;
     }
+    async function loadChildProgress(){
+  const user = auth.currentUser;
+  if(!user) return;
+
+  const childId = currentChildId();
+  if(!childId){
+    updateProfileUI(0, 1);
+    return;
+  }
+
+  const ref = doc(db, "users", user.uid, "children", childId, "progress", "main");
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    const data = snap.data();
+    updateProfileUI(data.xp || 0, data.level || 1);
+  }else{
+    updateProfileUI(0, 1);
+  }
+}
 
     function makeChildId(name){
       return name

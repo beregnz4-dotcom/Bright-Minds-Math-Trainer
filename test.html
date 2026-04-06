@@ -848,6 +848,13 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    function calculateLevel(xp){
+  if(xp >= 500) return 5;
+  if(xp >= 300) return 4;
+  if(xp >= 150) return 3;
+  if(xp >= 50) return 2;
+  return 1;
+}
 async function addXP(amount){
   const user = auth.currentUser;
   if(!user) return;

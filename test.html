@@ -1793,7 +1793,7 @@ await loadCloudData();
 
     async function finishBlast(){
       clearInterval(blastState.timer);
-
+blastState.current = null;
       const summary = document.getElementById("blastSummary");
       summary.classList.remove("hidden");
       summary.innerHTML = `

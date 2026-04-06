@@ -1476,6 +1476,7 @@ const xpEarned = calculateXPReward("practice", {
 });
 
 await addXP(xpEarned);
+      openBlastOverlay(blastState.score, xpEarned);
 await updateDailyChallenge("practice");
 await loadCloudData();
 

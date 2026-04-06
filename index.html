@@ -855,6 +855,24 @@
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
+  let audioUnlocked = false;
+
+function unlockAudio(){
+  if(audioUnlocked) return;
+
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  gain.gain.value = 0.0001;
+  osc.start();
+  osc.stop(ctx.currentTime + 0.01);
+
+  audioUnlocked = true;
+}  
 function beep(type="good"){
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 

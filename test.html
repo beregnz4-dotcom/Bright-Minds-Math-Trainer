@@ -1683,20 +1683,22 @@ function calculateXPReward(mode, stats = {}){
   buttons.forEach(b => b.disabled = true);
 
   if(value === correct){
-    state.quizGood++;
-    await updateWeak(state.quizCurrent.fact, -0.25);
-    btn.classList.add("correct");
-    document.getElementById("quizFeedback").textContent = "¡Correcto!";
-  }else{
-    state.quizBad++;
-    await updateWeak(state.quizCurrent.fact, 1);
-    state.todayWrongFacts.add(state.quizCurrent.fact);
-    btn.classList.add("wrong");
-    buttons.forEach(b => {
-      if(Number(b.textContent) === correct) b.classList.add("correct");
-    });
-    document.getElementById("quizFeedback").textContent = "Casi";
-  }
+  state.quizGood++;
+  await updateWeak(state.quizCurrent.fact, -0.25);
+  btn.classList.add("correct");
+  document.getElementById("quizFeedback").textContent = "¡Correcto!";
+  beep("good");
+}else{
+  state.quizBad++;
+  await updateWeak(state.quizCurrent.fact, 1);
+  state.todayWrongFacts.add(state.quizCurrent.fact);
+  btn.classList.add("wrong");
+  buttons.forEach(b => {
+    if(Number(b.textContent) === correct) b.classList.add("correct");
+  });
+  document.getElementById("quizFeedback").textContent = "Casi";
+  beep("bad");
+}
 
   document.getElementById("quizGood").textContent = state.quizGood;
   document.getElementById("quizBad").textContent = state.quizBad;

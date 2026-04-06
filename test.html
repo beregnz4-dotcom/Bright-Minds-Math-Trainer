@@ -762,3 +762,205 @@
           </div>
         </div>
       </div>
+      <div class="section">
+        <div class="card">
+          <h3>Operaciones específicas</h3>
+          <div class="row">
+            <select id="specificTable" onchange="renderSpecific()">
+              <option value="2">Tabla 2</option>
+              <option value="3">Tabla 3</option>
+              <option value="4">Tabla 4</option>
+              <option value="5">Tabla 5</option>
+              <option value="6">Tabla 6</option>
+              <option value="7">Tabla 7</option>
+              <option value="8">Tabla 8</option>
+              <option value="9">Tabla 9</option>
+              <option value="10">Tabla 10</option>
+            </select>
+            <button class="btn btn-soft" onclick="selectAllSpecificCurrent()">Seleccionar toda la tabla</button>
+            <button class="btn btn-soft" onclick="clearSpecificCurrent()">Limpiar esta tabla</button>
+            <button class="btn btn-soft" onclick="clearAllSpecific()">Limpiar todo</button>
+          </div>
+
+          <div id="specificGrid" class="chips"></div>
+          <div id="specificCount" class="muted" style="margin-top:10px;">Específicas seleccionadas: 0</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <h3>Historial</h3>
+          <div id="history"></div>
+        </div>
+
+        <div class="card">
+          <h3>Gráfica</h3>
+          <canvas id="chart" width="900" height="260"></canvas>
+        </div>
+
+        <div class="card">
+          <h3>Refuerzo</h3>
+          <div id="weakFacts"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <h3>Tablas visuales</h3>
+          <div class="stair-wrap">
+            <div id="visualGrid" class="stairs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      collection,
+      getDocs,
+      query,
+      orderBy,
+      limit,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
+      authDomain: "bright-minds-math.firebaseapp.com",
+      projectId: "bright-minds-math",
+      storageBucket: "bright-minds-math.firebasestorage.app",
+      messagingSenderId: "645800687175",
+      appId: "1:645800687175:web:75241f3cac5e5433442362"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.auth = auth;
+    window.db = db;
+
+    const state = {
+      selectedTables: new Set([2,3,4,5,6,7,8,9,10]),
+      specificFacts: new Set(),
+      sessions: [],
+      weakMap: {},
+      todayWrongFacts: new Set(),
+
+      running: false,
+      current: null,
+      problems: [],
+      good: 0,
+      bad: 0,
+      totalAnswered: 0,
+      startTime: null,
+      timer: null,
+
+      quizRunning: false,
+      quizQuestions: [],
+      quizCurrent: null,
+      quizGood: 0,
+      quizBad: 0,
+      quizIndex: 0,
+      quizStartTime: null,
+      quizTimer: null,
+
+      memoCards: [],
+      memoFlipped: [],
+      memoMatched: 0,
+      memoMoves: 0,
+      memoTarget: 0,
+      memoBusy: false,
+      memoStartTime: null,
+      memoTimer: null
+    };
+
+    const loginScreen = document.getElementById("loginScreen");
+    const appScreen = document.getElementById("appScreen");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginEmail = document.getElementById("loginEmail");
+    const loginPassword = document.getElementById("loginPassword");
+    const loginError = document.getElementById("loginError");
+    const userBadge = document.getElementById("userBadge");
+
+    const newChild = document.getElementById("newChild");
+    const childSelect = document.getElementById("childSelect");
+    const tableChips = document.getElementById("tableChips");
+    const modeLabel = document.getElementById("modeLabel");
+    const historyEl = document.getElementById("history");
+    const weakFactsEl = document.getElementById("weakFacts");
+
+    function translateFirebaseError(code){
+      const map = {
+        "auth/invalid-email": "Correo inválido",
+        "auth/missing-password": "Escribe contraseña",
+        "auth/invalid-credential": "Correo o contraseña incorrectos",
+        "auth/user-not-found": "Usuario no encontrado",
+        "auth/wrong-password": "Contraseña incorrecta"
+      };
+      return map[code] || "No se pudo iniciar sesión";
+    }
+
+    async function ensureUserProfile(user){
+      const ref = doc(db, "users", user.uid, "profile", "main");
+      const snap = await getDoc(ref);
+
+      if(!snap.exists()){
+        await setDoc(ref, {
+          email: user.email || "",
+          childName: "",
+          xp: 0,
+          level: 1,
+          streak: 0,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+      }
+    }
+
+    loginBtn.onclick = async () => {
+      loginError.textContent = "";
+      try{
+        await signInWithEmailAndPassword(
+          auth,
+          loginEmail.value.trim(),
+          loginPassword.value.trim()
+        );
+      }catch(e){
+        loginError.textContent = translateFirebaseError(e.code);
+      }
+    };
+
+    logoutBtn.onclick = async () => {
+      await signOut(auth);
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+      if(user){
+        await ensureUserProfile(user);
+        loginScreen.classList.add("hidden");
+        appScreen.classList.remove("hidden");
+        userBadge.textContent = user.email || "";
+        await loadCloudData();
+      }else{
+        appScreen.classList.add("hidden");
+        loginScreen.classList.remove("hidden");
+        userBadge.textContent = "";
+      }
+    });
+  </script>
+
+  <script>

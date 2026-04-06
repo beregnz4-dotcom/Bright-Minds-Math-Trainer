@@ -2016,9 +2016,10 @@ function resetBlast(){
   });
 
   await addXP(xpEarned);
-  openBlastOverlay(blastState.score, xpEarned);
-  await updateDailyChallenge("blast", blastState.score);
-  await loadCloudData();
+beep("good");
+openBlastOverlay(blastState.score, xpEarned);
+await updateDailyChallenge("blast", blastState.score);
+await loadCloudData();
 }
 
     function renderHistory(){

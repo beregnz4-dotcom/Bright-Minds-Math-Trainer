@@ -955,11 +955,12 @@ function updateComboGlow(){
     }
 
     function showLevelUp(newLevel){
-      const box = document.getElementById("levelUpBox");
-      box.textContent = `🎉 LEVEL UP! Nivel ${newLevel}`;
-      box.classList.remove("hidden");
-      setTimeout(() => box.classList.add("hidden"), 2500);
-    }
+  beep("good");
+  const box = document.getElementById("levelUpBox");
+  box.textContent = `🎉 LEVEL UP! Nivel ${newLevel}`;
+  box.classList.remove("hidden");
+  setTimeout(() => box.classList.add("hidden"), 2500);
+}
 
     function updateProfileUI(xp, level){
       document.getElementById("profileStats").textContent = `XP: ${xp || 0} · Nivel: ${level || 1}`;

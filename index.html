@@ -1911,31 +1911,31 @@ await loadCloudData();
       `).join("");
     }
 
-    function startBlast(){
-      if(!currentChild()){
-        alert("Primero agrega o selecciona un alumno.");
-        return;
-      }
+function startBlast(){
+  if(!currentChild()){
+    alert("Primero agrega o selecciona un alumno.");
+    return;
+  }
 
-      blastState.score = 0;
-      blastState.streak = 0;
-      blastState.time = 30;
+  blastState.score = 0;
+  blastState.streak = 0;
+  blastState.time = BLAST_DURATION;
 
-      document.getElementById("blastScore").textContent = "0";
-      document.getElementById("blastStreak").textContent = "0";
-      document.getElementById("blastTime").textContent = "60";
-      document.getElementById("blastCombo").textContent = "x1";
-      document.getElementById("blastSummary").classList.add("hidden");
+  document.getElementById("blastScore").textContent = "0";
+  document.getElementById("blastStreak").textContent = "0";
+  document.getElementById("blastTime").textContent = String(BLAST_DURATION);
+  document.getElementById("blastCombo").textContent = "x1";
+  document.getElementById("blastSummary").classList.add("hidden");
 
-      nextBlastQuestion();
+  nextBlastQuestion();
 
-      clearInterval(blastState.timer);
-      blastState.timer = setInterval(() => {
-        blastState.time--;
-        document.getElementById("blastTime").textContent = blastState.time;
-        if(blastState.time <= 0) finishBlast();
-      }, 1000);
-    }
+  clearInterval(blastState.timer);
+  blastState.timer = setInterval(() => {
+    blastState.time--;
+    document.getElementById("blastTime").textContent = blastState.time;
+    if(blastState.time <= 0) finishBlast();
+  }, 1000);
+}    
 
     function openBlastOverlay(score, xp){
   document.getElementById("blastOverlay").classList.remove("hidden");

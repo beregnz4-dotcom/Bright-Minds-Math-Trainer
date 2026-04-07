@@ -2032,16 +2032,16 @@ function resetBlast(){
     good: blastState.score,
     bad: 0,
     total: 0,
-    const BLAST_DURATION = 60;
+    time: BLAST_DURATION,
     avg: 0,
     score: blastState.score
   });
 
   await addXP(xpEarned);
-beep("good");
-openBlastOverlay(blastState.score, xpEarned);
-await updateDailyChallenge("blast", blastState.score);
-await loadCloudData();
+  beep("good");
+  openBlastOverlay(blastState.score, xpEarned);
+  await updateDailyChallenge("blast", blastState.score);
+  await loadCloudData();
 }
 
     function renderHistory(){

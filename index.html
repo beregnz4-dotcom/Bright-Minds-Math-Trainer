@@ -2241,7 +2241,31 @@ document.getElementById("blastPlayAgainBtn")?.addEventListener("click", () => {
 document.getElementById("blastCloseBtn")?.addEventListener("click", () => {
   closeBlastOverlay();
 });
-    
+
+
+    document.addEventListener("touchstart", () => {
+  const g = document.getElementById("sfxGood");
+  const b = document.getElementById("sfxBad");
+
+  if(g){
+    g.volume = 0;
+    g.play().then(() => {
+      g.pause();
+      g.currentTime = 0;
+      g.volume = 1.0;
+    }).catch(() => {});
+  }
+
+  if(b){
+    b.volume = 0;
+    b.play().then(() => {
+      b.pause();
+      b.currentTime = 0;
+      b.volume = 1.0;
+    }).catch(() => {});
+  }
+
+}, { once:true });
   </script>
 </body>
 </html>

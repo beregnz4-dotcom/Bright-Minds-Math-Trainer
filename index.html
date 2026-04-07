@@ -1951,12 +1951,12 @@ function resetBlast(){
   clearInterval(blastState.timer);
   blastState.score = 0;
   blastState.streak = 0;
-  blastState.time = 60;
+  blastState.time = BLAST_DURATION;
   blastState.current = null;
 
   document.getElementById("blastScore").textContent = "0";
   document.getElementById("blastStreak").textContent = "0";
-  document.getElementById("blastTime").textContent = "60";
+  document.getElementById("blastTime").textContent = String(BLAST_DURATION);
   document.getElementById("blastCombo").textContent = "x1";
   document.getElementById("blastPrompt").textContent = "—";
   document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";

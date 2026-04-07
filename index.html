@@ -893,11 +893,18 @@ function beep(type="good"){
       ? document.getElementById("sfxGood")
       : document.getElementById("sfxBad");
 
-    if(!el) return;
+    if(!el) {
+      console.log("No audio element found:", type);
+      return;
+    }
 
-    el.volume = 1.0;   // máximo volumen del elemento
+    el.volume = 1.0;
     el.currentTime = 0;
-    el.play().catch(err => console.log("Audio play blocked:", err));
+
+    const p = el.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(err => console.log("Audio play blocked:", err));
+    }
   }catch(err){
     console.log("Beep error:", err);
   }

@@ -42,13 +42,15 @@
     }
 
     .app-shell{
-      max-width:500px;
-      min-height:100vh;
-      margin:0 auto;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,.12), transparent 30%),
-        linear-gradient(180deg, var(--bg-1), var(--bg-2));
-    }
+  width:100%;
+  max-width:1100px;
+  min-height:100vh;
+  margin:0 auto;
+  padding: 0 16px; /* 👈 esto mejora mucho en pantallas grandes */
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.12), transparent 30%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+}
 
     .screen{
       display:none;

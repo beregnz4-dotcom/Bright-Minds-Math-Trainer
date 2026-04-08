@@ -1,2269 +1,597 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bright Minds Math</title>
-
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --text:#1f2937;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --yellow:#f4b000;
-      --soft:#eef2ff;
-      --green:#22c55e;
-      --red:#ef4444;
-      --purple:#7a4dff;
-      --dark:#111827;
-      --shadow:0 10px 24px rgba(0,0,0,.08);
-    }
-
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Arial, Helvetica, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
-
-    .hidden{display:none !important}
-
-    .login-screen{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-    }
-
-    .login-card{
-      width:min(430px,100%);
-      background:#fff;
-      border-radius:18px;
-      box-shadow:var(--shadow);
-      padding:24px;
-    }
-
-    .login-card h1{margin:0 0 8px;font-size:28px}
-    .login-card p{margin:0 0 18px;color:var(--muted)}
-
-    input, select{
-      width:100%;
-      padding:12px;
-      border:1px solid var(--line);
-      border-radius:10px;
-      margin:8px 0;
-      font-size:16px;
-      background:#fff;
-    }
-
-    .btn{
-      border:none;
-      border-radius:10px;
-      padding:12px 16px;
-      cursor:pointer;
-      font-weight:700;
-      font-size:15px;
-    }
-
-    .btn-yellow{background:var(--yellow);color:#fff}
-    .btn-soft{background:var(--soft);color:var(--text)}
-    .btn-green{background:var(--green);color:#fff}
-
-    .topbar{
-      background:#fff;
-      box-shadow:var(--shadow);
-      padding:14px 18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .wrap{
-      max-width:1140px;
-      margin:auto;
-      padding:18px;
-    }
-
-    .tabs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:16px;
-    }
-
-    .tab{
-      border:none;
-      border-radius:999px;
-      padding:10px 16px;
-      font-weight:700;
-      cursor:pointer;
-      background:#dfe5ef;
-      color:#374151;
-    }
-
-    .tab.active{
-      background:var(--yellow);
-      color:#fff;
-    }
-
-    .section{display:none}
-    .section.active{display:block}
-
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:16px;
-    }
-
-    @media (max-width:900px){
-      .grid{grid-template-columns:1fr}
-    }
-
-    .card{
-      background:var(--card);
-      border-radius:16px;
-      box-shadow:var(--shadow);
-      padding:16px;
-      margin-bottom:16px;
-    }
-
-    .card h3{margin:0 0 12px}
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-
-    .hero{
-      text-align:center;
-      padding:20px;
-    }
-
-    .hero h2{margin:0 0 8px;font-size:30px}
-    .hero p{margin:0;color:var(--muted);font-weight:700}
-
-    .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-
-    .chip{
-      border:1px solid #d1d5db;
-      background:#fff;
-      border-radius:999px;
-      padding:8px 12px;
-      font-weight:700;
-      cursor:pointer;
-      user-select:none;
-    }
-
-    .chip.active{
-      background:var(--yellow);
-      color:#fff;
-      border-color:var(--yellow);
-    }
-
-    .mode-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
-
-    @media (max-width:900px){
-      .mode-grid{grid-template-columns:1fr 1fr}
-    }
-
-    .mode-card{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:14px;
-      background:#fff;
-      cursor:pointer;
-      text-align:center;
-    }
-
-    .mode-card.active{
-      border-color:var(--yellow);
-      box-shadow:0 0 0 3px rgba(244,176,0,.15);
-    }
-
-    .mode-title{
-      font-size:18px;
-      font-weight:800;
-      margin-bottom:4px;
-    }
-
-    .muted{
-      color:var(--muted);
-      font-size:13px;
-      font-weight:700;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:10px;
-      margin-bottom:16px;
-    }
-
-    @media (max-width:900px){
-      .stats{grid-template-columns:repeat(2,1fr)}
-    }
-
-    .stat{
-      background:#fbfcff;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      text-align:center;
-    }
-
-    .stat .k{
-      color:var(--muted);
-      font-size:12px;
-      font-weight:700;
-    }
-
-    .stat .v{
-      font-size:24px;
-      font-weight:800;
-      margin-top:4px;
-    }
-
-    .stage{
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:24px 16px;
-      text-align:center;
-      min-height:240px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      background:#fff;
-    }
-
-    .problem{
-      font-size:72px;
-      font-weight:900;
-      line-height:1;
-      margin-bottom:12px;
-    }
-
-    @media (max-width:700px){
-      .problem{font-size:54px}
-    }
-
-    .answer{
-      min-height:40px;
-      font-size:36px;
-      color:var(--green);
-      font-weight:900;
-    }
-
-    .feedback{
-      min-height:26px;
-      font-weight:800;
-      margin-top:8px;
-    }
-
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:center;
-      margin-top:14px;
-    }
-
-    .quiz-options{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-      max-width:420px;
-      margin:18px auto 0;
-    }
-
-    .quiz-option{
-      border:none;
-      border-radius:12px;
-      padding:16px;
-      font-size:24px;
-      font-weight:800;
-      cursor:pointer;
-      background:#eef2ff;
-      color:#111827;
-    }
-
-    .quiz-option.correct{background:#dcfce7;color:#166534}
-    .quiz-option.wrong{background:#fee2e2;color:#991b1b}
-
-    .memo-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-      margin-top:14px;
-    }
-
-    @media (max-width:700px){
-      .memo-grid{grid-template-columns:repeat(3,1fr)}
-    }
-
-    .memo-card{
-      height:88px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      font-size:26px;
-      cursor:pointer;
-      user-select:none;
-      background:#fff;
-    }
-
-    .memo-back{background:linear-gradient(180deg,var(--purple),#5f37d6);color:#fff;font-size:18px}
-    .memo-front{background:#fff;color:var(--dark)}
-    .memo-matched{background:#dcfce7 !important;color:#166534 !important;border-color:#86efac}
-
-    .history-item{
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:10px;
-      margin-bottom:8px;
-      background:#fff;
-    }
-
-    .empty{
-      color:var(--muted);
-      font-weight:700;
-      text-align:center;
-      padding:16px 0;
-    }
-
-    .stair-wrap{overflow-x:auto}
-    .stairs{display:flex;gap:10px;align-items:flex-end}
-    .stair-col{min-width:110px;display:flex;flex-direction:column;gap:8px}
-    .stair-head{
-      background:#f4b000;color:#fff;font-weight:900;text-align:center;
-      border-radius:12px;padding:10px 0;font-size:32px;
-    }
-    .stair-cell{
-      background:#fff8e5;border-radius:10px;text-align:center;
-      padding:10px 8px;font-weight:700;border:1px solid #f5df9f;white-space:nowrap;
-    }
-
-    canvas{width:100%;background:#fff;border-radius:14px}
-
-    .blast-card{background:linear-gradient(180deg,#fff,#fff7ed)}
-    .blast-header{
-      display:flex;justify-content:space-between;align-items:center;
-      gap:12px;margin-bottom:14px;flex-wrap:wrap;
-    }
-    .blast-title{font-size:24px;font-weight:900}
-    .blast-sub{color:var(--muted);font-weight:700;font-size:13px;margin-top:4px}
-    .blast-goal-box{
-      background:#111827;color:#fff;border-radius:14px;
-      padding:10px 14px;min-width:88px;text-align:center;
-    }
-    .blast-goal-label{font-size:11px;opacity:.8;font-weight:700}
-    .blast-goal-value{font-size:24px;font-weight:900;margin-top:2px}
-    .blast-stage{
-      border:1px solid #fde7b0;background:linear-gradient(180deg,#fffdf7,#fff4d6);
-      border-radius:20px;padding:22px 14px;text-align:center;
-    }
-    .blast-label{font-size:14px;font-weight:800;color:var(--muted);margin-bottom:6px}
-    .blast-feedback{min-height:28px;font-size:18px;font-weight:900;margin:8px 0 14px}
-    .blast-grid{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
-      max-width:520px;margin:0 auto;
-    }
-    .blast-btn{
-      border:none;border-radius:16px;padding:18px 10px;font-size:28px;font-weight:900;
-      cursor:pointer;background:#eef2ff;color:#111827;box-shadow:0 6px 12px rgba(0,0,0,.06);
-    }
-   
-        .blast-summary{
-      margin-top:16px;border:1px solid var(--line);border-radius:16px;
-      padding:16px;background:#fff;text-align:center;
-    }
-
-    
-    .blast-pop{
-      position:fixed;
-      top:90px;
-      right:20px;
-      background:#111827;
-      color:#fff;
-      padding:10px 14px;
-      border-radius:999px;
-      font-weight:800;
-      box-shadow:0 10px 24px rgba(0,0,0,.18);
-      z-index:10000;
-      opacity:0;
-      transform:translateY(-8px) scale(.96);
-      transition:all .25s ease;
-      pointer-events:none;
-    }
-
-    .blast-pop.show{
-      opacity:1;
-      transform:translateY(0) scale(1);
-    }
-
-    .blast-hit{
-      animation:blastHit .28s ease;
-    }
-
-    @keyframes blastHit{
-      0%{transform:scale(1)}
-      45%{transform:scale(1.08)}
-      100%{transform:scale(1)}
-    }
-
-    .blast-wrong{
-      animation:blastWrong .28s ease;
-    }
-
-    @keyframes blastWrong{
-      0%{transform:translateX(0)}
-      25%{transform:translateX(-5px)}
-      50%{transform:translateX(5px)}
-      75%{transform:translateX(-3px)}
-      100%{transform:translateX(0)}
-    }
-
-    .combo-glow{
-      box-shadow:0 0 0 4px rgba(244,176,0,.18), 0 12px 28px rgba(244,176,0,.28);
-      transition:box-shadow .2s ease;
-    }
-  </style>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bright Minds Math Trainer</title>
+<style>
+:root{
+  --bg:#F6C445; --card:#fff; --text:#22314d; --muted:#6b7280; --blue:#2D8CFF; --blue2:#1E6FD0;
+  --green:#22C55E; --red:#EF4444; --orange:#F59E0B; --gray:#9CA3AF; --line:#E5E7EB; --soft:#F3F4F6;
+  --shadow:0 10px 24px rgba(0,0,0,.10); --radius:22px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.app{max-width:480px;min-height:100vh;margin:0 auto;background:linear-gradient(120deg,rgba(255,255,255,.12) 0 22%,transparent 22% 100%),var(--bg);position:relative;overflow:hidden}
+.hidden{display:none!important}.screen{padding:16px 16px 24px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}.topbar .title{flex:1;text-align:center;font-size:20px;font-weight:800}
+.icon-btn{width:48px;height:48px;border:none;border-radius:16px;background:#fff;box-shadow:var(--shadow);color:var(--blue);font-size:24px;font-weight:700}
+.icon-btn.sm{width:40px;height:40px;border-radius:14px;font-size:18px}
+.hero,.card,.white-box{background:var(--card);border-radius:26px;box-shadow:var(--shadow)}
+.hero{padding:20px 18px;text-align:center}.hero h1{margin:8px 0 6px;font-size:34px;line-height:1.05;color:var(--blue2)}
+.subtitle{color:var(--muted);font-size:13px}.muted{color:var(--muted)}
+.progress-shell{margin-top:14px;background:#EEF2F7;border-radius:999px;padding:8px;box-shadow:inset 0 2px 4px rgba(0,0,0,.08)}
+.progress-bar{height:18px;border-radius:999px;background:linear-gradient(90deg,#6EE7B7,#3B82F6);width:0;transition:.3s}
+.progress-label{text-align:center;font-weight:800;color:#4B5563;margin-top:8px}
+.menu-list{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+.main-btn{border:none;background:var(--blue);color:#fff;border-radius:24px;padding:16px 18px;box-shadow:0 8px 0 var(--blue2)}
+.main-btn .big{font-weight:800;font-size:18px}.main-btn .small{font-size:12px;margin-top:4px;opacity:.95}
+.user-grid,.table-grid,.level-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.user-btn,.table-card,.level-card{border:none;background:#fff;border-radius:20px;padding:16px;box-shadow:var(--shadow);text-align:left}
+.user-btn{font-size:18px;font-weight:800;color:var(--blue2);text-align:center}
+.row{display:flex;gap:10px;align-items:center}.space{justify-content:space-between}
+.input{width:100%;border:none;border-radius:16px;padding:14px 16px;font-size:16px;box-shadow:inset 0 0 0 1px var(--line);background:#fff}
+.save-btn{border:none;background:var(--green);color:#fff;border-radius:16px;padding:0 16px;font-weight:800;height:48px}
+.section-title{font-size:22px;font-weight:800;margin:6px 0 12px}
+.status-pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;color:#fff;margin-top:8px}.s0{background:var(--gray)}.s1{background:var(--blue)}.s2{background:var(--orange)}.s3{background:var(--green)}
+.mini{font-size:12px;color:var(--muted);margin-top:8px}
+.level-card h3{margin:0 0 6px;font-size:18px}.level-card p{margin:0;color:var(--muted);font-size:13px}
+.question-card{padding:18px;margin:14px 0}.question{font-size:36px;font-weight:800;text-align:center;color:#64748B;margin:8px 0 14px}.question.primary{font-size:40px;color:var(--text)}
+.answer-display{min-height:74px;border-radius:20px;background:var(--soft);border:4px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#64748B}
+.timer-wrap{display:flex;align-items:center;gap:10px}.timer-icon{width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;font-size:24px;color:#64748B}
+.time-bar-shell{flex:1;background:#E5E7EB;border-radius:999px;padding:8px;box-shadow:inset 0 2px 4px rgba(0,0,0,.07)}
+.time-bar{height:18px;border-radius:999px;background:#2EA3F2;width:100%;transition:width .12s linear, background .2s linear}
+.keypad{background:#fff;border-radius:24px;padding:16px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.key{border:none;border-radius:18px;padding:18px 0;font-size:32px;font-weight:800;color:#fff;background:var(--blue);box-shadow:0 6px 0 var(--blue2)}
+.key.red{background:#F43F5E;box-shadow:0 6px 0 #BE123C}.key.green{background:#56C126;box-shadow:0 6px 0 #3A8F1A}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pill{background:#fff;box-shadow:var(--shadow);border:none;border-radius:999px;padding:10px 14px;font-weight:800;color:var(--blue2)}
+.option-list{display:flex;flex-direction:column;gap:10px}.option-btn{border:none;background:#fff;border-radius:18px;padding:14px;box-shadow:var(--shadow);font-size:18px;font-weight:800;color:var(--text)}
+.option-btn.correct{background:#DCFCE7;color:#166534}.option-btn.wrong{background:#FEE2E2;color:#991B1B}.option-btn.selected{outline:3px solid var(--blue)}
+.sequence-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}.seq-box{min-width:54px;height:54px;border-radius:16px;background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;font-size:24px;font-weight:800}.seq-box.blank{border:3px dashed #CBD5E1;background:#F8FAFC}
+.choice-bank{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}.choice-chip{border:none;background:var(--blue);color:#fff;border-radius:16px;padding:12px 16px;font-size:22px;font-weight:800;box-shadow:0 5px 0 var(--blue2)}
+.match-grid{display:grid;grid-template-columns:1fr 70px 1fr;gap:10px;align-items:center}.match-col{display:flex;flex-direction:column;gap:10px}.match-item{border:none;background:#fff;border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);font-size:22px;font-weight:800;color:var(--blue2);text-align:left}.match-item.done{background:#DCFCE7;color:#166534}.match-item.sel{outline:3px solid var(--blue)}
+.block-groups{display:flex;flex-direction:column;gap:12px;align-items:center;margin:14px 0}.group-row{display:flex;gap:8px}.block{width:26px;height:26px;border-radius:10px;background:linear-gradient(180deg,#8CC6FF,#2D8CFF);box-shadow:0 4px 8px rgba(45,140,255,.25)}
+.sum-boxes{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}.sum-pill{background:#fff;border-radius:18px;padding:12px 18px;box-shadow:var(--shadow);font-size:28px;font-weight:800}.plus{font-size:28px;font-weight:900;color:var(--green)}
+.table-line{display:flex;justify-content:space-between;padding:12px 8px;border-bottom:1px solid var(--line);font-weight:800}.table-line:last-child{border-bottom:none}
+.result-list .item{display:flex;justify-content:space-between;gap:12px;padding:12px 6px;border-bottom:1px solid var(--line);align-items:center}.result-list .item:last-child{border-bottom:none}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;color:#fff;background:var(--blue)}
+.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.check-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.check-btn{border:none;background:#fff;border-radius:16px;padding:12px 0;box-shadow:var(--shadow);font-weight:800}.check-btn.active{background:var(--blue);color:#fff}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50}
+.modal{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:18px;max-width:440px;width:100%}.modal h3{margin:0 0 10px;font-size:22px}.modal p{color:var(--muted)}
+.small-btn{border:none;border-radius:14px;padding:12px 14px;font-weight:800}.small-btn.red{background:#EF4444;color:#fff}.small-btn.gray{background:#E5E7EB;color:#111827}.small-btn.blue{background:var(--blue);color:#fff}.small-btn.green{background:var(--green);color:#fff}
+.sound-toggle{display:flex;gap:8px;align-items:center;background:#fff;padding:10px 12px;border-radius:999px;box-shadow:var(--shadow);font-weight:800;color:var(--blue2)}
+.score-big{font-size:56px;font-weight:900;text-align:center;margin:10px 0}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:16px;text-align:center}.stat .n{font-size:34px;font-weight:900}.stat .l{color:var(--muted);font-weight:700}
+.rank-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);margin-bottom:10px}.medal{font-size:28px}
+.board-wrap{display:grid;grid-template-columns:1fr 130px;gap:12px;align-items:start}.board{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.square{aspect-ratio:1/1;border-radius:18px;display:flex;align-items:flex-start;justify-content:space-between;padding:8px;font-weight:900;font-size:22px;position:relative}.square:nth-child(4n+1){background:#FCA5A5}.square:nth-child(4n+2){background:#BFDBFE}.square:nth-child(4n+3){background:#C4F1A6}.square:nth-child(4n+4){background:#DDD6FE}
+.square.active{outline:4px solid var(--blue2);transform:scale(1.03)}
+.token{position:absolute;bottom:8px;right:8px;width:18px;height:18px;border-radius:50%;border:3px solid #fff}.t1{background:#2563EB}.t2{background:#EC4899}.t3{background:#16A34A}.t4{background:#F59E0B}
+.ladder,.snake{position:absolute;font-size:22px;left:6px;bottom:6px}
+.side-card{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:12px}.dice{width:84px;height:84px;border-radius:24px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:42px;font-weight:900;border:none;box-shadow:0 8px 0 var(--blue2);margin:0 auto 12px}
+.turn{font-size:18px;font-weight:900;text-align:center;margin-bottom:8px}.feedback{font-size:16px;font-weight:800;text-align:center;min-height:24px}.good{color:#15803D}.bad{color:#B91C1C}
+.footer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.footer-actions .small-btn{flex:1}
+.info-line{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:14px;color:var(--muted)}
+hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
+</style>
 </head>
 <body>
+<div class="app">
 
-  <div id="loginScreen" class="login-screen">
-    <div class="login-card">
-      <h1>Bright Minds Math</h1>
-      <p>Acceso privado · Solo alumnos</p>
-
-      <input id="loginEmail" type="email" placeholder="Correo electrónico">
-      <input id="loginPassword" type="password" placeholder="Contraseña">
-
-      <button id="loginBtn" class="btn btn-yellow" style="width:100%">Entrar</button>
-      <div id="loginError" style="margin-top:10px;color:#b91c1c;font-weight:700;"></div>
+  <section id="screen-users" class="screen">
+    <div class="hero">
+      <div class="subtitle">Bright Minds Math Trainer</div>
+      <h1>Elige usuario</h1>
+      <div class="subtitle">Cada usuario guarda su propio progreso</div>
     </div>
-  </div>
+    <div class="user-grid" id="userGrid"></div>
+    <div class="card" style="margin-top:14px;">
+      <div class="section-title" style="font-size:18px;margin-top:0">Nuevo usuario</div>
+      <div class="row">
+        <input id="newUserInput" class="input" placeholder="Escribe nombre" maxlength="16" />
+        <button class="save-btn" onclick="addUser()">Guardar</button>
+      </div>
+    </div>
+  </section>
 
-  <div id="appScreen" class="hidden">
+  <section id="screen-home" class="screen hidden">
     <div class="topbar">
-      <div id="userBadge" style="font-weight:700;"></div>
-      <button id="logoutBtn" class="btn btn-soft">Salir</button>
+      <button class="icon-btn" onclick="goUsers()">â¡</button>
+      <div class="title">Bright Minds Math</div>
+      <button class="icon-btn sm" onclick="openHelp()">?</button>
     </div>
-
-    <div class="wrap">
-      <div class="card">
-        <h3>🔥 Desafío diario</h3>
-        <div id="profileStats">XP: 0 · Nivel: 1</div>
-        <div style="margin-top:8px;">
-          <div id="levelLabel" class="muted">Progreso al siguiente nivel</div>
-          <div style="width:100%;height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;">
-            <div id="levelBar" style="height:12px;width:0%;background:#7a4dff;border-radius:999px;"></div>
-          </div>
-        </div>
-        <div id="levelUpBox" class="hidden" style="margin-top:10px;padding:12px;border-radius:12px;background:#fef3c7;font-weight:800;text-align:center;">
-          🎉 LEVEL UP!
-        </div>
-        <div id="dailyChallengeText">Cargando reto...</div>
-        <div id="dailyChallengeStatus" class="muted" style="margin-top:8px;"></div>
-      </div>
-
-      <div class="tabs">
-        <button class="tab active" onclick="showTab(0)">Práctica</button>
-        <button class="tab" onclick="showTab(1)">Específicas</button>
-        <button class="tab" onclick="showTab(2)">Progreso</button>
-        <button class="tab" onclick="showTab(3)">Visual</button>
-      </div>
-
-      <div class="section active">
-        <div class="card hero">
-          <h2>Multiplicaciones</h2>
-          <p>Practica · Elige · Memoriza · Mejora</p>
-        </div>
-
-        <div class="grid">
-          <div>
-            <div class="card">
-              <h3>Alumno</h3>
-              <div class="row">
-                <input id="newChild" placeholder="Agregar nombre">
-                <button id="addChildBtn" class="btn btn-yellow">Agregar alumno</button>
-              </div>
-              <select id="childSelect"></select>
-            </div>
-
-            <div class="card">
-              <h3>Tablas</h3>
-              <div class="row">
-                <button class="btn btn-soft" onclick="selectAllTables()">Todas</button>
-                <button class="btn btn-soft" onclick="clearAllTables()">Limpiar</button>
-                <button class="btn btn-soft" onclick="selectRange(2,5)">2–5</button>
-                <button class="btn btn-soft" onclick="selectRange(6,10)">6–10</button>
-              </div>
-              <div class="row" style="margin-top:10px">
-                <button class="btn btn-soft" onclick="activatePractice()">Práctica</button>
-                <button class="btn btn-soft" onclick="loadWeakToSpecific()">Refuerzo</button>
-                <button class="btn btn-soft" onclick="loadTodayWrongToSpecific()">Repasar</button>
-              </div>
-              <div id="modeLabel" class="muted" style="margin-top:8px;">Modo práctica inteligente</div>
-              <div id="tableChips" class="chips"></div>
-            </div>
-
-            <div class="card">
-              <h3>Modo</h3>
-              <div class="mode-grid">
-                <div class="mode-card active" id="modeSpeed" onclick="setMode('speed')">
-                  <div class="mode-title">Practice</div>
-                  <div class="muted">Mostrar y marcar</div>
-                </div>
-                <div class="mode-card" id="modeQuiz" onclick="setMode('quiz')">
-                  <div class="mode-title">Choose</div>
-                  <div class="muted">Elige entre 3 opciones</div>
-                </div>
-                <div class="mode-card" id="modeMemorama" onclick="setMode('memorama')">
-                  <div class="mode-title">Memorama</div>
-                  <div class="muted">Encuentra parejas</div>
-                </div>
-                <div class="mode-card" id="modeBlast" onclick="setMode('blast')">
-                  <div class="mode-title">Math Blast</div>
-                  <div class="muted">Toca la respuesta correcta</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="card" id="speedPanel">
-              <div class="stats">
-                <div class="stat"><div class="k">Tiempo</div><div class="v" id="time">0.0</div></div>
-                <div class="stat"><div class="k">Promedio</div><div class="v" id="avg">0.00</div></div>
-                <div class="stat"><div class="k">Correctas</div><div class="v" id="good">0</div></div>
-                <div class="stat"><div class="k">Practicar</div><div class="v" id="bad">0</div></div>
-                <div class="stat"><div class="k">Restantes</div><div class="v" id="remaining">0</div></div>
-              </div>
-
-              <div class="row" style="justify-content:center;margin-bottom:12px">
-                <button class="btn btn-yellow" onclick="startGame()">Iniciar</button>
-                <button class="btn btn-soft" onclick="resetGame()">Reiniciar</button>
-              </div>
-
-              <div class="stage">
-                <div id="problem" class="problem">—</div>
-                <div id="realAnswer" class="answer"></div>
-                <div id="feedback" class="feedback"></div>
-              </div>
-
-              <div class="actions">
-                <button class="btn btn-soft" onclick="showAnswer()">Mostrar</button>
-                <button class="btn btn-green" onclick="markManual(true)">Correcto</button>
-                <button class="btn btn-soft" onclick="markManual(false)">Practicar</button>
-                <button class="btn btn-soft" onclick="nextQuestion()">Siguiente</button>
-              </div>
-            </div>
-
-            <div class="card hidden" id="quizPanel">
-              <div class="stats">
-                <div class="stat"><div class="k">Tiempo</div><div class="v" id="quizTime">0.0</div></div>
-                <div class="stat"><div class="k">Correctas</div><div class="v" id="quizGood">0</div></div>
-                <div class="stat"><div class="k">Practicar</div><div class="v" id="quizBad">0</div></div>
-                <div class="stat"><div class="k">Pregunta</div><div class="v" id="quizIndex">0</div></div>
-                <div class="stat"><div class="k">Total</div><div class="v" id="quizTotal">0</div></div>
-              </div>
-
-              <div class="row" style="justify-content:center;margin-bottom:12px">
-                <button class="btn btn-yellow" onclick="startQuiz()">Iniciar</button>
-                <button class="btn btn-soft" onclick="resetQuiz()">Reiniciar</button>
-              </div>
-
-              <div class="stage">
-                <div id="quizProblem" class="problem">—</div>
-                <div id="quizFeedback" class="feedback"></div>
-                <div id="quizOptions" class="quiz-options"></div>
-              </div>
-
-              <div id="quizSummary" class="history-item hidden" style="margin-top:14px;"></div>
-            </div>
-
-                        <div class="card hidden" id="memoramaPanel">
-              <div class="row">
-                <button class="btn btn-yellow" onclick="startMemo(6)">Fácil</button>
-                <button class="btn btn-soft" onclick="startMemo(8)">Normal</button>
-                <button class="btn btn-soft" onclick="startMemo(10)">Difícil</button>
-              </div>
-
-              <div class="stats" style="margin-top:14px">
-                <div class="stat"><div class="k">Tiempo</div><div class="v" id="memoTime">0.0</div></div>
-                <div class="stat"><div class="k">Movimientos</div><div class="v" id="memoMoves">0</div></div>
-                <div class="stat"><div class="k">Parejas</div><div class="v" id="memoPairs">0</div></div>
-                <div class="stat"><div class="k">Meta</div><div class="v" id="memoTarget">0</div></div>
-                <div class="stat"><div class="k">Nivel</div><div class="v" id="memoMode">—</div></div>
-              </div>
-
-              <div id="memoGrid" class="memo-grid"></div>
-              <div id="memoFeedback" class="muted" style="text-align:center;margin-top:12px"></div>
-            </div>
-
-            <div class="card hidden blast-card" id="blastPanel">
-              <div class="blast-header">
-                <div>
-                  <div class="blast-title">🚀 Math Blast</div>
-                  <div class="blast-sub">Encuentra la respuesta correcta lo más rápido posible</div>
-                </div>
-                <div class="blast-goal-box">
-                  <div class="blast-goal-label">Meta</div>
-                  <div class="blast-goal-value" id="blastGoal">120</div>
-                </div>
-              </div>
-
-              <div class="history-item">
-                <strong>Récord personal</strong><br>
-                Puntaje: <span id="blastBestScore">0</span> ·
-                Combo: <span id="blastBestCombo">x0</span> ·
-                Tiempo restante: <span id="blastBestTime">0</span>s
-              </div>
-
-              <div class="stats">
-                <div class="stat"><div class="k">Tiempo</div><div class="v" id="blastTime">30</div></div>
-                <div class="stat"><div class="k">Puntos</div><div class="v" id="blastScore">0</div></div>
-                <div class="stat"><div class="k">Combo</div><div class="v" id="blastCombo">x1</div></div>
-                <div class="stat"><div class="k">Racha</div><div class="v" id="blastStreak">0</div></div>
-                <div class="stat"><div class="k">Meta</div><div class="v" id="blastGoal2">120</div></div>
-              </div>
-
-              <div class="row" style="justify-content:center;margin-bottom:12px">
-                <button class="btn btn-yellow" onclick="startBlast()">Jugar</button>
-                <button class="btn btn-soft" onclick="resetBlast()">Reiniciar</button>
-              </div>
-
-              <div class="blast-stage">
-                <div class="blast-label">Busca:</div>
-                <div id="blastPrompt" class="problem">—</div>
-                <div id="blastFeedback" class="blast-feedback">Toca la respuesta correcta</div>
-                <div id="blastGrid" class="blast-grid"></div>
-              </div>
-
-              <div id="blastSummary" class="blast-summary hidden"></div>
-          <div id="blastOverlay" class="hidden" style="
-  position:fixed;
-  inset:0;
-  background:rgba(17,24,39,.72);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  z-index:9999;
-">
-  <div style="
-    width:min(420px,100%);
-    background:#fff;
-    border-radius:24px;
-    padding:24px;
-    text-align:center;
-  ">
-    <div id="blastOverlayTitle" style="font-size:30px;font-weight:900;">⏱ Time Up!</div>
-    <div id="blastOverlayScore" style="font-size:52px;font-weight:900;margin:10px 0;">0</div>
-    <div id="blastOverlayXP">XP: 0</div>
-
-    <div style="margin-top:16px;">
-      <button id="blastPlayAgainBtn" class="btn btn-yellow">Play Again</button>
-      <button id="blastCloseBtn" class="btn btn-soft">Close</button>
+    <div class="hero">
+      <div class="subtitle" id="welcomeText">Hola</div>
+      <h1>Tablas de multiplicar</h1>
+      <div class="subtitle">Aprender â¢ Practicar â¢ Mejorar tiempo â¢ Competir</div>
+      <div class="progress-shell"><div id="overallBar" class="progress-bar"></div></div>
+      <div id="overallLabel" class="progress-label">0%</div>
     </div>
-  </div>
+    <div class="row space" style="margin:10px 0 14px;">
+      <button class="pill" onclick="continueFlow()">â¶ Continuar</button>
+      <button class="sound-toggle" onclick="toggleMute()"><span id="soundIcon">ð</span><span>Sonido</span></button>
+    </div>
+    <div class="menu-list">
+      <button class="main-btn" onclick="showScreen('screen-tables')"><div class="big">ð Tablas</div><div class="small">Ver las 10 tablas y practicar</div></button>
+      <button class="main-btn" onclick="showScreen('screen-levels')"><div class="big">ð§  Niveles</div><div class="small">Nivel 1, 2, 3 y competencia</div></button>
+      <button class="main-btn" onclick="showProgress()"><div class="big">ð Progreso</div><div class="small">Estados por tabla y tiempos</div></button>
+      <button class="main-btn" onclick="showScreen('screen-snakes-setup')"><div class="big">ð² Serpientes y escaleras</div><div class="small">Modo escuela y juego especial</div></button>
+    </div>
+  </section>
+
+  <section id="screen-levels" class="screen hidden">
+    <div class="topbar">
+      <button class="icon-btn" onclick="showScreen('screen-home')">â</button>
+      <div class="title">Niveles</div>
+      <button class="icon-btn sm" onclick="openHelp()">?</button>
+    </div>
+    <div class="level-grid">
+      <button class="level-card" onclick="showScreen('screen-level1-config')"><h3>Nivel 1</h3><p>Comprender con secuencia, suma, bloques y matching</p></button>
+      <button class="level-card" onclick="showScreen('screen-level2-config')"><h3>Nivel 2</h3><p>Practicar con tiempo suave y tablas seleccionadas</p></button>
+      <button class="level-card" onclick="showScreen('screen-level3-config')"><h3>Nivel 3</h3><p>Challenge con cronÃ³metro preciso</p></button>
+      <button class="level-card" onclick="showScreen('screen-competition-setup')"><h3>Nivel 4</h3><p>Competencia escolar de 2 a 4 jugadores</p></button>
+    </div>
+  </section>
+
+  <section id="screen-tables" class="screen hidden">
+    <div class="topbar">
+      <button class="icon-btn" onclick="showScreen('screen-home')">â</button>
+      <div class="title">Tablas</div>
+      <button class="icon-btn sm" onclick="showProgress()">â</button>
+    </div>
+    <div class="table-grid" id="tableGrid"></div>
+  </section>
+
+  <section id="screen-table-detail" class="screen hidden">
+    <div class="topbar">
+      <button class="icon-btn" onclick="showScreen('screen-tables')">â</button>
+      <div class="title" id="tableDetailTitle">Tabla</div>
+      <button class="icon-btn sm" onclick="openHelp()">?</button>
+    </div>
+    <div class="card" id="tableDetailList"></div>
+    <div class="footer-actions">
+      <button class="small-btn blue" onclick="startLevel2SingleSelected()">Practicar</button>
+      <button class="small-btn green" onclick="startLevel3SingleSelected()">Challenge</button>
+    </div>
+  </section>
+
+  <section id="screen-level1-config" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-levels')">â</button><div class="title">Nivel 1</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="card">
+      <div class="section-title" style="font-size:18px;margin-top:0">Elige tabla</div>
+      <div class="check-grid" id="level1TableBtns"></div>
+      <div class="mini">Objetivo: comprender la tabla con secuencia, suma, bloques, matching y respuesta escrita.</div>
+    </div>
+    <div class="footer-actions"><button class="small-btn blue" onclick="startLevel1()">Comenzar</button></div>
+  </section>
+
+  <section id="screen-level1" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-level1-config')">â</button><div class="title" id="l1Title">Nivel 1</div><button class="icon-btn sm" onclick="toggleMute()">ð</button></div>
+    <div class="toolbar"><span class="badge" id="l1StepLabel">Paso</span><span class="badge" id="l1ProgLabel">1/10</span></div>
+    <div class="question-card white-box" id="l1Content"></div>
+  </section>
+
+  <section id="screen-level2-config" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-levels')">â</button><div class="title">Nivel 2</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="card">
+      <div class="section-title" style="font-size:18px;margin-top:0">Selecciona tablas</div>
+      <div class="check-grid" id="level2TableBtns"></div>
+      <hr class="sep">
+      <div class="section-title" style="font-size:18px;margin-top:0">Opciones</div>
+      <div class="row space"><span>Solo multiplicaciones especÃ­ficas</span><button class="pill" onclick="toggleSpecific()" id="specificToggle">No</button></div>
+      <div id="specificPanel" class="hidden" style="margin-top:12px"></div>
+      <div class="mini">Tiempo suave por pregunta con barra visible. Puedes practicar una tabla, varias o solo las difÃ­ciles.</div>
+    </div>
+    <div class="footer-actions"><button class="small-btn blue" onclick="startLevel2()">Comenzar</button></div>
+  </section>
+
+  <section id="screen-level2" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-level2-config')">â</button><div class="title">Nivel 2</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="toolbar"><span class="badge" id="l2RoundLabel">1/10</span><span class="badge" id="l2TablesLabel">Tablas</span></div>
+    <div class="timer-wrap"><div class="timer-icon">â²</div><div class="time-bar-shell"><div id="l2TimeBar" class="time-bar"></div></div></div>
+    <div class="question-card"><div id="l2Question" class="question primary">2 Ã 3 = ?</div><div id="l2Answer" class="answer-display"></div></div>
+    <div class="keypad" id="l2Keypad"></div>
+    <div class="feedback" id="l2Feedback"></div>
+  </section>
+
+  <section id="screen-level3-config" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-levels')">â</button><div class="title">Nivel 3</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="card">
+      <div class="section-title" style="font-size:18px;margin-top:0">Selecciona tablas</div>
+      <div class="check-grid" id="level3TableBtns"></div>
+      <div class="mini" style="margin-top:12px">Challenge con cronÃ³metro total, precisiÃ³n y tiempo promedio.</div>
+    </div>
+    <div class="footer-actions"><button class="small-btn green" onclick="startLevel3()">Comenzar challenge</button></div>
+  </section>
+
+  <section id="screen-level3" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-level3-config')">â</button><div class="title">Nivel 3</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="toolbar"><span class="badge" id="l3RoundLabel">1/10</span><span class="badge" id="l3Clock">0.00 s</span></div>
+    <div class="question-card"><div id="l3Question" class="question primary">2 Ã 3 = ?</div><div id="l3Answer" class="answer-display"></div></div>
+    <div class="keypad" id="l3Keypad"></div>
+    <div class="feedback" id="l3Feedback"></div>
+  </section>
+
+  <section id="screen-level3-result" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-level3-config')">â</button><div class="title">Resultado</div><button class="icon-btn sm" onclick="showScreen('screen-home')">â</button></div>
+    <div class="hero"><div class="subtitle">Tu resultado</div><div class="score-big" id="l3ScoreBig">0</div></div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="l3TimeTotal">0.00s</div><div class="l">Tiempo total</div></div>
+      <div class="stat"><div class="n" id="l3Acc">0%</div><div class="l">PrecisiÃ³n</div></div>
+      <div class="stat"><div class="n" id="l3Avg">0.00s</div><div class="l">Promedio</div></div>
+      <div class="stat"><div class="n" id="l3Best">0.00s</div><div class="l">Mejor tiempo</div></div>
+    </div>
+    <div class="card" style="margin-top:14px"><div id="l3CompareMsg" style="font-weight:800;text-align:center"></div></div>
+    <div class="footer-actions"><button class="small-btn green" onclick="startLevel3()">Repetir</button><button class="small-btn blue" onclick="showProgress()">Ver progreso</button></div>
+  </section>
+
+  <section id="screen-competition-setup" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-levels')">â</button><div class="title">Competencia</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="card">
+      <div class="section-title" style="font-size:18px;margin-top:0">Jugadores (2 a 4)</div>
+      <div class="row"><input id="compPlayersCount" class="input" type="number" min="2" max="4" value="2" /><button class="save-btn" onclick="buildCompPlayers()">Crear</button></div>
+      <div id="compPlayersForm" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div class="section-title" style="font-size:18px;margin-top:0">Tablas del reto</div>
+      <div class="check-grid" id="competitionTableBtns"></div>
+      <div class="mini" style="margin-top:12px">Todos juegan exactamente el mismo reto. Gana el mayor puntaje; si empatan, el menor tiempo.</div>
+    </div>
+    <div class="footer-actions"><button class="small-btn green" onclick="startCompetition()">Iniciar competencia</button></div>
+  </section>
+
+  <section id="screen-competition" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-competition-setup')">â</button><div class="title">Competencia</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="toolbar"><span class="badge" id="compTurnLabel">Turno</span><span class="badge" id="compRoundLabel">1/10</span><span class="badge" id="compClock">0.00 s</span></div>
+    <div class="question-card"><div id="compQuestion" class="question primary">2 Ã 3 = ?</div><div id="compAnswer" class="answer-display"></div></div>
+    <div class="keypad" id="compKeypad"></div>
+    <div class="feedback" id="compFeedback"></div>
+  </section>
+
+  <section id="screen-competition-result" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-competition-setup')">â</button><div class="title">Resumen final</div><button class="icon-btn sm" onclick="showScreen('screen-home')">â</button></div>
+    <div id="competitionRankings"></div>
+    <div class="footer-actions"><button class="small-btn green" onclick="showScreen('screen-competition-setup')">Nueva competencia</button></div>
+  </section>
+
+  <section id="screen-snakes-setup" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-home')">â</button><div class="title">Serpientes y escaleras</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="card">
+      <div class="section-title" style="font-size:18px;margin-top:0">Jugadores (2 a 4)</div>
+      <div class="row"><input id="snakePlayersCount" class="input" type="number" min="2" max="4" value="2" /><button class="save-btn" onclick="buildSnakePlayers()">Crear</button></div>
+      <div id="snakePlayersForm" style="margin-top:12px"></div>
+      <hr class="sep">
+      <div class="section-title" style="font-size:18px;margin-top:0">Tablas del juego</div>
+      <div class="check-grid" id="snakeTableBtns"></div>
+      <div class="mini">Tablero 1â40. Si responde bien avanza lo del dado. Si cae en escalera sube; si cae en serpiente baja.</div>
+    </div>
+    <div class="footer-actions"><button class="small-btn green" onclick="startSnakes()">Comenzar juego</button></div>
+  </section>
+
+  <section id="screen-snakes" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-snakes-setup')">â</button><div class="title">Serpientes y escaleras</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
+    <div class="board-wrap">
+      <div id="board" class="board"></div>
+      <div class="side-card">
+        <div class="turn" id="snakeTurn">Turno</div>
+        <button class="dice" id="diceBtn" onclick="rollDice()">ð²</button>
+        <div class="question" id="snakeQuestion" style="font-size:26px;margin:8px 0">Tira el dado</div>
+        <div id="snakeAnswer" class="answer-display" style="min-height:60px;font-size:24px"></div>
+        <div class="feedback" id="snakeFeedback"></div>
+        <div class="info-line"><span>Dado:</span><strong id="snakeDiceValue">-</strong></div>
+      </div>
+    </div>
+    <div class="keypad" id="snakeKeypad" style="margin-top:14px"></div>
+  </section>
+
+  <section id="screen-progress" class="screen hidden">
+    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-home')">â</button><div class="title">Progreso</div><button class="icon-btn sm" onclick="openResetMenu()">â¯</button></div>
+    <div class="hero"><div class="subtitle">Tu progreso total</div><h1 id="progressPercent">0%</h1><div id="progressSummary" class="subtitle">Tablas dominadas: 0/10</div></div>
+    <div class="card" id="progressTableList"></div>
+  </section>
+
 </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="section">
-        <div class="card">
-          <h3>Operaciones específicas</h3>
-          <div class="row">
-            <select id="specificTable" onchange="renderSpecific()">
-              <option value="2">Tabla 2</option>
-              <option value="3">Tabla 3</option>
-              <option value="4">Tabla 4</option>
-              <option value="5">Tabla 5</option>
-              <option value="6">Tabla 6</option>
-              <option value="7">Tabla 7</option>
-              <option value="8">Tabla 8</option>
-              <option value="9">Tabla 9</option>
-              <option value="10">Tabla 10</option>
-            </select>
-            <button class="btn btn-soft" onclick="selectAllSpecificCurrent()">Seleccionar toda la tabla</button>
-            <button class="btn btn-soft" onclick="clearSpecificCurrent()">Limpiar esta tabla</button>
-            <button class="btn btn-soft" onclick="clearAllSpecific()">Limpiar todo</button>
-          </div>
+<div id="overlay" class="overlay hidden"><div class="modal" id="modalBox"></div></div>
 
-          <div id="specificGrid" class="chips"></div>
-          <div id="specificCount" class="muted" style="margin-top:10px;">Específicas seleccionadas: 0</div>
-        </div>
-      </div>
+<script>
+const $ = id => document.getElementById(id);
+const screens = [...document.querySelectorAll('.screen')];
+const TOTAL_TABLES = 10;
+const QUESTION_COUNT = 10;
+let currentUser = null, state = null, muted = false, bgStarted = false;
+let selectedTableDetail = 1;
 
-      <div class="section">
-        <div class="card">
-          <h3>Historial</h3>
-          <div id="history"></div>
-        </div>
-
-        <div class="card">
-          <h3>Gráfica</h3>
-          <canvas id="chart" width="900" height="260"></canvas>
-        </div>
-
-        <div class="card">
-          <h3>Refuerzo</h3>
-          <div id="weakFacts"></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="card">
-          <h3>Tablas visuales</h3>
-          <div class="stair-wrap">
-            <div id="visualGrid" class="stairs"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<div id="xpPop" class="blast-pop">+0 XP</div>
-
-<audio id="sfxGood" preload="auto">
-  <source src="good.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="sfxBad" preload="auto">
-  <source src="bad.mp3" type="audio/mpeg">
-</audio>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      getDoc,
-      collection,
-      getDocs,
-      query,
-      orderBy,
-      limit,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
-      authDomain: "bright-minds-math.firebaseapp.com",
-      projectId: "bright-minds-math",
-      storageBucket: "bright-minds-math.firebasestorage.app",
-      messagingSenderId: "645800687175",
-      appId: "1:645800687175:web:75241f3cac5e5433442362"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const state = {
-      selectedTables: new Set([2,3,4,5,6,7,8,9,10]),
-      specificFacts: new Set(),
-      sessions: [],
-      weakMap: {},
-      todayWrongFacts: new Set(),
-
-      current: null,
-      problems: [],
-      good: 0,
-      bad: 0,
-      totalAnswered: 0,
-      startTime: null,
-      timer: null,
-
-      quizQuestions: [],
-      quizCurrent: null,
-      quizGood: 0,
-      quizBad: 0,
-      quizIndex: 0,
-      quizStartTime: null,
-      quizTimer: null
-    };
-
-    const memoState = {
-  cards: [],
-  flipped: [],
-  pairs: 0,
-  moves: 0,
-  target: 0,
-  busy: false,
-  timer: null,
-  seconds: 0
+const audio = {
+  tap: new Audio('sounds/tap.mp3'),
+  correct: new Audio('sounds/correct.mp3'),
+  wrong: new Audio('sounds/wrong.mp3'),
+  win: new Audio('sounds/win.mp3'),
+  bg: new Audio('sounds/bg.mp3')
 };
-
-const BLAST_DURATION = 60;
-
-const blastState = {
-  score: 0,
-  streak: 0,
-  time: BLAST_DURATION,
-  current: null,
-  timer: null
-};
-
-    const loginScreen = document.getElementById("loginScreen");
-    const appScreen = document.getElementById("appScreen");
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const loginEmail = document.getElementById("loginEmail");
-    const loginPassword = document.getElementById("loginPassword");
-    const loginError = document.getElementById("loginError");
-    const userBadge = document.getElementById("userBadge");
-
-    const newChild = document.getElementById("newChild");
-    const childSelect = document.getElementById("childSelect");
-    const tableChips = document.getElementById("tableChips");
-    const modeLabel = document.getElementById("modeLabel");
-    const historyEl = document.getElementById("history");
-    const weakFactsEl = document.getElementById("weakFacts");
-
-    function translateFirebaseError(code){
-      const map = {
-        "auth/invalid-email": "Correo inválido",
-        "auth/missing-password": "Escribe contraseña",
-        "auth/invalid-credential": "Correo o contraseña incorrectos",
-        "auth/user-not-found": "Usuario no encontrado",
-        "auth/wrong-password": "Contraseña incorrecta"
-      };
-      return map[code] || "No se pudo iniciar sesión";
-    }
-
-    function shuffle(arr){
-  return [...arr].sort(() => Math.random() - 0.5);
+audio.bg.loop = true; audio.bg.volume = 0.18;
+audio.tap.volume = .30; audio.correct.volume = .55; audio.wrong.volume = .45; audio.win.volume = .70;
+function playSound(name){
+  if(muted) return;
+  const a = audio[name]; if(!a) return;
+  try{ a.currentTime = 0; a.play(); }catch(e){}
 }
+function startBg(){ if(muted || bgStarted) return; bgStarted = true; audio.bg.play().catch(()=>{}); }
+function toggleMute(){ muted = !muted; $('soundIcon') && ($('soundIcon').textContent = muted ? 'ð' : 'ð'); if(muted){audio.bg.pause();} else {bgStarted=false;startBg();}}
 
-  let audioUnlocked = false;
+document.addEventListener('click', ()=>{ startBg(); }, {once:true});
 
-function unlockAudio(){
-  if(audioUnlocked) return;
+function defaultUserData(name){
+  return {
+    name,
+    currentFlow:'screen-home',
+    progress:{},
+    bestTimes:{},
+    avgTimes:{},
+    totalChallengeBest:null,
+    snakeBest:null,
+    soundOn:true,
+  };
+}
+function loadState(){ state = JSON.parse(localStorage.getItem('bm_math_state') || '{"users":{}}'); if(!state.users) state.users={}; }
+function saveState(){ localStorage.setItem('bm_math_state', JSON.stringify(state)); }
+function getUsers(){ return Object.keys(state.users); }
+function ensureCurrent(){ if(!currentUser || !state.users[currentUser]) return; const u = state.users[currentUser]; for(let t=1;t<=10;t++){ if(!u.progress[t]) u.progress[t] = {status:0, score:0, correct:0, total:10}; }}
+function getUser(){ return state.users[currentUser]; }
+function setCurrentUser(name){ currentUser = name; ensureCurrent(); saveState(); refreshHome(); }
 
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-
-  gain.gain.value = 0.0001;
-  osc.start();
-  osc.stop(ctx.currentTime + 0.01);
-
-  audioUnlocked = true;
-}  
-function beep(type="good"){
-  try{
-    const el = type === "good"
-      ? document.getElementById("sfxGood")
-      : document.getElementById("sfxBad");
-
-    if(!el) {
-      console.log("No audio element found:", type);
-      return;
-    }
-
-    el.volume = 1.0;
-    el.currentTime = 0;
-
-    const p = el.play();
-    if (p && typeof p.catch === "function") {
-      p.catch(err => console.log("Audio play blocked:", err));
-    }
-  }catch(err){
-    console.log("Beep error:", err);
+function renderUsers(){
+  const grid = $('userGrid'); grid.innerHTML='';
+  const users = getUsers();
+  users.forEach(name=>{
+    const b = document.createElement('button'); b.className='user-btn'; b.textContent=name; b.onclick=()=>{ setCurrentUser(name); showScreen('screen-home');};
+    grid.appendChild(b);
+  });
+}
+function addUser(){
+  const name = $('newUserInput').value.trim(); if(!name) return;
+  if(state.users[name]){ alert('Ese usuario ya existe'); return; }
+  state.users[name] = defaultUserData(name); $('newUserInput').value=''; saveState(); renderUsers();
+}
+function goUsers(){ showScreen('screen-users'); }
+function showScreen(id){ screens.forEach(s=>s.classList.add('hidden')); $(id).classList.remove('hidden'); if(id==='screen-home') refreshHome(); if(id==='screen-tables') renderTables(); if(id==='screen-progress') renderProgress(); }
+function continueFlow(){ showScreen(getUser().currentFlow || 'screen-home'); }
+function setFlow(id){ if(currentUser){ getUser().currentFlow = id; saveState(); }}
+function refreshHome(){
+  if(!currentUser){ showScreen('screen-users'); return; }
+  $('welcomeText').textContent = 'Hola, ' + currentUser;
+  $('soundIcon').textContent = muted ? 'ð':'ð';
+  const pct = computeOverallProgress();
+  $('overallBar').style.width = pct + '%';
+  $('overallLabel').textContent = pct + '%';
+  setFlow('screen-home');
+}
+function computeOverallProgress(){
+  const u = getUser(); let sum=0;
+  for(let t=1;t<=10;t++){ const s=u.progress[t]?.status||0; sum += [0,35,75,100][s]; }
+  return Math.round(sum/10);
+}
+function statusText(s){ return ['No iniciado','En proceso','Avanzado','Dominado'][s]||'No iniciado'; }
+function statusClass(s){ return 's'+s; }
+function updateTableStatusFromScore(table, score){
+  const u=getUser(); const st = score===0?0: score<70?1: score<90?2:3;
+  u.progress[table].status = Math.max(u.progress[table].status, st);
+  u.progress[table].score = Math.max(u.progress[table].score, score);
+  saveState();
+}
+function renderTables(){
+  setFlow('screen-tables');
+  const grid = $('tableGrid'); grid.innerHTML=''; const u=getUser();
+  for(let t=1;t<=10;t++){
+    const p = u.progress[t];
+    const btn = document.createElement('button'); btn.className='table-card';
+    btn.innerHTML = `<div class="table-title">Tabla del ${t}</div><span class="status-pill ${statusClass(p.status)}">${statusText(p.status)}</span><div class="mini">${p.correct||0}/10 correctos â¢ Mejor score ${p.score||0}</div>`;
+    btn.onclick = ()=>{ selectedTableDetail=t; renderTableDetail(t); showScreen('screen-table-detail'); };
+    grid.appendChild(btn);
   }
 }
-
-function showXPPop(amount){
-  const el = document.getElementById("xpPop");
-  if(!el) return;
-  el.textContent = `+${amount} XP`;
-  el.classList.add("show");
-  clearTimeout(showXPPop._t);
-  showXPPop._t = setTimeout(() => {
-    el.classList.remove("show");
-  }, 900);
+function renderTableDetail(t){
+  setFlow('screen-table-detail');
+  $('tableDetailTitle').textContent = 'Tabla del ' + t;
+  let html = '';
+  for(let i=1;i<=10;i++) html += `<div class="table-line"><span>${t} Ã ${i}</span><span>${t*i}</span></div>`;
+  $('tableDetailList').innerHTML = html;
 }
+function startLevel2SingleSelected(){ prepareLevel2([selectedTableDetail]); }
+function startLevel3SingleSelected(){ prepareLevel3([selectedTableDetail]); }
 
-function pulseBlastArea(ok=true){
-  const panel = document.getElementById("blastPanel");
-  if(!panel) return;
-
-  panel.classList.remove("blast-hit", "blast-wrong");
-  void panel.offsetWidth;
-  panel.classList.add(ok ? "blast-hit" : "blast-wrong");
-
-  setTimeout(() => {
-    panel.classList.remove("blast-hit", "blast-wrong");
-  }, 300);
-}
-
-function updateComboGlow(){
-  const panel = document.getElementById("blastPanel");
-  if(!panel) return;
-
-  if(blastState.streak >= 3){
-    panel.classList.add("combo-glow");
-  }else{
-    panel.classList.remove("combo-glow");
+function buildTableButtons(containerId, multiple=true){
+  const box=$(containerId); box.innerHTML='';
+  for(let t=1;t<=10;t++){
+    const b=document.createElement('button'); b.className='check-btn'; b.textContent=t; b.dataset.t=t;
+    b.onclick=()=> b.classList.toggle('active'); box.appendChild(b);
   }
 }
+function buildLevel1Buttons(){ const box=$('level1TableBtns'); box.innerHTML=''; for(let t=1;t<=10;t++){ const b=document.createElement('button'); b.className='check-btn'; b.textContent=t; if(t===1) b.classList.add('active'); b.onclick=()=>{ [...box.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); }; box.appendChild(b); } }
+function getSelectedTables(containerId){ return [...$(containerId).querySelectorAll('.check-btn.active')].map(b=>+b.dataset.t); }
 
-    function todayKey(){
-      const d = new Date();
-      return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    }
-
-    function calculateLevel(xp){
-      if(xp >= 500) return 5;
-      if(xp >= 300) return 4;
-      if(xp >= 150) return 3;
-      if(xp >= 50) return 2;
-      return 1;
-    }
-
-    function getLevelProgress(xp){
-      let min = 0;
-      let max = 50;
-
-      if(xp >= 500){
-        return { percent: 100, text: "Nivel máximo" };
-      } else if(xp >= 300){
-        min = 300; max = 500;
-      } else if(xp >= 150){
-        min = 150; max = 300;
-      } else if(xp >= 50){
-        min = 50; max = 150;
-      }
-
-      const percent = ((xp - min) / (max - min)) * 100;
-      return {
-        percent: Math.max(0, Math.min(100, percent)),
-        text: `${xp - min} / ${max - min} XP al siguiente nivel`
-      };
-    }
-
-    function showLevelUp(newLevel){
-  beep("good");
-  const box = document.getElementById("levelUpBox");
-  box.textContent = `🎉 LEVEL UP! Nivel ${newLevel}`;
-  box.classList.remove("hidden");
-  setTimeout(() => box.classList.add("hidden"), 2500);
+let level1 = null;
+function startLevel1(){
+  const table = +$('level1TableBtns').querySelector('.active').dataset.t;
+  level1 = {table, mult:1, step:1, score:0};
+  setFlow('screen-level1');
+  showScreen('screen-level1');
+  renderLevel1Step();
 }
-
-    function updateProfileUI(xp, level){
-      document.getElementById("profileStats").textContent = `XP: ${xp || 0} · Nivel: ${level || 1}`;
-      const progress = getLevelProgress(xp || 0);
-      document.getElementById("levelBar").style.width = `${progress.percent}%`;
-      document.getElementById("levelLabel").textContent = progress.text;
+function renderLevel1Step(){
+  $('l1Title').textContent = `Nivel 1 Â· Tabla del ${level1.table}`;
+  $('l1ProgLabel').textContent = `${level1.mult}/10`;
+  const wrap = $('l1Content'); wrap.innerHTML=''; const t=level1.table,m=level1.mult,res=t*m;
+  if(level1.step===1){
+    $('l1StepLabel').textContent='Paso 1 Â· Secuencia';
+    const seq = Array.from({length:10},(_,i)=>t*(i+1));
+    const blanks = pickRandomPositions(5,10);
+    const filled = Array(10).fill(null);
+    const bank = blanks.map(i=>seq[i]).sort(()=>Math.random()-.5);
+    let selectedIndex = null;
+    wrap.innerHTML = `<div class="question primary">Tabla del ${t}</div><div class="subtitle" style="text-align:center">Llena los nÃºmeros que faltan</div><div class="sequence-row" id="seqRow"></div><div class="choice-bank" id="choiceBank"></div><div class="footer-actions"><button class="small-btn blue" id="reviewSeq" disabled>Revisar</button></div><div id="seqMsg" class="feedback"></div>`;
+    const row = $('seqRow');
+    for(let i=0;i<10;i++){
+      const d=document.createElement('button'); d.className='seq-box'+(blanks.includes(i)?' blank':''); d.dataset.i=i; d.textContent=blanks.includes(i)?'__':seq[i];
+      if(blanks.includes(i)) d.onclick=()=>{ selectedIndex=i; [...row.children].forEach(x=>x.classList.remove('selected')); d.classList.add('selected'); playSound('tap'); };
+      else d.disabled=true;
+      row.appendChild(d);
     }
-    async function loadChildProgress(){
-  const user = auth.currentUser;
-  if(!user) return;
-
-  const childId = currentChildId();
-  if(!childId){
-    updateProfileUI(0, 1);
+    const bankBox=$('choiceBank');
+    bank.forEach(n=>{ const b=document.createElement('button'); b.className='choice-chip'; b.textContent=n; b.onclick=()=>{ if(selectedIndex===null) return; const target=[...row.children][selectedIndex]; target.textContent=n; target.dataset.val=n; target.classList.remove('selected'); selectedIndex=null; b.disabled=true; b.style.opacity=.4; playSound('tap'); if([...row.children].filter(x=>x.classList.contains('blank')).every(x=>x.dataset.val)) $('reviewSeq').disabled=false; }; bankBox.appendChild(b); });
+    $('reviewSeq').onclick=()=>{
+      let ok=true; [...row.children].forEach((box,i)=>{ if(box.classList.contains('blank')){ const v=+box.dataset.val; if(v===seq[i]){ box.style.outline='3px solid var(--green)'; } else { box.style.outline='3px solid var(--red)'; ok=false; } }});
+      if(ok){ $('seqMsg').textContent='Â¡Muy bien!'; $('seqMsg').className='feedback good'; playSound('correct'); setTimeout(()=>{ level1.score+=20; level1.step=2; renderLevel1Step(); },700); }
+      else{ $('seqMsg').textContent='Revisa los espacios en rojo'; $('seqMsg').className='feedback bad'; playSound('wrong'); }
+    };
     return;
   }
-
-  const ref = doc(db, "users", user.uid, "children", childId, "progress", "main");
-  const snap = await getDoc(ref);
-
-  if(snap.exists()){
-    const data = snap.data();
-    updateProfileUI(data.xp || 0, data.level || 1);
-  }else{
-    updateProfileUI(0, 1);
-  }
-}
-
-    function makeChildId(name){
-      return name
-        .toLowerCase()
-        .trim()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, "");
-    }
-
-    function getKids(){
-      try{
-        return JSON.parse(localStorage.getItem("kids") || "[]");
-      }catch(e){
-        return [];
-      }
-    }
-
-    function saveKids(list){
-      localStorage.setItem("kids", JSON.stringify(list));
-    }
-
-    function loadKids(selectedName = ""){
-      const kids = getKids();
-      childSelect.innerHTML = "";
-
-      if(!kids.length){
-        const opt = document.createElement("option");
-        opt.value = "";
-        opt.textContent = "Selecciona un alumno";
-        childSelect.appendChild(opt);
-        return;
-      }
-
-      kids.forEach(k => {
-        const opt = document.createElement("option");
-        opt.value = k;
-        opt.textContent = k;
-        childSelect.appendChild(opt);
-      });
-
-      childSelect.value = selectedName || kids[0];
-    }
-
-    function currentChild(){
-      return childSelect.value;
-    }
-
-    function currentChildId(){
-      return makeChildId(currentChild() || "");
-    }
-
-    async function ensureUserProfile(user){
-      const ref = doc(db, "users", user.uid, "profile", "main");
-      const snap = await getDoc(ref);
-
-      if(!snap.exists()){
-        await setDoc(ref, {
-          email: user.email || "",
-          childName: "",
-          xp: 0,
-          level: 1,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-      }
-    }
-
-    async function addXP(amount){
-  const user = auth.currentUser;
-  if(!user) return;
-
-  const childId = currentChildId();
-  if(!childId) return;
-
-  const ref = doc(db, "users", user.uid, "children", childId, "progress", "main");
-  const snap = await getDoc(ref);
-
-  let oldXP = 0;
-  let oldLevel = 1;
-
-  if(snap.exists()){
-    const data = snap.data();
-    oldXP = data.xp || 0;
-    oldLevel = data.level || 1;
-  }
-
-  const newXP = oldXP + amount;
-  const newLevel = calculateLevel(newXP);
-
-  await setDoc(ref, {
-    xp: newXP,
-    level: newLevel,
-    updatedAt: serverTimestamp()
-  }, { merge: true });
-
-  updateProfileUI(newXP, newLevel);
-
-  if(newLevel > oldLevel){
-    showLevelUp(newLevel);
-  }
-}
-function calculateXPReward(mode, stats = {}){
-  let xp = 0;
-
-  if(mode === "practice"){
-    xp = stats.correct || 0;
-
-    const accuracy = stats.total ? (stats.correct / stats.total) : 0;
-    const avgTime = stats.avgTime || 999;
-
-    if(accuracy >= 0.9) xp += 3;
-    if(avgTime <= 2.0) xp += 2;
-  }
-
-  if(mode === "quiz"){
-    xp = (stats.correct || 0) * 2;
-
-    const accuracy = stats.total ? (stats.correct / stats.total) : 0;
-    const avgTime = stats.avgTime || 999;
-
-    if(accuracy >= 0.8) xp += 4;
-    if(avgTime <= 2.5) xp += 2;
-  }
-
-  if(mode === "memo"){
-    xp = 8;
-
-    const moves = stats.moves || 999;
-    const time = stats.time || 999;
-
-    if(moves <= stats.target * 2) xp += 3;
-    if(time <= 25) xp += 2;
-  }
-
-  if(mode === "blast"){
-    xp = Math.floor((stats.score || 0) / 20);
-
-    const streak = stats.streak || 0;
-    const reachedGoal = !!stats.reachedGoal;
-
-    if(streak >= 5) xp += 3;
-    if(reachedGoal) xp += 10;
-  }
-
-  return Math.max(1, xp);
-}
-    async function saveChildToCloud(name){
-      const user = auth.currentUser;
-      if(!user) return;
-
-      const childId = makeChildId(name);
-      if(!childId) return;
-
-      await setDoc(doc(db, "users", user.uid, "children", childId), {
-        name,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      }, { merge: true });
-    }
-
-    async function loadKidsFromCloud(selectedName = ""){
-      const user = auth.currentUser;
-      if(!user){
-        loadKids(selectedName);
-        return;
-      }
-
-      const snap = await getDocs(collection(db, "users", user.uid, "children"));
-      const kids = [];
-      snap.forEach(d => {
-        const data = d.data();
-        if(data?.name) kids.push(data.name);
-      });
-
-      kids.sort((a,b) => a.localeCompare(b));
-      saveKids(kids);
-      loadKids(selectedName);
-    }
-        async function addChild(){
-      const name = newChild.value.trim();
-      if(!name) return;
-
-      const list = getKids();
-      if(!list.includes(name)){
-        list.push(name);
-        saveKids(list);
-      }
-
-      await saveChildToCloud(name);
-
-      const user = auth.currentUser;
-      if(user){
-        await setDoc(doc(db, "users", user.uid, "profile", "main"), {
-          childName: name,
-          updatedAt: serverTimestamp()
-        }, { merge: true });
-      }
-
-      await loadKidsFromCloud(name);
-      childSelect.value = name;
-      childSelect.dispatchEvent(new Event("change"));
-      newChild.value = "";
-    }
-
-    function getChallengeDB(){
-      return JSON.parse(localStorage.getItem("bm_daily_challenge") || "{}");
-    }
-
-    function saveChallengeDB(dbx){
-      localStorage.setItem("bm_daily_challenge", JSON.stringify(dbx));
-    }
-
-    function buildDailyChallenge(){
-      const key = todayKey();
-      const dbx = getChallengeDB();
-
-      if(dbx.date === key && dbx.challenge){
-        return dbx;
-      }
-
-      const options = [
-        { id:"practice_1", text:"Completa 1 práctica", target:1, progress:0, done:false },
-        { id:"quiz_5", text:"Haz 5 correctas en Choose", target:5, progress:0, done:false },
-        { id:"blast_100", text:"Consigue 100 puntos en Math Blast", target:100, progress:0, done:false },
-        { id:"memo_1", text:"Completa 1 memorama", target:1, progress:0, done:false }
-      ];
-
-      const challenge = options[Math.floor(Math.random()*options.length)];
-      const newDB = { date:key, challenge };
-      saveChallengeDB(newDB);
-      return newDB;
-    }
-
-    function renderDailyChallenge(){
-      const dbx = buildDailyChallenge();
-      const ch = dbx.challenge;
-      document.getElementById("dailyChallengeText").textContent = ch.text;
-      document.getElementById("dailyChallengeStatus").textContent =
-        ch.done ? "✅ Completado" : `Progreso: ${ch.progress}/${ch.target}`;
-    }
-
-    async function updateDailyChallenge(type, value=1){
-      const dbx = buildDailyChallenge();
-      const ch = dbx.challenge;
-      if(ch.done) return;
-
-      if(ch.id === "practice_1" && type === "practice"){
-        ch.progress = Math.min(ch.target, ch.progress + 1);
-        await addXP(2);
-      }
-
-      if(ch.id === "quiz_5" && type === "quiz"){
-        ch.progress = Math.min(ch.target, ch.progress + value);
-        await addXP(5);
-      }
-
-      if(ch.id === "blast_100" && type === "blast"){
-        ch.progress = Math.min(ch.target, value);
-        await addXP(3);
-      }
-
-      if(ch.id === "memo_1" && type === "memo"){
-        ch.progress = Math.min(ch.target, ch.progress + 1);
-        await addXP(2);
-      }
-
-      if(ch.progress >= ch.target){
-        ch.done = true;
-        await addXP(20);
-        alert("🎉 Desafío completado");
-      }
-
-      saveChallengeDB(dbx);
-      renderDailyChallenge();
-    }
-
-    function allFacts(){
-      const arr = [];
-      for(let a=2; a<=10; a++){
-        if(!state.selectedTables.has(a)) continue;
-        for(let b=1; b<=10; b++){
-          const fact = `${a}x${b}`;
-          if(state.specificFacts.size && !state.specificFacts.has(fact)) continue;
-          arr.push({ a, b, fact, correct: a*b });
-        }
-      }
-      return arr;
-    }
-
-    function weightedFacts(){
-      const base = allFacts();
-      const pool = [];
-      base.forEach(item => {
-        const weight = Math.max(1, Math.ceil(state.weakMap[item.fact] || 1));
-        for(let i=0;i<weight;i++) pool.push(item);
-      });
-      return pool;
-    }
-
-    function renderTableChips(){
-      tableChips.innerHTML = "";
-      for(let i=2;i<=10;i++){
-        const chip = document.createElement("div");
-        chip.className = "chip " + (state.selectedTables.has(i) ? "active" : "");
-        chip.textContent = "Tabla " + i;
-        chip.onclick = () => {
-          if(state.selectedTables.has(i)) state.selectedTables.delete(i);
-          else state.selectedTables.add(i);
-          renderTableChips();
-        };
-        tableChips.appendChild(chip);
-      }
-    }
-
-    function selectAllTables(){
-      state.selectedTables = new Set([2,3,4,5,6,7,8,9,10]);
-      renderTableChips();
-    }
-
-    function clearAllTables(){
-      state.selectedTables = new Set();
-      renderTableChips();
-    }
-
-    function selectRange(a,b){
-      state.selectedTables = new Set();
-      for(let i=a;i<=b;i++) state.selectedTables.add(i);
-      renderTableChips();
-    }
-
-    function renderSpecific(){
-      const table = Number(document.getElementById("specificTable").value);
-      const grid = document.getElementById("specificGrid");
-      const count = document.getElementById("specificCount");
-
-      let html = "";
-      for(let i=1; i<=10; i++){
-        const fact = `${table}x${i}`;
-        html += `<div class="chip ${state.specificFacts.has(fact) ? "active" : ""}" onclick="toggleSpecific('${fact}')">${fact}</div>`;
-      }
-
-      grid.innerHTML = html;
-      count.textContent = `Específicas seleccionadas: ${state.specificFacts.size}`;
-    }
-
-    function toggleSpecific(fact){
-      if(state.specificFacts.has(fact)) state.specificFacts.delete(fact);
-      else state.specificFacts.add(fact);
-      renderSpecific();
-    }
-
-    function selectAllSpecificCurrent(){
-      const table = Number(document.getElementById("specificTable").value);
-      for(let i=1;i<=10;i++) state.specificFacts.add(`${table}x${i}`);
-      renderSpecific();
-    }
-
-    function clearSpecificCurrent(){
-      const table = Number(document.getElementById("specificTable").value);
-      for(let i=1;i<=10;i++) state.specificFacts.delete(`${table}x${i}`);
-      renderSpecific();
-    }
-
-    function clearAllSpecific(){
-      state.specificFacts.clear();
-      renderSpecific();
-    }
-
-    function activatePractice(){
-      state.specificFacts.clear();
-      modeLabel.textContent = "Modo práctica inteligente";
-      renderSpecific();
-    }
-
-    function loadWeakToSpecific(){
-      const weak = Object.entries(state.weakMap)
-        .sort((a,b)=>b[1]-a[1])
-        .slice(0,10)
-        .map(([fact])=>fact);
-
-      if(!weak.length){
-        modeLabel.textContent = "Todavía no hay ejercicios de refuerzo";
-        return;
-      }
-
-      state.specificFacts = new Set(weak);
-      modeLabel.textContent = "Modo refuerzo activado";
-      renderSpecific();
-    }
-
-    function loadTodayWrongToSpecific(){
-      if(!state.todayWrongFacts.size){
-        modeLabel.textContent = "Todavía no hay ejercicios para repasar";
-        return;
-      }
-
-      state.specificFacts = new Set([...state.todayWrongFacts]);
-      modeLabel.textContent = "Modo repasar activado";
-      renderSpecific();
-    }
-
-    async function saveSession(obj){
-      const user = auth.currentUser;
-      if(!user) return;
-
-      const childId = currentChildId();
-      if(!childId) return;
-
-      const sessionRef = doc(collection(db, "users", user.uid, "children", childId, "sessions"));
-
-      await setDoc(sessionRef, {
-        child: currentChild(),
-        mode: obj.mode || "",
-        good: obj.good || 0,
-        bad: obj.bad || 0,
-        total: obj.total || 0,
-        time: obj.time || 0,
-        avg: obj.avg || 0,
-        score: obj.score || 0,
-        createdAt: serverTimestamp()
-      });
-    }
-
-    async function updateWeak(fact, delta){
-      const user = auth.currentUser;
-      if(!user) return;
-
-      const childId = currentChildId();
-      if(!childId) return;
-
-      const weakRef = doc(db, "users", user.uid, "children", childId, "weakFacts", "main");
-      const snap = await getDoc(weakRef);
-
-      let facts = snap.exists() ? (snap.data().facts || {}) : {};
-      facts[fact] = (facts[fact] || 0) + delta;
-      if(facts[fact] <= 0) delete facts[fact];
-
-      state.weakMap = facts;
-
-      await setDoc(weakRef, {
-        facts,
-        updatedAt: serverTimestamp()
-      }, { merge:true });
-    }
-
-    async function loadCloudData(){
-      const user = auth.currentUser;
-      if(!user) return;
-
-      const profileRef = doc(db, "users", user.uid, "profile", "main");
-      const profileSnap = await getDoc(profileRef);
-
-    if(profileSnap.exists()){
-  const profile = profileSnap.data();
-
-  await loadKidsFromCloud(profile.childName || "");
-  if(profile.childName) childSelect.value = profile.childName;
-} else {
-  await loadKidsFromCloud();
-}
-
-      const childId = currentChildId();
-
-      if(childId){
-  const weakRef = doc(db, "users", user.uid, "children", childId, "weakFacts", "main");
-  const weakSnap = await getDoc(weakRef);
-  state.weakMap = weakSnap.exists() ? (weakSnap.data().facts || {}) : {};
-
-  const q = query(
-    collection(db, "users", user.uid, "children", childId, "sessions"),
-    orderBy("createdAt", "desc"),
-    limit(30)
-  );
-
-  const snap = await getDocs(q);
-  state.sessions = [];
-  snap.forEach(d => state.sessions.push(d.data()));
-
-  await loadChildProgress();
-} else {
-  state.weakMap = {};
-  state.sessions = [];
-  updateProfileUI(0, 1);
-}
-
-      renderHistory();
-      renderWeakFacts();
-      drawChart();
-      renderDailyChallenge();
-    }
-
-    function updateMainStats(){
-      document.getElementById("good").textContent = state.good;
-      document.getElementById("bad").textContent = state.bad;
-      document.getElementById("time").textContent = state.timer
-        ? ((Date.now() - state.startTime)/1000).toFixed(1)
-        : "0.0";
-      document.getElementById("avg").textContent = state.totalAnswered
-        ? (((Date.now() - state.startTime)/1000) / state.totalAnswered).toFixed(2)
-        : "0.00";
-      document.getElementById("remaining").textContent = state.problems.length;
-    }
-
-    function nextSpeedQuestion(){
-      if(!state.problems.length){
-        finishSpeed();
-        return;
-      }
-
-      state.current = state.problems.pop();
-      document.getElementById("problem").textContent = `${state.current.a} × ${state.current.b}`;
-      document.getElementById("realAnswer").textContent = "";
-      document.getElementById("feedback").textContent = "";
-      updateMainStats();
-    }
-
-    function startGame(){
-      if(!currentChild()){
-        alert("Primero agrega o selecciona un alumno.");
-        return;
-      }
-
-      state.good = 0;
-      state.bad = 0;
-      state.totalAnswered = 0;
-      state.problems = shuffle(weightedFacts()).slice(0,20);
-      state.todayWrongFacts = new Set();
-      state.startTime = Date.now();
-
-      clearInterval(state.timer);
-      state.timer = setInterval(updateMainStats, 100);
-
-      nextSpeedQuestion();
-    }
-
-    function resetGame(){
-      clearInterval(state.timer);
-      state.timer = null;
-      state.problems = [];
-      state.current = null;
-      state.good = 0;
-      state.bad = 0;
-      state.totalAnswered = 0;
-
-      document.getElementById("problem").textContent = "—";
-      document.getElementById("realAnswer").textContent = "";
-      document.getElementById("feedback").textContent = "";
-      updateMainStats();
-    }
-
-    function showAnswer(){
-      if(!state.current) return;
-      document.getElementById("realAnswer").textContent = state.current.correct;
-    }
-
-    async function markManual(ok){
-  if(!state.current) return;
-
-  document.getElementById("realAnswer").textContent = state.current.correct;
-  state.totalAnswered++;
-
-  if(ok){
-  state.good++;
-  await updateWeak(state.current.fact, -0.25);
-  document.getElementById("feedback").textContent = "¡Muy bien!";
-  beep("good");
-}else{
-  state.bad++;
-  await updateWeak(state.current.fact, 1);
-  state.todayWrongFacts.add(state.current.fact);
-  document.getElementById("feedback").textContent = "Vamos a practicar esta";
-  beep("bad");
-}
-
-  updateMainStats();
-  renderWeakFacts();
-}
-
-    function nextQuestion(){
-      if(!state.current) return;
-      nextSpeedQuestion();
-    }
-
-    async function finishSpeed(){
-  clearInterval(state.timer);
-  state.timer = null;
-
-  const totalTime = Number(((Date.now() - state.startTime)/1000).toFixed(1));
-  const avg = state.totalAnswered ? Number((totalTime / state.totalAnswered).toFixed(2)) : 0;
-
-  await saveSession({
-    mode: "Practice",
-    good: state.good,
-    bad: state.bad,
-    total: state.totalAnswered,
-    time: totalTime,
-    avg
-  });
-
-  const xpEarned = calculateXPReward("practice", {
-    correct: state.good,
-    total: state.totalAnswered,
-    avgTime: avg
-  });
-
-  await addXP(xpEarned);
-  await updateDailyChallenge("practice");
-  await loadCloudData();
-
-  beep("good");
-      document.getElementById("feedback").textContent = "Fin";
-}
-
-    function resetQuiz(){
-      clearInterval(state.quizTimer);
-      state.quizQuestions = [];
-      state.quizCurrent = null;
-      state.quizGood = 0;
-      state.quizBad = 0;
-      state.quizIndex = 0;
-
-      document.getElementById("quizTime").textContent = "0.0";
-      document.getElementById("quizGood").textContent = "0";
-      document.getElementById("quizBad").textContent = "0";
-      document.getElementById("quizIndex").textContent = "0";
-      document.getElementById("quizTotal").textContent = "0";
-      document.getElementById("quizProblem").textContent = "—";
-      document.getElementById("quizFeedback").textContent = "";
-      document.getElementById("quizOptions").innerHTML = "";
-      document.getElementById("quizSummary").classList.add("hidden");
-    }
-
-    function buildQuizOptions(correct){
-      const options = new Set([correct]);
-      while(options.size < 3){
-        const fake = correct + Math.floor(Math.random()*10) - 5;
-        if(fake > 0) options.add(fake);
-      }
-      return shuffle([...options]);
-    }
-
-    function nextQuizQuestion(){
-      if(!state.quizQuestions.length){
-        finishQuiz();
-        return;
-      }
-
-      state.quizCurrent = state.quizQuestions.pop();
-      state.quizIndex++;
-
-      document.getElementById("quizProblem").textContent = `${state.quizCurrent.a} × ${state.quizCurrent.b}`;
-      document.getElementById("quizIndex").textContent = state.quizIndex;
-      document.getElementById("quizGood").textContent = state.quizGood;
-      document.getElementById("quizBad").textContent = state.quizBad;
-      document.getElementById("quizFeedback").textContent = "";
-
-      const options = buildQuizOptions(state.quizCurrent.correct);
-      document.getElementById("quizOptions").innerHTML = options.map(opt => `
-        <button class="quiz-option" onclick="answerQuiz(${opt}, this)">${opt}</button>
-      `).join("");
-    }
-
-    function startQuiz(){
-      if(!currentChild()){
-        alert("Primero agrega o selecciona un alumno.");
-        return;
-      }
-
-      state.quizQuestions = shuffle(weightedFacts()).slice(0,10);
-      state.quizCurrent = null;
-      state.quizGood = 0;
-      state.quizBad = 0;
-      state.quizIndex = 0;
-      state.quizStartTime = Date.now();
-      state.todayWrongFacts = new Set();
-
-      clearInterval(state.quizTimer);
-      state.quizTimer = setInterval(() => {
-        document.getElementById("quizTime").textContent = ((Date.now() - state.quizStartTime)/1000).toFixed(1);
-      }, 100);
-
-      document.getElementById("quizTotal").textContent = state.quizQuestions.length;
-      document.getElementById("quizSummary").classList.add("hidden");
-
-      nextQuizQuestion();
-    }
-
-    async function answerQuiz(value, btn){
-  if(!state.quizCurrent) return;
-
-  const correct = state.quizCurrent.correct;
-  const buttons = [...document.querySelectorAll("#quizOptions .quiz-option")];
-  buttons.forEach(b => b.disabled = true);
-
-  if(value === correct){
-  state.quizGood++;
-  await updateWeak(state.quizCurrent.fact, -0.25);
-  btn.classList.add("correct");
-  document.getElementById("quizFeedback").textContent = "¡Correcto!";
-  beep("good");
-}else{
-  state.quizBad++;
-  await updateWeak(state.quizCurrent.fact, 1);
-  state.todayWrongFacts.add(state.quizCurrent.fact);
-  btn.classList.add("wrong");
-  buttons.forEach(b => {
-    if(Number(b.textContent) === correct) b.classList.add("correct");
-  });
-  document.getElementById("quizFeedback").textContent = "Casi";
-  beep("bad");
-}
-
-  document.getElementById("quizGood").textContent = state.quizGood;
-  document.getElementById("quizBad").textContent = state.quizBad;
-
-  setTimeout(nextQuizQuestion, 700);
-}
-
-    async function finishQuiz(){
-      clearInterval(state.quizTimer);
-
-      const totalTime = Number(((Date.now() - state.quizStartTime)/1000).toFixed(1));
-      const avg = state.quizIndex ? Number((totalTime / state.quizIndex).toFixed(2)) : 0;
-
-      await saveSession({
-  mode: "Choose",
-  good: state.quizGood,
-  bad: state.quizBad,
-  total: state.quizIndex,
-  time: totalTime,
-  avg
-});
-
-const xpEarned = calculateXPReward("quiz", {
-  correct: state.quizGood,
-  total: state.quizIndex,
-  avgTime: avg
-});
-
-await addXP(xpEarned);
-await updateDailyChallenge("quiz", state.quizGood);
-await loadCloudData();
-
-      beep("good");
-      const summary = document.getElementById("quizSummary");
-      summary.classList.remove("hidden");
-      summary.innerHTML = `
-        <strong>Quiz completado</strong><br>
-        ✅ ${state.quizGood} · ❌ ${state.quizBad}<br>
-        ⏱ ${totalTime}s · 📊 ${avg}s/prom
-      `;
-    }
-
-        function renderMemo(){
-      const grid = document.getElementById("memoGrid");
-
-      if(!memoState.cards.length){
-        grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Elige un nivel para empezar</div>`;
-        return;
-      }
-
-      grid.innerHTML = memoState.cards.map((card, index) => {
-        const visible = card.flipped || card.matched;
-        const cls = card.matched
-          ? "memo-card memo-front memo-matched"
-          : visible
-          ? "memo-card memo-front"
-          : "memo-card memo-back";
-
-        const label = visible ? card.text : "?";
-        return `<div class="${cls}" onclick="flipMemo(${index})">${label}</div>`;
-      }).join("");
-
-      document.getElementById("memoMoves").textContent = memoState.moves;
-      document.getElementById("memoPairs").textContent = memoState.pairs;
-      document.getElementById("memoTarget").textContent = memoState.target;
-    }
-
-    function startMemo(pairCount){
-      if(!currentChild()){
-        alert("Primero agrega o selecciona un alumno.");
-        return;
-      }
-
-      const facts = shuffle(allFacts()).slice(0, pairCount);
-      memoState.cards = [];
-      memoState.flipped = [];
-      memoState.pairs = 0;
-      memoState.moves = 0;
-      memoState.target = pairCount;
-      memoState.busy = false;
-      memoState.seconds = 0;
-
-      facts.forEach((f, i) => {
-        memoState.cards.push({ text: `${f.a}x${f.b}`, pair: i, flipped: false, matched: false });
-        memoState.cards.push({ text: `${f.correct}`, pair: i, flipped: false, matched: false });
-      });
-
-      memoState.cards = shuffle(memoState.cards);
-
-      clearInterval(memoState.timer);
-      memoState.timer = setInterval(() => {
-        memoState.seconds += 0.1;
-        document.getElementById("memoTime").textContent = memoState.seconds.toFixed(1);
-      }, 100);
-
-      document.getElementById("memoMode").textContent = `${pairCount} pares`;
-      document.getElementById("memoFeedback").textContent = "Encuentra todas las parejas";
-
-      renderMemo();
-    }
-
-    async function flipMemo(index){
-      if(memoState.busy) return;
-
-      const card = memoState.cards[index];
-      if(!card || card.flipped || card.matched) return;
-
-      card.flipped = true;
-      memoState.flipped.push(index);
-      renderMemo();
-
-      if(memoState.flipped.length === 2){
-        memoState.busy = true;
-        memoState.moves++;
-
-        const [i1, i2] = memoState.flipped;
-        const c1 = memoState.cards[i1];
-        const c2 = memoState.cards[i2];
-
-        if(c1.pair === c2.pair){
-  c1.matched = true;
-  c2.matched = true;
-  memoState.pairs++;
-  memoState.flipped = [];
-  memoState.busy = false;
-  beep("good");
-  renderMemo();
-
-          if(memoState.pairs === memoState.target){
-            clearInterval(memoState.timer);
-            document.getElementById("memoFeedback").textContent = `🏁 Completado · ${memoState.seconds.toFixed(1)}s`;
-
-            await saveSession({
-              mode: "Memorama",
-              good: memoState.pairs,
-              bad: Math.max(0, memoState.moves - memoState.pairs),
-              total: memoState.target,
-              time: Number(memoState.seconds.toFixed(1)),
-              avg: memoState.target ? Number((memoState.seconds / memoState.target).toFixed(2)) : 0
-            });
-
-            const xpEarned = calculateXPReward("memo", {
-  moves: memoState.moves,
-  time: Number(memoState.seconds.toFixed(1)),
-  target: memoState.target
-});
-
-await addXP(xpEarned);
-await updateDailyChallenge("memo");
-await loadCloudData();
-          }
-       }else{
-  beep("bad");
-  setTimeout(() => {
-    c1.flipped = false;
-    c2.flipped = false;
-    memoState.flipped = [];
-    memoState.busy = false;
-    renderMemo();
-  }, 700);
-}
-      }
-    }
-
-    function nextBlastQuestion(){
-      const facts = weightedFacts();
-      blastState.current = facts[Math.floor(Math.random()*facts.length)];
-
-      document.getElementById("blastPrompt").textContent = `${blastState.current.a} × ${blastState.current.b}`;
-      document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";
-
-      const options = new Set([blastState.current.correct]);
-      while(options.size < 9){
-        const fake = blastState.current.correct + Math.floor(Math.random()*12) - 6;
-        if(fake > 0) options.add(fake);
-      }
-
-      const shuffled = shuffle([...options]);
-      document.getElementById("blastGrid").innerHTML = shuffled.map(opt => `
-        <button class="blast-btn" onclick="answerBlast(${opt})">${opt}</button>
-      `).join("");
-    }
-
-function startBlast(){
-  if(!currentChild()){
-    alert("Primero agrega o selecciona un alumno.");
+  if(level1.step===2){
+    $('l1StepLabel').textContent='Paso 2 Â· Suma';
+    const options=[ `${t} + ${t} + ${t}` , Array.from({length:t},()=>m).join(' + '), `${t} + ${m}` ];
+    const correct = `${t} + ${t}${m>2?' + '.repeat(0):''}`; // placeholder not used
+    const good = Array.from({length:m},()=>t).join(' + ');
+    const arr=[good, Array.from({length:t},()=>m).join(' + '), `${t} + ${m}`].sort(()=>Math.random()-.5);
+    wrap.innerHTML = `<div class="question primary">${t} Ã ${m} = ?</div><div class="subtitle" style="text-align:center">Elige la suma correcta</div><div class="option-list" id="sumOptions"></div>`;
+    const box=$('sumOptions');
+    arr.forEach(txt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent=txt; b.onclick=()=>{ if(txt===good){ b.classList.add('correct'); playSound('correct'); level1.score+=20; setTimeout(()=>{ level1.step=3; renderLevel1Step(); },600);} else { b.classList.add('wrong'); playSound('wrong'); } }; box.appendChild(b); });
     return;
   }
-
-  blastState.score = 0;
-  blastState.streak = 0;
-  blastState.time = BLAST_DURATION;
-
-  document.getElementById("blastScore").textContent = "0";
-  document.getElementById("blastStreak").textContent = "0";
-  document.getElementById("blastTime").textContent = String(BLAST_DURATION);
-  document.getElementById("blastCombo").textContent = "x1";
-  document.getElementById("blastSummary").classList.add("hidden");
-
-  nextBlastQuestion();
-
-  clearInterval(blastState.timer);
-  blastState.timer = setInterval(() => {
-    blastState.time--;
-    document.getElementById("blastTime").textContent = blastState.time;
-    if(blastState.time <= 0) finishBlast();
-  }, 1000);
-}    
-
-    function openBlastOverlay(score, xp){
-  document.getElementById("blastOverlay").classList.remove("hidden");
-  document.getElementById("blastOverlayScore").textContent = score;
-  document.getElementById("blastOverlayXP").textContent = "XP: " + xp;
-}
-
-function closeBlastOverlay(){
-  document.getElementById("blastOverlay").classList.add("hidden");
-}
-
-function resetBlast(){
-  clearInterval(blastState.timer);
-  blastState.score = 0;
-  blastState.streak = 0;
-  blastState.time = BLAST_DURATION;
-  blastState.current = null;
-
-  document.getElementById("blastScore").textContent = "0";
-  document.getElementById("blastStreak").textContent = "0";
-  document.getElementById("blastTime").textContent = String(BLAST_DURATION);
-  document.getElementById("blastCombo").textContent = "x1";
-  document.getElementById("blastPrompt").textContent = "—";
-  document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";
-  document.getElementById("blastGrid").innerHTML = "";
-  document.getElementById("blastSummary").classList.add("hidden");
-  closeBlastOverlay();
-  document.getElementById("blastPanel").classList.remove("combo-glow");
-}
-   
-
-    async function answerBlast(value){
-  if(!blastState.current || blastState.time <= 0) return;
-
-  const buttons = [...document.querySelectorAll("#blastGrid .blast-btn")];
-  buttons.forEach(b => b.disabled = true);
-
-  let earnedXP = 0;
-
-  if(value === blastState.current.correct){
-    blastState.score += 10;
-    blastState.streak++;
-    earnedXP = blastState.streak >= 5 ? 4 : blastState.streak >= 3 ? 3 : 2;
-
-    document.getElementById("blastFeedback").textContent = blastState.streak >= 5
-      ? "🔥 SUPER COMBO"
-      : blastState.streak >= 3
-      ? "⚡ Combo"
-      : "¡Blast! 🚀";
-
-    await updateWeak(blastState.current.fact, -0.25);
-    beep("good");
-    pulseBlastArea(true);
-    showXPPop(earnedXP);
-    await addXP(earnedXP);
-  }else{
-    blastState.streak = 0;
-    document.getElementById("blastFeedback").textContent = "Casi";
-    await updateWeak(blastState.current.fact, 1);
-    state.todayWrongFacts.add(blastState.current.fact);
-    beep("bad");
-    pulseBlastArea(false);
-  }
-
-  document.getElementById("blastScore").textContent = blastState.score;
-  document.getElementById("blastStreak").textContent = blastState.streak;
-  document.getElementById("blastCombo").textContent =
-    blastState.streak >= 5 ? "x3" : blastState.streak >= 3 ? "x2" : "x1";
-
-  updateComboGlow();
-
-  setTimeout(() => {
-    if(blastState.time > 0){
-      nextBlastQuestion();
+  if(level1.step===3){
+    $('l1StepLabel').textContent='Paso 3 Â· Bloques';
+    const groups = Math.random()>.5 ? {rows:m, cols:t} : {rows:t, cols:m};
+    wrap.innerHTML = `<div class="question primary">${t} Ã ${m} = ?</div><div class="subtitle" style="text-align:center">Observa los grupos y responde</div><div class="block-groups" id="blockGroups"></div><div class="option-list" id="blockAns"></div>`;
+    const g=$('blockGroups');
+    for(let r=0;r<groups.rows;r++){
+      const row=document.createElement('div'); row.className='group-row'; for(let c=0;c<groups.cols;c++){ const d=document.createElement('div'); d.className='block'; row.appendChild(d);} g.appendChild(row);
     }
-  }, 350);
-}
-
-    async function finishBlast(){
-  clearInterval(blastState.timer);
-  blastState.current = null;
-
-  const summary = document.getElementById("blastSummary");
-  summary.classList.remove("hidden");
-  summary.innerHTML = `
-    <div style="font-weight:900;font-size:20px">🔥 Fin de Math Blast</div>
-    <div style="margin-top:8px">Puntaje: <strong>${blastState.score}</strong></div>
-    <div>Racha: <strong>${blastState.streak}</strong></div>
-  `;
-
-  const xpEarned = calculateXPReward("blast", {
-    score: blastState.score,
-    streak: blastState.streak,
-    reachedGoal: blastState.score >= 120
+    const opts = shuffle([res, res+t, Math.max(1,res-t)]);
+    const box=$('blockAns');
+    opts.forEach(v=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent=v; b.onclick=()=>{ if(v===res){ b.classList.add('correct'); playSound('correct'); level1.score+=20; setTimeout(()=>{ level1.step=4; renderLevel1Step(); },600);} else { b.classList.add('wrong'); playSound('wrong'); } }; box.appendChild(b); });
+    return;
+  }
+  if(level1.step===4){
+    $('l1StepLabel').textContent='Paso 4 Â· Matching';
+    const pairs = shuffle(Array.from({length:4},(_,i)=>i+1)).map(x=>({expr:`${t} Ã ${x}`, val:t*x}));
+    wrap.innerHTML = `<div class="subtitle" style="text-align:center">Toca una operaciÃ³n y luego el resultado correcto</div><div class="match-grid"><div class="match-col" id="leftCol"></div><div></div><div class="match-col" id="rightCol"></div></div><div class="feedback" id="matchMsg"></div>`;
+    const left=$('leftCol'), right=$('rightCol'); let chosenLeft=null,done=0; const vals=shuffle(pairs.map(p=>p.val));
+    pairs.forEach(p=>{ const b=document.createElement('button'); b.className='match-item'; b.textContent=p.expr; b.dataset.val=p.val; b.onclick=()=>{ if(b.classList.contains('done')) return; chosenLeft=b; [...left.children].forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); playSound('tap');}; left.appendChild(b); });
+    vals.forEach(v=>{ const b=document.createElement('button'); b.className='match-item'; b.textContent=v; b.dataset.val=v; b.onclick=()=>{ if(!chosenLeft || b.classList.contains('done')) return; if(+chosenLeft.dataset.val===+b.dataset.val){ chosenLeft.classList.add('done'); b.classList.add('done'); chosenLeft.classList.remove('sel'); chosenLeft=null; done++; playSound('correct'); if(done===4){ $('matchMsg').textContent='Â¡Perfecto!'; $('matchMsg').className='feedback good'; level1.score+=20; setTimeout(()=>{ level1.step=5; renderLevel1Step(); },700); } } else { b.classList.add('wrong'); playSound('wrong'); setTimeout(()=>b.classList.remove('wrong'),350); } }; right.appendChild(b); });
+    return;
+  }
+  $('l1StepLabel').textContent='Paso 5 Â· Respuesta';
+  wrap.innerHTML = `<div class="question primary">${t} Ã ${m} = ?</div><div id="l1Answer" class="answer-display"></div>`;
+  renderKeypad('l1Content', 'l1Answer', ans=>{
+    if(+ans===res){ playSound('correct'); level1.score+=20; const scoreTable=Math.round(level1.score); updateTableStatusFromScore(t, scoreTable); getUser().progress[t].correct = Math.max(getUser().progress[t].correct||0, m); saveState(); level1.mult++; if(level1.mult>10){ openModal(`<h3>Â¡Aprendiste la tabla del ${t}! ð</h3><p>Puntaje: ${scoreTable}/100</p><div class="footer-actions"><button class="small-btn green" onclick="closeModal();showScreen('screen-level1-config')">Volver</button><button class="small-btn blue" onclick="closeModal();showScreen('screen-home')">Inicio</button></div>`); playSound('win'); } else { level1.step=1; setTimeout(renderLevel1Step,400); } }
+    else{ playSound('wrong'); }
   });
-
-  await saveSession({
-    mode: "Math Blast",
-    good: blastState.score,
-    bad: 0,
-    total: 0,
-    time: BLAST_DURATION,
-    avg: 0,
-    score: blastState.score
-  });
-
-  await addXP(xpEarned);
-  beep("good");
-  openBlastOverlay(blastState.score, xpEarned);
-  await updateDailyChallenge("blast", blastState.score);
-  await loadCloudData();
 }
 
-    function renderHistory(){
-      historyEl.innerHTML = "";
+function renderKeypad(containerId, answerId, onSubmit){
+  const parent = $(containerId);
+  const old = parent.querySelector('.keypad'); if(old) old.remove();
+  const pad = document.createElement('div'); pad.className='keypad';
+  const keys=['1','2','3','4','5','6','7','8','9','â«','0','â'];
+  let current='';
+  const display=$(answerId); display.textContent='';
+  keys.forEach(k=>{ const b=document.createElement('button'); b.className='key'; if(k==='â«') b.classList.add('red'); if(k==='â') b.classList.add('green'); b.textContent=k; b.onclick=()=>{ playSound('tap'); if(k==='â«'){ current=current.slice(0,-1); display.textContent=current; return; } if(k==='â'){ if(current!=='') onSubmit(current); current=''; display.textContent=''; return; } if(current.length<3){ current += k; display.textContent=current; } }; pad.appendChild(b); });
+  parent.appendChild(pad);
+}
 
-      if(!state.sessions.length){
-        historyEl.innerHTML = `<div class="empty">Todavía no hay sesiones guardadas.</div>`;
-        return;
-      }
+function pickRandomPositions(n,total){ const arr=[...Array(total).keys()]; return shuffle(arr).slice(0,n); }
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
 
-      state.sessions.forEach(s => {
-        const div = document.createElement("div");
-        div.className = "history-item";
+let level2 = null, level2Timer=null;
+function toggleSpecific(){ const p=$('specificPanel'); p.classList.toggle('hidden'); $('specificToggle').textContent = p.classList.contains('hidden') ? 'No':'SÃ­'; if(!p.innerHTML) buildSpecificPanel(); }
+function buildSpecificPanel(){ const p=$('specificPanel'); let html=''; for(let t=1;t<=10;t++){ html += `<div class="card" style="padding:10px;margin-bottom:8px"><div style="font-weight:800;margin-bottom:8px">Tabla del ${t}</div><div class="check-grid">`; for(let i=1;i<=10;i++) html += `<button class="check-btn spec" data-table="${t}" data-mult="${i}">${t}Ã${i}</button>`; html += `</div></div>`; } p.innerHTML=html; [...p.querySelectorAll('.spec')].forEach(b=>b.onclick=()=>b.classList.toggle('active')); }
+function prepareLevel2(tables){ buildTableButtons('level2TableBtns'); if(tables){ [...$('level2TableBtns').children].forEach(b=>{ if(tables.includes(+b.dataset.t)) b.classList.add('active'); }); showScreen('screen-level2-config'); } }
+function startLevel2(){
+  let selected = getSelectedTables('level2TableBtns'); if(!selected.length) selected=[1];
+  let q=[];
+  const specific = !$('specificPanel').classList.contains('hidden') ? [...$('specificPanel').querySelectorAll('.spec.active')] : [];
+  if(specific.length){ q = specific.map(b=>({a:+b.dataset.table,b:+b.dataset.mult})); }
+  else{ for(let i=0;i<QUESTION_COUNT;i++){ const a=selected[Math.floor(Math.random()*selected.length)]; const b=1+Math.floor(Math.random()*10); q.push({a,b}); } }
+  level2 = {questions:q, idx:0, correct:0, selected, answer:'', perMs:6000};
+  setFlow('screen-level2'); showScreen('screen-level2'); renderLevel2();
+}
+function renderLevel2(){
+  const q = level2.questions[level2.idx]; $('l2Question').textContent=`${q.a} Ã ${q.b} = ?`; $('l2Answer').textContent=''; $('l2Feedback').textContent=''; $('l2RoundLabel').textContent=`${level2.idx+1}/${level2.questions.length}`; $('l2TablesLabel').textContent='Tablas: '+[...new Set(level2.questions.map(x=>x.a))].join(', ');
+  renderInteractiveKeypad('l2Keypad','l2Answer', ans=>submitLevel2(ans)); startLevel2Timer();
+}
+function renderInteractiveKeypad(containerId, answerId, onSubmit){
+  const pad=$(containerId); pad.innerHTML=''; let current=''; const display=$(answerId); display.textContent='';
+  ['1','2','3','4','5','6','7','8','9','â«','0','â'].forEach(k=>{ const b=document.createElement('button'); b.className='key'; if(k==='â«') b.classList.add('red'); if(k==='â') b.classList.add('green'); b.textContent=k; b.onclick=()=>{ playSound('tap'); if(k==='â«'){ current=current.slice(0,-1); display.textContent=current; return; } if(k==='â'){ if(current!=='') onSubmit(current); return; } if(current.length<3){ current+=k; display.textContent=current; } }; pad.appendChild(b); });
+}
+function startLevel2Timer(){ clearInterval(level2Timer); let start=Date.now(); const per=level2.perMs; $('l2TimeBar').style.width='100%';
+  level2Timer=setInterval(()=>{ const left=Math.max(0, per-(Date.now()-start)); const pct=left/per*100; $('l2TimeBar').style.width=pct+'%'; $('l2TimeBar').style.background=pct<30?'#EF4444':pct<60?'#F59E0B':'#2EA3F2'; if(left<=0){ clearInterval(level2Timer); submitLevel2(''); } },80);
+}
+function submitLevel2(ans){ clearInterval(level2Timer); const q=level2.questions[level2.idx], ok=(+ans===q.a*q.b); if(ok){ level2.correct++; $('l2Feedback').textContent='Â¡Muy bien!'; $('l2Feedback').className='feedback good'; playSound('correct'); } else { $('l2Feedback').textContent=`Respuesta: ${q.a*q.b}`; $('l2Feedback').className='feedback bad'; playSound('wrong'); }
+  setTimeout(()=>{ level2.idx++; if(level2.idx>=level2.questions.length){ finishLevel2(); } else renderLevel2(); },600);
+}
+function finishLevel2(){
+  const byTable={}; level2.questions.forEach((q,i)=>{ byTable[q.a]=byTable[q.a]||{c:0,t:0}; byTable[q.a].t++; if(i<level2.correct) byTable[q.a].c++; });
+  for(const t of Object.keys(byTable)){ const score=Math.round((byTable[t].c/byTable[t].t)*100); updateTableStatusFromScore(+t, score); getUser().progress[+t].correct=Math.max(getUser().progress[+t].correct||0, byTable[t].c); }
+  openModal(`<h3>PrÃ¡ctica terminada</h3><p>Aciertos: <strong>${level2.correct}/${level2.questions.length}</strong></p><div class="footer-actions"><button class="small-btn green" onclick="closeModal();showScreen('screen-level2-config')">Volver</button><button class="small-btn blue" onclick="closeModal();showProgress()">Progreso</button></div>`);
+}
 
-        const dateText = s.createdAt?.toDate ? s.createdAt.toDate().toLocaleString() : "";
+let level3=null, level3ClockInt=null;
+function prepareLevel3(tables){ buildTableButtons('level3TableBtns'); if(tables){ [...$('level3TableBtns').children].forEach(b=>{ if(tables.includes(+b.dataset.t)) b.classList.add('active'); }); showScreen('screen-level3-config'); } }
+function startLevel3(){ let selected=getSelectedTables('level3TableBtns'); if(!selected.length) selected=[1]; const qs=[]; for(let i=0;i<QUESTION_COUNT;i++){ const a=selected[Math.floor(Math.random()*selected.length)], b=1+Math.floor(Math.random()*10); qs.push({a,b}); }
+  level3={questions:qs, idx:0, correct:0, answer:'', started:performance.now(), selected}; setFlow('screen-level3'); showScreen('screen-level3'); renderLevel3(); startLevel3Clock(); }
+function renderLevel3(){ const q=level3.questions[level3.idx]; $('l3RoundLabel').textContent=`${level3.idx+1}/${level3.questions.length}`; $('l3Question').textContent=`${q.a} Ã ${q.b} = ?`; $('l3Answer').textContent=''; $('l3Feedback').textContent=''; renderInteractiveKeypad('l3Keypad','l3Answer', submitLevel3); }
+function startLevel3Clock(){ clearInterval(level3ClockInt); level3ClockInt=setInterval(()=>{ const t=((performance.now()-level3.started)/1000).toFixed(2); $('l3Clock').textContent=t+' s'; },50); }
+function submitLevel3(ans){ const q=level3.questions[level3.idx], ok=(+ans===q.a*q.b); if(ok){ level3.correct++; $('l3Feedback').textContent='Â¡Bien!'; $('l3Feedback').className='feedback good'; playSound('correct'); } else { $('l3Feedback').textContent='Incorrecto'; $('l3Feedback').className='feedback bad'; playSound('wrong'); }
+  setTimeout(()=>{ level3.idx++; if(level3.idx>=level3.questions.length) finishLevel3(); else renderLevel3(); },320); }
+function finishLevel3(){ clearInterval(level3ClockInt); const total=((performance.now()-level3.started)/1000); const acc=Math.round(level3.correct/level3.questions.length*100); const avg=total/level3.questions.length; const score=Math.round(acc); const u=getUser();
+  level3.selected.forEach(t=>updateTableStatusFromScore(t, score));
+  const prev=u.totalChallengeBest; let msg=''; if(prev===null || total<prev){ u.totalChallengeBest=total; msg='Â¡Mejoraste tu mejor tiempo!'; playSound('win'); } else msg='Sigue intentando para superar tu mejor tiempo'; saveState();
+  $('l3ScoreBig').textContent=score; $('l3TimeTotal').textContent=total.toFixed(2)+'s'; $('l3Acc').textContent=acc+'%'; $('l3Avg').textContent=avg.toFixed(2)+'s'; $('l3Best').textContent=(u.totalChallengeBest||total).toFixed(2)+'s'; $('l3CompareMsg').textContent=msg; showScreen('screen-level3-result'); }
 
-        div.innerHTML = `
-          <div><strong>${s.child || "Alumno"}</strong> · ${s.mode}</div>
-          <div>✅ ${s.good} · ❌ ${s.bad} · ⏱ ${s.time}s · 📊 ${s.avg}s/prom</div>
-          <div class="muted">${dateText}</div>
-        `;
+function buildCompPlayers(){ const n=Math.min(4,Math.max(2,+$('compPlayersCount').value||2)); const box=$('compPlayersForm'); box.innerHTML=''; for(let i=1;i<=n;i++) box.innerHTML += `<input class="input" style="margin-bottom:8px" placeholder="Jugador ${i}" id="compP${i}">`; }
+function startCompetition(){ let selected=getSelectedTables('competitionTableBtns'); if(!selected.length) selected=[1]; const n=Math.min(4,Math.max(2,+$('compPlayersCount').value||2)); const players=[]; for(let i=1;i<=n;i++){ const name=$(`compP${i}`).value.trim()||`Jugador ${i}`; players.push({name,correct:0,time:0,avg:0,score:0}); }
+  const qs=[]; for(let i=0;i<QUESTION_COUNT;i++){ const a=selected[Math.floor(Math.random()*selected.length)], b=1+Math.floor(Math.random()*10); qs.push({a,b}); }
+  competition={players, questions:qs, pIndex:0, qIndex:0, start:0}; setFlow('screen-competition'); showScreen('screen-competition'); startCompetitionTurn(); }
+let competition=null, compClockInt=null;
+function startCompetitionTurn(){ const p=competition.players[competition.pIndex]; competition.qIndex=0; p.correct=0; p.start=performance.now(); $('compTurnLabel').textContent='Turno de ' + p.name; renderCompetitionQuestion(); startCompetitionClock(); }
+function startCompetitionClock(){ clearInterval(compClockInt); compClockInt=setInterval(()=>{ const p=competition.players[competition.pIndex]; $('compClock').textContent=((performance.now()-p.start)/1000).toFixed(2)+' s'; },50); }
+function renderCompetitionQuestion(){ const q=competition.questions[competition.qIndex]; $('compRoundLabel').textContent=`${competition.qIndex+1}/${competition.questions.length}`; $('compQuestion').textContent=`${q.a} Ã ${q.b} = ?`; $('compAnswer').textContent=''; $('compFeedback').textContent=''; renderInteractiveKeypad('compKeypad','compAnswer', submitCompetition); }
+function submitCompetition(ans){ const q=competition.questions[competition.qIndex], ok=(+ans===q.a*q.b), p=competition.players[competition.pIndex]; if(ok){ p.correct++; $('compFeedback').textContent='Â¡Bien!'; $('compFeedback').className='feedback good'; playSound('correct'); } else { $('compFeedback').textContent='Incorrecto'; $('compFeedback').className='feedback bad'; playSound('wrong'); }
+  setTimeout(()=>{ competition.qIndex++; if(competition.qIndex>=competition.questions.length){ endCompetitionTurn(); } else renderCompetitionQuestion(); },300); }
+function endCompetitionTurn(){ clearInterval(compClockInt); const p=competition.players[competition.pIndex]; p.time=((performance.now()-p.start)/1000); p.avg=p.time/competition.questions.length; p.score=Math.round(p.correct/competition.questions.length*100);
+  competition.pIndex++; if(competition.pIndex>=competition.players.length) finishCompetition(); else startCompetitionTurn(); }
+function finishCompetition(){ const arr=[...competition.players].sort((a,b)=> b.score-a.score || a.time-b.time); let html=''; arr.forEach((p,i)=>{ const medal = i===0?'ð¥':i===1?'ð¥':i===2?'ð¥':'ð'; html += `<div class="rank-row"><div><div class="row"><span class="medal">${medal}</span><strong>${p.name}</strong></div><div class="mini">Puntos: ${p.score} â¢ PrecisiÃ³n: ${p.score}% â¢ Tiempo: ${p.time.toFixed(2)}s â¢ Promedio: ${p.avg.toFixed(2)}s</div></div><div style="font-weight:900">${p.score}</div></div>`; });
+  $('competitionRankings').innerHTML = html; playSound('win'); showScreen('screen-competition-result'); }
 
-        historyEl.appendChild(div);
-      });
-    }
+let snakeGame=null;
+const ladders={1:11,8:16,14:26};
+const snakes={9:4,24:13,29:20,37:27};
+function buildSnakePlayers(){ const n=Math.min(4,Math.max(2,+$('snakePlayersCount').value||2)); const box=$('snakePlayersForm'); box.innerHTML=''; for(let i=1;i<=n;i++) box.innerHTML += `<input class="input" style="margin-bottom:8px" placeholder="Jugador ${i}" id="snakeP${i}">`; }
+function startSnakes(){ let selected=getSelectedTables('snakeTableBtns'); if(!selected.length) selected=[1]; const n=Math.min(4,Math.max(2,+$('snakePlayersCount').value||2)); const players=[]; for(let i=1;i<=n;i++){ players.push({name:$(`snakeP${i}`).value.trim()||`Jugador ${i}`, pos:1, token:'t'+i}); }
+  snakeGame={players, turn:0, selected, dice:null, waitingAnswer:false, answer:'', currentQuestion:null}; setFlow('screen-snakes'); showScreen('screen-snakes'); renderBoard(); updateSnakeTurn(); renderInteractiveKeypad('snakeKeypad','snakeAnswer', submitSnakeAnswer); $('snakeQuestion').textContent='Tira el dado'; $('snakeAnswer').textContent=''; $('snakeDiceValue').textContent='-'; }
+function renderBoard(){ const board=$('board'); board.innerHTML=''; const seq=[]; for(let row=0; row<8; row++){ const start=row*5+1; let nums=[start,start+1,start+2,start+3,start+4]; if(row%2===1) nums.reverse(); seq.unshift(...nums); }
+  seq.forEach(num=>{ const d=document.createElement('div'); d.className='square'; d.dataset.n=num; d.innerHTML=`<span>${num}</span>`; if(ladders[num]) d.innerHTML += `<span class="ladder">ðª</span>`; if(snakes[num]) d.innerHTML += `<span class="snake">ð</span>`; snakeGame.players.forEach((p,i)=>{ if(p.pos===num){ const t=document.createElement('span'); t.className='token '+p.token; t.style.right=(8+(i*16))+'px'; d.appendChild(t);} }); if(snakeGame.players[snakeGame.turn].pos===num) d.classList.add('active'); board.appendChild(d); }); }
+function updateSnakeTurn(){ $('snakeTurn').textContent='Turno de ' + snakeGame.players[snakeGame.turn].name; }
+function rollDice(){ if(snakeGame.waitingAnswer) return; snakeGame.dice = 1+Math.floor(Math.random()*6); $('diceBtn').textContent=snakeGame.dice; $('snakeDiceValue').textContent=snakeGame.dice; const a=snakeGame.selected[Math.floor(Math.random()*snakeGame.selected.length)], b=1+Math.floor(Math.random()*10); snakeGame.currentQuestion={a,b}; snakeGame.waitingAnswer=true; $('snakeQuestion').textContent=`${a} Ã ${b} = ?`; $('snakeAnswer').textContent=''; $('snakeFeedback').textContent=''; playSound('tap'); }
+function submitSnakeAnswer(ans){ if(!snakeGame.waitingAnswer) return; const q=snakeGame.currentQuestion, ok=(+ans===q.a*q.b), p=snakeGame.players[snakeGame.turn]; if(ok){ playSound('correct'); let newPos=Math.min(40,p.pos+snakeGame.dice); p.pos=newPos; $('snakeFeedback').textContent='Â¡Avanza!'; $('snakeFeedback').className='feedback good'; if(ladders[p.pos]){ p.pos=ladders[p.pos]; $('snakeFeedback').textContent='Â¡Correcto! Subes por escalera'; } else if(snakes[p.pos]){ p.pos=snakes[p.pos]; $('snakeFeedback').textContent='Â¡Correcto! Pero caÃ­ste en serpiente'; }
+    renderBoard(); if(p.pos>=40){ playSound('win'); openModal(`<h3>ð Ganador: ${p.name}</h3><p>Â¡LlegÃ³ a la meta!</p><div class="footer-actions"><button class="small-btn green" onclick="closeModal();showScreen('screen-snakes-setup')">Nuevo juego</button><button class="small-btn blue" onclick="closeModal();showScreen('screen-home')">Inicio</button></div>`); return; }
+  } else { playSound('wrong'); $('snakeFeedback').textContent='Incorrecto. Te quedas en la misma casilla'; $('snakeFeedback').className='feedback bad'; }
+  snakeGame.waitingAnswer=false; snakeGame.turn=(snakeGame.turn+1)%snakeGame.players.length; setTimeout(()=>{ updateSnakeTurn(); $('snakeQuestion').textContent='Tira el dado'; $('diceBtn').textContent='ð²'; $('snakeDiceValue').textContent='-'; $('snakeAnswer').textContent=''; $('snakeFeedback').textContent=''; renderBoard(); },700);
+}
 
-    function renderWeakFacts(){
-      weakFactsEl.innerHTML = "";
+function renderProgress(){ setFlow('screen-progress'); const u=getUser(); const pct=computeOverallProgress(); $('progressPercent').textContent=pct+'%'; const dominated = Object.values(u.progress).filter(p=>p.status===3).length; $('progressSummary').textContent=`Tablas dominadas: ${dominated}/10`; let html=''; for(let t=1;t<=10;t++){ const p=u.progress[t]; html += `<div class="rank-row"><div><strong>Tabla del ${t}</strong><div class="mini">${p.correct||0}/10 correctos â¢ Mejor score ${p.score||0}</div></div><div><span class="status-pill ${statusClass(p.status)}">${statusText(p.status)}</span></div></div>`; } $('progressTableList').innerHTML=html; }
+function showProgress(){ showScreen('screen-progress'); }
 
-      const entries = Object.entries(state.weakMap).sort((a,b)=>b[1]-a[1]).slice(0,12);
+function openHelp(){ openModal(`<h3>Â¿CÃ³mo funciona?</h3><p><strong>Nivel 1:</strong> comprende la multiplicaciÃ³n con secuencia, suma, bloques, matching y escritura.</p><p><strong>Nivel 2:</strong> practica con tiempo suave y tablas seleccionadas.</p><p><strong>Nivel 3:</strong> mejora tu tiempo total, precisiÃ³n y promedio por pregunta.</p><p><strong>Competencia:</strong> todos juegan el mismo reto. Gana el mayor puntaje y, si empatan, el menor tiempo.</p><p><strong>Progreso:</strong> gris = no iniciado, azul = en proceso, amarillo = avanzado, verde = dominado.</p><div class="footer-actions"><button class="small-btn blue" onclick="closeModal()">Cerrar</button></div>`); }
+function openResetMenu(){ openModal(`<h3>Reiniciar progreso</h3><p>Esto borrarÃ¡ el avance del usuario <strong>${currentUser}</strong>.</p><div class="footer-actions"><button class="small-btn gray" onclick="closeModal()">Cancelar</button><button class="small-btn red" onclick="resetCurrentUser()">Reiniciar</button></div>`); }
+function resetCurrentUser(){ state.users[currentUser]=defaultUserData(currentUser); saveState(); closeModal(); refreshHome(); }
+function openModal(html){ $('modalBox').innerHTML=html; $('overlay').classList.remove('hidden'); }
+function closeModal(){ $('overlay').classList.add('hidden'); }
+function confirmExit(back){ openModal(`<h3>Â¿Salir?</h3><p>Se perderÃ¡ la ronda actual.</p><div class="footer-actions"><button class="small-btn gray" onclick="closeModal()">Cancelar</button><button class="small-btn red" onclick="closeModal();showScreen('${back}')">Salir</button></div>`); }
 
-      if(!entries.length){
-        weakFactsEl.innerHTML = `<div class="empty">Todavía no hay ejercicios para refuerzo.</div>`;
-        return;
-      }
-
-      entries.forEach(([fact,count]) => {
-        const div = document.createElement("div");
-        div.className = "history-item";
-        div.textContent = `${fact} · prioridad ${Number(count).toFixed(2)}`;
-        weakFactsEl.appendChild(div);
-      });
-    }
-
-    function drawChart(){
-      const canvas = document.getElementById("chart");
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      if(!state.sessions.length) return;
-
-      const items = state.sessions.slice(0,12).reverse();
-      const max = Math.max(...items.map(i => Number(i.good) || 1), 1);
-
-      items.forEach((item, idx) => {
-        const h = ((Number(item.good) || 0) / max) * 150;
-        const x = 40 + idx * 60;
-        const y = 210 - h;
-
-        ctx.fillStyle = "#7a4dff";
-        ctx.fillRect(x, y, 30, h);
-
-        ctx.fillStyle = "#475569";
-        ctx.font = "12px Arial";
-        ctx.fillText(String(idx+1), x + 8, 230);
-      });
-    }
-
-    function renderVisual(){
-      const box = document.getElementById("visualGrid");
-      let html = "";
-
-      for(let t=1; t<=10; t++){
-        html += `<div class="stair-col">`;
-        html += `<div class="stair-head">${t}</div>`;
-        for(let i=1; i<=10; i++){
-          html += `<div class="stair-cell">${t} × ${i} = ${t*i}</div>`;
-        }
-        html += `</div>`;
-      }
-
-      box.innerHTML = html;
-    }
-
-    function setMode(mode){
-      document.getElementById("speedPanel").classList.toggle("hidden", mode !== "speed");
-      document.getElementById("quizPanel").classList.toggle("hidden", mode !== "quiz");
-      document.getElementById("memoramaPanel").classList.toggle("hidden", mode !== "memorama");
-      document.getElementById("blastPanel").classList.toggle("hidden", mode !== "blast");
-
-      document.getElementById("modeSpeed").classList.toggle("active", mode === "speed");
-      document.getElementById("modeQuiz").classList.toggle("active", mode === "quiz");
-      document.getElementById("modeMemorama").classList.toggle("active", mode === "memorama");
-      document.getElementById("modeBlast").classList.toggle("active", mode === "blast");
-    }
-
-    function showTab(index){
-      document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active", i===index));
-      document.querySelectorAll(".section").forEach((s,i)=>s.classList.toggle("active", i===index));
-    }
-
-    loginBtn.onclick = async () => {
-      loginError.textContent = "";
-      try{
-        await signInWithEmailAndPassword(auth, loginEmail.value.trim(), loginPassword.value.trim());
-      }catch(e){
-        loginError.textContent = translateFirebaseError(e.code);
-      }
-    };
-
-    logoutBtn.onclick = async () => {
-      await signOut(auth);
-    };
-
-    onAuthStateChanged(auth, async (user) => {
-      if(user){
-        await ensureUserProfile(user);
-        loginScreen.classList.add("hidden");
-        appScreen.classList.remove("hidden");
-        userBadge.textContent = user.email || "";
-        await loadCloudData();
-      }else{
-        appScreen.classList.add("hidden");
-        loginScreen.classList.remove("hidden");
-        userBadge.textContent = "";
-      }
-    });
-
-    document.getElementById("addChildBtn").addEventListener("click", addChild);
-document.addEventListener("click", unlockAudio, { once: true });
-    
-    childSelect.addEventListener("change", async () => {
-      const user = auth.currentUser;
-      if(!user) return;
-
-      await setDoc(doc(db, "users", user.uid, "profile", "main"), {
-        childName: childSelect.value,
-        updatedAt: serverTimestamp()
-      }, { merge: true });
-
-      await loadCloudData();
-    });
-
-    window.selectAllTables = selectAllTables;
-    window.clearAllTables = clearAllTables;
-    window.selectRange = selectRange;
-    window.activatePractice = activatePractice;
-    window.loadWeakToSpecific = loadWeakToSpecific;
-    window.loadTodayWrongToSpecific = loadTodayWrongToSpecific;
-    window.renderSpecific = renderSpecific;
-    window.toggleSpecific = toggleSpecific;
-    window.selectAllSpecificCurrent = selectAllSpecificCurrent;
-    window.clearSpecificCurrent = clearSpecificCurrent;
-    window.clearAllSpecific = clearAllSpecific;
-
-    window.startGame = startGame;
-    window.resetGame = resetGame;
-    window.showAnswer = showAnswer;
-    window.markManual = markManual;
-    window.nextQuestion = nextQuestion;
-
-    window.startQuiz = startQuiz;
-    window.resetQuiz = resetQuiz;
-    window.answerQuiz = answerQuiz;
-
-    window.startMemo = startMemo;
-    window.flipMemo = flipMemo;
-
-    window.startBlast = startBlast;
-    window.resetBlast = resetBlast;
-    window.answerBlast = answerBlast;
-
-    window.setMode = setMode;
-    window.showTab = showTab;
-
-    loadKids();
-    renderTableChips();
-    renderSpecific();
-    renderVisual();
-    renderDailyChallenge();
-    renderHistory();
-    renderWeakFacts();
-    drawChart();
-    resetGame();
-    resetQuiz();
-    resetBlast();
-    setMode("speed");
-    showTab(0);
-document.getElementById("blastPlayAgainBtn")?.addEventListener("click", () => {
-  closeBlastOverlay();
-  startBlast();
-});
-
-document.getElementById("blastCloseBtn")?.addEventListener("click", () => {
-  closeBlastOverlay();
-});
-
-
-    document.addEventListener("touchstart", () => {
-  const g = document.getElementById("sfxGood");
-  const b = document.getElementById("sfxBad");
-
-  if(g){
-    g.volume = 0;
-    g.play().then(() => {
-      g.pause();
-      g.currentTime = 0;
-      g.volume = 1.0;
-    }).catch(() => {});
-  }
-
-  if(b){
-    b.volume = 0;
-    b.play().then(() => {
-      b.pause();
-      b.currentTime = 0;
-      b.volume = 1.0;
-    }).catch(() => {});
-  }
-
-}, { once:true });
-  </script>
+function init(){
+  loadState(); renderUsers(); buildLevel1Buttons(); buildTableButtons('level2TableBtns'); buildTableButtons('level3TableBtns'); buildTableButtons('competitionTableBtns'); buildTableButtons('snakeTableBtns'); buildCompPlayers(); buildSnakePlayers();
+  if(getUsers().length){ currentUser=getUsers()[0]; ensureCurrent(); }
+}
+init();
+</script>
 </body>
 </html>
-

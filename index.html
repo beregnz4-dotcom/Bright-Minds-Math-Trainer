@@ -798,24 +798,19 @@ function buildNumberBuilderRound(){
   gameState.correct = 0;
   gameState.wrong = 0;
 
+  const types = ['visual', 'sequence', 'addition', 'matching'];
+
   for(let i=0;i<5;i++){
     const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
     const multiplier = Math.floor(Math.random() * 10) + 1;
     const answer = table * multiplier;
-
-    let options = [answer];
-    while(options.length < 3){
-      const wrong = Math.floor(Math.random() * 100) + 1;
-      if(!options.includes(wrong)) options.push(wrong);
-    }
-
-    options = shuffle(options);
+    const type = types[Math.floor(Math.random() * types.length)];
 
     gameState.questions.push({
+      type,
       table,
       multiplier,
-      answer,
-      options
+      answer
     });
   }
 }
@@ -824,38 +819,181 @@ function renderCurrentQuestion(){
   const q = gameState.questions[gameState.currentIndex];
   if(!q) return;
 
-  document.getElementById('gameTitle').textContent = 'Number Builder';
-  document.getElementById('gameProgress').textContent = `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
+  document.getElementById('gameProgress').textContent =
+    `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
   document.getElementById('questionText').textContent = `${q.table} × ${q.multiplier}`;
+  document.getElementById('gameStatus').textContent = '';
 
   const visualArea = document.getElementById('visualArea');
+  const answersArea = document.getElementById('answersArea');
+  const typeLabel = document.getElementById('gameTypeLabel');
+
   visualArea.innerHTML = '';
+  answersArea.innerHTML = '';
 
-  for(let r=0; r<q.multiplier; r++){
-    const group = document.createElement('div');
-    group.className = 'block-group';
+  if(q.type === 'visual'){
+    typeLabel.textContent = 'Visual';
 
-    for(let c=0; c<q.table; c++){
-      const dot = document.createElement('div');
-      dot.className = 'block-dot';
-      group.appendChild(dot);
+    for(let r=0; r<q.multiplier; r++){
+      const group = document.createElement('div');
+      group.className = 'block-group';
+
+      for(let c=0; c<q.table; c++){
+        const dot = document.createElement('div');
+        dot.className = 'block-dot';
+        group.appendChild(dot);
+      }
+
+      visualArea.appendChild(group);
     }
 
-    visualArea.appendChild(group);
+    renderAnswerOptions(q.answer);
   }
 
+  if(q.type === 'sequence'){
+    typeLabel.textContent = 'Sequence';
+
+    const strip = document.createElement('div');
+    strip.className = 'sequence-strip';
+
+    const seq = [
+      q.table * 1,
+      q.table * 2,
+      '?',
+      q.table * 4,
+      q.table * 5
+    ];
+
+    seq.forEach(item=>{
+      const box = document.createElement('div');
+      box.className = 'sequence-box';
+      box.textContent = item;
+      strip.appendChild(box);
+    });
+
+    visualArea.appendChild(strip);
+    renderAnswerOptions(q.table * 3);
+  }
+
+  if(q.type === 'addition'){
+    typeLabel.textContent = 'Repeated Addition';
+
+    const addWrap = document.createElement('div');
+    addWrap.style.textAlign = 'center';
+    addWrap.style.marginBottom = '18px';
+
+    let repeated = [];
+    for(let i=0;i<q.multiplier;i++) repeated.push(q.table);
+
+    const pill = document.createElement('div');
+    pill.className = 'addition-pill';
+    pill.textContent = repeated.join(' + ');
+    addWrap.appendChild(pill);
+
+    visualArea.appendChild(addWrap);
+    renderAnswerOptions(q.answer);
+  }
+
+  if(q.type === 'matching'){
+    typeLabel.textContent = 'Matching';
+
+    const pairs = [
+      { left: `${q.table} × ${q.multiplier}`, right: q.answer },
+      { left: `${q.table} × ${Math.max(1, q.multiplier - 1)}`, right: q.table * Math.max(1, q.multiplier - 1) }
+    ];
+
+    const shuffledRight = shuffle(pairs.map(p => p.right));
+
+    const grid = document.createElement('div');
+    grid.className = 'match-grid';
+
+    const leftCol = document.createElement('div');
+    leftCol.className = 'match-col';
+
+    const rightCol = document.createElement('div');
+    rightCol.className = 'match-col';
+
+    let selectedLeft = null;
+    let selectedRight = null;
+
+    pairs.forEach(pair=>{
+      const btn = document.createElement('button');
+      btn.className = 'match-btn';
+      btn.textContent = pair.left;
+      btn.onclick = () => {
+        document.querySelectorAll('.match-col:first-child .match-btn').forEach(b=>b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedLeft = pair;
+        checkMatch();
+      };
+      leftCol.appendChild(btn);
+    });
+
+    shuffledRight.forEach(value=>{
+      const btn = document.createElement('button');
+      btn.className = 'match-btn';
+      btn.textContent = value;
+      btn.onclick = () => {
+        document.querySelectorAll('.match-col:last-child .match-btn').forEach(b=>b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedRight = value;
+        checkMatch();
+      };
+      rightCol.appendChild(btn);
+    });
+
+    function checkMatch(){
+      if(!selectedLeft || selectedRight === null) return;
+
+      const isCorrect = selectedLeft.right === selectedRight;
+
+      if(selectedLeft.left === `${q.table} × ${q.multiplier}`){
+        if(isCorrect){
+          gameState.correct++;
+          document.getElementById('gameStatus').textContent = 'Correct!';
+        } else {
+          gameState.wrong++;
+          document.getElementById('gameStatus').textContent = `Correct answer: ${q.answer}`;
+        }
+
+        setTimeout(() => {
+          gameState.currentIndex++;
+          if(gameState.currentIndex >= gameState.questions.length){
+            finishRound();
+          } else {
+            renderCurrentQuestion();
+          }
+        }, 900);
+      } else {
+        renderCurrentQuestion();
+      }
+    }
+
+    grid.appendChild(leftCol);
+    grid.appendChild(rightCol);
+    visualArea.appendChild(grid);
+  }
+}
+
+function renderAnswerOptions(correctAnswer){
   const answersArea = document.getElementById('answersArea');
   answersArea.innerHTML = '';
 
-  q.options.forEach(option => {
+  let options = [correctAnswer];
+  while(options.length < 3){
+    const wrong = Math.floor(Math.random() * 100) + 1;
+    if(!options.includes(wrong)) options.push(wrong);
+  }
+
+  options = shuffle(options);
+
+  options.forEach(option => {
     const btn = document.createElement('button');
     btn.className = 'answer-btn';
     btn.textContent = option;
-    btn.onclick = () => answerQuestion(btn, option, q.answer);
+    btn.onclick = () => answerQuestion(btn, option, correctAnswer);
     answersArea.appendChild(btn);
   });
-
-  document.getElementById('gameStatus').textContent = '';
 }
 
 function answerQuestion(button, selected, correct){
@@ -880,7 +1018,6 @@ function answerQuestion(button, selected, correct){
 
   setTimeout(() => {
     gameState.currentIndex++;
-
     if(gameState.currentIndex >= gameState.questions.length){
       finishRound();
     } else {

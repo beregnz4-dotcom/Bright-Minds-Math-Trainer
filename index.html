@@ -269,6 +269,50 @@
     gap:16px;
   }
 }
+    .table-option{
+  border:none;
+  background:#fff;
+  border-radius:14px;
+  padding:14px 0;
+  box-shadow:var(--shadow);
+  font-weight:800;
+  cursor:pointer;
+}
+.table-option.selected{
+  background:var(--blue);
+  color:#fff;
+}
+.answer-btn{
+  border:none;
+  border-radius:14px;
+  padding:14px 10px;
+  font-size:18px;
+  font-weight:800;
+  background:#fff;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+}
+.answer-btn.correct{
+  background:var(--green);
+  color:#fff;
+}
+.answer-btn.wrong{
+  background:var(--red);
+  color:#fff;
+}
+.block-group{
+  display:flex;
+  gap:6px;
+  background:#e8f1ff;
+  padding:10px 12px;
+  border-radius:16px;
+}
+.block-dot{
+  width:18px;
+  height:18px;
+  border-radius:6px;
+  background:var(--blue);
+}
   </style>
 </head>
 <body>
@@ -328,10 +372,10 @@
       </div>
 
       <div class="menu-list">
-        <button class="main-btn">
-          <div class="big">🌱 Number Builder</div>
-          <div class="small">Build your understanding of multiplication</div>
-        </button>
+        <button class="main-btn" onclick="openMode('number-builder')">
+  <div class="big">🌱 Number Builder</div>
+  <div class="small">Build your understanding of multiplication</div>
+</button>
 
         <button class="main-btn">
           <div class="big">🚀 Skill Builder</div>
@@ -349,7 +393,56 @@
         </button>
       </div>
     </section>
+<!-- SETUP -->
+<section id="screen-setup" class="screen">
+  <div class="topbar">
+    <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+    <div class="topbar-title">Select Tables</div>
+    <div style="width:46px;"></div>
+  </div>
 
+  <div class="card">
+    <div class="section-title">Choose tables</div>
+    <div id="tablesContainer" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
+
+    <button class="secondary-btn" onclick="selectAllTables()">Select All</button>
+    <button class="secondary-btn" onclick="clearTables()">Clear</button>
+    <button class="primary-btn" onclick="startGame()">Start</button>
+    <div id="setupStatus" class="status"></div>
+  </div>
+</section>
+
+<!-- GAME -->
+<section id="screen-game" class="screen">
+  <div class="topbar">
+    <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+    <div class="topbar-title" id="gameTitle">Number Builder</div>
+    <div style="width:46px;"></div>
+  </div>
+
+  <div class="card">
+    <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 5</div>
+    <div id="questionText" style="font-size:34px;font-weight:800;text-align:center;margin-bottom:20px;">2 × 3</div>
+    <div id="visualArea" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;"></div>
+    <div id="answersArea" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"></div>
+    <div id="gameStatus" class="status"></div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="screen-result" class="screen">
+  <div class="topbar">
+    <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+    <div class="topbar-title">Results</div>
+    <div style="width:46px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title" style="text-align:center;">Round Complete</div>
+    <div id="resultSummary" class="subtitle" style="text-align:center;margin-bottom:16px;"></div>
+    <button class="primary-btn" onclick="showScreen('screen-home')">Back to Home</button>
+  </div>
+</section>
   </div>
 
   <script>
@@ -580,6 +673,184 @@
         alert(error.message);
       }
     }
+    // =========================
+// SETUP + NUMBER BUILDER
+// =========================
+let selectedTables = [];
+let currentMode = null;
+let gameState = {
+  questions: [],
+  currentIndex: 0,
+  correct: 0,
+  wrong: 0
+};
+
+function openMode(mode){
+  currentMode = mode;
+  selectedTables = [];
+  renderTables();
+  document.getElementById('setupStatus').textContent = '';
+  showScreen('screen-setup');
+}
+
+function renderTables(){
+  const container = document.getElementById('tablesContainer');
+  container.innerHTML = '';
+
+  for(let i=1;i<=10;i++){
+    const btn = document.createElement('button');
+    btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
+    btn.textContent = i;
+
+    btn.onclick = () => {
+      if(selectedTables.includes(i)){
+        selectedTables = selectedTables.filter(x => x !== i);
+      } else {
+        selectedTables.push(i);
+      }
+      renderTables();
+    };
+
+    container.appendChild(btn);
+  }
+}
+
+function selectAllTables(){
+  selectedTables = [1,2,3,4,5,6,7,8,9,10];
+  renderTables();
+}
+
+function clearTables(){
+  selectedTables = [];
+  renderTables();
+}
+
+function startGame(){
+  const status = document.getElementById('setupStatus');
+
+  if(selectedTables.length === 0){
+    status.textContent = 'Select at least one table.';
+    return;
+  }
+
+  if(currentMode === 'number-builder'){
+    buildNumberBuilderRound();
+    showScreen('screen-game');
+    renderCurrentQuestion();
+  }
+}
+
+function buildNumberBuilderRound(){
+  gameState.questions = [];
+  gameState.currentIndex = 0;
+  gameState.correct = 0;
+  gameState.wrong = 0;
+
+  for(let i=0;i<5;i++){
+    const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+    const multiplier = Math.floor(Math.random() * 10) + 1;
+    const answer = table * multiplier;
+
+    let options = [answer];
+    while(options.length < 3){
+      const wrong = Math.floor(Math.random() * 100) + 1;
+      if(!options.includes(wrong)) options.push(wrong);
+    }
+
+    options = shuffle(options);
+
+    gameState.questions.push({
+      table,
+      multiplier,
+      answer,
+      options
+    });
+  }
+}
+
+function renderCurrentQuestion(){
+  const q = gameState.questions[gameState.currentIndex];
+  if(!q) return;
+
+  document.getElementById('gameTitle').textContent = 'Number Builder';
+  document.getElementById('gameProgress').textContent = `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
+  document.getElementById('questionText').textContent = `${q.table} × ${q.multiplier}`;
+
+  const visualArea = document.getElementById('visualArea');
+  visualArea.innerHTML = '';
+
+  for(let r=0; r<q.multiplier; r++){
+    const group = document.createElement('div');
+    group.className = 'block-group';
+
+    for(let c=0; c<q.table; c++){
+      const dot = document.createElement('div');
+      dot.className = 'block-dot';
+      group.appendChild(dot);
+    }
+
+    visualArea.appendChild(group);
+  }
+
+  const answersArea = document.getElementById('answersArea');
+  answersArea.innerHTML = '';
+
+  q.options.forEach(option => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = option;
+    btn.onclick = () => answerQuestion(btn, option, q.answer);
+    answersArea.appendChild(btn);
+  });
+
+  document.getElementById('gameStatus').textContent = '';
+}
+
+function answerQuestion(button, selected, correct){
+  const allButtons = document.querySelectorAll('.answer-btn');
+  allButtons.forEach(b => b.disabled = true);
+
+  if(selected === correct){
+    button.classList.add('correct');
+    gameState.correct++;
+    document.getElementById('gameStatus').textContent = 'Correct!';
+  } else {
+    button.classList.add('wrong');
+    gameState.wrong++;
+    document.getElementById('gameStatus').textContent = `Correct answer: ${correct}`;
+
+    allButtons.forEach(b => {
+      if(Number(b.textContent) === correct){
+        b.classList.add('correct');
+      }
+    });
+  }
+
+  setTimeout(() => {
+    gameState.currentIndex++;
+
+    if(gameState.currentIndex >= gameState.questions.length){
+      finishRound();
+    } else {
+      renderCurrentQuestion();
+    }
+  }, 900);
+}
+
+function finishRound(){
+  document.getElementById('resultSummary').textContent =
+    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong}`;
+  showScreen('screen-result');
+}
+
+function shuffle(arr){
+  const copy = [...arr];
+  for(let i = copy.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
   </script>
 </body>
 </html>

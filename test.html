@@ -747,7 +747,16 @@
     </div>
   </div>
 <div id="xpPop" class="blast-pop">+0 XP</div>
-  <script type="module">
+
+<audio id="sfxGood" preload="auto">
+  <source src="good.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="sfxBad" preload="auto">
+  <source src="bad.mp3" type="audio/mpeg">
+</audio>
+
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import {
       getAuth,
@@ -806,23 +815,25 @@
     };
 
     const memoState = {
-      cards: [],
-      flipped: [],
-      pairs: 0,
-      moves: 0,
-      target: 0,
-      busy: false,
-      timer: null,
-      seconds: 0
-    };
+  cards: [],
+  flipped: [],
+  pairs: 0,
+  moves: 0,
+  target: 0,
+  busy: false,
+  timer: null,
+  seconds: 0
+};
 
-    const blastState = {
-      score: 0,
-      streak: 0,
-      time: 30,
-      current: null,
-      timer: null
-    };
+const BLAST_DURATION = 60;
+
+const blastState = {
+  score: 0,
+  streak: 0,
+  time: BLAST_DURATION,
+  current: null,
+  timer: null
+};
 
     const loginScreen = document.getElementById("loginScreen");
     const appScreen = document.getElementById("appScreen");
@@ -855,33 +866,44 @@
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
-function beep(type="good"){
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  let audioUnlocked = false;
 
+function unlockAudio(){
+  if(audioUnlocked) return;
+
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
 
   osc.connect(gain);
   gain.connect(ctx.destination);
 
-  if(type === "good"){
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.08);
-    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.12);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.12);
-  }else{
-    osc.type = "square";
-    osc.frequency.setValueAtTime(220, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(160, ctx.currentTime + 0.12);
-    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.06, ctx.currentTime + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.14);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.14);
+  gain.gain.value = 0.0001;
+  osc.start();
+  osc.stop(ctx.currentTime + 0.01);
+
+  audioUnlocked = true;
+}  
+function beep(type="good"){
+  try{
+    const el = type === "good"
+      ? document.getElementById("sfxGood")
+      : document.getElementById("sfxBad");
+
+    if(!el) {
+      console.log("No audio element found:", type);
+      return;
+    }
+
+    el.volume = 1.0;
+    el.currentTime = 0;
+
+    const p = el.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(err => console.log("Audio play blocked:", err));
+    }
+  }catch(err){
+    console.log("Beep error:", err);
   }
 }
 
@@ -1884,31 +1906,31 @@ await loadCloudData();
       `).join("");
     }
 
-    function startBlast(){
-      if(!currentChild()){
-        alert("Primero agrega o selecciona un alumno.");
-        return;
-      }
+function startBlast(){
+  if(!currentChild()){
+    alert("Primero agrega o selecciona un alumno.");
+    return;
+  }
 
-      blastState.score = 0;
-      blastState.streak = 0;
-      blastState.time = 30;
+  blastState.score = 0;
+  blastState.streak = 0;
+  blastState.time = BLAST_DURATION;
 
-      document.getElementById("blastScore").textContent = "0";
-      document.getElementById("blastStreak").textContent = "0";
-      document.getElementById("blastTime").textContent = "30";
-      document.getElementById("blastCombo").textContent = "x1";
-      document.getElementById("blastSummary").classList.add("hidden");
+  document.getElementById("blastScore").textContent = "0";
+  document.getElementById("blastStreak").textContent = "0";
+  document.getElementById("blastTime").textContent = String(BLAST_DURATION);
+  document.getElementById("blastCombo").textContent = "x1";
+  document.getElementById("blastSummary").classList.add("hidden");
 
-      nextBlastQuestion();
+  nextBlastQuestion();
 
-      clearInterval(blastState.timer);
-      blastState.timer = setInterval(() => {
-        blastState.time--;
-        document.getElementById("blastTime").textContent = blastState.time;
-        if(blastState.time <= 0) finishBlast();
-      }, 1000);
-    }
+  clearInterval(blastState.timer);
+  blastState.timer = setInterval(() => {
+    blastState.time--;
+    document.getElementById("blastTime").textContent = blastState.time;
+    if(blastState.time <= 0) finishBlast();
+  }, 1000);
+}    
 
     function openBlastOverlay(score, xp){
   document.getElementById("blastOverlay").classList.remove("hidden");
@@ -1924,12 +1946,12 @@ function resetBlast(){
   clearInterval(blastState.timer);
   blastState.score = 0;
   blastState.streak = 0;
-  blastState.time = 30;
+  blastState.time = BLAST_DURATION;
   blastState.current = null;
 
   document.getElementById("blastScore").textContent = "0";
   document.getElementById("blastStreak").textContent = "0";
-  document.getElementById("blastTime").textContent = "30";
+  document.getElementById("blastTime").textContent = String(BLAST_DURATION);
   document.getElementById("blastCombo").textContent = "x1";
   document.getElementById("blastPrompt").textContent = "—";
   document.getElementById("blastFeedback").textContent = "Toca la respuesta correcta";
@@ -2010,16 +2032,16 @@ function resetBlast(){
     good: blastState.score,
     bad: 0,
     total: 0,
-    time: 30,
+    time: BLAST_DURATION,
     avg: 0,
     score: blastState.score
   });
 
   await addXP(xpEarned);
-beep("good");
-openBlastOverlay(blastState.score, xpEarned);
-await updateDailyChallenge("blast", blastState.score);
-await loadCloudData();
+  beep("good");
+  openBlastOverlay(blastState.score, xpEarned);
+  await updateDailyChallenge("blast", blastState.score);
+  await loadCloudData();
 }
 
     function renderHistory(){
@@ -2149,7 +2171,8 @@ await loadCloudData();
     });
 
     document.getElementById("addChildBtn").addEventListener("click", addChild);
-
+document.addEventListener("click", unlockAudio, { once: true });
+    
     childSelect.addEventListener("change", async () => {
       const user = auth.currentUser;
       if(!user) return;
@@ -2215,7 +2238,31 @@ document.getElementById("blastPlayAgainBtn")?.addEventListener("click", () => {
 document.getElementById("blastCloseBtn")?.addEventListener("click", () => {
   closeBlastOverlay();
 });
-    
+
+
+    document.addEventListener("touchstart", () => {
+  const g = document.getElementById("sfxGood");
+  const b = document.getElementById("sfxBad");
+
+  if(g){
+    g.volume = 0;
+    g.play().then(() => {
+      g.pause();
+      g.currentTime = 0;
+      g.volume = 1.0;
+    }).catch(() => {});
+  }
+
+  if(b){
+    b.volume = 0;
+    b.play().then(() => {
+      b.pause();
+      b.currentTime = 0;
+      b.volume = 1.0;
+    }).catch(() => {});
+  }
+
+}, { once:true });
   </script>
 </body>
 </html>

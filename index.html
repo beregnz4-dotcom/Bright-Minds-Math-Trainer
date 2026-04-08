@@ -1,597 +1,414 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Bright Minds Math Trainer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bright Minds Math</title>
+
 <style>
-:root{
-  --bg:#F6C445; --card:#fff; --text:#22314d; --muted:#6b7280; --blue:#2D8CFF; --blue2:#1E6FD0;
-  --green:#22C55E; --red:#EF4444; --orange:#F59E0B; --gray:#9CA3AF; --line:#E5E7EB; --soft:#F3F4F6;
-  --shadow:0 10px 24px rgba(0,0,0,.10); --radius:22px;
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#f6c445,#f4a261);
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-.app{max-width:480px;min-height:100vh;margin:0 auto;background:linear-gradient(120deg,rgba(255,255,255,.12) 0 22%,transparent 22% 100%),var(--bg);position:relative;overflow:hidden}
-.hidden{display:none!important}.screen{padding:16px 16px 24px}
-.topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}.topbar .title{flex:1;text-align:center;font-size:20px;font-weight:800}
-.icon-btn{width:48px;height:48px;border:none;border-radius:16px;background:#fff;box-shadow:var(--shadow);color:var(--blue);font-size:24px;font-weight:700}
-.icon-btn.sm{width:40px;height:40px;border-radius:14px;font-size:18px}
-.hero,.card,.white-box{background:var(--card);border-radius:26px;box-shadow:var(--shadow)}
-.hero{padding:20px 18px;text-align:center}.hero h1{margin:8px 0 6px;font-size:34px;line-height:1.05;color:var(--blue2)}
-.subtitle{color:var(--muted);font-size:13px}.muted{color:var(--muted)}
-.progress-shell{margin-top:14px;background:#EEF2F7;border-radius:999px;padding:8px;box-shadow:inset 0 2px 4px rgba(0,0,0,.08)}
-.progress-bar{height:18px;border-radius:999px;background:linear-gradient(90deg,#6EE7B7,#3B82F6);width:0;transition:.3s}
-.progress-label{text-align:center;font-weight:800;color:#4B5563;margin-top:8px}
-.menu-list{display:flex;flex-direction:column;gap:14px;margin-top:18px}
-.main-btn{border:none;background:var(--blue);color:#fff;border-radius:24px;padding:16px 18px;box-shadow:0 8px 0 var(--blue2)}
-.main-btn .big{font-weight:800;font-size:18px}.main-btn .small{font-size:12px;margin-top:4px;opacity:.95}
-.user-grid,.table-grid,.level-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.user-btn,.table-card,.level-card{border:none;background:#fff;border-radius:20px;padding:16px;box-shadow:var(--shadow);text-align:left}
-.user-btn{font-size:18px;font-weight:800;color:var(--blue2);text-align:center}
-.row{display:flex;gap:10px;align-items:center}.space{justify-content:space-between}
-.input{width:100%;border:none;border-radius:16px;padding:14px 16px;font-size:16px;box-shadow:inset 0 0 0 1px var(--line);background:#fff}
-.save-btn{border:none;background:var(--green);color:#fff;border-radius:16px;padding:0 16px;font-weight:800;height:48px}
-.section-title{font-size:22px;font-weight:800;margin:6px 0 12px}
-.status-pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;color:#fff;margin-top:8px}.s0{background:var(--gray)}.s1{background:var(--blue)}.s2{background:var(--orange)}.s3{background:var(--green)}
-.mini{font-size:12px;color:var(--muted);margin-top:8px}
-.level-card h3{margin:0 0 6px;font-size:18px}.level-card p{margin:0;color:var(--muted);font-size:13px}
-.question-card{padding:18px;margin:14px 0}.question{font-size:36px;font-weight:800;text-align:center;color:#64748B;margin:8px 0 14px}.question.primary{font-size:40px;color:var(--text)}
-.answer-display{min-height:74px;border-radius:20px;background:var(--soft);border:4px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#64748B}
-.timer-wrap{display:flex;align-items:center;gap:10px}.timer-icon{width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;font-size:24px;color:#64748B}
-.time-bar-shell{flex:1;background:#E5E7EB;border-radius:999px;padding:8px;box-shadow:inset 0 2px 4px rgba(0,0,0,.07)}
-.time-bar{height:18px;border-radius:999px;background:#2EA3F2;width:100%;transition:width .12s linear, background .2s linear}
-.keypad{background:#fff;border-radius:24px;padding:16px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.key{border:none;border-radius:18px;padding:18px 0;font-size:32px;font-weight:800;color:#fff;background:var(--blue);box-shadow:0 6px 0 var(--blue2)}
-.key.red{background:#F43F5E;box-shadow:0 6px 0 #BE123C}.key.green{background:#56C126;box-shadow:0 6px 0 #3A8F1A}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pill{background:#fff;box-shadow:var(--shadow);border:none;border-radius:999px;padding:10px 14px;font-weight:800;color:var(--blue2)}
-.option-list{display:flex;flex-direction:column;gap:10px}.option-btn{border:none;background:#fff;border-radius:18px;padding:14px;box-shadow:var(--shadow);font-size:18px;font-weight:800;color:var(--text)}
-.option-btn.correct{background:#DCFCE7;color:#166534}.option-btn.wrong{background:#FEE2E2;color:#991B1B}.option-btn.selected{outline:3px solid var(--blue)}
-.sequence-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}.seq-box{min-width:54px;height:54px;border-radius:16px;background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;font-size:24px;font-weight:800}.seq-box.blank{border:3px dashed #CBD5E1;background:#F8FAFC}
-.choice-bank{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}.choice-chip{border:none;background:var(--blue);color:#fff;border-radius:16px;padding:12px 16px;font-size:22px;font-weight:800;box-shadow:0 5px 0 var(--blue2)}
-.match-grid{display:grid;grid-template-columns:1fr 70px 1fr;gap:10px;align-items:center}.match-col{display:flex;flex-direction:column;gap:10px}.match-item{border:none;background:#fff;border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);font-size:22px;font-weight:800;color:var(--blue2);text-align:left}.match-item.done{background:#DCFCE7;color:#166534}.match-item.sel{outline:3px solid var(--blue)}
-.block-groups{display:flex;flex-direction:column;gap:12px;align-items:center;margin:14px 0}.group-row{display:flex;gap:8px}.block{width:26px;height:26px;border-radius:10px;background:linear-gradient(180deg,#8CC6FF,#2D8CFF);box-shadow:0 4px 8px rgba(45,140,255,.25)}
-.sum-boxes{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}.sum-pill{background:#fff;border-radius:18px;padding:12px 18px;box-shadow:var(--shadow);font-size:28px;font-weight:800}.plus{font-size:28px;font-weight:900;color:var(--green)}
-.table-line{display:flex;justify-content:space-between;padding:12px 8px;border-bottom:1px solid var(--line);font-weight:800}.table-line:last-child{border-bottom:none}
-.result-list .item{display:flex;justify-content:space-between;gap:12px;padding:12px 6px;border-bottom:1px solid var(--line);align-items:center}.result-list .item:last-child{border-bottom:none}
-.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;color:#fff;background:var(--blue)}
-.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
-.check-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.check-btn{border:none;background:#fff;border-radius:16px;padding:12px 0;box-shadow:var(--shadow);font-weight:800}.check-btn.active{background:var(--blue);color:#fff}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50}
-.modal{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:18px;max-width:440px;width:100%}.modal h3{margin:0 0 10px;font-size:22px}.modal p{color:var(--muted)}
-.small-btn{border:none;border-radius:14px;padding:12px 14px;font-weight:800}.small-btn.red{background:#EF4444;color:#fff}.small-btn.gray{background:#E5E7EB;color:#111827}.small-btn.blue{background:var(--blue);color:#fff}.small-btn.green{background:var(--green);color:#fff}
-.sound-toggle{display:flex;gap:8px;align-items:center;background:#fff;padding:10px 12px;border-radius:999px;box-shadow:var(--shadow);font-weight:800;color:var(--blue2)}
-.score-big{font-size:56px;font-weight:900;text-align:center;margin:10px 0}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:16px;text-align:center}.stat .n{font-size:34px;font-weight:900}.stat .l{color:var(--muted);font-weight:700}
-.rank-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);margin-bottom:10px}.medal{font-size:28px}
-.board-wrap{display:grid;grid-template-columns:1fr 130px;gap:12px;align-items:start}.board{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.square{aspect-ratio:1/1;border-radius:18px;display:flex;align-items:flex-start;justify-content:space-between;padding:8px;font-weight:900;font-size:22px;position:relative}.square:nth-child(4n+1){background:#FCA5A5}.square:nth-child(4n+2){background:#BFDBFE}.square:nth-child(4n+3){background:#C4F1A6}.square:nth-child(4n+4){background:#DDD6FE}
-.square.active{outline:4px solid var(--blue2);transform:scale(1.03)}
-.token{position:absolute;bottom:8px;right:8px;width:18px;height:18px;border-radius:50%;border:3px solid #fff}.t1{background:#2563EB}.t2{background:#EC4899}.t3{background:#16A34A}.t4{background:#F59E0B}
-.ladder,.snake{position:absolute;font-size:22px;left:6px;bottom:6px}
-.side-card{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:12px}.dice{width:84px;height:84px;border-radius:24px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:42px;font-weight:900;border:none;box-shadow:0 8px 0 var(--blue2);margin:0 auto 12px}
-.turn{font-size:18px;font-weight:900;text-align:center;margin-bottom:8px}.feedback{font-size:16px;font-weight:800;text-align:center;min-height:24px}.good{color:#15803D}.bad{color:#B91C1C}
-.footer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.footer-actions .small-btn{flex:1}
-.info-line{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:14px;color:var(--muted)}
-hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
+
+.screen{display:none;padding:20px}
+.active{display:block}
+
+.card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,.1);
+}
+
+h1{text-align:center}
+
+button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:15px;
+  margin:8px 0;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.primary{background:#4CAF50;color:white}
+.secondary{background:#2196F3;color:white}
+
+.user-btn{
+  background:white;
+  border-radius:15px;
+  padding:15px;
+  margin:5px 0;
+  box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin-bottom:10px;
+}
 </style>
 </head>
+
 <body>
-<div class="app">
 
-  <section id="screen-users" class="screen">
-    <div class="hero">
-      <div class="subtitle">Bright Minds Math Trainer</div>
-      <h1>Elige usuario</h1>
-      <div class="subtitle">Cada usuario guarda su propio progreso</div>
-    </div>
-    <div class="user-grid" id="userGrid"></div>
-    <div class="card" style="margin-top:14px;">
-      <div class="section-title" style="font-size:18px;margin-top:0">Nuevo usuario</div>
-      <div class="row">
-        <input id="newUserInput" class="input" placeholder="Escribe nombre" maxlength="16" />
-        <button class="save-btn" onclick="addUser()">Guardar</button>
-      </div>
-    </div>
-  </section>
+<!-- LOGIN -->
+<div id="login" class="screen active">
+  <div class="card">
+    <h1>Bright Minds</h1>
+    <div id="users"></div>
 
-  <section id="screen-home" class="screen hidden">
-    <div class="topbar">
-      <button class="icon-btn" onclick="goUsers()">â¡</button>
-      <div class="title">Bright Minds Math</div>
-      <button class="icon-btn sm" onclick="openHelp()">?</button>
-    </div>
-    <div class="hero">
-      <div class="subtitle" id="welcomeText">Hola</div>
-      <h1>Tablas de multiplicar</h1>
-      <div class="subtitle">Aprender â¢ Practicar â¢ Mejorar tiempo â¢ Competir</div>
-      <div class="progress-shell"><div id="overallBar" class="progress-bar"></div></div>
-      <div id="overallLabel" class="progress-label">0%</div>
-    </div>
-    <div class="row space" style="margin:10px 0 14px;">
-      <button class="pill" onclick="continueFlow()">â¶ Continuar</button>
-      <button class="sound-toggle" onclick="toggleMute()"><span id="soundIcon">ð</span><span>Sonido</span></button>
-    </div>
-    <div class="menu-list">
-      <button class="main-btn" onclick="showScreen('screen-tables')"><div class="big">ð Tablas</div><div class="small">Ver las 10 tablas y practicar</div></button>
-      <button class="main-btn" onclick="showScreen('screen-levels')"><div class="big">ð§  Niveles</div><div class="small">Nivel 1, 2, 3 y competencia</div></button>
-      <button class="main-btn" onclick="showProgress()"><div class="big">ð Progreso</div><div class="small">Estados por tabla y tiempos</div></button>
-      <button class="main-btn" onclick="showScreen('screen-snakes-setup')"><div class="big">ð² Serpientes y escaleras</div><div class="small">Modo escuela y juego especial</div></button>
-    </div>
-  </section>
-
-  <section id="screen-levels" class="screen hidden">
-    <div class="topbar">
-      <button class="icon-btn" onclick="showScreen('screen-home')">â</button>
-      <div class="title">Niveles</div>
-      <button class="icon-btn sm" onclick="openHelp()">?</button>
-    </div>
-    <div class="level-grid">
-      <button class="level-card" onclick="showScreen('screen-level1-config')"><h3>Nivel 1</h3><p>Comprender con secuencia, suma, bloques y matching</p></button>
-      <button class="level-card" onclick="showScreen('screen-level2-config')"><h3>Nivel 2</h3><p>Practicar con tiempo suave y tablas seleccionadas</p></button>
-      <button class="level-card" onclick="showScreen('screen-level3-config')"><h3>Nivel 3</h3><p>Challenge con cronÃ³metro preciso</p></button>
-      <button class="level-card" onclick="showScreen('screen-competition-setup')"><h3>Nivel 4</h3><p>Competencia escolar de 2 a 4 jugadores</p></button>
-    </div>
-  </section>
-
-  <section id="screen-tables" class="screen hidden">
-    <div class="topbar">
-      <button class="icon-btn" onclick="showScreen('screen-home')">â</button>
-      <div class="title">Tablas</div>
-      <button class="icon-btn sm" onclick="showProgress()">â</button>
-    </div>
-    <div class="table-grid" id="tableGrid"></div>
-  </section>
-
-  <section id="screen-table-detail" class="screen hidden">
-    <div class="topbar">
-      <button class="icon-btn" onclick="showScreen('screen-tables')">â</button>
-      <div class="title" id="tableDetailTitle">Tabla</div>
-      <button class="icon-btn sm" onclick="openHelp()">?</button>
-    </div>
-    <div class="card" id="tableDetailList"></div>
-    <div class="footer-actions">
-      <button class="small-btn blue" onclick="startLevel2SingleSelected()">Practicar</button>
-      <button class="small-btn green" onclick="startLevel3SingleSelected()">Challenge</button>
-    </div>
-  </section>
-
-  <section id="screen-level1-config" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-levels')">â</button><div class="title">Nivel 1</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="card">
-      <div class="section-title" style="font-size:18px;margin-top:0">Elige tabla</div>
-      <div class="check-grid" id="level1TableBtns"></div>
-      <div class="mini">Objetivo: comprender la tabla con secuencia, suma, bloques, matching y respuesta escrita.</div>
-    </div>
-    <div class="footer-actions"><button class="small-btn blue" onclick="startLevel1()">Comenzar</button></div>
-  </section>
-
-  <section id="screen-level1" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-level1-config')">â</button><div class="title" id="l1Title">Nivel 1</div><button class="icon-btn sm" onclick="toggleMute()">ð</button></div>
-    <div class="toolbar"><span class="badge" id="l1StepLabel">Paso</span><span class="badge" id="l1ProgLabel">1/10</span></div>
-    <div class="question-card white-box" id="l1Content"></div>
-  </section>
-
-  <section id="screen-level2-config" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-levels')">â</button><div class="title">Nivel 2</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="card">
-      <div class="section-title" style="font-size:18px;margin-top:0">Selecciona tablas</div>
-      <div class="check-grid" id="level2TableBtns"></div>
-      <hr class="sep">
-      <div class="section-title" style="font-size:18px;margin-top:0">Opciones</div>
-      <div class="row space"><span>Solo multiplicaciones especÃ­ficas</span><button class="pill" onclick="toggleSpecific()" id="specificToggle">No</button></div>
-      <div id="specificPanel" class="hidden" style="margin-top:12px"></div>
-      <div class="mini">Tiempo suave por pregunta con barra visible. Puedes practicar una tabla, varias o solo las difÃ­ciles.</div>
-    </div>
-    <div class="footer-actions"><button class="small-btn blue" onclick="startLevel2()">Comenzar</button></div>
-  </section>
-
-  <section id="screen-level2" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-level2-config')">â</button><div class="title">Nivel 2</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="toolbar"><span class="badge" id="l2RoundLabel">1/10</span><span class="badge" id="l2TablesLabel">Tablas</span></div>
-    <div class="timer-wrap"><div class="timer-icon">â²</div><div class="time-bar-shell"><div id="l2TimeBar" class="time-bar"></div></div></div>
-    <div class="question-card"><div id="l2Question" class="question primary">2 Ã 3 = ?</div><div id="l2Answer" class="answer-display"></div></div>
-    <div class="keypad" id="l2Keypad"></div>
-    <div class="feedback" id="l2Feedback"></div>
-  </section>
-
-  <section id="screen-level3-config" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-levels')">â</button><div class="title">Nivel 3</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="card">
-      <div class="section-title" style="font-size:18px;margin-top:0">Selecciona tablas</div>
-      <div class="check-grid" id="level3TableBtns"></div>
-      <div class="mini" style="margin-top:12px">Challenge con cronÃ³metro total, precisiÃ³n y tiempo promedio.</div>
-    </div>
-    <div class="footer-actions"><button class="small-btn green" onclick="startLevel3()">Comenzar challenge</button></div>
-  </section>
-
-  <section id="screen-level3" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-level3-config')">â</button><div class="title">Nivel 3</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="toolbar"><span class="badge" id="l3RoundLabel">1/10</span><span class="badge" id="l3Clock">0.00 s</span></div>
-    <div class="question-card"><div id="l3Question" class="question primary">2 Ã 3 = ?</div><div id="l3Answer" class="answer-display"></div></div>
-    <div class="keypad" id="l3Keypad"></div>
-    <div class="feedback" id="l3Feedback"></div>
-  </section>
-
-  <section id="screen-level3-result" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-level3-config')">â</button><div class="title">Resultado</div><button class="icon-btn sm" onclick="showScreen('screen-home')">â</button></div>
-    <div class="hero"><div class="subtitle">Tu resultado</div><div class="score-big" id="l3ScoreBig">0</div></div>
-    <div class="stats">
-      <div class="stat"><div class="n" id="l3TimeTotal">0.00s</div><div class="l">Tiempo total</div></div>
-      <div class="stat"><div class="n" id="l3Acc">0%</div><div class="l">PrecisiÃ³n</div></div>
-      <div class="stat"><div class="n" id="l3Avg">0.00s</div><div class="l">Promedio</div></div>
-      <div class="stat"><div class="n" id="l3Best">0.00s</div><div class="l">Mejor tiempo</div></div>
-    </div>
-    <div class="card" style="margin-top:14px"><div id="l3CompareMsg" style="font-weight:800;text-align:center"></div></div>
-    <div class="footer-actions"><button class="small-btn green" onclick="startLevel3()">Repetir</button><button class="small-btn blue" onclick="showProgress()">Ver progreso</button></div>
-  </section>
-
-  <section id="screen-competition-setup" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-levels')">â</button><div class="title">Competencia</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="card">
-      <div class="section-title" style="font-size:18px;margin-top:0">Jugadores (2 a 4)</div>
-      <div class="row"><input id="compPlayersCount" class="input" type="number" min="2" max="4" value="2" /><button class="save-btn" onclick="buildCompPlayers()">Crear</button></div>
-      <div id="compPlayersForm" style="margin-top:12px"></div>
-      <hr class="sep">
-      <div class="section-title" style="font-size:18px;margin-top:0">Tablas del reto</div>
-      <div class="check-grid" id="competitionTableBtns"></div>
-      <div class="mini" style="margin-top:12px">Todos juegan exactamente el mismo reto. Gana el mayor puntaje; si empatan, el menor tiempo.</div>
-    </div>
-    <div class="footer-actions"><button class="small-btn green" onclick="startCompetition()">Iniciar competencia</button></div>
-  </section>
-
-  <section id="screen-competition" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-competition-setup')">â</button><div class="title">Competencia</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="toolbar"><span class="badge" id="compTurnLabel">Turno</span><span class="badge" id="compRoundLabel">1/10</span><span class="badge" id="compClock">0.00 s</span></div>
-    <div class="question-card"><div id="compQuestion" class="question primary">2 Ã 3 = ?</div><div id="compAnswer" class="answer-display"></div></div>
-    <div class="keypad" id="compKeypad"></div>
-    <div class="feedback" id="compFeedback"></div>
-  </section>
-
-  <section id="screen-competition-result" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-competition-setup')">â</button><div class="title">Resumen final</div><button class="icon-btn sm" onclick="showScreen('screen-home')">â</button></div>
-    <div id="competitionRankings"></div>
-    <div class="footer-actions"><button class="small-btn green" onclick="showScreen('screen-competition-setup')">Nueva competencia</button></div>
-  </section>
-
-  <section id="screen-snakes-setup" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-home')">â</button><div class="title">Serpientes y escaleras</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="card">
-      <div class="section-title" style="font-size:18px;margin-top:0">Jugadores (2 a 4)</div>
-      <div class="row"><input id="snakePlayersCount" class="input" type="number" min="2" max="4" value="2" /><button class="save-btn" onclick="buildSnakePlayers()">Crear</button></div>
-      <div id="snakePlayersForm" style="margin-top:12px"></div>
-      <hr class="sep">
-      <div class="section-title" style="font-size:18px;margin-top:0">Tablas del juego</div>
-      <div class="check-grid" id="snakeTableBtns"></div>
-      <div class="mini">Tablero 1â40. Si responde bien avanza lo del dado. Si cae en escalera sube; si cae en serpiente baja.</div>
-    </div>
-    <div class="footer-actions"><button class="small-btn green" onclick="startSnakes()">Comenzar juego</button></div>
-  </section>
-
-  <section id="screen-snakes" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="confirmExit('screen-snakes-setup')">â</button><div class="title">Serpientes y escaleras</div><button class="icon-btn sm" onclick="openHelp()">?</button></div>
-    <div class="board-wrap">
-      <div id="board" class="board"></div>
-      <div class="side-card">
-        <div class="turn" id="snakeTurn">Turno</div>
-        <button class="dice" id="diceBtn" onclick="rollDice()">ð²</button>
-        <div class="question" id="snakeQuestion" style="font-size:26px;margin:8px 0">Tira el dado</div>
-        <div id="snakeAnswer" class="answer-display" style="min-height:60px;font-size:24px"></div>
-        <div class="feedback" id="snakeFeedback"></div>
-        <div class="info-line"><span>Dado:</span><strong id="snakeDiceValue">-</strong></div>
-      </div>
-    </div>
-    <div class="keypad" id="snakeKeypad" style="margin-top:14px"></div>
-  </section>
-
-  <section id="screen-progress" class="screen hidden">
-    <div class="topbar"><button class="icon-btn" onclick="showScreen('screen-home')">â</button><div class="title">Progreso</div><button class="icon-btn sm" onclick="openResetMenu()">â¯</button></div>
-    <div class="hero"><div class="subtitle">Tu progreso total</div><h1 id="progressPercent">0%</h1><div id="progressSummary" class="subtitle">Tablas dominadas: 0/10</div></div>
-    <div class="card" id="progressTableList"></div>
-  </section>
-
+    <input id="newUser" placeholder="Nuevo usuario">
+    <button class="primary" onclick="addUser()">Agregar</button>
+  </div>
 </div>
 
-<div id="overlay" class="overlay hidden"><div class="modal" id="modalBox"></div></div>
+<!-- MENU -->
+<div id="menu" class="screen">
+  <div class="card">
+    <h1>Menú</h1>
+
+    <button class="secondary" onclick="goTo('level1')">Nivel 1</button>
+    <button class="secondary" onclick="goTo('level2')">Nivel 2</button>
+    <button class="secondary" onclick="goTo('level3')">Nivel 3</button>
+    <button class="secondary" onclick="goTo('competition')">Competencia</button>
+    <button class="secondary" onclick="goTo('snake')">Serpientes 🐍</button>
+
+    <button onclick="resetProgress()">Reset progreso</button>
+  </div>
+</div>
+
+<!-- PLACEHOLDER PANTALLAS -->
+<div id="level1" class="screen"><div class="card"><h1>Nivel 1</h1></div></div>
+<div id="level2" class="screen"><div class="card"><h1>Nivel 2</h1></div></div>
+<div id="level3" class="screen"><div class="card"><h1>Nivel 3</h1></div></div>
+<div id="competition" class="screen"><div class="card"><h1>Competencia</h1></div></div>
+<div id="snake" class="screen"><div class="card"><h1>Serpientes</h1></div></div>
 
 <script>
-const $ = id => document.getElementById(id);
-const screens = [...document.querySelectorAll('.screen')];
-const TOTAL_TABLES = 10;
-const QUESTION_COUNT = 10;
-let currentUser = null, state = null, muted = false, bgStarted = false;
-let selectedTableDetail = 1;
 
-const audio = {
-  tap: new Audio('sounds/tap.mp3'),
-  correct: new Audio('sounds/correct.mp3'),
-  wrong: new Audio('sounds/wrong.mp3'),
-  win: new Audio('sounds/win.mp3'),
-  bg: new Audio('sounds/bg.mp3')
-};
-audio.bg.loop = true; audio.bg.volume = 0.18;
-audio.tap.volume = .30; audio.correct.volume = .55; audio.wrong.volume = .45; audio.win.volume = .70;
-function playSound(name){
-  if(muted) return;
-  const a = audio[name]; if(!a) return;
-  try{ a.currentTime = 0; a.play(); }catch(e){}
-}
-function startBg(){ if(muted || bgStarted) return; bgStarted = true; audio.bg.play().catch(()=>{}); }
-function toggleMute(){ muted = !muted; $('soundIcon') && ($('soundIcon').textContent = muted ? 'ð' : 'ð'); if(muted){audio.bg.pause();} else {bgStarted=false;startBg();}}
-
-document.addEventListener('click', ()=>{ startBg(); }, {once:true});
-
-function defaultUserData(name){
-  return {
-    name,
-    currentFlow:'screen-home',
-    progress:{},
-    bestTimes:{},
-    avgTimes:{},
-    totalChallengeBest:null,
-    snakeBest:null,
-    soundOn:true,
-  };
-}
-function loadState(){ state = JSON.parse(localStorage.getItem('bm_math_state') || '{"users":{}}'); if(!state.users) state.users={}; }
-function saveState(){ localStorage.setItem('bm_math_state', JSON.stringify(state)); }
-function getUsers(){ return Object.keys(state.users); }
-function ensureCurrent(){ if(!currentUser || !state.users[currentUser]) return; const u = state.users[currentUser]; for(let t=1;t<=10;t++){ if(!u.progress[t]) u.progress[t] = {status:0, score:0, correct:0, total:10}; }}
-function getUser(){ return state.users[currentUser]; }
-function setCurrentUser(name){ currentUser = name; ensureCurrent(); saveState(); refreshHome(); }
+// ====== USUARIOS ======
+let users = JSON.parse(localStorage.getItem("users") || "[]");
+let currentUser = null;
 
 function renderUsers(){
-  const grid = $('userGrid'); grid.innerHTML='';
-  const users = getUsers();
-  users.forEach(name=>{
-    const b = document.createElement('button'); b.className='user-btn'; b.textContent=name; b.onclick=()=>{ setCurrentUser(name); showScreen('screen-home');};
-    grid.appendChild(b);
-  });
-}
-function addUser(){
-  const name = $('newUserInput').value.trim(); if(!name) return;
-  if(state.users[name]){ alert('Ese usuario ya existe'); return; }
-  state.users[name] = defaultUserData(name); $('newUserInput').value=''; saveState(); renderUsers();
-}
-function goUsers(){ showScreen('screen-users'); }
-function showScreen(id){ screens.forEach(s=>s.classList.add('hidden')); $(id).classList.remove('hidden'); if(id==='screen-home') refreshHome(); if(id==='screen-tables') renderTables(); if(id==='screen-progress') renderProgress(); }
-function continueFlow(){ showScreen(getUser().currentFlow || 'screen-home'); }
-function setFlow(id){ if(currentUser){ getUser().currentFlow = id; saveState(); }}
-function refreshHome(){
-  if(!currentUser){ showScreen('screen-users'); return; }
-  $('welcomeText').textContent = 'Hola, ' + currentUser;
-  $('soundIcon').textContent = muted ? 'ð':'ð';
-  const pct = computeOverallProgress();
-  $('overallBar').style.width = pct + '%';
-  $('overallLabel').textContent = pct + '%';
-  setFlow('screen-home');
-}
-function computeOverallProgress(){
-  const u = getUser(); let sum=0;
-  for(let t=1;t<=10;t++){ const s=u.progress[t]?.status||0; sum += [0,35,75,100][s]; }
-  return Math.round(sum/10);
-}
-function statusText(s){ return ['No iniciado','En proceso','Avanzado','Dominado'][s]||'No iniciado'; }
-function statusClass(s){ return 's'+s; }
-function updateTableStatusFromScore(table, score){
-  const u=getUser(); const st = score===0?0: score<70?1: score<90?2:3;
-  u.progress[table].status = Math.max(u.progress[table].status, st);
-  u.progress[table].score = Math.max(u.progress[table].score, score);
-  saveState();
-}
-function renderTables(){
-  setFlow('screen-tables');
-  const grid = $('tableGrid'); grid.innerHTML=''; const u=getUser();
-  for(let t=1;t<=10;t++){
-    const p = u.progress[t];
-    const btn = document.createElement('button'); btn.className='table-card';
-    btn.innerHTML = `<div class="table-title">Tabla del ${t}</div><span class="status-pill ${statusClass(p.status)}">${statusText(p.status)}</span><div class="mini">${p.correct||0}/10 correctos â¢ Mejor score ${p.score||0}</div>`;
-    btn.onclick = ()=>{ selectedTableDetail=t; renderTableDetail(t); showScreen('screen-table-detail'); };
-    grid.appendChild(btn);
-  }
-}
-function renderTableDetail(t){
-  setFlow('screen-table-detail');
-  $('tableDetailTitle').textContent = 'Tabla del ' + t;
-  let html = '';
-  for(let i=1;i<=10;i++) html += `<div class="table-line"><span>${t} Ã ${i}</span><span>${t*i}</span></div>`;
-  $('tableDetailList').innerHTML = html;
-}
-function startLevel2SingleSelected(){ prepareLevel2([selectedTableDetail]); }
-function startLevel3SingleSelected(){ prepareLevel3([selectedTableDetail]); }
+  let div = document.getElementById("users");
+  div.innerHTML = "";
 
-function buildTableButtons(containerId, multiple=true){
-  const box=$(containerId); box.innerHTML='';
-  for(let t=1;t<=10;t++){
-    const b=document.createElement('button'); b.className='check-btn'; b.textContent=t; b.dataset.t=t;
-    b.onclick=()=> b.classList.toggle('active'); box.appendChild(b);
-  }
-}
-function buildLevel1Buttons(){ const box=$('level1TableBtns'); box.innerHTML=''; for(let t=1;t<=10;t++){ const b=document.createElement('button'); b.className='check-btn'; b.textContent=t; if(t===1) b.classList.add('active'); b.onclick=()=>{ [...box.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); }; box.appendChild(b); } }
-function getSelectedTables(containerId){ return [...$(containerId).querySelectorAll('.check-btn.active')].map(b=>+b.dataset.t); }
-
-let level1 = null;
-function startLevel1(){
-  const table = +$('level1TableBtns').querySelector('.active').dataset.t;
-  level1 = {table, mult:1, step:1, score:0};
-  setFlow('screen-level1');
-  showScreen('screen-level1');
-  renderLevel1Step();
-}
-function renderLevel1Step(){
-  $('l1Title').textContent = `Nivel 1 Â· Tabla del ${level1.table}`;
-  $('l1ProgLabel').textContent = `${level1.mult}/10`;
-  const wrap = $('l1Content'); wrap.innerHTML=''; const t=level1.table,m=level1.mult,res=t*m;
-  if(level1.step===1){
-    $('l1StepLabel').textContent='Paso 1 Â· Secuencia';
-    const seq = Array.from({length:10},(_,i)=>t*(i+1));
-    const blanks = pickRandomPositions(5,10);
-    const filled = Array(10).fill(null);
-    const bank = blanks.map(i=>seq[i]).sort(()=>Math.random()-.5);
-    let selectedIndex = null;
-    wrap.innerHTML = `<div class="question primary">Tabla del ${t}</div><div class="subtitle" style="text-align:center">Llena los nÃºmeros que faltan</div><div class="sequence-row" id="seqRow"></div><div class="choice-bank" id="choiceBank"></div><div class="footer-actions"><button class="small-btn blue" id="reviewSeq" disabled>Revisar</button></div><div id="seqMsg" class="feedback"></div>`;
-    const row = $('seqRow');
-    for(let i=0;i<10;i++){
-      const d=document.createElement('button'); d.className='seq-box'+(blanks.includes(i)?' blank':''); d.dataset.i=i; d.textContent=blanks.includes(i)?'__':seq[i];
-      if(blanks.includes(i)) d.onclick=()=>{ selectedIndex=i; [...row.children].forEach(x=>x.classList.remove('selected')); d.classList.add('selected'); playSound('tap'); };
-      else d.disabled=true;
-      row.appendChild(d);
-    }
-    const bankBox=$('choiceBank');
-    bank.forEach(n=>{ const b=document.createElement('button'); b.className='choice-chip'; b.textContent=n; b.onclick=()=>{ if(selectedIndex===null) return; const target=[...row.children][selectedIndex]; target.textContent=n; target.dataset.val=n; target.classList.remove('selected'); selectedIndex=null; b.disabled=true; b.style.opacity=.4; playSound('tap'); if([...row.children].filter(x=>x.classList.contains('blank')).every(x=>x.dataset.val)) $('reviewSeq').disabled=false; }; bankBox.appendChild(b); });
-    $('reviewSeq').onclick=()=>{
-      let ok=true; [...row.children].forEach((box,i)=>{ if(box.classList.contains('blank')){ const v=+box.dataset.val; if(v===seq[i]){ box.style.outline='3px solid var(--green)'; } else { box.style.outline='3px solid var(--red)'; ok=false; } }});
-      if(ok){ $('seqMsg').textContent='Â¡Muy bien!'; $('seqMsg').className='feedback good'; playSound('correct'); setTimeout(()=>{ level1.score+=20; level1.step=2; renderLevel1Step(); },700); }
-      else{ $('seqMsg').textContent='Revisa los espacios en rojo'; $('seqMsg').className='feedback bad'; playSound('wrong'); }
+  users.forEach(u=>{
+    let btn = document.createElement("div");
+    btn.className="user-btn";
+    btn.innerText = u.name;
+    btn.onclick = ()=>{
+      currentUser = u;
+      goTo("menu");
     };
-    return;
-  }
-  if(level1.step===2){
-    $('l1StepLabel').textContent='Paso 2 Â· Suma';
-    const options=[ `${t} + ${t} + ${t}` , Array.from({length:t},()=>m).join(' + '), `${t} + ${m}` ];
-    const correct = `${t} + ${t}${m>2?' + '.repeat(0):''}`; // placeholder not used
-    const good = Array.from({length:m},()=>t).join(' + ');
-    const arr=[good, Array.from({length:t},()=>m).join(' + '), `${t} + ${m}`].sort(()=>Math.random()-.5);
-    wrap.innerHTML = `<div class="question primary">${t} Ã ${m} = ?</div><div class="subtitle" style="text-align:center">Elige la suma correcta</div><div class="option-list" id="sumOptions"></div>`;
-    const box=$('sumOptions');
-    arr.forEach(txt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent=txt; b.onclick=()=>{ if(txt===good){ b.classList.add('correct'); playSound('correct'); level1.score+=20; setTimeout(()=>{ level1.step=3; renderLevel1Step(); },600);} else { b.classList.add('wrong'); playSound('wrong'); } }; box.appendChild(b); });
-    return;
-  }
-  if(level1.step===3){
-    $('l1StepLabel').textContent='Paso 3 Â· Bloques';
-    const groups = Math.random()>.5 ? {rows:m, cols:t} : {rows:t, cols:m};
-    wrap.innerHTML = `<div class="question primary">${t} Ã ${m} = ?</div><div class="subtitle" style="text-align:center">Observa los grupos y responde</div><div class="block-groups" id="blockGroups"></div><div class="option-list" id="blockAns"></div>`;
-    const g=$('blockGroups');
-    for(let r=0;r<groups.rows;r++){
-      const row=document.createElement('div'); row.className='group-row'; for(let c=0;c<groups.cols;c++){ const d=document.createElement('div'); d.className='block'; row.appendChild(d);} g.appendChild(row);
-    }
-    const opts = shuffle([res, res+t, Math.max(1,res-t)]);
-    const box=$('blockAns');
-    opts.forEach(v=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent=v; b.onclick=()=>{ if(v===res){ b.classList.add('correct'); playSound('correct'); level1.score+=20; setTimeout(()=>{ level1.step=4; renderLevel1Step(); },600);} else { b.classList.add('wrong'); playSound('wrong'); } }; box.appendChild(b); });
-    return;
-  }
-  if(level1.step===4){
-    $('l1StepLabel').textContent='Paso 4 Â· Matching';
-    const pairs = shuffle(Array.from({length:4},(_,i)=>i+1)).map(x=>({expr:`${t} Ã ${x}`, val:t*x}));
-    wrap.innerHTML = `<div class="subtitle" style="text-align:center">Toca una operaciÃ³n y luego el resultado correcto</div><div class="match-grid"><div class="match-col" id="leftCol"></div><div></div><div class="match-col" id="rightCol"></div></div><div class="feedback" id="matchMsg"></div>`;
-    const left=$('leftCol'), right=$('rightCol'); let chosenLeft=null,done=0; const vals=shuffle(pairs.map(p=>p.val));
-    pairs.forEach(p=>{ const b=document.createElement('button'); b.className='match-item'; b.textContent=p.expr; b.dataset.val=p.val; b.onclick=()=>{ if(b.classList.contains('done')) return; chosenLeft=b; [...left.children].forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); playSound('tap');}; left.appendChild(b); });
-    vals.forEach(v=>{ const b=document.createElement('button'); b.className='match-item'; b.textContent=v; b.dataset.val=v; b.onclick=()=>{ if(!chosenLeft || b.classList.contains('done')) return; if(+chosenLeft.dataset.val===+b.dataset.val){ chosenLeft.classList.add('done'); b.classList.add('done'); chosenLeft.classList.remove('sel'); chosenLeft=null; done++; playSound('correct'); if(done===4){ $('matchMsg').textContent='Â¡Perfecto!'; $('matchMsg').className='feedback good'; level1.score+=20; setTimeout(()=>{ level1.step=5; renderLevel1Step(); },700); } } else { b.classList.add('wrong'); playSound('wrong'); setTimeout(()=>b.classList.remove('wrong'),350); } }; right.appendChild(b); });
-    return;
-  }
-  $('l1StepLabel').textContent='Paso 5 Â· Respuesta';
-  wrap.innerHTML = `<div class="question primary">${t} Ã ${m} = ?</div><div id="l1Answer" class="answer-display"></div>`;
-  renderKeypad('l1Content', 'l1Answer', ans=>{
-    if(+ans===res){ playSound('correct'); level1.score+=20; const scoreTable=Math.round(level1.score); updateTableStatusFromScore(t, scoreTable); getUser().progress[t].correct = Math.max(getUser().progress[t].correct||0, m); saveState(); level1.mult++; if(level1.mult>10){ openModal(`<h3>Â¡Aprendiste la tabla del ${t}! ð</h3><p>Puntaje: ${scoreTable}/100</p><div class="footer-actions"><button class="small-btn green" onclick="closeModal();showScreen('screen-level1-config')">Volver</button><button class="small-btn blue" onclick="closeModal();showScreen('screen-home')">Inicio</button></div>`); playSound('win'); } else { level1.step=1; setTimeout(renderLevel1Step,400); } }
-    else{ playSound('wrong'); }
+    div.appendChild(btn);
   });
 }
 
-function renderKeypad(containerId, answerId, onSubmit){
-  const parent = $(containerId);
-  const old = parent.querySelector('.keypad'); if(old) old.remove();
-  const pad = document.createElement('div'); pad.className='keypad';
-  const keys=['1','2','3','4','5','6','7','8','9','â«','0','â'];
-  let current='';
-  const display=$(answerId); display.textContent='';
-  keys.forEach(k=>{ const b=document.createElement('button'); b.className='key'; if(k==='â«') b.classList.add('red'); if(k==='â') b.classList.add('green'); b.textContent=k; b.onclick=()=>{ playSound('tap'); if(k==='â«'){ current=current.slice(0,-1); display.textContent=current; return; } if(k==='â'){ if(current!=='') onSubmit(current); current=''; display.textContent=''; return; } if(current.length<3){ current += k; display.textContent=current; } }; pad.appendChild(b); });
-  parent.appendChild(pad);
+function addUser(){
+  let name = document.getElementById("newUser").value;
+  if(!name) return;
+
+  let user = {
+    name,
+    progress:{}
+  };
+
+  users.push(user);
+  localStorage.setItem("users", JSON.stringify(users));
+  renderUsers();
 }
 
-function pickRandomPositions(n,total){ const arr=[...Array(total).keys()]; return shuffle(arr).slice(0,n); }
-function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+// ====== NAVEGACIÓN ======
+function goTo(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-let level2 = null, level2Timer=null;
-function toggleSpecific(){ const p=$('specificPanel'); p.classList.toggle('hidden'); $('specificToggle').textContent = p.classList.contains('hidden') ? 'No':'SÃ­'; if(!p.innerHTML) buildSpecificPanel(); }
-function buildSpecificPanel(){ const p=$('specificPanel'); let html=''; for(let t=1;t<=10;t++){ html += `<div class="card" style="padding:10px;margin-bottom:8px"><div style="font-weight:800;margin-bottom:8px">Tabla del ${t}</div><div class="check-grid">`; for(let i=1;i<=10;i++) html += `<button class="check-btn spec" data-table="${t}" data-mult="${i}">${t}Ã${i}</button>`; html += `</div></div>`; } p.innerHTML=html; [...p.querySelectorAll('.spec')].forEach(b=>b.onclick=()=>b.classList.toggle('active')); }
-function prepareLevel2(tables){ buildTableButtons('level2TableBtns'); if(tables){ [...$('level2TableBtns').children].forEach(b=>{ if(tables.includes(+b.dataset.t)) b.classList.add('active'); }); showScreen('screen-level2-config'); } }
+// ====== RESET ======
+function resetProgress(){
+  if(!currentUser) return;
+  currentUser.progress = {};
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Progreso reiniciado");
+}
+
+// ====== SONIDOS ======
+const sounds = {
+  correct:new Audio("sounds/correct.mp3"),
+  wrong:new Audio("sounds/wrong.mp3"),
+  tap:new Audio("sounds/tap.mp3"),
+  win:new Audio("sounds/win.mp3"),
+  bg:new Audio("sounds/bg.mp3")
+};
+
+function playSound(name){
+  if(sounds[name]){
+    sounds[name].currentTime=0;
+    sounds[name].play();
+  }
+}
+
+// ====== INIT ======
+renderUsers();
+// =======================
+// NIVEL 1 (BASE FUNCIONAL)
+// =======================
+
+let level1Index = 1;
+let currentA, currentB, correctAnswer;
+
+// generar ejercicio
+function generateLevel1(){
+  currentA = Math.ceil(Math.random()*10);
+  currentB = Math.ceil(Math.random()*10);
+  correctAnswer = currentA * currentB;
+
+  document.getElementById("level1").innerHTML = `
+    <div class="card">
+      <h1>Nivel 1</h1>
+      <h2 style="text-align:center">${currentA} x ${currentB}</h2>
+
+      <div style="display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin:15px 0">
+        ${generateBlocks(currentA, currentB)}
+      </div>
+
+      <div style="text-align:center;margin:15px 0">
+        ${generateSum(currentA, currentB)}
+      </div>
+
+      <button class="primary" onclick="checkLevel1(${correctAnswer})">Ver respuesta</button>
+      <button onclick="generateLevel1()">Siguiente</button>
+      <button onclick="goTo('menu')">Volver</button>
+    </div>
+  `;
+}
+
+function generateBlocks(a,b){
+  let html="";
+  for(let i=0;i<a;i++){
+    html+=`<div style="background:#2196F3;width:20px;height:20px;border-radius:5px"></div>`;
+  }
+  return html;
+}
+
+function generateSum(a,b){
+  return Array(b).fill(a).join(" + ");
+}
+
+function checkLevel1(ans){
+  alert("Resultado: "+ans);
+}
+
+// =======================
+// NIVEL 2 (TIEMPO)
+// =======================
+
+let level2Timer;
+
 function startLevel2(){
-  let selected = getSelectedTables('level2TableBtns'); if(!selected.length) selected=[1];
-  let q=[];
-  const specific = !$('specificPanel').classList.contains('hidden') ? [...$('specificPanel').querySelectorAll('.spec.active')] : [];
-  if(specific.length){ q = specific.map(b=>({a:+b.dataset.table,b:+b.dataset.mult})); }
-  else{ for(let i=0;i<QUESTION_COUNT;i++){ const a=selected[Math.floor(Math.random()*selected.length)]; const b=1+Math.floor(Math.random()*10); q.push({a,b}); } }
-  level2 = {questions:q, idx:0, correct:0, selected, answer:'', perMs:6000};
-  setFlow('screen-level2'); showScreen('screen-level2'); renderLevel2();
-}
-function renderLevel2(){
-  const q = level2.questions[level2.idx]; $('l2Question').textContent=`${q.a} Ã ${q.b} = ?`; $('l2Answer').textContent=''; $('l2Feedback').textContent=''; $('l2RoundLabel').textContent=`${level2.idx+1}/${level2.questions.length}`; $('l2TablesLabel').textContent='Tablas: '+[...new Set(level2.questions.map(x=>x.a))].join(', ');
-  renderInteractiveKeypad('l2Keypad','l2Answer', ans=>submitLevel2(ans)); startLevel2Timer();
-}
-function renderInteractiveKeypad(containerId, answerId, onSubmit){
-  const pad=$(containerId); pad.innerHTML=''; let current=''; const display=$(answerId); display.textContent='';
-  ['1','2','3','4','5','6','7','8','9','â«','0','â'].forEach(k=>{ const b=document.createElement('button'); b.className='key'; if(k==='â«') b.classList.add('red'); if(k==='â') b.classList.add('green'); b.textContent=k; b.onclick=()=>{ playSound('tap'); if(k==='â«'){ current=current.slice(0,-1); display.textContent=current; return; } if(k==='â'){ if(current!=='') onSubmit(current); return; } if(current.length<3){ current+=k; display.textContent=current; } }; pad.appendChild(b); });
-}
-function startLevel2Timer(){ clearInterval(level2Timer); let start=Date.now(); const per=level2.perMs; $('l2TimeBar').style.width='100%';
-  level2Timer=setInterval(()=>{ const left=Math.max(0, per-(Date.now()-start)); const pct=left/per*100; $('l2TimeBar').style.width=pct+'%'; $('l2TimeBar').style.background=pct<30?'#EF4444':pct<60?'#F59E0B':'#2EA3F2'; if(left<=0){ clearInterval(level2Timer); submitLevel2(''); } },80);
-}
-function submitLevel2(ans){ clearInterval(level2Timer); const q=level2.questions[level2.idx], ok=(+ans===q.a*q.b); if(ok){ level2.correct++; $('l2Feedback').textContent='Â¡Muy bien!'; $('l2Feedback').className='feedback good'; playSound('correct'); } else { $('l2Feedback').textContent=`Respuesta: ${q.a*q.b}`; $('l2Feedback').className='feedback bad'; playSound('wrong'); }
-  setTimeout(()=>{ level2.idx++; if(level2.idx>=level2.questions.length){ finishLevel2(); } else renderLevel2(); },600);
-}
-function finishLevel2(){
-  const byTable={}; level2.questions.forEach((q,i)=>{ byTable[q.a]=byTable[q.a]||{c:0,t:0}; byTable[q.a].t++; if(i<level2.correct) byTable[q.a].c++; });
-  for(const t of Object.keys(byTable)){ const score=Math.round((byTable[t].c/byTable[t].t)*100); updateTableStatusFromScore(+t, score); getUser().progress[+t].correct=Math.max(getUser().progress[+t].correct||0, byTable[t].c); }
-  openModal(`<h3>PrÃ¡ctica terminada</h3><p>Aciertos: <strong>${level2.correct}/${level2.questions.length}</strong></p><div class="footer-actions"><button class="small-btn green" onclick="closeModal();showScreen('screen-level2-config')">Volver</button><button class="small-btn blue" onclick="closeModal();showProgress()">Progreso</button></div>`);
+  goTo("level2");
+  nextLevel2();
 }
 
-let level3=null, level3ClockInt=null;
-function prepareLevel3(tables){ buildTableButtons('level3TableBtns'); if(tables){ [...$('level3TableBtns').children].forEach(b=>{ if(tables.includes(+b.dataset.t)) b.classList.add('active'); }); showScreen('screen-level3-config'); } }
-function startLevel3(){ let selected=getSelectedTables('level3TableBtns'); if(!selected.length) selected=[1]; const qs=[]; for(let i=0;i<QUESTION_COUNT;i++){ const a=selected[Math.floor(Math.random()*selected.length)], b=1+Math.floor(Math.random()*10); qs.push({a,b}); }
-  level3={questions:qs, idx:0, correct:0, answer:'', started:performance.now(), selected}; setFlow('screen-level3'); showScreen('screen-level3'); renderLevel3(); startLevel3Clock(); }
-function renderLevel3(){ const q=level3.questions[level3.idx]; $('l3RoundLabel').textContent=`${level3.idx+1}/${level3.questions.length}`; $('l3Question').textContent=`${q.a} Ã ${q.b} = ?`; $('l3Answer').textContent=''; $('l3Feedback').textContent=''; renderInteractiveKeypad('l3Keypad','l3Answer', submitLevel3); }
-function startLevel3Clock(){ clearInterval(level3ClockInt); level3ClockInt=setInterval(()=>{ const t=((performance.now()-level3.started)/1000).toFixed(2); $('l3Clock').textContent=t+' s'; },50); }
-function submitLevel3(ans){ const q=level3.questions[level3.idx], ok=(+ans===q.a*q.b); if(ok){ level3.correct++; $('l3Feedback').textContent='Â¡Bien!'; $('l3Feedback').className='feedback good'; playSound('correct'); } else { $('l3Feedback').textContent='Incorrecto'; $('l3Feedback').className='feedback bad'; playSound('wrong'); }
-  setTimeout(()=>{ level3.idx++; if(level3.idx>=level3.questions.length) finishLevel3(); else renderLevel3(); },320); }
-function finishLevel3(){ clearInterval(level3ClockInt); const total=((performance.now()-level3.started)/1000); const acc=Math.round(level3.correct/level3.questions.length*100); const avg=total/level3.questions.length; const score=Math.round(acc); const u=getUser();
-  level3.selected.forEach(t=>updateTableStatusFromScore(t, score));
-  const prev=u.totalChallengeBest; let msg=''; if(prev===null || total<prev){ u.totalChallengeBest=total; msg='Â¡Mejoraste tu mejor tiempo!'; playSound('win'); } else msg='Sigue intentando para superar tu mejor tiempo'; saveState();
-  $('l3ScoreBig').textContent=score; $('l3TimeTotal').textContent=total.toFixed(2)+'s'; $('l3Acc').textContent=acc+'%'; $('l3Avg').textContent=avg.toFixed(2)+'s'; $('l3Best').textContent=(u.totalChallengeBest||total).toFixed(2)+'s'; $('l3CompareMsg').textContent=msg; showScreen('screen-level3-result'); }
+function nextLevel2(){
+  let a = Math.ceil(Math.random()*10);
+  let b = Math.ceil(Math.random()*10);
+  correctAnswer = a*b;
 
-function buildCompPlayers(){ const n=Math.min(4,Math.max(2,+$('compPlayersCount').value||2)); const box=$('compPlayersForm'); box.innerHTML=''; for(let i=1;i<=n;i++) box.innerHTML += `<input class="input" style="margin-bottom:8px" placeholder="Jugador ${i}" id="compP${i}">`; }
-function startCompetition(){ let selected=getSelectedTables('competitionTableBtns'); if(!selected.length) selected=[1]; const n=Math.min(4,Math.max(2,+$('compPlayersCount').value||2)); const players=[]; for(let i=1;i<=n;i++){ const name=$(`compP${i}`).value.trim()||`Jugador ${i}`; players.push({name,correct:0,time:0,avg:0,score:0}); }
-  const qs=[]; for(let i=0;i<QUESTION_COUNT;i++){ const a=selected[Math.floor(Math.random()*selected.length)], b=1+Math.floor(Math.random()*10); qs.push({a,b}); }
-  competition={players, questions:qs, pIndex:0, qIndex:0, start:0}; setFlow('screen-competition'); showScreen('screen-competition'); startCompetitionTurn(); }
-let competition=null, compClockInt=null;
-function startCompetitionTurn(){ const p=competition.players[competition.pIndex]; competition.qIndex=0; p.correct=0; p.start=performance.now(); $('compTurnLabel').textContent='Turno de ' + p.name; renderCompetitionQuestion(); startCompetitionClock(); }
-function startCompetitionClock(){ clearInterval(compClockInt); compClockInt=setInterval(()=>{ const p=competition.players[competition.pIndex]; $('compClock').textContent=((performance.now()-p.start)/1000).toFixed(2)+' s'; },50); }
-function renderCompetitionQuestion(){ const q=competition.questions[competition.qIndex]; $('compRoundLabel').textContent=`${competition.qIndex+1}/${competition.questions.length}`; $('compQuestion').textContent=`${q.a} Ã ${q.b} = ?`; $('compAnswer').textContent=''; $('compFeedback').textContent=''; renderInteractiveKeypad('compKeypad','compAnswer', submitCompetition); }
-function submitCompetition(ans){ const q=competition.questions[competition.qIndex], ok=(+ans===q.a*q.b), p=competition.players[competition.pIndex]; if(ok){ p.correct++; $('compFeedback').textContent='Â¡Bien!'; $('compFeedback').className='feedback good'; playSound('correct'); } else { $('compFeedback').textContent='Incorrecto'; $('compFeedback').className='feedback bad'; playSound('wrong'); }
-  setTimeout(()=>{ competition.qIndex++; if(competition.qIndex>=competition.questions.length){ endCompetitionTurn(); } else renderCompetitionQuestion(); },300); }
-function endCompetitionTurn(){ clearInterval(compClockInt); const p=competition.players[competition.pIndex]; p.time=((performance.now()-p.start)/1000); p.avg=p.time/competition.questions.length; p.score=Math.round(p.correct/competition.questions.length*100);
-  competition.pIndex++; if(competition.pIndex>=competition.players.length) finishCompetition(); else startCompetitionTurn(); }
-function finishCompetition(){ const arr=[...competition.players].sort((a,b)=> b.score-a.score || a.time-b.time); let html=''; arr.forEach((p,i)=>{ const medal = i===0?'ð¥':i===1?'ð¥':i===2?'ð¥':'ð'; html += `<div class="rank-row"><div><div class="row"><span class="medal">${medal}</span><strong>${p.name}</strong></div><div class="mini">Puntos: ${p.score} â¢ PrecisiÃ³n: ${p.score}% â¢ Tiempo: ${p.time.toFixed(2)}s â¢ Promedio: ${p.avg.toFixed(2)}s</div></div><div style="font-weight:900">${p.score}</div></div>`; });
-  $('competitionRankings').innerHTML = html; playSound('win'); showScreen('screen-competition-result'); }
+  document.getElementById("level2").innerHTML=`
+    <div class="card">
+      <h1>Nivel 2</h1>
+      <h2>${a} x ${b}</h2>
+      <input id="ans2" type="number">
+      <button onclick="submitLevel2()">OK</button>
+      <p id="timer"></p>
+      <button onclick="goTo('menu')">Volver</button>
+    </div>
+  `;
 
-let snakeGame=null;
-const ladders={1:11,8:16,14:26};
-const snakes={9:4,24:13,29:20,37:27};
-function buildSnakePlayers(){ const n=Math.min(4,Math.max(2,+$('snakePlayersCount').value||2)); const box=$('snakePlayersForm'); box.innerHTML=''; for(let i=1;i<=n;i++) box.innerHTML += `<input class="input" style="margin-bottom:8px" placeholder="Jugador ${i}" id="snakeP${i}">`; }
-function startSnakes(){ let selected=getSelectedTables('snakeTableBtns'); if(!selected.length) selected=[1]; const n=Math.min(4,Math.max(2,+$('snakePlayersCount').value||2)); const players=[]; for(let i=1;i<=n;i++){ players.push({name:$(`snakeP${i}`).value.trim()||`Jugador ${i}`, pos:1, token:'t'+i}); }
-  snakeGame={players, turn:0, selected, dice:null, waitingAnswer:false, answer:'', currentQuestion:null}; setFlow('screen-snakes'); showScreen('screen-snakes'); renderBoard(); updateSnakeTurn(); renderInteractiveKeypad('snakeKeypad','snakeAnswer', submitSnakeAnswer); $('snakeQuestion').textContent='Tira el dado'; $('snakeAnswer').textContent=''; $('snakeDiceValue').textContent='-'; }
-function renderBoard(){ const board=$('board'); board.innerHTML=''; const seq=[]; for(let row=0; row<8; row++){ const start=row*5+1; let nums=[start,start+1,start+2,start+3,start+4]; if(row%2===1) nums.reverse(); seq.unshift(...nums); }
-  seq.forEach(num=>{ const d=document.createElement('div'); d.className='square'; d.dataset.n=num; d.innerHTML=`<span>${num}</span>`; if(ladders[num]) d.innerHTML += `<span class="ladder">ðª</span>`; if(snakes[num]) d.innerHTML += `<span class="snake">ð</span>`; snakeGame.players.forEach((p,i)=>{ if(p.pos===num){ const t=document.createElement('span'); t.className='token '+p.token; t.style.right=(8+(i*16))+'px'; d.appendChild(t);} }); if(snakeGame.players[snakeGame.turn].pos===num) d.classList.add('active'); board.appendChild(d); }); }
-function updateSnakeTurn(){ $('snakeTurn').textContent='Turno de ' + snakeGame.players[snakeGame.turn].name; }
-function rollDice(){ if(snakeGame.waitingAnswer) return; snakeGame.dice = 1+Math.floor(Math.random()*6); $('diceBtn').textContent=snakeGame.dice; $('snakeDiceValue').textContent=snakeGame.dice; const a=snakeGame.selected[Math.floor(Math.random()*snakeGame.selected.length)], b=1+Math.floor(Math.random()*10); snakeGame.currentQuestion={a,b}; snakeGame.waitingAnswer=true; $('snakeQuestion').textContent=`${a} Ã ${b} = ?`; $('snakeAnswer').textContent=''; $('snakeFeedback').textContent=''; playSound('tap'); }
-function submitSnakeAnswer(ans){ if(!snakeGame.waitingAnswer) return; const q=snakeGame.currentQuestion, ok=(+ans===q.a*q.b), p=snakeGame.players[snakeGame.turn]; if(ok){ playSound('correct'); let newPos=Math.min(40,p.pos+snakeGame.dice); p.pos=newPos; $('snakeFeedback').textContent='Â¡Avanza!'; $('snakeFeedback').className='feedback good'; if(ladders[p.pos]){ p.pos=ladders[p.pos]; $('snakeFeedback').textContent='Â¡Correcto! Subes por escalera'; } else if(snakes[p.pos]){ p.pos=snakes[p.pos]; $('snakeFeedback').textContent='Â¡Correcto! Pero caÃ­ste en serpiente'; }
-    renderBoard(); if(p.pos>=40){ playSound('win'); openModal(`<h3>ð Ganador: ${p.name}</h3><p>Â¡LlegÃ³ a la meta!</p><div class="footer-actions"><button class="small-btn green" onclick="closeModal();showScreen('screen-snakes-setup')">Nuevo juego</button><button class="small-btn blue" onclick="closeModal();showScreen('screen-home')">Inicio</button></div>`); return; }
-  } else { playSound('wrong'); $('snakeFeedback').textContent='Incorrecto. Te quedas en la misma casilla'; $('snakeFeedback').className='feedback bad'; }
-  snakeGame.waitingAnswer=false; snakeGame.turn=(snakeGame.turn+1)%snakeGame.players.length; setTimeout(()=>{ updateSnakeTurn(); $('snakeQuestion').textContent='Tira el dado'; $('diceBtn').textContent='ð²'; $('snakeDiceValue').textContent='-'; $('snakeAnswer').textContent=''; $('snakeFeedback').textContent=''; renderBoard(); },700);
+  let time=5;
+  document.getElementById("timer").innerText="Tiempo: "+time;
+
+  level2Timer=setInterval(()=>{
+    time--;
+    document.getElementById("timer").innerText="Tiempo: "+time;
+
+    if(time<=0){
+      clearInterval(level2Timer);
+      nextLevel2();
+    }
+  },1000);
 }
 
-function renderProgress(){ setFlow('screen-progress'); const u=getUser(); const pct=computeOverallProgress(); $('progressPercent').textContent=pct+'%'; const dominated = Object.values(u.progress).filter(p=>p.status===3).length; $('progressSummary').textContent=`Tablas dominadas: ${dominated}/10`; let html=''; for(let t=1;t<=10;t++){ const p=u.progress[t]; html += `<div class="rank-row"><div><strong>Tabla del ${t}</strong><div class="mini">${p.correct||0}/10 correctos â¢ Mejor score ${p.score||0}</div></div><div><span class="status-pill ${statusClass(p.status)}">${statusText(p.status)}</span></div></div>`; } $('progressTableList').innerHTML=html; }
-function showProgress(){ showScreen('screen-progress'); }
+function submitLevel2(){
+  let val = Number(document.getElementById("ans2").value);
 
-function openHelp(){ openModal(`<h3>Â¿CÃ³mo funciona?</h3><p><strong>Nivel 1:</strong> comprende la multiplicaciÃ³n con secuencia, suma, bloques, matching y escritura.</p><p><strong>Nivel 2:</strong> practica con tiempo suave y tablas seleccionadas.</p><p><strong>Nivel 3:</strong> mejora tu tiempo total, precisiÃ³n y promedio por pregunta.</p><p><strong>Competencia:</strong> todos juegan el mismo reto. Gana el mayor puntaje y, si empatan, el menor tiempo.</p><p><strong>Progreso:</strong> gris = no iniciado, azul = en proceso, amarillo = avanzado, verde = dominado.</p><div class="footer-actions"><button class="small-btn blue" onclick="closeModal()">Cerrar</button></div>`); }
-function openResetMenu(){ openModal(`<h3>Reiniciar progreso</h3><p>Esto borrarÃ¡ el avance del usuario <strong>${currentUser}</strong>.</p><div class="footer-actions"><button class="small-btn gray" onclick="closeModal()">Cancelar</button><button class="small-btn red" onclick="resetCurrentUser()">Reiniciar</button></div>`); }
-function resetCurrentUser(){ state.users[currentUser]=defaultUserData(currentUser); saveState(); closeModal(); refreshHome(); }
-function openModal(html){ $('modalBox').innerHTML=html; $('overlay').classList.remove('hidden'); }
-function closeModal(){ $('overlay').classList.add('hidden'); }
-function confirmExit(back){ openModal(`<h3>Â¿Salir?</h3><p>Se perderÃ¡ la ronda actual.</p><div class="footer-actions"><button class="small-btn gray" onclick="closeModal()">Cancelar</button><button class="small-btn red" onclick="closeModal();showScreen('${back}')">Salir</button></div>`); }
+  if(val===correctAnswer){
+    playSound("correct");
+  }else{
+    playSound("wrong");
+  }
 
-function init(){
-  loadState(); renderUsers(); buildLevel1Buttons(); buildTableButtons('level2TableBtns'); buildTableButtons('level3TableBtns'); buildTableButtons('competitionTableBtns'); buildTableButtons('snakeTableBtns'); buildCompPlayers(); buildSnakePlayers();
-  if(getUsers().length){ currentUser=getUsers()[0]; ensureCurrent(); }
+  clearInterval(level2Timer);
+  nextLevel2();
 }
-init();
+
+// =======================
+// NIVEL 3 (CRONÓMETRO)
+// =======================
+
+let startTime, results=[];
+
+function startLevel3(){
+  goTo("level3");
+  results=[];
+  nextLevel3();
+}
+
+function nextLevel3(){
+  let a = Math.ceil(Math.random()*10);
+  let b = Math.ceil(Math.random()*10);
+  correctAnswer=a*b;
+  startTime=Date.now();
+
+  document.getElementById("level3").innerHTML=`
+    <div class="card">
+      <h1>Nivel 3</h1>
+      <h2>${a} x ${b}</h2>
+      <input id="ans3" type="number">
+      <button onclick="submitLevel3()">OK</button>
+      <button onclick="goTo('menu')">Volver</button>
+    </div>
+  `;
+}
+
+function submitLevel3(){
+  let val = Number(document.getElementById("ans3").value);
+  let time = (Date.now()-startTime)/1000;
+
+  results.push(time);
+
+  if(val===correctAnswer){
+    playSound("correct");
+  }else{
+    playSound("wrong");
+  }
+
+  if(results.length>=5){
+    let avg = results.reduce((a,b)=>a+b,0)/results.length;
+    alert("Tiempo promedio: "+avg.toFixed(2)+"s");
+    goTo("menu");
+  }else{
+    nextLevel3();
+  }
+}
+
+// =======================
+// COMPETENCIA
+// =======================
+
+let players=[], turn=0;
+
+function startCompetition(){
+  players = prompt("Nombres separados por coma").split(",");
+  turn=0;
+  nextTurn();
+}
+
+function nextTurn(){
+  let a=Math.ceil(Math.random()*10);
+  let b=Math.ceil(Math.random()*10);
+  correctAnswer=a*b;
+
+  document.getElementById("competition").innerHTML=`
+    <div class="card">
+      <h1>Turno: ${players[turn]}</h1>
+      <h2>${a} x ${b}</h2>
+      <input id="ansC">
+      <button onclick="submitCompetition()">OK</button>
+    </div>
+  `;
+}
+
+function submitCompetition(){
+  let val = Number(document.getElementById("ansC").value);
+
+  if(val===correctAnswer){
+    playSound("correct");
+  }else{
+    playSound("wrong");
+  }
+
+  turn++;
+
+  if(turn>=players.length){
+    alert("Fin de ronda");
+    goTo("menu");
+  }else{
+    nextTurn();
+  }
+}
+
+// =======================
+// SERPIENTES
+// =======================
+
+let pos=1;
+
+function startSnake(){
+  goTo("snake");
+  drawBoard();
+}
+
+function drawBoard(){
+  let html="";
+  for(let i=1;i<=40;i++){
+    html+=`<div style="display:inline-block;width:40px">${i}</div>`;
+  }
+
+  document.getElementById("snake").innerHTML=`
+    <div class="card">
+      <h1>Posición: ${pos}</h1>
+      ${html}
+      <button onclick="rollDice()">🎲</button>
+      <button onclick="goTo('menu')">Volver</button>
+    </div>
+  `;
+}
+
+function rollDice(){
+  let dice = Math.ceil(Math.random()*6);
+
+  let a=Math.ceil(Math.random()*10);
+  let b=Math.ceil(Math.random()*10);
+  correctAnswer=a*b;
+
+  let ans=Number(prompt(a+" x "+b));
+
+  if(ans===correctAnswer){
+    pos+=dice;
+    playSound("correct");
+  }else{
+    playSound("wrong");
+  }
+
+  if(pos>=40){
+    alert("GANASTE");
+    pos=1;
+  }
+
+  drawBoard();
+}
 </script>
+
 </body>
 </html>

@@ -14,7 +14,6 @@
       --blue:#2d8cff;
       --blue-dark:#1f6fcb;
       --green:#22c55e;
-      --red:#ef4444;
       --shadow:0 10px 24px rgba(0,0,0,.12);
       --radius:24px;
     }
@@ -74,7 +73,9 @@
     .icon-btn,
     .back-btn,
     .primary-btn,
-    .secondary-btn{
+    .secondary-btn,
+    .main-btn,
+    .child-card{
       border:none;
       cursor:pointer;
       font-weight:800;
@@ -166,12 +167,11 @@
     .main-btn{
       background:var(--blue);
       color:#fff;
-      border:none;
       border-radius:24px;
       padding:16px 18px;
       box-shadow:0 8px 0 var(--blue-dark);
       text-align:center;
-      cursor:pointer;
+      width:100%;
     }
 
     .main-btn:active,
@@ -208,16 +208,14 @@
     }
 
     .child-card{
+      width:100%;
       background:#fff;
-      border:none;
       border-radius:18px;
       padding:14px 16px;
       box-shadow:var(--shadow);
       text-align:left;
       font-size:16px;
-      font-weight:700;
       color:var(--blue-dark);
-      cursor:pointer;
     }
   </style>
 </head>
@@ -236,8 +234,8 @@
         <div class="section-title">Login</div>
         <input id="loginEmail" class="input" placeholder="Email" />
         <input id="loginPassword" class="input" type="password" placeholder="Password" />
-        <button class="primary-btn">Login</button>
-        <button class="secondary-btn">Create account</button>
+        <button class="primary-btn" onclick="showScreen('screen-profiles')">Login</button>
+        <button class="secondary-btn" onclick="showScreen('screen-profiles')">Create account</button>
       </div>
     </section>
 
@@ -252,15 +250,15 @@
       <div class="card">
         <div class="section-title">Choose a child</div>
         <div class="children-list">
-          <button class="child-card">Aitana</button>
-          <button class="child-card">Pedro</button>
+          <button class="child-card" onclick="selectChild('Aitana')">Aitana</button>
+          <button class="child-card" onclick="selectChild('Pedro')">Pedro</button>
         </div>
       </div>
 
       <div class="card">
         <div class="section-title">Add profile</div>
-        <input class="input" placeholder="Child name" />
-        <button class="primary-btn">Add child</button>
+        <input id="newChildName" class="input" placeholder="Child name" />
+        <button class="primary-btn" onclick="addDemoChild()">Add child</button>
       </div>
     </section>
 
@@ -306,7 +304,7 @@
       <div class="topbar">
         <button class="back-btn" onclick="showScreen('screen-home')">←</button>
         <div class="topbar-title">Level Setup</div>
-        <button class="icon-btn">✓</button>
+        <button class="icon-btn" onclick="showScreen('screen-game')">✓</button>
       </div>
 
       <div class="card">
@@ -314,6 +312,7 @@
         <div class="placeholder">
           This screen will let the user select tables and, in some levels, specific multiplications.
         </div>
+        <button class="secondary-btn" onclick="showScreen('screen-game')">Continue to Game</button>
       </div>
     </section>
 
@@ -357,6 +356,28 @@
         screen.classList.remove('active');
       });
       document.getElementById(screenId).classList.add('active');
+    }
+
+    function selectChild(childName){
+      document.getElementById('homeChildName').textContent = childName;
+      showScreen('screen-home');
+    }
+
+    function addDemoChild(){
+      const input = document.getElementById('newChildName');
+      const name = input.value.trim();
+      if(!name) return;
+
+      const list = document.querySelector('.children-list');
+      const btn = document.createElement('button');
+      btn.className = 'child-card';
+      btn.textContent = name;
+      btn.onclick = function(){
+        selectChild(name);
+      };
+
+      list.appendChild(btn);
+      input.value = '';
     }
   </script>
 </body>

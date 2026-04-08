@@ -1,283 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bright Minds Math</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Bright Minds Math</title>
+  <style>
+    :root{
+      --bg-1:#f6c445;
+      --bg-2:#f4a261;
+      --card:#ffffff;
+      --text:#24324b;
+      --muted:#6b7280;
+      --blue:#2d8cff;
+      --blue-dark:#1f6fcb;
+      --green:#22c55e;
+      --red:#ef4444;
+      --shadow:0 10px 24px rgba(0,0,0,.12);
+      --radius:24px;
+    }
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:linear-gradient(135deg,#f6c445,#f4a261);
-}
-.screen{display:none;padding:20px}
-.active{display:block}
+    html, body{
+      margin:0;
+      padding:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:#f2f2f2;
+      color:var(--text);
+    }
 
-.card{
-  background:white;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:15px;
-}
+    body{
+      min-height:100vh;
+    }
 
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  margin:8px 0;
-}
+    .app-shell{
+      max-width:500px;
+      min-height:100vh;
+      margin:0 auto;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.12), transparent 30%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    }
 
-.primary{background:#4CAF50;color:white}
-.secondary{background:#2196F3;color:white}
+    .screen{
+      display:none;
+      min-height:100vh;
+      padding:18px 18px 30px;
+    }
 
-.table-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
-}
+    .screen.active{
+      display:block;
+    }
 
-.table-btn{
-  padding:10px;
-  background:#eee;
-  border-radius:10px;
-  text-align:center;
-}
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
+    }
 
-.selected{background:#4CAF50;color:white}
+    .topbar-title{
+      flex:1;
+      text-align:center;
+      font-size:22px;
+      font-weight:800;
+      line-height:1.1;
+    }
 
-.answers{display:flex;gap:10px}
-.btn{flex:1;padding:12px;border-radius:10px}
+    .icon-btn,
+    .back-btn,
+    .primary-btn,
+    .secondary-btn{
+      border:none;
+      cursor:pointer;
+      font-weight:800;
+    }
 
-.correct{background:green;color:white}
-.wrong{background:red;color:white}
-</style>
+    .icon-btn,
+    .back-btn{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      background:#fff;
+      color:var(--blue);
+      box-shadow:var(--shadow);
+      font-size:22px;
+    }
+
+    .hero,
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .hero{
+      padding:24px 18px;
+      text-align:center;
+      margin-top:8px;
+    }
+
+    .hero h1{
+      margin:8px 0;
+      font-size:34px;
+      line-height:1.02;
+      color:var(--blue-dark);
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .card{
+      padding:16px;
+      margin-top:14px;
+    }
+
+    .section-title{
+      font-size:22px;
+      font-weight:800;
+      margin:6px 0 12px;
+    }
+
+    .input{
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:14px 16px;
+      font-size:16px;
+      background:#fff;
+      box-shadow: inset 0 0 0 2px #e5e7eb;
+      margin-bottom:10px;
+    }
+
+    .primary-btn{
+      width:100%;
+      background:var(--green);
+      color:#fff;
+      border-radius:18px;
+      padding:14px 18px;
+      margin-top:8px;
+    }
+
+    .secondary-btn{
+      width:100%;
+      background:var(--blue);
+      color:#fff;
+      border-radius:18px;
+      padding:14px 18px;
+      margin-top:8px;
+    }
+
+    .menu-list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .main-btn{
+      background:var(--blue);
+      color:#fff;
+      border:none;
+      border-radius:24px;
+      padding:16px 18px;
+      box-shadow:0 8px 0 var(--blue-dark);
+      text-align:center;
+      cursor:pointer;
+    }
+
+    .main-btn:active,
+    .primary-btn:active,
+    .secondary-btn:active{
+      transform:translateY(2px);
+    }
+
+    .main-btn .big{
+      font-size:18px;
+      font-weight:800;
+    }
+
+    .main-btn .small{
+      font-size:12px;
+      margin-top:4px;
+      opacity:.96;
+    }
+
+    .placeholder{
+      padding:24px 16px;
+      border-radius:18px;
+      background:#f8fafc;
+      color:var(--muted);
+      text-align:center;
+      font-size:14px;
+      border:2px dashed #d1d5db;
+    }
+
+    .children-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .child-card{
+      background:#fff;
+      border:none;
+      border-radius:18px;
+      padding:14px 16px;
+      box-shadow:var(--shadow);
+      text-align:left;
+      font-size:16px;
+      font-weight:700;
+      color:var(--blue-dark);
+      cursor:pointer;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="app-shell">
 
-<!-- LOGIN -->
-<div id="login" class="screen active">
-  <div class="card">
-    <h2>Login</h2>
-    <input id="email" placeholder="Email"><br><br>
-    <input id="password" type="password" placeholder="Password"><br><br>
-    <button class="primary" onclick="login()">Login</button>
-    <button onclick="signup()">Sign Up</button>
+    <!-- LOGIN -->
+    <section id="screen-login" class="screen active">
+      <div class="hero">
+        <div class="subtitle">Bright Minds Math</div>
+        <h1>Welcome Back</h1>
+        <div class="subtitle">Login and continue learning</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Login</div>
+        <input id="loginEmail" class="input" placeholder="Email" />
+        <input id="loginPassword" class="input" type="password" placeholder="Password" />
+        <button class="primary-btn">Login</button>
+        <button class="secondary-btn">Create account</button>
+      </div>
+    </section>
+
+    <!-- PROFILES -->
+    <section id="screen-profiles" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="showScreen('screen-login')">←</button>
+        <div class="topbar-title">Profiles</div>
+        <button class="icon-btn">+</button>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Choose a child</div>
+        <div class="children-list">
+          <button class="child-card">Aitana</button>
+          <button class="child-card">Pedro</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Add profile</div>
+        <input class="input" placeholder="Child name" />
+        <button class="primary-btn">Add child</button>
+      </div>
+    </section>
+
+    <!-- HOME -->
+    <section id="screen-home" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="showScreen('screen-profiles')">←</button>
+        <div class="topbar-title">Bright Minds</div>
+        <button class="icon-btn" onclick="showScreen('screen-progress')">📊</button>
+      </div>
+
+      <div class="hero">
+        <div class="subtitle">Selected child</div>
+        <h1 id="homeChildName">Aitana</h1>
+        <div class="subtitle">Choose a mode to continue</div>
+      </div>
+
+      <div class="menu-list">
+        <button class="main-btn" onclick="showScreen('screen-setup')">
+          <div class="big">🌱 Number Builder</div>
+          <div class="small">Build your understanding of multiplication</div>
+        </button>
+
+        <button class="main-btn" onclick="showScreen('screen-setup')">
+          <div class="big">🚀 Skill Builder</div>
+          <div class="small">Practice and strengthen your skills</div>
+        </button>
+
+        <button class="main-btn" onclick="showScreen('screen-setup')">
+          <div class="big">⚡ Speed Challenge</div>
+          <div class="small">Solve faster and improve your time</div>
+        </button>
+
+        <button class="main-btn" onclick="showScreen('screen-setup')">
+          <div class="big">🏆 Math Arena</div>
+          <div class="small">Compete and show your level</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- SETUP -->
+    <section id="screen-setup" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="topbar-title">Level Setup</div>
+        <button class="icon-btn">✓</button>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Setup</div>
+        <div class="placeholder">
+          This screen will let the user select tables and, in some levels, specific multiplications.
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME -->
+    <section id="screen-game" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="topbar-title">Game</div>
+        <button class="icon-btn">⏸</button>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Game Area</div>
+        <div class="placeholder">
+          The active level will render here.
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section id="screen-progress" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="topbar-title">Progress</div>
+        <button class="icon-btn">⋯</button>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Progress</div>
+        <div class="placeholder">
+          XP, table status, best times and accuracy will appear here.
+        </div>
+      </div>
+    </section>
+
   </div>
-</div>
 
-<!-- PROFILES -->
-<div id="profiles" class="screen">
-  <div class="card">
-    <h2>Profiles</h2>
-    <div id="children"></div>
-    <input id="childName" placeholder="Child name">
-    <button onclick="addChild()">Add</button>
-  </div>
-</div>
-
-<!-- HOME -->
-<div id="home" class="screen">
-  <div class="card">
-    <h2>Bright Minds</h2>
-    <button onclick="goSetup('level1')">🌱 Number Builder</button>
-    <button onclick="goSetup('level2')">🚀 Skill Builder</button>
-    <button onclick="goSetup('level3')">⚡ Speed Challenge</button>
-    <button onclick="goSetup('level4')">🏆 Math Arena</button>
-  </div>
-</div>
-
-<!-- SETUP -->
-<div id="setup" class="screen">
-  <div class="card">
-    <h3>Select Tables</h3>
-    <div id="tables" class="table-grid"></div>
-    <button onclick="startGame()" class="primary">Start</button>
-  </div>
-</div>
-
-<!-- GAME -->
-<div id="game" class="screen">
-  <div class="card">
-    <h2 id="question"></h2>
-    <div id="answers" class="answers"></div>
-  </div>
-</div>
-
-<script>
-
-// 🔥 CONFIGURA TU FIREBASE
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_DOMAIN",
-  projectId: "TU_PROJECT_ID",
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-let state = {
-  childId:null,
-  level:null,
-  tables:[],
-  correct:0,
-  wrong:0
-};
-
-// LOGIN
-function login(){
-  auth.signInWithEmailAndPassword(
-    email.value, password.value
-  ).then(()=>go("profiles"))
-  .catch(e=>alert(e.message));
-}
-
-function signup(){
-  auth.createUserWithEmailAndPassword(
-    email.value, password.value
-  ).then(()=>go("profiles"))
-  .catch(e=>alert(e.message));
-}
-
-// AUTO LOGIN
-auth.onAuthStateChanged(user=>{
-  if(user){
-    loadChildren();
-    go("profiles");
-  }
-});
-
-// PROFILES
-function loadChildren(){
-  let user = auth.currentUser;
-  db.collection("users").doc(user.uid).collection("children")
-  .get().then(snap=>{
-    children.innerHTML="";
-    snap.forEach(doc=>{
-      let b=document.createElement("button");
-      b.innerText=doc.data().name;
-      b.onclick=()=>{
-        state.childId=doc.id;
-        go("home");
-      };
-      children.appendChild(b);
-    });
-  });
-}
-
-function addChild(){
-  let user = auth.currentUser;
-  db.collection("users").doc(user.uid).collection("children")
-  .add({name:childName.value,xp:0})
-  .then(loadChildren);
-}
-
-// NAV
-function go(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-// SETUP
-function goSetup(level){
-  state.level=level;
-  state.tables=[];
-  renderTables();
-  go("setup");
-}
-
-function renderTables(){
-  tables.innerHTML="";
-  for(let i=1;i<=10;i++){
-    let b=document.createElement("div");
-    b.className="table-btn";
-    b.innerText=i;
-    b.onclick=()=>{
-      if(state.tables.includes(i)){
-        state.tables=state.tables.filter(x=>x!=i);
-        b.classList.remove("selected");
-      }else{
-        state.tables.push(i);
-        b.classList.add("selected");
-      }
-    };
-    tables.appendChild(b);
-  }
-}
-
-// GAME
-function startGame(){
-  if(state.tables.length===0){
-    alert("Select at least one table");
-    return;
-  }
-  go("game");
-  next();
-}
-
-function next(){
-  let table = state.tables[Math.floor(Math.random()*state.tables.length)];
-  let b = Math.ceil(Math.random()*10);
-
-  let correct = table*b;
-  state.currentAnswer = correct;
-
-  question.innerText = `${table} × ${b}`;
-
-  let opts=[correct];
-  while(opts.length<3){
-    let r=Math.ceil(Math.random()*100);
-    if(!opts.includes(r)) opts.push(r);
-  }
-  opts.sort(()=>Math.random()-0.5);
-
-  answers.innerHTML="";
-  opts.forEach(o=>{
-    let btn=document.createElement("button");
-    btn.className="btn";
-    btn.innerText=o;
-    btn.onclick=()=>check(btn,o);
-    answers.appendChild(btn);
-  });
-}
-
-function check(btn,val){
-  if(val===state.currentAnswer){
-    btn.classList.add("correct");
-    state.correct++;
-  }else{
-    btn.classList.add("wrong");
-    state.wrong++;
-  }
-
-  saveProgress();
-
-  setTimeout(next,800);
-}
-
-// FIRESTORE SAVE
-function saveProgress(){
-  let user = auth.currentUser;
-
-  db.collection("users").doc(user.uid)
-  .collection("children").doc(state.childId)
-  .set({
-    lastLevel:state.level,
-    correct:state.correct,
-    wrong:state.wrong
-  },{merge:true});
-}
-
-</script>
-
+  <script>
+    function showScreen(screenId){
+      document.querySelectorAll('.screen').forEach(screen=>{
+        screen.classList.remove('active');
+      });
+      document.getElementById(screenId).classList.add('active');
+    }
+  </script>
 </body>
 </html>

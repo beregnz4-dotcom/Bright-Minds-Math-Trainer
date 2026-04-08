@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Bright Minds Math</title>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
   <style>
     :root{
       --bg-1:#f6c445;
@@ -14,6 +19,7 @@
       --blue:#2d8cff;
       --blue-dark:#1f6fcb;
       --green:#22c55e;
+      --red:#ef4444;
       --shadow:0 10px 24px rgba(0,0,0,.12);
       --radius:24px;
     }
@@ -75,7 +81,8 @@
     .primary-btn,
     .secondary-btn,
     .main-btn,
-    .child-card{
+    .child-card,
+    .danger-btn{
       border:none;
       cursor:pointer;
       font-weight:800;
@@ -157,6 +164,15 @@
       margin-top:8px;
     }
 
+    .danger-btn{
+      width:100%;
+      background:var(--red);
+      color:#fff;
+      border-radius:18px;
+      padding:14px 18px;
+      margin-top:8px;
+    }
+
     .menu-list{
       display:flex;
       flex-direction:column;
@@ -176,7 +192,8 @@
 
     .main-btn:active,
     .primary-btn:active,
-    .secondary-btn:active{
+    .secondary-btn:active,
+    .danger-btn:active{
       transform:translateY(2px);
     }
 
@@ -216,6 +233,32 @@
       text-align:left;
       font-size:16px;
       color:var(--blue-dark);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .child-name{
+      font-weight:700;
+    }
+
+    .mini-btn{
+      border:none;
+      background:#fee2e2;
+      color:#991b1b;
+      border-radius:12px;
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .status{
+      margin-top:10px;
+      font-size:14px;
+      color:var(--muted);
+      text-align:center;
+      min-height:18px;
     }
   </style>
 </head>
@@ -234,31 +277,30 @@
         <div class="section-title">Login</div>
         <input id="loginEmail" class="input" placeholder="Email" />
         <input id="loginPassword" class="input" type="password" placeholder="Password" />
-        <button class="primary-btn" onclick="showScreen('screen-profiles')">Login</button>
-        <button class="secondary-btn" onclick="showScreen('screen-profiles')">Create account</button>
+        <button class="primary-btn" onclick="loginUser()">Login</button>
+        <button class="secondary-btn" onclick="signupUser()">Create account</button>
+        <div id="loginStatus" class="status"></div>
       </div>
     </section>
 
     <!-- PROFILES -->
     <section id="screen-profiles" class="screen">
       <div class="topbar">
-        <button class="back-btn" onclick="showScreen('screen-login')">←</button>
+        <button class="back-btn" onclick="logoutUser()">←</button>
         <div class="topbar-title">Profiles</div>
-        <button class="icon-btn">+</button>
+        <button class="icon-btn" onclick="loadChildren()">↻</button>
       </div>
 
       <div class="card">
         <div class="section-title">Choose a child</div>
-        <div class="children-list">
-          <button class="child-card" onclick="selectChild('Aitana')">Aitana</button>
-          <button class="child-card" onclick="selectChild('Pedro')">Pedro</button>
-        </div>
+        <div id="childrenList" class="children-list"></div>
       </div>
 
       <div class="card">
         <div class="section-title">Add profile</div>
         <input id="newChildName" class="input" placeholder="Child name" />
-        <button class="primary-btn" onclick="addDemoChild()">Add child</button>
+        <button class="primary-btn" onclick="addChild()">Add child</button>
+        <div id="profileStatus" class="status"></div>
       </div>
     </section>
 
@@ -267,90 +309,68 @@
       <div class="topbar">
         <button class="icon-btn" onclick="showScreen('screen-profiles')">←</button>
         <div class="topbar-title">Bright Minds</div>
-        <button class="icon-btn" onclick="showScreen('screen-progress')">📊</button>
+        <button class="icon-btn" onclick="logoutUser()">⎋</button>
       </div>
 
       <div class="hero">
         <div class="subtitle">Selected child</div>
-        <h1 id="homeChildName">Aitana</h1>
+        <h1 id="homeChildName">Child</h1>
         <div class="subtitle">Choose a mode to continue</div>
       </div>
 
       <div class="menu-list">
-        <button class="main-btn" onclick="showScreen('screen-setup')">
+        <button class="main-btn">
           <div class="big">🌱 Number Builder</div>
           <div class="small">Build your understanding of multiplication</div>
         </button>
 
-        <button class="main-btn" onclick="showScreen('screen-setup')">
+        <button class="main-btn">
           <div class="big">🚀 Skill Builder</div>
           <div class="small">Practice and strengthen your skills</div>
         </button>
 
-        <button class="main-btn" onclick="showScreen('screen-setup')">
+        <button class="main-btn">
           <div class="big">⚡ Speed Challenge</div>
           <div class="small">Solve faster and improve your time</div>
         </button>
 
-        <button class="main-btn" onclick="showScreen('screen-setup')">
+        <button class="main-btn">
           <div class="big">🏆 Math Arena</div>
           <div class="small">Compete and show your level</div>
         </button>
       </div>
     </section>
 
-    <!-- SETUP -->
-    <section id="screen-setup" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="showScreen('screen-home')">←</button>
-        <div class="topbar-title">Level Setup</div>
-        <button class="icon-btn" onclick="showScreen('screen-game')">✓</button>
-      </div>
-
-      <div class="card">
-        <div class="section-title">Setup</div>
-        <div class="placeholder">
-          This screen will let the user select tables and, in some levels, specific multiplications.
-        </div>
-        <button class="secondary-btn" onclick="showScreen('screen-game')">Continue to Game</button>
-      </div>
-    </section>
-
-    <!-- GAME -->
-    <section id="screen-game" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="showScreen('screen-home')">←</button>
-        <div class="topbar-title">Game</div>
-        <button class="icon-btn">⏸</button>
-      </div>
-
-      <div class="card">
-        <div class="section-title">Game Area</div>
-        <div class="placeholder">
-          The active level will render here.
-        </div>
-      </div>
-    </section>
-
-    <!-- PROGRESS -->
-    <section id="screen-progress" class="screen">
-      <div class="topbar">
-        <button class="back-btn" onclick="showScreen('screen-home')">←</button>
-        <div class="topbar-title">Progress</div>
-        <button class="icon-btn">⋯</button>
-      </div>
-
-      <div class="card">
-        <div class="section-title">Progress</div>
-        <div class="placeholder">
-          XP, table status, best times and accuracy will appear here.
-        </div>
-      </div>
-    </section>
-
   </div>
 
   <script>
+    // =========================
+    // FIREBASE CONFIG
+    // =========================
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_STORAGE_BUCKET",
+      messagingSenderId: "TU_MESSAGING_SENDER_ID",
+      appId: "TU_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // =========================
+    // APP STATE
+    // =========================
+    let appState = {
+      currentChildId: null,
+      currentChildName: null
+    };
+
+    // =========================
+    // NAVIGATION
+    // =========================
     function showScreen(screenId){
       document.querySelectorAll('.screen').forEach(screen=>{
         screen.classList.remove('active');
@@ -358,26 +378,198 @@
       document.getElementById(screenId).classList.add('active');
     }
 
-    function selectChild(childName){
+    // =========================
+    // AUTH
+    // =========================
+    async function signupUser(){
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const status = document.getElementById('loginStatus');
+
+      if(!email || !password){
+        status.textContent = 'Please enter email and password.';
+        return;
+      }
+
+      try{
+        status.textContent = 'Creating account...';
+        await auth.createUserWithEmailAndPassword(email, password);
+        status.textContent = '';
+      }catch(error){
+        status.textContent = error.message;
+      }
+    }
+
+    async function loginUser(){
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const status = document.getElementById('loginStatus');
+
+      if(!email || !password){
+        status.textContent = 'Please enter email and password.';
+        return;
+      }
+
+      try{
+        status.textContent = 'Logging in...';
+        await auth.signInWithEmailAndPassword(email, password);
+        status.textContent = '';
+      }catch(error){
+        status.textContent = error.message;
+      }
+    }
+
+    async function logoutUser(){
+      try{
+        await auth.signOut();
+        appState.currentChildId = null;
+        appState.currentChildName = null;
+        showScreen('screen-login');
+      }catch(error){
+        alert(error.message);
+      }
+    }
+
+    auth.onAuthStateChanged(async (user)=>{
+      if(user){
+        await ensureUserDoc(user);
+        await loadChildren();
+        showScreen('screen-profiles');
+      }else{
+        showScreen('screen-login');
+      }
+    });
+
+    async function ensureUserDoc(user){
+      const userRef = db.collection('users').doc(user.uid);
+      const snap = await userRef.get();
+
+      if(!snap.exists){
+        await userRef.set({
+          email: user.email,
+          createdAt: Date.now()
+        });
+      }
+    }
+
+    // =========================
+    // CHILDREN
+    // =========================
+    async function addChild(){
+      const input = document.getElementById('newChildName');
+      const status = document.getElementById('profileStatus');
+      const name = input.value.trim();
+      const user = auth.currentUser;
+
+      if(!name){
+        status.textContent = 'Please enter a child name.';
+        return;
+      }
+
+      if(!user){
+        status.textContent = 'No active user session.';
+        return;
+      }
+
+      try{
+        status.textContent = 'Saving child...';
+        await db.collection('users')
+          .doc(user.uid)
+          .collection('children')
+          .add({
+            name,
+            xp: 0,
+            createdAt: Date.now()
+          });
+
+        input.value = '';
+        status.textContent = 'Child added.';
+        await loadChildren();
+      }catch(error){
+        status.textContent = error.message;
+      }
+    }
+
+    async function loadChildren(){
+      const list = document.getElementById('childrenList');
+      const status = document.getElementById('profileStatus');
+      const user = auth.currentUser;
+
+      list.innerHTML = '';
+
+      if(!user){
+        return;
+      }
+
+      try{
+        status.textContent = 'Loading profiles...';
+
+        const snapshot = await db.collection('users')
+          .doc(user.uid)
+          .collection('children')
+          .orderBy('createdAt', 'asc')
+          .get();
+
+        if(snapshot.empty){
+          list.innerHTML = '<div class="placeholder">No profiles yet. Add your first child.</div>';
+          status.textContent = '';
+          return;
+        }
+
+        snapshot.forEach(doc=>{
+          const child = doc.data();
+
+          const row = document.createElement('div');
+          row.className = 'child-card';
+
+          row.innerHTML = `
+            <span class="child-name">${child.name}</span>
+            <button class="mini-btn" type="button">Delete</button>
+          `;
+
+          row.onclick = () => {
+            selectChild(doc.id, child.name);
+          };
+
+          row.querySelector('.mini-btn').onclick = async (event) => {
+            event.stopPropagation();
+            await deleteChild(doc.id);
+          };
+
+          list.appendChild(row);
+        });
+
+        status.textContent = '';
+      }catch(error){
+        status.textContent = error.message;
+      }
+    }
+
+    function selectChild(childId, childName){
+      appState.currentChildId = childId;
+      appState.currentChildName = childName;
       document.getElementById('homeChildName').textContent = childName;
       showScreen('screen-home');
     }
 
-    function addDemoChild(){
-      const input = document.getElementById('newChildName');
-      const name = input.value.trim();
-      if(!name) return;
+    async function deleteChild(childId){
+      const user = auth.currentUser;
+      if(!user) return;
 
-      const list = document.querySelector('.children-list');
-      const btn = document.createElement('button');
-      btn.className = 'child-card';
-      btn.textContent = name;
-      btn.onclick = function(){
-        selectChild(name);
-      };
+      const confirmDelete = confirm('Delete this profile?');
+      if(!confirmDelete) return;
 
-      list.appendChild(btn);
-      input.value = '';
+      try{
+        await db.collection('users')
+          .doc(user.uid)
+          .collection('children')
+          .doc(childId)
+          .delete();
+
+        await loadChildren();
+      }catch(error){
+        alert(error.message);
+      }
     }
   </script>
 </body>

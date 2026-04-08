@@ -42,15 +42,15 @@
     }
 
     .app-shell{
-  width:100%;
-  max-width:1100px;
-  min-height:100vh;
-  margin:0 auto;
-  padding: 0 16px; /* 👈 esto mejora mucho en pantallas grandes */
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.12), transparent 30%),
-    linear-gradient(180deg, var(--bg-1), var(--bg-2));
-}
+      width:100%;
+      max-width:1100px;
+      min-height:100vh;
+      margin:0 auto;
+      padding:0 16px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.12), transparent 30%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    }
 
     .screen{
       display:none;
@@ -262,109 +262,125 @@
       text-align:center;
       min-height:18px;
     }
+
     @media (min-width: 768px){
-  .menu-list{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
-  }
-}
+      .menu-list{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:16px;
+      }
+    }
+
     .table-option{
-  border:none;
-  background:#fff;
-  border-radius:14px;
-  padding:14px 0;
-  box-shadow:var(--shadow);
-  font-weight:800;
-  cursor:pointer;
-}
-.table-option.selected{
-  background:var(--blue);
-  color:#fff;
-}
-.answer-btn{
-  border:none;
-  border-radius:14px;
-  padding:14px 10px;
-  font-size:18px;
-  font-weight:800;
-  background:#fff;
-  box-shadow:var(--shadow);
-  cursor:pointer;
-}
-.answer-btn.correct{
-  background:var(--green);
-  color:#fff;
-}
-.answer-btn.wrong{
-  background:var(--red);
-  color:#fff;
-}
-.block-group{
-  display:flex;
-  gap:6px;
-  background:#e8f1ff;
-  padding:10px 12px;
-  border-radius:16px;
-}
-.block-dot{
-  width:18px;
-  height:18px;
-  border-radius:6px;
-  background:var(--blue);
-}
+      border:none;
+      background:#fff;
+      border-radius:14px;
+      padding:14px 0;
+      box-shadow:var(--shadow);
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .table-option.selected{
+      background:var(--blue);
+      color:#fff;
+    }
+
+    .answer-btn{
+      border:none;
+      border-radius:14px;
+      padding:14px 10px;
+      font-size:18px;
+      font-weight:800;
+      background:#fff;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+    }
+
+    .answer-btn.correct{
+      background:var(--green);
+      color:#fff;
+    }
+
+    .answer-btn.wrong{
+      background:var(--red);
+      color:#fff;
+    }
+
+    .block-group{
+      display:flex;
+      gap:6px;
+      background:#e8f1ff;
+      padding:10px 12px;
+      border-radius:16px;
+    }
+
+    .block-dot{
+      width:18px;
+      height:18px;
+      border-radius:6px;
+      background:var(--blue);
+    }
+
     .sequence-strip{
-  display:flex;
-  justify-content:center;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:18px;
-}
-.sequence-box{
-  min-width:52px;
-  padding:12px 14px;
-  border-radius:14px;
-  background:#fff;
-  box-shadow:var(--shadow);
-  font-weight:800;
-  text-align:center;
-}
-.match-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-bottom:18px;
-}
-.match-col{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.match-btn{
-  border:none;
-  background:#fff;
-  border-radius:14px;
-  padding:14px 10px;
-  font-weight:800;
-  box-shadow:var(--shadow);
-  cursor:pointer;
-}
-.match-btn.selected{
-  outline:3px solid var(--blue);
-}
-.match-btn.correct{
-  background:var(--green);
-  color:#fff;
-}
-.addition-pill{
-  display:inline-block;
-  background:#fff;
-  padding:12px 14px;
-  border-radius:14px;
-  box-shadow:var(--shadow);
-  font-weight:800;
-  margin:4px;
-}
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .sequence-box{
+      min-width:52px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:#fff;
+      box-shadow:var(--shadow);
+      font-weight:800;
+      text-align:center;
+    }
+
+    .match-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .match-col{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .match-btn{
+      border:none;
+      background:#fff;
+      border-radius:14px;
+      padding:14px 10px;
+      font-weight:800;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+    }
+
+    .match-btn.selected{
+      outline:3px solid var(--blue);
+    }
+
+    .match-btn.correct{
+      background:var(--green);
+      color:#fff;
+    }
+
+    .addition-pill{
+      display:inline-block;
+      background:#fff;
+      padding:12px 14px;
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      font-weight:800;
+      margin:4px;
+    }
   </style>
 </head>
 <body>
@@ -379,13 +395,13 @@
       </div>
 
       <div class="card">
-  <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 5</div>
-  <div id="gameTypeLabel" class="subtitle" style="text-align:center;margin-bottom:8px;">Visual</div>
-  <div id="questionText" style="font-size:34px;font-weight:800;text-align:center;margin-bottom:20px;">2 × 3</div>
-  <div id="visualArea" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;"></div>
-  <div id="answersArea" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"></div>
-  <div id="gameStatus" class="status"></div>
-</div>
+        <div class="section-title">Login</div>
+        <input id="loginEmail" class="input" placeholder="Email" />
+        <input id="loginPassword" class="input" type="password" placeholder="Password" />
+        <button class="primary-btn" onclick="loginUser()">Login</button>
+        <button class="secondary-btn" onclick="signupUser()">Create account</button>
+        <div id="loginStatus" class="status"></div>
+      </div>
     </section>
 
     <!-- PROFILES -->
@@ -425,9 +441,9 @@
 
       <div class="menu-list">
         <button class="main-btn" onclick="openMode('number-builder')">
-  <div class="big">🌱 Number Builder</div>
-  <div class="small">Build your understanding of multiplication</div>
-</button>
+          <div class="big">🌱 Number Builder</div>
+          <div class="small">Build your understanding of multiplication</div>
+        </button>
 
         <button class="main-btn">
           <div class="big">🚀 Skill Builder</div>
@@ -445,86 +461,89 @@
         </button>
       </div>
     </section>
-<!-- SETUP -->
-<section id="screen-setup" class="screen">
-  <div class="topbar">
-    <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
-    <div class="topbar-title">Select Tables</div>
-    <div style="width:46px;"></div>
-  </div>
 
-  <div class="card">
-    <div class="section-title">Choose tables</div>
-    <div id="tablesContainer" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
+    <!-- SETUP -->
+    <section id="screen-setup" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="topbar-title">Select Tables</div>
+        <div style="width:46px;"></div>
+      </div>
 
-    <button class="secondary-btn" onclick="selectAllTables()">Select All</button>
-    <button class="secondary-btn" onclick="clearTables()">Clear</button>
-    <button class="primary-btn" onclick="startGame()">Start</button>
-    <div id="setupStatus" class="status"></div>
-  </div>
-</section>
+      <div class="card">
+        <div class="section-title">Choose tables</div>
+        <div id="tablesContainer" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
 
-<!-- GAME -->
-<section id="screen-game" class="screen">
-  <div class="topbar">
-    <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
-    <div class="topbar-title" id="gameTitle">Number Builder</div>
-    <div style="width:46px;"></div>
-  </div>
+        <button class="secondary-btn" onclick="selectAllTables()">Select All</button>
+        <button class="secondary-btn" onclick="clearTables()">Clear</button>
+        <button class="primary-btn" onclick="startGame()">Start</button>
+        <div id="setupStatus" class="status"></div>
+      </div>
+    </section>
 
-  <div class="card">
-    <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 5</div>
-    <div id="questionText" style="font-size:34px;font-weight:800;text-align:center;margin-bottom:20px;">2 × 3</div>
-    <div id="visualArea" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;"></div>
-    <div id="answersArea" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"></div>
-    <div id="gameStatus" class="status"></div>
-  </div>
-</section>
+    <!-- GAME -->
+    <section id="screen-game" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="topbar-title" id="gameTitle">Number Builder</div>
+        <div style="width:46px;"></div>
+      </div>
 
-<!-- RESULT -->
-<section id="screen-result" class="screen">
-  <div class="topbar">
-    <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
-    <div class="topbar-title">Results</div>
-    <div style="width:46px;"></div>
-  </div>
+      <div class="card">
+        <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 5</div>
+        <div id="gameTypeLabel" class="subtitle" style="text-align:center;margin-bottom:8px;">Visual</div>
+        <div id="questionText" style="font-size:34px;font-weight:800;text-align:center;margin-bottom:20px;">2 × 3</div>
+        <div id="visualArea" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;"></div>
+        <div id="answersArea" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"></div>
+        <div id="gameStatus" class="status"></div>
+      </div>
+    </section>
 
-  <div class="card">
-    <div class="section-title" style="text-align:center;">Round Complete</div>
-    <div id="resultSummary" class="subtitle" style="text-align:center;margin-bottom:16px;"></div>
-    <button class="primary-btn" onclick="showScreen('screen-home')">Back to Home</button>
-  </div>
-</section>
+    <!-- RESULT -->
+    <section id="screen-result" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="topbar-title">Results</div>
+        <div style="width:46px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="text-align:center;">Round Complete</div>
+        <div id="resultSummary" class="subtitle" style="text-align:center;margin-bottom:16px;"></div>
+        <button class="primary-btn" onclick="showScreen('screen-home')">Back to Home</button>
+      </div>
+    </section>
+
   </div>
 
   <script>
-    // =========================
-    // FIREBASE CONFIG
-    // =========================
     const firebaseConfig = {
-  apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
-  authDomain: "bright-minds-math.firebaseapp.com",
-  projectId: "bright-minds-math",
-  storageBucket: "bright-minds-math.firebasestorage.app",
-  messagingSenderId: "645800687175",
-  appId: "1:645800687175:web:75241f3cac5e5433442362"
-};
+      apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
+      authDomain: "bright-minds-math.firebaseapp.com",
+      projectId: "bright-minds-math",
+      storageBucket: "bright-minds-math.firebasestorage.app",
+      messagingSenderId: "645800687175",
+      appId: "1:645800687175:web:75241f3cac5e5433442362"
+    };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // =========================
-    // APP STATE
-    // =========================
     let appState = {
       currentChildId: null,
       currentChildName: null
     };
 
-    // =========================
-    // NAVIGATION
-    // =========================
+    let selectedTables = [];
+    let currentMode = null;
+    let gameState = {
+      questions: [],
+      currentIndex: 0,
+      correct: 0,
+      wrong: 0
+    };
+
     function showScreen(screenId){
       document.querySelectorAll('.screen').forEach(screen=>{
         screen.classList.remove('active');
@@ -532,9 +551,6 @@
       document.getElementById(screenId).classList.add('active');
     }
 
-    // =========================
-    // AUTH
-    // =========================
     async function signupUser(){
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value.trim();
@@ -606,9 +622,6 @@
       }
     }
 
-    // =========================
-    // CHILDREN
-    // =========================
     async function addChild(){
       const input = document.getElementById('newChildName');
       const status = document.getElementById('profileStatus');
@@ -725,360 +738,349 @@
         alert(error.message);
       }
     }
-    // =========================
-// SETUP + NUMBER BUILDER
-// =========================
-let selectedTables = [];
-let currentMode = null;
-let gameState = {
-  questions: [],
-  currentIndex: 0,
-  correct: 0,
-  wrong: 0
-};
 
-function openMode(mode){
-  currentMode = mode;
-  selectedTables = [];
-  renderTables();
-  document.getElementById('setupStatus').textContent = '';
-  showScreen('screen-setup');
-}
-
-function renderTables(){
-  const container = document.getElementById('tablesContainer');
-  container.innerHTML = '';
-
-  for(let i=1;i<=10;i++){
-    const btn = document.createElement('button');
-    btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
-    btn.textContent = i;
-
-    btn.onclick = () => {
-      if(selectedTables.includes(i)){
-        selectedTables = selectedTables.filter(x => x !== i);
-      } else {
-        selectedTables.push(i);
-      }
+    function openMode(mode){
+      currentMode = mode;
+      selectedTables = [];
       renderTables();
-    };
-
-    container.appendChild(btn);
-  }
-}
-
-function selectAllTables(){
-  selectedTables = [1,2,3,4,5,6,7,8,9,10];
-  renderTables();
-}
-
-function clearTables(){
-  selectedTables = [];
-  renderTables();
-}
-
-function startGame(){
-  const status = document.getElementById('setupStatus');
-
-  if(selectedTables.length === 0){
-    status.textContent = 'Select at least one table.';
-    return;
-  }
-
-  if(currentMode === 'number-builder'){
-    buildNumberBuilderRound();
-    showScreen('screen-game');
-    renderCurrentQuestion();
-  }
-}
-
-function buildNumberBuilderRound(){
-  gameState.questions = [];
-  gameState.currentIndex = 0;
-  gameState.correct = 0;
-  gameState.wrong = 0;
-
-  const types = ['visual', 'sequence', 'addition', 'matching'];
-
-  for(let i=0;i<5;i++){
-    const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
-    const multiplier = Math.floor(Math.random() * 10) + 1;
-    const answer = table * multiplier;
-    const type = types[Math.floor(Math.random() * types.length)];
-
-    gameState.questions.push({
-      type,
-      table,
-      multiplier,
-      answer
-    });
-  }
-}
-
-function renderCurrentQuestion(){
-  const q = gameState.questions[gameState.currentIndex];
-  if(!q) return;
-
-  document.getElementById('gameProgress').textContent =
-    `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
-  document.getElementById('questionText').textContent = `${q.table} × ${q.multiplier}`;
-  document.getElementById('gameStatus').textContent = '';
-
-  const visualArea = document.getElementById('visualArea');
-  const answersArea = document.getElementById('answersArea');
-  const typeLabel = document.getElementById('gameTypeLabel');
-
-  visualArea.innerHTML = '';
-  answersArea.innerHTML = '';
-
-  if(q.type === 'visual'){
-    typeLabel.textContent = 'Visual';
-
-    for(let r=0; r<q.multiplier; r++){
-      const group = document.createElement('div');
-      group.className = 'block-group';
-
-      for(let c=0; c<q.table; c++){
-        const dot = document.createElement('div');
-        dot.className = 'block-dot';
-        group.appendChild(dot);
-      }
-
-      visualArea.appendChild(group);
+      document.getElementById('setupStatus').textContent = '';
+      showScreen('screen-setup');
     }
 
-    renderAnswerOptions(q.answer);
-  }
+    function renderTables(){
+      const container = document.getElementById('tablesContainer');
+      container.innerHTML = '';
 
-  if(q.type === 'sequence'){
-    typeLabel.textContent = 'Sequence';
+      for(let i=1;i<=10;i++){
+        const btn = document.createElement('button');
+        btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
+        btn.textContent = i;
 
-    const strip = document.createElement('div');
-    strip.className = 'sequence-strip';
-
-    const seq = [
-      q.table * 1,
-      q.table * 2,
-      '?',
-      q.table * 4,
-      q.table * 5
-    ];
-
-    seq.forEach(item=>{
-      const box = document.createElement('div');
-      box.className = 'sequence-box';
-      box.textContent = item;
-      strip.appendChild(box);
-    });
-
-    visualArea.appendChild(strip);
-    renderAnswerOptions(q.table * 3);
-  }
-
-  if(q.type === 'addition'){
-    typeLabel.textContent = 'Repeated Addition';
-
-    const addWrap = document.createElement('div');
-    addWrap.style.textAlign = 'center';
-    addWrap.style.marginBottom = '18px';
-
-    let repeated = [];
-    for(let i=0;i<q.multiplier;i++) repeated.push(q.table);
-
-    const pill = document.createElement('div');
-    pill.className = 'addition-pill';
-    pill.textContent = repeated.join(' + ');
-    addWrap.appendChild(pill);
-
-    visualArea.appendChild(addWrap);
-    renderAnswerOptions(q.answer);
-  }
-
-  if(q.type === 'matching'){
-    typeLabel.textContent = 'Matching';
-
-    const pairs = [
-      { left: `${q.table} × ${q.multiplier}`, right: q.answer },
-      { left: `${q.table} × ${Math.max(1, q.multiplier - 1)}`, right: q.table * Math.max(1, q.multiplier - 1) }
-    ];
-
-    const shuffledRight = shuffle(pairs.map(p => p.right));
-
-    const grid = document.createElement('div');
-    grid.className = 'match-grid';
-
-    const leftCol = document.createElement('div');
-    leftCol.className = 'match-col';
-
-    const rightCol = document.createElement('div');
-    rightCol.className = 'match-col';
-
-    let selectedLeft = null;
-    let selectedRight = null;
-
-    pairs.forEach(pair=>{
-      const btn = document.createElement('button');
-      btn.className = 'match-btn';
-      btn.textContent = pair.left;
-      btn.onclick = () => {
-        document.querySelectorAll('.match-col:first-child .match-btn').forEach(b=>b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedLeft = pair;
-        checkMatch();
-      };
-      leftCol.appendChild(btn);
-    });
-
-    shuffledRight.forEach(value=>{
-      const btn = document.createElement('button');
-      btn.className = 'match-btn';
-      btn.textContent = value;
-      btn.onclick = () => {
-        document.querySelectorAll('.match-col:last-child .match-btn').forEach(b=>b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedRight = value;
-        checkMatch();
-      };
-      rightCol.appendChild(btn);
-    });
-
-    function checkMatch(){
-      if(!selectedLeft || selectedRight === null) return;
-
-      const isCorrect = selectedLeft.right === selectedRight;
-
-      if(selectedLeft.left === `${q.table} × ${q.multiplier}`){
-        if(isCorrect){
-          gameState.correct++;
-          document.getElementById('gameStatus').textContent = 'Correct!';
-        } else {
-          gameState.wrong++;
-          document.getElementById('gameStatus').textContent = `Correct answer: ${q.answer}`;
-        }
-
-        setTimeout(() => {
-          gameState.currentIndex++;
-          if(gameState.currentIndex >= gameState.questions.length){
-            finishRound();
+        btn.onclick = () => {
+          if(selectedTables.includes(i)){
+            selectedTables = selectedTables.filter(x => x !== i);
           } else {
-            renderCurrentQuestion();
+            selectedTables.push(i);
           }
-        }, 900);
-      } else {
+          renderTables();
+        };
+
+        container.appendChild(btn);
+      }
+    }
+
+    function selectAllTables(){
+      selectedTables = [1,2,3,4,5,6,7,8,9,10];
+      renderTables();
+    }
+
+    function clearTables(){
+      selectedTables = [];
+      renderTables();
+    }
+
+    function startGame(){
+      const status = document.getElementById('setupStatus');
+
+      if(selectedTables.length === 0){
+        status.textContent = 'Select at least one table.';
+        return;
+      }
+
+      if(currentMode === 'number-builder'){
+        buildNumberBuilderRound();
+        showScreen('screen-game');
         renderCurrentQuestion();
       }
     }
 
-    grid.appendChild(leftCol);
-    grid.appendChild(rightCol);
-    visualArea.appendChild(grid);
-  }
-}
+    function buildNumberBuilderRound(){
+      gameState.questions = [];
+      gameState.currentIndex = 0;
+      gameState.correct = 0;
+      gameState.wrong = 0;
 
-function renderAnswerOptions(correctAnswer){
-  const answersArea = document.getElementById('answersArea');
-  answersArea.innerHTML = '';
+      const types = ['visual', 'sequence', 'addition', 'matching'];
 
-  let options = [correctAnswer];
-  while(options.length < 3){
-    const wrong = Math.floor(Math.random() * 100) + 1;
-    if(!options.includes(wrong)) options.push(wrong);
-  }
+      for(let i=0;i<5;i++){
+        const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+        const multiplier = Math.floor(Math.random() * 10) + 1;
+        const answer = table * multiplier;
+        const type = types[Math.floor(Math.random() * types.length)];
 
-  options = shuffle(options);
-
-  options.forEach(option => {
-    const btn = document.createElement('button');
-    btn.className = 'answer-btn';
-    btn.textContent = option;
-    btn.onclick = () => answerQuestion(btn, option, correctAnswer);
-    answersArea.appendChild(btn);
-  });
-}
-
-function answerQuestion(button, selected, correct){
-  const allButtons = document.querySelectorAll('.answer-btn');
-  allButtons.forEach(b => b.disabled = true);
-
-  if(selected === correct){
-    button.classList.add('correct');
-    gameState.correct++;
-    document.getElementById('gameStatus').textContent = 'Correct!';
-  } else {
-    button.classList.add('wrong');
-    gameState.wrong++;
-    document.getElementById('gameStatus').textContent = `Correct answer: ${correct}`;
-
-    allButtons.forEach(b => {
-      if(Number(b.textContent) === correct){
-        b.classList.add('correct');
+        gameState.questions.push({
+          type,
+          table,
+          multiplier,
+          answer
+        });
       }
-    });
-  }
-
-  setTimeout(() => {
-    gameState.currentIndex++;
-    if(gameState.currentIndex >= gameState.questions.length){
-      finishRound();
-    } else {
-      renderCurrentQuestion();
     }
-  }, 900);
-}
 
-async function finishRound(){
-  const xpEarned = gameState.correct * 10;
+    function renderCurrentQuestion(){
+      const q = gameState.questions[gameState.currentIndex];
+      if(!q) return;
 
-  document.getElementById('resultSummary').textContent =
-    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+      document.getElementById('gameProgress').textContent =
+        `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
+      document.getElementById('questionText').textContent = `${q.table} × ${q.multiplier}`;
+      document.getElementById('gameStatus').textContent = '';
 
-  await saveNumberBuilderProgress(xpEarned);
+      const visualArea = document.getElementById('visualArea');
+      const answersArea = document.getElementById('answersArea');
+      const typeLabel = document.getElementById('gameTypeLabel');
 
-  showScreen('screen-result');
-}
+      visualArea.innerHTML = '';
+      answersArea.innerHTML = '';
 
-function shuffle(arr){
-  const copy = [...arr];
-  for(let i = copy.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
+      if(q.type === 'visual'){
+        typeLabel.textContent = 'Visual';
+
+        for(let r=0; r<q.multiplier; r++){
+          const group = document.createElement('div');
+          group.className = 'block-group';
+
+          for(let c=0; c<q.table; c++){
+            const dot = document.createElement('div');
+            dot.className = 'block-dot';
+            group.appendChild(dot);
+          }
+
+          visualArea.appendChild(group);
+        }
+
+        renderAnswerOptions(q.answer);
+      }
+
+      if(q.type === 'sequence'){
+        typeLabel.textContent = 'Sequence';
+
+        const strip = document.createElement('div');
+        strip.className = 'sequence-strip';
+
+        const seq = [
+          q.table * 1,
+          q.table * 2,
+          '?',
+          q.table * 4,
+          q.table * 5
+        ];
+
+        seq.forEach(item=>{
+          const box = document.createElement('div');
+          box.className = 'sequence-box';
+          box.textContent = item;
+          strip.appendChild(box);
+        });
+
+        visualArea.appendChild(strip);
+        renderAnswerOptions(q.table * 3);
+      }
+
+      if(q.type === 'addition'){
+        typeLabel.textContent = 'Repeated Addition';
+
+        const addWrap = document.createElement('div');
+        addWrap.style.textAlign = 'center';
+        addWrap.style.marginBottom = '18px';
+
+        let repeated = [];
+        for(let i=0;i<q.multiplier;i++) repeated.push(q.table);
+
+        const pill = document.createElement('div');
+        pill.className = 'addition-pill';
+        pill.textContent = repeated.join(' + ');
+        addWrap.appendChild(pill);
+
+        visualArea.appendChild(addWrap);
+        renderAnswerOptions(q.answer);
+      }
+
+      if(q.type === 'matching'){
+        typeLabel.textContent = 'Matching';
+
+        const pairs = [
+          { left: `${q.table} × ${q.multiplier}`, right: q.answer },
+          { left: `${q.table} × ${Math.max(1, q.multiplier - 1)}`, right: q.table * Math.max(1, q.multiplier - 1) }
+        ];
+
+        const shuffledRight = shuffle(pairs.map(p => p.right));
+
+        const grid = document.createElement('div');
+        grid.className = 'match-grid';
+
+        const leftCol = document.createElement('div');
+        leftCol.className = 'match-col';
+
+        const rightCol = document.createElement('div');
+        rightCol.className = 'match-col';
+
+        let selectedLeft = null;
+        let selectedRight = null;
+
+        pairs.forEach(pair=>{
+          const btn = document.createElement('button');
+          btn.className = 'match-btn';
+          btn.textContent = pair.left;
+          btn.onclick = () => {
+            document.querySelectorAll('.match-col:first-child .match-btn').forEach(b=>b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedLeft = pair;
+            checkMatch();
+          };
+          leftCol.appendChild(btn);
+        });
+
+        shuffledRight.forEach(value=>{
+          const btn = document.createElement('button');
+          btn.className = 'match-btn';
+          btn.textContent = value;
+          btn.onclick = () => {
+            document.querySelectorAll('.match-col:last-child .match-btn').forEach(b=>b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedRight = value;
+            checkMatch();
+          };
+          rightCol.appendChild(btn);
+        });
+
+        function checkMatch(){
+          if(!selectedLeft || selectedRight === null) return;
+
+          const isCorrect = selectedLeft.right === selectedRight;
+
+          if(selectedLeft.left === `${q.table} × ${q.multiplier}`){
+            if(isCorrect){
+              gameState.correct++;
+              document.getElementById('gameStatus').textContent = 'Correct!';
+            } else {
+              gameState.wrong++;
+              document.getElementById('gameStatus').textContent = `Correct answer: ${q.answer}`;
+            }
+
+            setTimeout(() => {
+              gameState.currentIndex++;
+              if(gameState.currentIndex >= gameState.questions.length){
+                finishRound();
+              } else {
+                renderCurrentQuestion();
+              }
+            }, 900);
+          } else {
+            renderCurrentQuestion();
+          }
+        }
+
+        grid.appendChild(leftCol);
+        grid.appendChild(rightCol);
+        visualArea.appendChild(grid);
+      }
+    }
+
+    function renderAnswerOptions(correctAnswer){
+      const answersArea = document.getElementById('answersArea');
+      answersArea.innerHTML = '';
+
+      let options = [correctAnswer];
+      while(options.length < 3){
+        const wrong = Math.floor(Math.random() * 100) + 1;
+        if(!options.includes(wrong)) options.push(wrong);
+      }
+
+      options = shuffle(options);
+
+      options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = option;
+        btn.onclick = () => answerQuestion(btn, option, correctAnswer);
+        answersArea.appendChild(btn);
+      });
+    }
+
+    function answerQuestion(button, selected, correct){
+      const allButtons = document.querySelectorAll('.answer-btn');
+      allButtons.forEach(b => b.disabled = true);
+
+      if(selected === correct){
+        button.classList.add('correct');
+        gameState.correct++;
+        document.getElementById('gameStatus').textContent = 'Correct!';
+      } else {
+        button.classList.add('wrong');
+        gameState.wrong++;
+        document.getElementById('gameStatus').textContent = `Correct answer: ${correct}`;
+
+        allButtons.forEach(b => {
+          if(Number(b.textContent) === correct){
+            b.classList.add('correct');
+          }
+        });
+      }
+
+      setTimeout(() => {
+        gameState.currentIndex++;
+        if(gameState.currentIndex >= gameState.questions.length){
+          finishRound();
+        } else {
+          renderCurrentQuestion();
+        }
+      }, 900);
+    }
+
+    async function finishRound(){
+      const xpEarned = gameState.correct * 10;
+
+      document.getElementById('resultSummary').textContent =
+        `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+
+      await saveNumberBuilderProgress(xpEarned);
+      showScreen('screen-result');
+    }
+
+    function shuffle(arr){
+      const copy = [...arr];
+      for(let i = copy.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
     async function saveNumberBuilderProgress(xpEarned){
-  const user = auth.currentUser;
-  const childId = appState.currentChildId;
+      const user = auth.currentUser;
+      const childId = appState.currentChildId;
 
-  if(!user || !childId) return;
+      if(!user || !childId) return;
 
-  const childRef = db.collection('users')
-    .doc(user.uid)
-    .collection('children')
-    .doc(childId);
+      const childRef = db.collection('users')
+        .doc(user.uid)
+        .collection('children')
+        .doc(childId);
 
-  const snap = await childRef.get();
-  const currentData = snap.exists ? snap.data() : {};
+      const snap = await childRef.get();
+      const currentData = snap.exists ? snap.data() : {};
 
-  const currentXP = currentData.xp || 0;
+      const currentXP = currentData.xp || 0;
 
-  const currentNumberBuilder = currentData.numberBuilder || {
-    roundsPlayed: 0,
-    totalCorrect: 0,
-    totalWrong: 0,
-    lastPlayed: null
-  };
+      const currentNumberBuilder = currentData.numberBuilder || {
+        roundsPlayed: 0,
+        totalCorrect: 0,
+        totalWrong: 0,
+        lastPlayed: null
+      };
 
-  await childRef.set({
-    xp: currentXP + xpEarned,
-    lastMode: 'number-builder',
-    numberBuilder: {
-      roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
-      totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
-      totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
-      lastPlayed: Date.now()
+      await childRef.set({
+        xp: currentXP + xpEarned,
+        lastMode: 'number-builder',
+        numberBuilder: {
+          roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
+          totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
+          totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
+          lastPlayed: Date.now()
+        }
+      }, { merge: true });
     }
-  }, { merge: true });
-}
   </script>
 </body>
 </html>

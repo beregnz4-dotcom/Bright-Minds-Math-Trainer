@@ -1045,6 +1045,40 @@ function shuffle(arr){
   }
   return copy;
 }
+    async function saveNumberBuilderProgress(xpEarned){
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
+
+  if(!user || !childId) return;
+
+  const childRef = db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId);
+
+  const snap = await childRef.get();
+  const currentData = snap.exists ? snap.data() : {};
+
+  const currentXP = currentData.xp || 0;
+
+  const currentNumberBuilder = currentData.numberBuilder || {
+    roundsPlayed: 0,
+    totalCorrect: 0,
+    totalWrong: 0,
+    lastPlayed: null
+  };
+
+  await childRef.set({
+    xp: currentXP + xpEarned,
+    lastMode: 'number-builder',
+    numberBuilder: {
+      roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
+      totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
+      totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
+      lastPlayed: Date.now()
+    }
+  }, { merge: true });
+}
   </script>
 </body>
 </html>

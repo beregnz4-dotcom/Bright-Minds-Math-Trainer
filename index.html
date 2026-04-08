@@ -1026,9 +1026,14 @@ function answerQuestion(button, selected, correct){
   }, 900);
 }
 
-function finishRound(){
+async function finishRound(){
+  const xpEarned = gameState.correct * 10;
+
   document.getElementById('resultSummary').textContent =
-    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong}`;
+    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+
+  await saveNumberBuilderProgress(xpEarned);
+
   showScreen('screen-result');
 }
 

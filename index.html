@@ -3,152 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bright Minds Math</title>
+<title>Bright Minds - Nivel 1</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
-  background:linear-gradient(135deg,#f6c445,#f4a261);
+  font-family:-apple-system, sans-serif;
+  background:linear-gradient(135deg,#f6c667,#f29c6b);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
 
-.screen{display:none;padding:20px}
-.active{display:block}
-
-.card{
+.container{
+  width:90%;
+  max-width:420px;
   background:white;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,.1);
+  border-radius:25px;
+  padding:25px;
+  box-shadow:0 20px 40px rgba(0,0,0,.15);
+  text-align:center;
 }
 
-h1{text-align:center}
+h1{
+  margin:0;
+}
 
-button{
-  width:100%;
-  padding:15px;
+.question{
+  font-size:40px;
+  font-weight:bold;
+  margin:20px 0;
+}
+
+.grid{
+  display:grid;
+  gap:6px;
+  justify-content:center;
+  margin:20px 0;
+}
+
+.cell{
+  width:30px;
+  height:30px;
+  background:#4f46e5;
+  border-radius:6px;
+}
+
+.answers{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+}
+
+.btn{
+  flex:1;
+  padding:14px;
   border:none;
-  border-radius:15px;
-  margin:8px 0;
-  font-size:16px;
+  border-radius:12px;
+  font-size:18px;
+  background:#eef2ff;
   cursor:pointer;
+  transition:.2s;
 }
 
-.primary{background:#4CAF50;color:white}
-.secondary{background:#2196F3;color:white}
-
-.user-btn{
-  background:white;
-  border-radius:15px;
-  padding:15px;
-  margin:5px 0;
-  box-shadow:0 5px 15px rgba(0,0,0,.1);
-  font-size:16px;
+.btn:hover{
+  transform:scale(1.05);
 }
 
-input{
+.correct{
+  background:#22c55e !important;
+  color:white;
+}
+
+.wrong{
+  background:#ef4444 !important;
+  color:white;
+}
+
+.next{
+  margin-top:15px;
+  padding:14px;
   width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  margin-bottom:10px;
+  border:none;
+  border-radius:12px;
+  background:#7c3aed;
+  color:white;
+  font-size:16px;
+  display:none;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="login" class="screen active">
-  <div class="card">
-    <h1>Bright Minds</h1>
-    <div id="users"></div>
+<div class="container">
 
-    <input id="newUser" placeholder="Nuevo usuario">
-    <button class="primary" onclick="addUser()">Agregar</button>
-  </div>
+<h1>Nivel 1</h1>
+
+<div class="question" id="question"></div>
+
+<div class="grid" id="grid"></div>
+
+<div class="answers" id="answers"></div>
+
+<button class="next" onclick="nextQuestion()">Siguiente</button>
+
 </div>
-
-<!-- MENU -->
-<div id="menu" class="screen">
-  <div class="card">
-    <h1>Menú</h1>
-
-    <button class="secondary" onclick="goTo('level1')">Nivel 1</button>
-    <button class="secondary" onclick="goTo('level2')">Nivel 2</button>
-    <button class="secondary" onclick="goTo('level3')">Nivel 3</button>
-    <button class="secondary" onclick="goTo('competition')">Competencia</button>
-    <button class="secondary" onclick="goTo('snake')">Serpientes 🐍</button>
-
-    <button onclick="resetProgress()">Reset progreso</button>
-  </div>
-</div>
-
-<!-- PLACEHOLDER PANTALLAS -->
-<div id="level1" class="screen"><div class="card"><h1>Nivel 1</h1></div></div>
-<div id="level2" class="screen"><div class="card"><h1>Nivel 2</h1></div></div>
-<div id="level3" class="screen"><div class="card"><h1>Nivel 3</h1></div></div>
-<div id="competition" class="screen"><div class="card"><h1>Competencia</h1></div></div>
-<div id="snake" class="screen"><div class="card"><h1>Serpientes</h1></div></div>
 
 <script>
 
-// ====== USUARIOS ======
-let users = JSON.parse(localStorage.getItem("users") || "[]");
-let currentUser = null;
-
-function renderUsers(){
-  let div = document.getElementById("users");
-  div.innerHTML = "";
-
-  users.forEach(u=>{
-    let btn = document.createElement("div");
-    btn.className="user-btn";
-    btn.innerText = u.name;
-    btn.onclick = ()=>{
-      currentUser = u;
-      goTo("menu");
-    };
-    div.appendChild(btn);
-  });
-}
-
-function addUser(){
-  let name = document.getElementById("newUser").value;
-  if(!name) return;
-
-  let user = {
-    name,
-    progress:{}
-  };
-
-  users.push(user);
-  localStorage.setItem("users", JSON.stringify(users));
-  renderUsers();
-}
-
-// ====== NAVEGACIÓN ======
-function goTo(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-// ====== RESET ======
-function resetProgress(){
-  if(!currentUser) return;
-  currentUser.progress = {};
-  localStorage.setItem("users", JSON.stringify(users));
-  alert("Progreso reiniciado");
-}
-
-// ====== SONIDOS ======
-const sounds = {
+const sounds={
   correct:new Audio("sounds/correct.mp3"),
   wrong:new Audio("sounds/wrong.mp3"),
   tap:new Audio("sounds/tap.mp3"),
-  win:new Audio("sounds/win.mp3"),
-  bg:new Audio("sounds/bg.mp3")
+  win:new Audio("sounds/win.mp3")
 };
 
 function playSound(name){
@@ -158,257 +127,97 @@ function playSound(name){
   }
 }
 
-// ====== INIT ======
-renderUsers();
-// =======================
-// NIVEL 1 (BASE FUNCIONAL)
-// =======================
+let currentAnswer=0;
 
-let level1Index = 1;
-let currentA, currentB, correctAnswer;
+function generateQuestion(){
 
-// generar ejercicio
-function generateLevel1(){
-  currentA = Math.ceil(Math.random()*10);
-  currentB = Math.ceil(Math.random()*10);
-  correctAnswer = currentA * currentB;
+  let a=Math.floor(Math.random()*5)+1;
+  let b=Math.floor(Math.random()*5)+1;
 
-  document.getElementById("level1").innerHTML = `
-    <div class="card">
-      <h1>Nivel 1</h1>
-      <h2 style="text-align:center">${currentA} x ${currentB}</h2>
+  currentAnswer=a*b;
 
-      <div style="display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin:15px 0">
-        ${generateBlocks(currentA, currentB)}
-      </div>
+  document.getElementById("question").innerText=`${a} × ${b}`;
 
-      <div style="text-align:center;margin:15px 0">
-        ${generateSum(currentA, currentB)}
-      </div>
+  renderGrid(a,b);
+  renderAnswers(currentAnswer);
 
-      <button class="primary" onclick="checkLevel1(${correctAnswer})">Ver respuesta</button>
-      <button onclick="generateLevel1()">Siguiente</button>
-      <button onclick="goTo('menu')">Volver</button>
-    </div>
-  `;
 }
 
-function generateBlocks(a,b){
-  let html="";
-  for(let i=0;i<a;i++){
-    html+=`<div style="background:#2196F3;width:20px;height:20px;border-radius:5px"></div>`;
+function renderGrid(rows,cols){
+
+  const grid=document.getElementById("grid");
+  grid.innerHTML="";
+  grid.style.gridTemplateColumns=`repeat(${cols},30px)`;
+
+  for(let i=0;i<rows*cols;i++){
+    let div=document.createElement("div");
+    div.className="cell";
+    grid.appendChild(div);
   }
-  return html;
 }
 
-function generateSum(a,b){
-  return Array(b).fill(a).join(" + ");
-}
+function renderAnswers(correct){
 
-function checkLevel1(ans){
-  alert("Resultado: "+ans);
-}
+  const container=document.getElementById("answers");
+  container.innerHTML="";
 
-// =======================
-// NIVEL 2 (TIEMPO)
-// =======================
+  let options=[correct];
 
-let level2Timer;
-
-function startLevel2(){
-  goTo("level2");
-  nextLevel2();
-}
-
-function nextLevel2(){
-  let a = Math.ceil(Math.random()*10);
-  let b = Math.ceil(Math.random()*10);
-  correctAnswer = a*b;
-
-  document.getElementById("level2").innerHTML=`
-    <div class="card">
-      <h1>Nivel 2</h1>
-      <h2>${a} x ${b}</h2>
-      <input id="ans2" type="number">
-      <button onclick="submitLevel2()">OK</button>
-      <p id="timer"></p>
-      <button onclick="goTo('menu')">Volver</button>
-    </div>
-  `;
-
-  let time=5;
-  document.getElementById("timer").innerText="Tiempo: "+time;
-
-  level2Timer=setInterval(()=>{
-    time--;
-    document.getElementById("timer").innerText="Tiempo: "+time;
-
-    if(time<=0){
-      clearInterval(level2Timer);
-      nextLevel2();
+  while(options.length<3){
+    let wrong=Math.floor(Math.random()*25)+1;
+    if(!options.includes(wrong)){
+      options.push(wrong);
     }
-  },1000);
+  }
+
+  options.sort(()=>Math.random()-0.5);
+
+  options.forEach(num=>{
+    let btn=document.createElement("button");
+    btn.className="btn";
+    btn.innerText=num;
+
+    btn.onclick=()=>checkAnswer(btn,num);
+
+    container.appendChild(btn);
+  });
 }
 
-function submitLevel2(){
-  let val = Number(document.getElementById("ans2").value);
+function checkAnswer(button,value){
 
-  if(val===correctAnswer){
+  playSound("tap");
+
+  let buttons=document.querySelectorAll(".btn");
+
+  buttons.forEach(b=>b.disabled=true);
+
+  if(value===currentAnswer){
+    button.classList.add("correct");
     playSound("correct");
+    document.querySelector(".next").style.display="block";
   }else{
+    button.classList.add("wrong");
     playSound("wrong");
-  }
 
-  clearInterval(level2Timer);
-  nextLevel2();
-}
+    buttons.forEach(b=>{
+      if(parseInt(b.innerText)===currentAnswer){
+        b.classList.add("correct");
+      }
+    });
 
-// =======================
-// NIVEL 3 (CRONÓMETRO)
-// =======================
-
-let startTime, results=[];
-
-function startLevel3(){
-  goTo("level3");
-  results=[];
-  nextLevel3();
-}
-
-function nextLevel3(){
-  let a = Math.ceil(Math.random()*10);
-  let b = Math.ceil(Math.random()*10);
-  correctAnswer=a*b;
-  startTime=Date.now();
-
-  document.getElementById("level3").innerHTML=`
-    <div class="card">
-      <h1>Nivel 3</h1>
-      <h2>${a} x ${b}</h2>
-      <input id="ans3" type="number">
-      <button onclick="submitLevel3()">OK</button>
-      <button onclick="goTo('menu')">Volver</button>
-    </div>
-  `;
-}
-
-function submitLevel3(){
-  let val = Number(document.getElementById("ans3").value);
-  let time = (Date.now()-startTime)/1000;
-
-  results.push(time);
-
-  if(val===correctAnswer){
-    playSound("correct");
-  }else{
-    playSound("wrong");
-  }
-
-  if(results.length>=5){
-    let avg = results.reduce((a,b)=>a+b,0)/results.length;
-    alert("Tiempo promedio: "+avg.toFixed(2)+"s");
-    goTo("menu");
-  }else{
-    nextLevel3();
+    setTimeout(()=>{
+      nextQuestion();
+    },1200);
   }
 }
 
-// =======================
-// COMPETENCIA
-// =======================
-
-let players=[], turn=0;
-
-function startCompetition(){
-  players = prompt("Nombres separados por coma").split(",");
-  turn=0;
-  nextTurn();
+function nextQuestion(){
+  document.querySelector(".next").style.display="none";
+  generateQuestion();
 }
 
-function nextTurn(){
-  let a=Math.ceil(Math.random()*10);
-  let b=Math.ceil(Math.random()*10);
-  correctAnswer=a*b;
+generateQuestion();
 
-  document.getElementById("competition").innerHTML=`
-    <div class="card">
-      <h1>Turno: ${players[turn]}</h1>
-      <h2>${a} x ${b}</h2>
-      <input id="ansC">
-      <button onclick="submitCompetition()">OK</button>
-    </div>
-  `;
-}
-
-function submitCompetition(){
-  let val = Number(document.getElementById("ansC").value);
-
-  if(val===correctAnswer){
-    playSound("correct");
-  }else{
-    playSound("wrong");
-  }
-
-  turn++;
-
-  if(turn>=players.length){
-    alert("Fin de ronda");
-    goTo("menu");
-  }else{
-    nextTurn();
-  }
-}
-
-// =======================
-// SERPIENTES
-// =======================
-
-let pos=1;
-
-function startSnake(){
-  goTo("snake");
-  drawBoard();
-}
-
-function drawBoard(){
-  let html="";
-  for(let i=1;i<=40;i++){
-    html+=`<div style="display:inline-block;width:40px">${i}</div>`;
-  }
-
-  document.getElementById("snake").innerHTML=`
-    <div class="card">
-      <h1>Posición: ${pos}</h1>
-      ${html}
-      <button onclick="rollDice()">🎲</button>
-      <button onclick="goTo('menu')">Volver</button>
-    </div>
-  `;
-}
-
-function rollDice(){
-  let dice = Math.ceil(Math.random()*6);
-
-  let a=Math.ceil(Math.random()*10);
-  let b=Math.ceil(Math.random()*10);
-  correctAnswer=a*b;
-
-  let ans=Number(prompt(a+" x "+b));
-
-  if(ans===correctAnswer){
-    pos+=dice;
-    playSound("correct");
-  }else{
-    playSound("wrong");
-  }
-
-  if(pos>=40){
-    alert("GANASTE");
-    pos=1;
-  }
-
-  drawBoard();
-}
 </script>
 
 </body>

@@ -1130,14 +1130,18 @@ function applyLevelLockUI(roundsPlayed){
       }
     }
 
-    function openMode(mode){
-      currentMode = mode;
-      selectedTables = [];
-      updateLevelUI();
-      renderTables();
-      document.getElementById('setupStatus').textContent = '';
-      showScreen('screen-setup');
-    }
+    async function openMode(mode){
+  currentMode = mode;
+  selectedTables = [];
+
+  const roundsPlayed = await getNumberBuilderRoundsPlayed();
+  applyLevelLockUI(roundsPlayed);
+  updateLevelUI();
+  renderTables();
+
+  document.getElementById('setupStatus').textContent = '';
+  showScreen('screen-setup');
+}
 
     function renderTables(){
       const container = document.getElementById('tablesContainer');

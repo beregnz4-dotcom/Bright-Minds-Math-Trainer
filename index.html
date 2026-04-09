@@ -1244,19 +1244,20 @@ function applyLevelLockUI(roundsPlayed){
     }
 
     function startGame(){
-      const status = document.getElementById('setupStatus');
+  const status = document.getElementById('setupStatus');
+  document.getElementById('resultRecommendation').innerHTML = '';
 
-      if(selectedTables.length === 0){
-        status.textContent = 'Choose at least one table to start.';
-        return;
-      }
+  if(selectedTables.length === 0){
+    status.textContent = 'Choose at least one table to start.';
+    return;
+  }
 
-      if(currentMode === 'number-builder'){
-        buildNumberBuilderRound();
-        showScreen('screen-game');
-        renderCurrentQuestion();
-      }
-    }
+  if(currentMode === 'number-builder'){
+    buildNumberBuilderRound();
+    showScreen('screen-game');
+    renderCurrentQuestion();
+  }
+}
 
     function buildNumberBuilderRound(){
       gameState.questions = [];

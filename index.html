@@ -1913,8 +1913,10 @@ document.getElementById('progressSummaryPractice').textContent =
   `🔴 Needs practice: ${needsPracticeCount}`;
 
 if(focusTable){
-  document.getElementById('progressNextTable').textContent =
+  document.getElementById('progressFocusTable').textContent =
     `📌 Focus next: Table ${focusTable}`;
+} else {
+  document.getElementById('progressFocusTable').textContent = '';
 }
 
 document.getElementById('progressMastery').innerHTML =

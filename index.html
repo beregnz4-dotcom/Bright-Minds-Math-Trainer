@@ -1835,21 +1835,26 @@ function showUnlock(message){
 
     if(tableAccuracy < weakestAccuracy){
       weakestAccuracy = tableAccuracy;
-      weakestTable = tableKey;
+      weakestTable = Number(tableKey);
     }
   });
 
+  let suggestedLevel = currentLevel;
   let levelMessage = '';
 
   if(accuracy >= 85){
     if(currentLevel < 3){
-      levelMessage = `⭐ Great job! Ready for Level ${currentLevel + 1}`;
+      suggestedLevel = currentLevel + 1;
+      levelMessage = `⭐ Great job! Ready for Level ${suggestedLevel}`;
     } else {
+      suggestedLevel = currentLevel;
       levelMessage = '🌟 Excellent work! You are doing great at this level';
     }
   } else if(accuracy >= 60){
+    suggestedLevel = currentLevel;
     levelMessage = '👍 Keep practicing at this level';
   } else {
+    suggestedLevel = currentLevel;
     levelMessage = `🧱 Stay on Level ${currentLevel} for a little more practice`;
   }
 
@@ -1860,6 +1865,8 @@ function showUnlock(message){
 
   return {
     accuracy,
+    suggestedLevel,
+    focusTable: weakestTable,
     levelMessage,
     focusMessage
   };

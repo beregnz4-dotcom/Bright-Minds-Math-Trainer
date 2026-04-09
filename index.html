@@ -844,14 +844,27 @@
       document.getElementById(screenId).classList.add('active');
     }
 
-    function setNumberBuilderLevel(level){
-      currentLevel = level;
-      playSound('tap');
-      updateLevelUI();
-      selectedTables = [];
-      renderTables();
-    }
+    
+async function setNumberBuilderLevel(level){
+  const roundsPlayed = await getNumberBuilderRoundsPlayed();
 
+  if(level === 2 && roundsPlayed < 3){
+    document.getElementById('setupStatus').textContent = 'Play 3 rounds to unlock Level 2.';
+    return;
+  }
+
+  if(level === 3 && roundsPlayed < 8){
+    document.getElementById('setupStatus').textContent = 'Play 8 rounds to unlock Level 3.';
+    return;
+  }
+
+  currentLevel = level;
+  playSound('tap');
+  document.getElementById('setupStatus').textContent = '';
+  updateLevelUI();
+  selectedTables = [];
+  renderTables();
+}
     function updateLevelUI(){
       const levelConfig = numberBuilderLevels[currentLevel];
 

@@ -1789,10 +1789,11 @@ function showUnlock(message){
       const levelInfo = getLevelInfo(xp);
 
       const nb = data.numberBuilder || {
-        roundsPlayed: 0,
-        totalCorrect: 0,
-        totalWrong: 0
-      };
+  roundsPlayed: 0,
+  totalCorrect: 0,
+  totalWrong: 0,
+  highestLevelPlayed: 1
+};
 
       const totalAnswered = (nb.totalCorrect || 0) + (nb.totalWrong || 0);
       const accuracy = totalAnswered > 0

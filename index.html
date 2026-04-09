@@ -1091,25 +1091,25 @@
     }
 
     function renderAnswerOptions(correctAnswer){
-      const answersArea = document.getElementById('answersArea');
-      answersArea.innerHTML = '';
+  const answersArea = document.getElementById('answersArea');
+  answersArea.innerHTML = '';
 
-      let options = [correctAnswer];
-      while(options.length < 3){
-        const wrong = Math.floor(Math.random() * 100) + 1;
-        if(!options.includes(wrong)) options.push(wrong);
-      }
+  let options = [correctAnswer];
+  while(options.length < 3){
+    const wrong = Math.floor(Math.random() * 100) + 1;
+    if(!options.includes(wrong)) options.push(wrong);
+  }
 
-      options = shuffle(options);
+  options = shuffle(options);
 
-      options.forEach(option => {
-        const btn = document.createElement('button');
-        btn.className = 'answer-btn';
-        btn.textContent = option;
-        btn.onclick = () => answerQuestion(btn, option, correctAnswer);
-        answersArea.appendChild(btn);
-      });
-    }
+  options.forEach(option => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = option;
+    btn.onclick = () => answerQuestion(btn, option, correctAnswer);
+    answersArea.appendChild(btn);
+  });
+}
 
     function answerQuestion(button, selected, correct){
       const allButtons = document.querySelectorAll('.answer-btn');

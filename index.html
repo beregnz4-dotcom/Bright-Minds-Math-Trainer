@@ -18,6 +18,7 @@
       --muted:#6b7280;
       --blue:#2d8cff;
       --blue-dark:#1f6fcb;
+      --purple:#7a4dff;
       --green:#22c55e;
       --red:#ef4444;
       --shadow:0 10px 24px rgba(0,0,0,.12);
@@ -105,6 +106,7 @@
       background:var(--card);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
     .hero{
@@ -126,7 +128,7 @@
     }
 
     .card{
-      padding:16px;
+      padding:20px;
       margin-top:14px;
     }
 
@@ -154,6 +156,7 @@
       border-radius:18px;
       padding:14px 18px;
       margin-top:8px;
+      transition:all .2s ease;
     }
 
     .secondary-btn{
@@ -163,6 +166,12 @@
       border-radius:18px;
       padding:14px 18px;
       margin-top:8px;
+      transition:all .2s ease;
+    }
+
+    .primary-btn:active,
+    .secondary-btn:active{
+      transform:scale(0.98);
     }
 
     .menu-list{
@@ -173,19 +182,18 @@
     }
 
     .main-btn{
-      background:var(--blue);
+      background: linear-gradient(135deg, #2d8cff, #7a4dff);
       color:#fff;
-      border-radius:24px;
-      padding:16px 18px;
-      box-shadow:0 8px 0 var(--blue-dark);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 10px 20px rgba(0,0,0,.15);
       text-align:center;
       width:100%;
+      transition:all .2s ease;
     }
 
-    .main-btn:active,
-    .primary-btn:active,
-    .secondary-btn:active{
-      transform:translateY(2px);
+    .main-btn:active{
+      transform:scale(0.96);
     }
 
     .main-btn .big{
@@ -246,10 +254,25 @@
 
     .status{
       margin-top:10px;
-      font-size:14px;
+      font-size:16px;
       color:var(--muted);
       text-align:center;
-      min-height:18px;
+      min-height:22px;
+      font-weight:700;
+    }
+
+    .progress-bar{
+      height:14px;
+      border-radius:999px;
+      background:#e5e7eb;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      background:linear-gradient(90deg,#2d8cff,#7a4dff);
+      border-radius:999px;
+      width:0%;
     }
 
     @media (min-width: 768px){
@@ -264,10 +287,12 @@
       border:none;
       background:#fff;
       border-radius:14px;
-      padding:14px 0;
+      padding:16px 0;
       box-shadow:var(--shadow);
       font-weight:800;
+      font-size:18px;
       cursor:pointer;
+      transition:all .15s ease;
     }
 
     .table-option.selected{
@@ -277,13 +302,18 @@
 
     .answer-btn{
       border:none;
-      border-radius:14px;
-      padding:14px 10px;
-      font-size:18px;
+      border-radius:18px;
+      padding:18px 10px;
+      font-size:22px;
       font-weight:800;
       background:#fff;
       box-shadow:var(--shadow);
       cursor:pointer;
+      transition: all .15s ease;
+    }
+
+    .answer-btn:active{
+      transform: scale(0.92);
     }
 
     .answer-btn.correct{
@@ -327,6 +357,7 @@
       box-shadow:var(--shadow);
       font-weight:800;
       text-align:center;
+      font-size:20px;
     }
 
     .match-grid{
@@ -345,11 +376,17 @@
     .match-btn{
       border:none;
       background:#fff;
-      border-radius:14px;
-      padding:14px 10px;
+      border-radius:18px;
+      padding:16px;
+      font-size:18px;
       font-weight:800;
       box-shadow:var(--shadow);
       cursor:pointer;
+      transition: all .15s ease;
+    }
+
+    .match-btn:active{
+      transform: scale(0.92);
     }
 
     .match-btn.selected{
@@ -369,6 +406,7 @@
       box-shadow:var(--shadow);
       font-weight:800;
       margin:4px;
+      font-size:20px;
     }
   </style>
 </head>
@@ -420,45 +458,49 @@
         <button class="icon-btn" onclick="showScreen('screen-profiles')">←</button>
         <div class="topbar-title">Bright Minds</div>
         <div style="display:flex; gap:8px;">
+          <button class="icon-btn" onclick="toggleSound()" id="soundToggleBtn">🔊</button>
           <button class="icon-btn" onclick="logoutUser()">⎋</button>
         </div>
       </div>
 
       <div class="hero">
-        <div class="subtitle">Selected child</div>
+        <div style="font-size:40px;">🧠✨</div>
+        <div class="subtitle">Bright Minds Math</div>
         <h1 id="homeChildName">Child</h1>
+        <div id="homeLevel" class="subtitle" style="font-weight:700;">🌱 Beginner</div>
         <div id="homeXP" class="subtitle">XP: 0</div>
-        <div id="homeLevel" class="subtitle">Level: Beginner</div>
 
-        <div style="margin:12px auto 6px; max-width:320px;">
-          <div style="height:12px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
-            <div id="homeProgressFill" style="height:12px; width:0%; background:var(--blue); border-radius:999px;"></div>
+        <div style="margin:12px auto 6px; max-width:280px;">
+          <div class="progress-bar">
+            <div id="homeProgressFill" class="progress-fill"></div>
           </div>
         </div>
 
         <div id="homeProgressText" class="subtitle">0 XP to next level</div>
-        <div class="subtitle">Choose a mode to continue</div>
+        <div class="subtitle" style="margin-top:8px;">
+          🚀 Keep going! You're getting smarter every day
+        </div>
       </div>
 
-      <button class="secondary-btn" onclick="openProgress()">View Progress</button>
+      <button class="secondary-btn" onclick="openProgress(); playSound('tap')">View Progress</button>
 
       <div class="menu-list">
-        <button class="main-btn" onclick="openMode('number-builder')">
+        <button class="main-btn" onclick="playSound('tap'); openMode('number-builder')">
           <div class="big">🌱 Number Builder</div>
           <div class="small">Build your understanding of multiplication</div>
         </button>
 
-        <button class="main-btn">
+        <button class="main-btn" onclick="playSound('tap')">
           <div class="big">🚀 Skill Builder</div>
           <div class="small">Practice and strengthen your skills</div>
         </button>
 
-        <button class="main-btn">
+        <button class="main-btn" onclick="playSound('tap')">
           <div class="big">⚡ Speed Challenge</div>
           <div class="small">Solve faster and improve your time</div>
         </button>
 
-        <button class="main-btn">
+        <button class="main-btn" onclick="playSound('tap')">
           <div class="big">🏆 Math Arena</div>
           <div class="small">Compete and show your level</div>
         </button>
@@ -468,7 +510,7 @@
     <!-- SETUP -->
     <section id="screen-setup" class="screen">
       <div class="topbar">
-        <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
         <div class="topbar-title">Select Tables</div>
         <div style="width:46px;"></div>
       </div>
@@ -477,9 +519,9 @@
         <div class="section-title">Choose tables</div>
         <div id="tablesContainer" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
 
-        <button class="secondary-btn" onclick="selectAllTables()">Select All</button>
-        <button class="secondary-btn" onclick="clearTables()">Clear</button>
-        <button class="primary-btn" onclick="startGame()">Start</button>
+        <button class="secondary-btn" onclick="playSound('tap'); selectAllTables()">Select All</button>
+        <button class="secondary-btn" onclick="playSound('tap'); clearTables()">Clear</button>
+        <button class="primary-btn" onclick="playSound('tap'); startGame()">Start</button>
         <div id="setupStatus" class="status"></div>
       </div>
     </section>
@@ -487,7 +529,7 @@
     <!-- GAME -->
     <section id="screen-game" class="screen">
       <div class="topbar">
-        <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
         <div class="topbar-title" id="gameTitle">Number Builder</div>
         <div style="width:46px;"></div>
       </div>
@@ -495,7 +537,7 @@
       <div class="card">
         <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 10</div>
         <div id="gameTypeLabel" class="subtitle" style="text-align:center;margin-bottom:8px;">Visual</div>
-        <div id="questionText" style="font-size:34px;font-weight:800;text-align:center;margin-bottom:20px;">2 × 3</div>
+        <div id="questionText" style="font-size:42px;font-weight:800;text-align:center;margin-bottom:20px;">2 × 3</div>
         <div id="visualArea" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;"></div>
         <div id="answersArea" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"></div>
         <div id="gameStatus" class="status"></div>
@@ -505,7 +547,7 @@
     <!-- RESULT -->
     <section id="screen-result" class="screen">
       <div class="topbar">
-        <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
         <div class="topbar-title">Results</div>
         <div style="width:46px;"></div>
       </div>
@@ -513,14 +555,14 @@
       <div class="card">
         <div class="section-title" style="text-align:center;">Round Complete</div>
         <div id="resultSummary" class="subtitle" style="text-align:center;margin-bottom:16px;"></div>
-        <button class="primary-btn" onclick="showScreen('screen-home')">Back to Home</button>
+        <button class="primary-btn" onclick="playSound('tap'); showScreen('screen-home')">Back to Home</button>
       </div>
     </section>
 
     <!-- PROGRESS -->
     <section id="screen-progress" class="screen">
       <div class="topbar">
-        <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
         <div class="topbar-title">Progress</div>
         <div style="width:46px;"></div>
       </div>
@@ -532,8 +574,8 @@
         <div id="progressLevel" class="subtitle">Level: 🌱 Beginner</div>
 
         <div style="margin:12px auto 6px; max-width:320px;">
-          <div style="height:12px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
-            <div id="progressFill" style="height:12px; width:0%; background:var(--blue); border-radius:999px;"></div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
           </div>
         </div>
 
@@ -578,6 +620,40 @@
       correct: 0,
       wrong: 0
     };
+
+    // SOUND SYSTEM
+    let soundEnabled = true;
+
+    const sounds = {
+      tap: new Audio('sounds/tap.mp3'),
+      correct: new Audio('sounds/correct.mp3'),
+      wrong: new Audio('sounds/wrong.mp3'),
+      win: new Audio('sounds/win.mp3'),
+      bg: new Audio('sounds/bg.mp3')
+    };
+
+    sounds.bg.loop = true;
+    sounds.bg.volume = 0.2;
+
+    function playSound(name){
+      if(!soundEnabled) return;
+      const sound = sounds[name];
+      if(!sound) return;
+      sound.currentTime = 0;
+      sound.play().catch(()=>{});
+    }
+
+    function toggleSound(){
+      soundEnabled = !soundEnabled;
+      const btn = document.getElementById('soundToggleBtn');
+      btn.textContent = soundEnabled ? '🔊' : '🔇';
+
+      if(soundEnabled){
+        sounds.bg.play().catch(()=>{});
+      } else {
+        sounds.bg.pause();
+      }
+    }
 
     function showScreen(screenId){
       document.querySelectorAll('.screen').forEach(screen=>{
@@ -626,6 +702,7 @@
 
     async function logoutUser(){
       try{
+        sounds.bg.pause();
         await auth.signOut();
         appState.currentChildId = null;
         appState.currentChildName = null;
@@ -730,11 +807,13 @@
           `;
 
           row.onclick = () => {
+            playSound('tap');
             selectChild(doc.id, child.name);
           };
 
           row.querySelector('.mini-btn').onclick = async (event) => {
             event.stopPropagation();
+            playSound('tap');
             await deleteChild(doc.id);
           };
 
@@ -765,9 +844,13 @@
       const levelInfo = getLevelInfo(xp);
 
       document.getElementById('homeXP').textContent = `XP: ${xp}`;
-      document.getElementById('homeLevel').textContent = `Level: ${levelInfo.level}`;
+      document.getElementById('homeLevel').textContent = `${levelInfo.level}`;
       document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
       document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
+
+      if(soundEnabled){
+        sounds.bg.play().catch(()=>{});
+      }
 
       showScreen('screen-home');
     }
@@ -810,6 +893,7 @@
         btn.textContent = i;
 
         btn.onclick = () => {
+          playSound('tap');
           if(selectedTables.includes(i)){
             selectedTables = selectedTables.filter(x => x !== i);
           } else {
@@ -957,184 +1041,197 @@
         renderAnswerOptions(q.answer);
       }
 
-    if(q.type === 'matching'){
-  typeLabel.textContent = 'Matching';
+      if(q.type === 'matching'){
+        typeLabel.textContent = 'Matching';
 
-  const multiplierSet = new Set();
-  multiplierSet.add(q.multiplier);
+        const multiplierSet = new Set();
+        multiplierSet.add(q.multiplier);
 
-  while(multiplierSet.size < 3){
-    const randomMultiplier = Math.floor(Math.random() * 10) + 1;
-    multiplierSet.add(randomMultiplier);
-  }
-
-  const multipliers = [...multiplierSet];
-
-  const pairs = multipliers.map(m => ({
-    left: `${q.table} × ${m}`,
-    right: q.table * m
-  }));
-
-  const shuffledRight = shuffle(pairs.map(p => p.right));
-
-  const grid = document.createElement('div');
-  grid.className = 'match-grid';
-
-  const leftCol = document.createElement('div');
-  leftCol.className = 'match-col';
-
-  const rightCol = document.createElement('div');
-  rightCol.className = 'match-col';
-
-  let selectedLeftBtn = null;
-  let selectedRightBtn = null;
-  let selectedLeftPair = null;
-  let selectedRightValue = null;
-  let matchesCompleted = 0;
-  let wrongAttempt = false;
-
-  pairs.forEach(pair=>{
-    const btn = document.createElement('button');
-    btn.className = 'match-btn';
-    btn.textContent = pair.left;
-
-    btn.onclick = () => {
-      if(btn.disabled) return;
-
-      leftCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-
-      selectedLeftBtn = btn;
-      selectedLeftPair = pair;
-      checkMatch();
-    };
-
-    leftCol.appendChild(btn);
-  });
-
-  shuffledRight.forEach(value=>{
-    const btn = document.createElement('button');
-    btn.className = 'match-btn';
-    btn.textContent = value;
-
-    btn.onclick = () => {
-      if(btn.disabled) return;
-
-      rightCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-
-      selectedRightBtn = btn;
-      selectedRightValue = value;
-      checkMatch();
-    };
-
-    rightCol.appendChild(btn);
-  });
-
-  function checkMatch(){
-    if(!selectedLeftPair || selectedRightValue === null) return;
-
-    if(selectedLeftPair.right === selectedRightValue){
-      selectedLeftBtn.classList.remove('selected');
-      selectedRightBtn.classList.remove('selected');
-
-      selectedLeftBtn.classList.add('correct');
-      selectedRightBtn.classList.add('correct');
-
-      selectedLeftBtn.disabled = true;
-      selectedRightBtn.disabled = true;
-
-      matchesCompleted++;
-      document.getElementById('gameStatus').textContent = `Matches completed: ${matchesCompleted}/3`;
-
-      selectedLeftBtn = null;
-      selectedRightBtn = null;
-      selectedLeftPair = null;
-      selectedRightValue = null;
-
-      if(matchesCompleted === 3){
-        if(!wrongAttempt){
-          gameState.correct++;
-          document.getElementById('gameStatus').textContent = 'Perfect matching!';
-        } else {
-          gameState.wrong++;
-          document.getElementById('gameStatus').textContent = 'Completed, but with mistakes.';
+        while(multiplierSet.size < 3){
+          const randomMultiplier = Math.floor(Math.random() * 10) + 1;
+          multiplierSet.add(randomMultiplier);
         }
 
-        setTimeout(() => {
-          gameState.currentIndex++;
-          if(gameState.currentIndex >= gameState.questions.length){
-            finishRound();
+        const multipliers = [...multiplierSet];
+
+        const pairs = multipliers.map(m => ({
+          left: `${q.table} × ${m}`,
+          right: q.table * m
+        }));
+
+        const shuffledRight = shuffle(pairs.map(p => p.right));
+
+        const grid = document.createElement('div');
+        grid.className = 'match-grid';
+
+        const leftCol = document.createElement('div');
+        leftCol.className = 'match-col';
+
+        const rightCol = document.createElement('div');
+        rightCol.className = 'match-col';
+
+        let selectedLeftBtn = null;
+        let selectedRightBtn = null;
+        let selectedLeftPair = null;
+        let selectedRightValue = null;
+        let matchesCompleted = 0;
+        let wrongAttempt = false;
+
+        pairs.forEach(pair=>{
+          const btn = document.createElement('button');
+          btn.className = 'match-btn';
+          btn.textContent = pair.left;
+
+          btn.onclick = () => {
+            if(btn.disabled) return;
+            playSound('tap');
+
+            leftCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
+            btn.classList.add('selected');
+
+            selectedLeftBtn = btn;
+            selectedLeftPair = pair;
+            checkMatch();
+          };
+
+          leftCol.appendChild(btn);
+        });
+
+        shuffledRight.forEach(value=>{
+          const btn = document.createElement('button');
+          btn.className = 'match-btn';
+          btn.textContent = value;
+
+          btn.onclick = () => {
+            if(btn.disabled) return;
+            playSound('tap');
+
+            rightCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
+            btn.classList.add('selected');
+
+            selectedRightBtn = btn;
+            selectedRightValue = value;
+            checkMatch();
+          };
+
+          rightCol.appendChild(btn);
+        });
+
+        function checkMatch(){
+          if(!selectedLeftPair || selectedRightValue === null) return;
+
+          if(selectedLeftPair.right === selectedRightValue){
+            playSound('correct');
+
+            selectedLeftBtn.classList.remove('selected');
+            selectedRightBtn.classList.remove('selected');
+
+            selectedLeftBtn.classList.add('correct');
+            selectedRightBtn.classList.add('correct');
+
+            selectedLeftBtn.disabled = true;
+            selectedRightBtn.disabled = true;
+
+            matchesCompleted++;
+            document.getElementById('gameStatus').textContent = `Matches completed: ${matchesCompleted}/3`;
+
+            selectedLeftBtn = null;
+            selectedRightBtn = null;
+            selectedLeftPair = null;
+            selectedRightValue = null;
+
+            if(matchesCompleted === 3){
+              if(!wrongAttempt){
+                gameState.correct++;
+                document.getElementById('gameStatus').textContent = 'Perfect matching!';
+              } else {
+                gameState.wrong++;
+                document.getElementById('gameStatus').textContent = 'Completed, but with mistakes.';
+              }
+
+              setTimeout(() => {
+                gameState.currentIndex++;
+                if(gameState.currentIndex >= gameState.questions.length){
+                  finishRound();
+                } else {
+                  renderCurrentQuestion();
+                }
+              }, 900);
+            }
           } else {
-            renderCurrentQuestion();
+            playSound('wrong');
+            wrongAttempt = true;
+            document.getElementById('gameStatus').textContent = 'Try again';
+
+            selectedLeftBtn.classList.remove('selected');
+            selectedRightBtn.classList.remove('selected');
+
+            selectedLeftBtn = null;
+            selectedRightBtn = null;
+            selectedLeftPair = null;
+            selectedRightValue = null;
           }
-        }, 900);
+        }
+
+        grid.appendChild(leftCol);
+        grid.appendChild(rightCol);
+        visualArea.appendChild(grid);
       }
-    } else {
-      wrongAttempt = true;
-      document.getElementById('gameStatus').textContent = 'Try again';
-
-      selectedLeftBtn.classList.remove('selected');
-      selectedRightBtn.classList.remove('selected');
-
-      selectedLeftBtn = null;
-      selectedRightBtn = null;
-      selectedLeftPair = null;
-      selectedRightValue = null;
-    }
-  }
-
-  grid.appendChild(leftCol);
-  grid.appendChild(rightCol);
-  visualArea.appendChild(grid);
-}
     }
 
     function renderAnswerOptions(correctAnswer){
-  const answersArea = document.getElementById('answersArea');
-  answersArea.innerHTML = '';
+      const answersArea = document.getElementById('answersArea');
+      answersArea.innerHTML = '';
 
-  const optionsSet = new Set();
-  optionsSet.add(correctAnswer);
+      const optionsSet = new Set();
+      optionsSet.add(correctAnswer);
 
-  const offsets = [-3, -2, -1, 1, 2, 3, 4, -4];
-  const shuffledOffsets = shuffle(offsets);
+      const offsets = [-3, -2, -1, 1, 2, 3, 4, -4];
+      const shuffledOffsets = shuffle(offsets);
 
-  for(const offset of shuffledOffsets){
-    const candidate = correctAnswer + offset;
-    if(candidate > 0){
-      optionsSet.add(candidate);
+      for(const offset of shuffledOffsets){
+        const candidate = correctAnswer + offset;
+        if(candidate > 0){
+          optionsSet.add(candidate);
+        }
+        if(optionsSet.size === 3) break;
+      }
+
+      while(optionsSet.size < 3){
+        const candidate = correctAnswer + (Math.floor(Math.random() * 6) - 3);
+        if(candidate > 0){
+          optionsSet.add(candidate);
+        }
+      }
+
+      const options = shuffle([...optionsSet]);
+
+      options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = option;
+        btn.onclick = () => {
+          playSound('tap');
+          answerQuestion(btn, option, correctAnswer);
+        };
+        answersArea.appendChild(btn);
+      });
     }
-    if(optionsSet.size === 3) break;
-  }
-
-  while(optionsSet.size < 3){
-    const candidate = correctAnswer + (Math.floor(Math.random() * 6) - 3);
-    if(candidate > 0){
-      optionsSet.add(candidate);
-    }
-  }
-
-  const options = shuffle([...optionsSet]);
-
-  options.forEach(option => {
-    const btn = document.createElement('button');
-    btn.className = 'answer-btn';
-    btn.textContent = option;
-    btn.onclick = () => answerQuestion(btn, option, correctAnswer);
-    answersArea.appendChild(btn);
-  });
-}
 
     function answerQuestion(button, selected, correct){
       const allButtons = document.querySelectorAll('.answer-btn');
       allButtons.forEach(b => b.disabled = true);
 
       if(selected === correct){
+        playSound('correct');
         button.classList.add('correct');
         gameState.correct++;
-        document.getElementById('gameStatus').textContent = 'Correct!';
+
+        const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
+        document.getElementById('gameStatus').textContent =
+          messages[Math.floor(Math.random() * messages.length)];
       } else {
+        playSound('wrong');
         button.classList.add('wrong');
         gameState.wrong++;
         document.getElementById('gameStatus').textContent = `Correct answer: ${correct}`;
@@ -1157,35 +1254,36 @@
     }
 
     async function finishRound(){
-  const xpEarned = gameState.correct * 10;
+      const xpEarned = gameState.correct * 10;
+      playSound('win');
 
-  await saveNumberBuilderProgress(xpEarned);
+      await saveNumberBuilderProgress(xpEarned);
 
-  const user = auth.currentUser;
-  const childId = appState.currentChildId;
+      const user = auth.currentUser;
+      const childId = appState.currentChildId;
 
-  if(user && childId){
-    const snap = await db.collection('users')
-      .doc(user.uid)
-      .collection('children')
-      .doc(childId)
-      .get();
+      if(user && childId){
+        const snap = await db.collection('users')
+          .doc(user.uid)
+          .collection('children')
+          .doc(childId)
+          .get();
 
-    const data = snap.data() || {};
-    const xp = data.xp || 0;
-    const levelInfo = getLevelInfo(xp);
+        const data = snap.data() || {};
+        const xp = data.xp || 0;
+        const levelInfo = getLevelInfo(xp);
 
-    document.getElementById('homeXP').textContent = `XP: ${xp}`;
-    document.getElementById('homeLevel').textContent = `Level: ${levelInfo.level}`;
-    document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
-    document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
-  }
+        document.getElementById('homeXP').textContent = `XP: ${xp}`;
+        document.getElementById('homeLevel').textContent = `${levelInfo.level}`;
+        document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
+        document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
+      }
 
-  document.getElementById('resultSummary').textContent =
-    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+      document.getElementById('resultSummary').textContent =
+        `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
 
-  showScreen('screen-result');
-}
+      showScreen('screen-result');
+    }
 
     function shuffle(arr){
       const copy = [...arr];

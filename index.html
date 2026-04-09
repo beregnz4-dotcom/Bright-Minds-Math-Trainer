@@ -275,6 +275,38 @@
       width:0%;
     }
 
+    .settings-card{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .setting-row{
+      background:#fff;
+      border-radius:18px;
+      padding:14px 16px;
+      box-shadow:var(--shadow);
+    }
+
+    .setting-label{
+      font-size:16px;
+      font-weight:800;
+      margin-bottom:8px;
+      color:var(--text);
+    }
+
+    .setting-value{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:6px;
+      text-align:right;
+    }
+
+    .volume-slider{
+      width:100%;
+      accent-color:#2d8cff;
+    }
+
     @media (min-width: 768px){
       .menu-list{
         display:grid;
@@ -425,8 +457,8 @@
         <div class="section-title">Login</div>
         <input id="loginEmail" class="input" placeholder="Email" />
         <input id="loginPassword" class="input" type="password" placeholder="Password" />
-        <button class="primary-btn" onclick="loginUser()">Login</button>
-        <button class="secondary-btn" onclick="signupUser()">Create account</button>
+        <button class="primary-btn" onclick="playSound('tap'); loginUser()">Login</button>
+        <button class="secondary-btn" onclick="playSound('tap'); signupUser()">Create account</button>
         <div id="loginStatus" class="status"></div>
       </div>
     </section>
@@ -434,9 +466,9 @@
     <!-- PROFILES -->
     <section id="screen-profiles" class="screen">
       <div class="topbar">
-        <button class="back-btn" onclick="logoutUser()">←</button>
+        <button class="back-btn" onclick="playSound('tap'); logoutUser()">←</button>
         <div class="topbar-title">Profiles</div>
-        <button class="icon-btn" onclick="loadChildren()">↻</button>
+        <button class="icon-btn" onclick="playSound('tap'); loadChildren()">↻</button>
       </div>
 
       <div class="card">
@@ -447,7 +479,7 @@
       <div class="card">
         <div class="section-title">Add profile</div>
         <input id="newChildName" class="input" placeholder="Child name" />
-        <button class="primary-btn" onclick="addChild()">Add child</button>
+        <button class="primary-btn" onclick="playSound('tap'); addChild()">Add child</button>
         <div id="profileStatus" class="status"></div>
       </div>
     </section>
@@ -455,11 +487,12 @@
     <!-- HOME -->
     <section id="screen-home" class="screen">
       <div class="topbar">
-        <button class="icon-btn" onclick="showScreen('screen-profiles')">←</button>
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-profiles')">←</button>
         <div class="topbar-title">Bright Minds</div>
         <div style="display:flex; gap:8px;">
+          <button class="icon-btn" onclick="playSound('tap'); openSettings()">⚙️</button>
           <button class="icon-btn" onclick="toggleSound()" id="soundToggleBtn">🔊</button>
-          <button class="icon-btn" onclick="logoutUser()">⎋</button>
+          <button class="icon-btn" onclick="playSound('tap'); logoutUser()">⎋</button>
         </div>
       </div>
 
@@ -482,7 +515,7 @@
         </div>
       </div>
 
-      <button class="secondary-btn" onclick="openProgress(); playSound('tap')">View Progress</button>
+      <button class="secondary-btn" onclick="playSound('tap'); openProgress()">View Progress</button>
 
       <div class="menu-list">
         <button class="main-btn" onclick="playSound('tap'); openMode('number-builder')">
@@ -504,6 +537,52 @@
           <div class="big">🏆 Math Arena</div>
           <div class="small">Compete and show your level</div>
         </button>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="screen-settings" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
+        <div class="topbar-title">Sound Settings</div>
+        <div style="width:46px;"></div>
+      </div>
+
+      <div class="card settings-card">
+        <div class="setting-row">
+          <div class="setting-label">Sound</div>
+          <button id="settingsSoundToggle" class="secondary-btn" onclick="toggleSound()">
+            Sound: ON
+          </button>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">Music Volume</div>
+          <input
+            id="musicVolumeSlider"
+            class="volume-slider"
+            type="range"
+            min="0"
+            max="100"
+            value="20"
+            oninput="updateMusicVolume(this.value)"
+          />
+          <div id="musicVolumeValue" class="setting-value">20%</div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">Effects Volume</div>
+          <input
+            id="effectsVolumeSlider"
+            class="volume-slider"
+            type="range"
+            min="0"
+            max="100"
+            value="80"
+            oninput="updateEffectsVolume(this.value)"
+          />
+          <div id="effectsVolumeValue" class="setting-value">80%</div>
+        </div>
       </div>
     </section>
 
@@ -621,8 +700,10 @@
       wrong: 0
     };
 
-    // SOUND SYSTEM
-    let soundEnabled = true;
+    // SOUND SYSTEM PRO
+    let soundEnabled = JSON.parse(localStorage.getItem('bm_soundEnabled') ?? 'true');
+    let musicVolume = Number(localStorage.getItem('bm_musicVolume') ?? '20');
+    let effectsVolume = Number(localStorage.getItem('bm_effectsVolume') ?? '80');
 
     const sounds = {
       tap: new Audio('sounds/tap.mp3'),
@@ -633,7 +714,41 @@
     };
 
     sounds.bg.loop = true;
-    sounds.bg.volume = 0.2;
+
+    function applyAudioSettings(){
+      sounds.bg.volume = musicVolume / 100;
+
+      sounds.tap.volume = effectsVolume / 100;
+      sounds.correct.volume = effectsVolume / 100;
+      sounds.wrong.volume = effectsVolume / 100;
+      sounds.win.volume = effectsVolume / 100;
+
+      const soundBtn = document.getElementById('soundToggleBtn');
+      if(soundBtn){
+        soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
+      }
+
+      const settingsBtn = document.getElementById('settingsSoundToggle');
+      if(settingsBtn){
+        settingsBtn.textContent = soundEnabled ? 'Sound: ON' : 'Sound: OFF';
+      }
+
+      const musicSlider = document.getElementById('musicVolumeSlider');
+      const musicValue = document.getElementById('musicVolumeValue');
+      if(musicSlider) musicSlider.value = musicVolume;
+      if(musicValue) musicValue.textContent = `${musicVolume}%`;
+
+      const effectsSlider = document.getElementById('effectsVolumeSlider');
+      const effectsValue = document.getElementById('effectsVolumeValue');
+      if(effectsSlider) effectsSlider.value = effectsVolume;
+      if(effectsValue) effectsValue.textContent = `${effectsVolume}%`;
+    }
+
+    function saveAudioSettings(){
+      localStorage.setItem('bm_soundEnabled', JSON.stringify(soundEnabled));
+      localStorage.setItem('bm_musicVolume', String(musicVolume));
+      localStorage.setItem('bm_effectsVolume', String(effectsVolume));
+    }
 
     function playSound(name){
       if(!soundEnabled) return;
@@ -645,8 +760,8 @@
 
     function toggleSound(){
       soundEnabled = !soundEnabled;
-      const btn = document.getElementById('soundToggleBtn');
-      btn.textContent = soundEnabled ? '🔊' : '🔇';
+      saveAudioSettings();
+      applyAudioSettings();
 
       if(soundEnabled){
         sounds.bg.play().catch(()=>{});
@@ -654,6 +769,32 @@
         sounds.bg.pause();
       }
     }
+
+    function updateMusicVolume(value){
+      musicVolume = Number(value);
+      saveAudioSettings();
+      applyAudioSettings();
+
+      if(soundEnabled && musicVolume > 0){
+        sounds.bg.play().catch(()=>{});
+      }
+    }
+
+    function updateEffectsVolume(value){
+      effectsVolume = Number(value);
+      saveAudioSettings();
+      applyAudioSettings();
+      playSound('tap');
+    }
+
+    function openSettings(){
+      applyAudioSettings();
+      showScreen('screen-settings');
+    }
+
+    setTimeout(() => {
+      applyAudioSettings();
+    }, 0);
 
     function showScreen(screenId){
       document.querySelectorAll('.screen').forEach(screen=>{
@@ -848,7 +989,7 @@
       document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
       document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
 
-      if(soundEnabled){
+      if(soundEnabled && musicVolume > 0){
         sounds.bg.play().catch(()=>{});
       }
 

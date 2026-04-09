@@ -702,8 +702,7 @@
         status.textContent = error.message;
       }
     }
-
-    async function selectChild(childId, childName){
+async function selectChild(childId, childName){
   appState.currentChildId = childId;
   appState.currentChildName = childName;
 
@@ -718,12 +717,14 @@
 
   const data = snap.data() || {};
   const xp = data.xp || 0;
+  const level = getLevelFromXP(xp);
 
   document.getElementById('homeXP').textContent = `XP: ${xp}`;
+  document.getElementById('homeLevel').textContent = `Level: ${level}`;
 
   showScreen('screen-home');
 }
-
+    
     async function deleteChild(childId){
       const user = auth.currentUser;
       if(!user) return;

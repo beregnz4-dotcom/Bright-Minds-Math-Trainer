@@ -1151,6 +1151,67 @@ async function selectChild(childId, childName){
   if(xp >= 50) return '⭐ Explorer';
   return '🌱 Beginner';
 }
+    function getLevelInfo(xp){
+  if(xp >= 400){
+    return {
+      level: '👑 Genius',
+      currentMin: 400,
+      nextMin: 400,
+      progressPercent: 100,
+      remainingText: 'Max level reached'
+    };
+  }
+
+  if(xp >= 250){
+    const currentMin = 250;
+    const nextMin = 400;
+    const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+    return {
+      level: '🧠 Math Hero',
+      currentMin,
+      nextMin,
+      progressPercent,
+      remainingText: `${nextMin - xp} XP to Genius`
+    };
+  }
+
+  if(xp >= 120){
+    const currentMin = 120;
+    const nextMin = 250;
+    const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+    return {
+      level: '🚀 Smart Kid',
+      currentMin,
+      nextMin,
+      progressPercent,
+      remainingText: `${nextMin - xp} XP to Math Hero`
+    };
+  }
+
+  if(xp >= 50){
+    const currentMin = 50;
+    const nextMin = 120;
+    const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+    return {
+      level: '⭐ Explorer',
+      currentMin,
+      nextMin,
+      progressPercent,
+      remainingText: `${nextMin - xp} XP to Smart Kid`
+    };
+  }
+
+  const currentMin = 0;
+  const nextMin = 50;
+  const progressPercent = (xp / nextMin) * 100;
+  return {
+    level: '🌱 Beginner',
+    currentMin,
+    nextMin,
+    progressPercent,
+    remainingText: `${nextMin - xp} XP to Explorer`
+  };
+}
   </script>
 </body>
 </html>

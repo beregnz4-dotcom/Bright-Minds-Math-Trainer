@@ -1668,6 +1668,10 @@ gameState.resultsByTable[table].wrong++;
 const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
   document.getElementById('resultSummary').textContent =
     `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+      const recommendation = getAdaptiveRecommendation();
+
+document.getElementById('resultRecommendation').innerHTML =
+  `${recommendation.levelMessage}<br>${recommendation.focusMessage}`;
 
   await saveNumberBuilderProgress(xpEarned);
 

@@ -1091,27 +1091,29 @@ const numberBuilderLevels = {
     }
 
     function buildNumberBuilderRound(){
-      gameState.questions = [];
-      gameState.currentIndex = 0;
-      gameState.correct = 0;
-      gameState.wrong = 0;
+  gameState.questions = [];
+  gameState.currentIndex = 0;
+  gameState.correct = 0;
+  gameState.wrong = 0;
 
-      const types = ['visual', 'sequence', 'addition', 'matching'];
+  const levelConfig = numberBuilderLevels[currentLevel];
+  const types = levelConfig.enabledTypes;
+  const questionCount = levelConfig.questionCount;
 
-      for(let i=0;i<10;i++){
-        const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
-        const multiplier = Math.floor(Math.random() * 10) + 1;
-        const answer = table * multiplier;
-        const type = types[Math.floor(Math.random() * types.length)];
+  for(let i = 0; i < questionCount; i++){
+    const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+    const multiplier = Math.floor(Math.random() * 10) + 1;
+    const answer = table * multiplier;
+    const type = types[Math.floor(Math.random() * types.length)];
 
-        gameState.questions.push({
-          type,
-          table,
-          multiplier,
-          answer
-        });
-      }
-    }
+    gameState.questions.push({
+      type,
+      table,
+      multiplier,
+      answer
+    });
+  }
+}
 
     function renderCurrentQuestion(){
       const q = gameState.questions[gameState.currentIndex];

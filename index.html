@@ -1598,39 +1598,33 @@ if(q.type === 'sequence'){
     }
 
     async function finishRound(){
-      const levelConfig = getCurrentLevelConfig();
-      const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
-      playSound('win');
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
 
-      document.getElementById('gameProgressFill').style.width = '100%';
+  const childRef = db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId);
 
-      await saveNumberBuilderProgress(xpEarned);
+  const snapBefore = await childRef.get();
+  const beforeData = snapBefore.data() || {};
+  const roundsBefore = beforeData.numberBuilder?.roundsPlayed || 0;
 
-      const user = auth.currentUser;
-      const childId = appState.currentChildId;
+  const xpEarned = gameState.correct * 10;
 
-      if(user && childId){
-        const snap = await db.collection('users')
-          .doc(user.uid)
-          .collection('children')
-          .doc(childId)
-          .get();
+  document.getElementById('resultSummary').textContent =
+    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
 
-        const data = snap.data() || {};
-        const xp = data.xp || 0;
-        const levelInfo = getLevelInfo(xp);
+  await saveNumberBuilderProgress(xpEarned);
 
-        document.getElementById('homeXP').textContent = `XP: ${xp}`;
-        document.getElementById('homeLevel').textContent = `${levelInfo.level}`;
-        document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
-        document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
-      }
+  const snapAfter = await childRef.get();
+  const afterData = snapAfter.data() || {};
+  const roundsAfter = afterData.numberBuilder?.roundsPlayed || 0;
 
-      document.getElementById('resultSummary').textContent =
-        `Level ${currentLevel} • Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+  checkUnlocks(roundsBefore, roundsAfter);
 
-      showScreen('screen-result');
-    }
+  showScreen('screen-result');
+}
 
     function shuffle(arr){
       const copy = [...arr];

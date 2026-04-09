@@ -1701,7 +1701,14 @@ const updatedTableStats = { ...existingTableStats };
         totalWrong: 0,
         highestLevelPlayed: 1
       };
+Object.keys(gameState.resultsByTable).forEach(tableKey => {
+  if(!updatedTableStats[tableKey]){
+    updatedTableStats[tableKey] = { correct: 0, wrong: 0 };
+  }
 
+  updatedTableStats[tableKey].correct += gameState.resultsByTable[tableKey].correct;
+  updatedTableStats[tableKey].wrong += gameState.resultsByTable[tableKey].wrong;
+});
       await childRef.set({
         xp: currentXP + xpEarned,
         lastMode: 'number-builder',

@@ -1659,8 +1659,8 @@ gameState.resultsByTable[table].wrong++;
   const beforeData = snapBefore.data() || {};
   const roundsBefore = beforeData.numberBuilder?.roundsPlayed || 0;
 
-  const xpEarned = gameState.correct * 10;
-
+  const levelConfig = getCurrentLevelConfig();
+const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
   document.getElementById('resultSummary').textContent =
     `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
 

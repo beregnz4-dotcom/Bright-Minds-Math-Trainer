@@ -1854,12 +1854,16 @@ for(let i = 1; i <= 12; i++){
 
   const accuracy = Math.round(((stats.correct || 0) / total) * 100);
 
-  if(total >= 10 && accuracy >= 80){
-    masteryLines.push(`✅ Table ${i}: mastered (${accuracy}%)`);
-  } else if(accuracy >= 50){
-    masteryLines.push(`🟡 Table ${i}: in progress (${accuracy}%)`);
+  if(total >= 20 && accuracy >= 85){
+    masteryLines.push(`✅ Table ${i}: mastered (${accuracy}% • ${total} attempts)`);
+  } else if(total >= 5){
+    if(accuracy >= 60){
+      masteryLines.push(`🟡 Table ${i}: in progress (${accuracy}% • ${total} attempts)`);
+    } else {
+      masteryLines.push(`🔴 Table ${i}: needs practice (${accuracy}% • ${total} attempts)`);
+    }
   } else {
-    masteryLines.push(`🔴 Table ${i}: needs practice (${accuracy}%)`);
+    masteryLines.push(`⚪ Table ${i}: not enough data yet (${total} attempts)`);
   }
 }
 

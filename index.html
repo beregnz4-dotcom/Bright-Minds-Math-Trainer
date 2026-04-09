@@ -1245,6 +1245,7 @@ function applyLevelLockUI(roundsPlayed){
       gameState.currentIndex = 0;
       gameState.correct = 0;
       gameState.wrong = 0;
+      gameState.resultsByTable = {};
 
       const levelConfig = getCurrentLevelConfig();
       const types = levelConfig.enabledTypes;

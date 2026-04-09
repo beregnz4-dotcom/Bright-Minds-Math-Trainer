@@ -1750,24 +1750,21 @@ if(q.type === 'sequence'){
 }
 
 function showUnlock(message){
+  playSound('win');
+
   const div = document.createElement('div');
-  div.style.position = 'fixed';
-  div.style.top = '30%';
-  div.style.left = '50%';
-  div.style.transform = 'translate(-50%, -50%)';
-  div.style.background = '#fff';
-  div.style.padding = '20px 30px';
-  div.style.borderRadius = '20px';
-  div.style.boxShadow = '0 20px 40px rgba(0,0,0,.2)';
-  div.style.fontSize = '20px';
-  div.style.fontWeight = '800';
-  div.style.zIndex = '9999';
+  div.className = 'unlock-popup';
   div.textContent = message;
 
   document.body.appendChild(div);
 
+  requestAnimationFrame(() => {
+    div.classList.add('show');
+  });
+
   setTimeout(() => {
-    div.remove();
+    div.classList.remove('show');
+    setTimeout(() => div.remove(), 250);
   }, 2000);
 }
     async function openProgress(){

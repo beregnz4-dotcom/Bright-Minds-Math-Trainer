@@ -83,8 +83,7 @@
     .primary-btn,
     .secondary-btn,
     .main-btn,
-    .child-card,
-    .danger-btn{
+    .child-card{
       border:none;
       cursor:pointer;
       font-weight:800;
@@ -166,15 +165,6 @@
       margin-top:8px;
     }
 
-    .danger-btn{
-      width:100%;
-      background:var(--red);
-      color:#fff;
-      border-radius:18px;
-      padding:14px 18px;
-      margin-top:8px;
-    }
-
     .menu-list{
       display:flex;
       flex-direction:column;
@@ -194,8 +184,7 @@
 
     .main-btn:active,
     .primary-btn:active,
-    .secondary-btn:active,
-    .danger-btn:active{
+    .secondary-btn:active{
       transform:translateY(2px);
     }
 
@@ -490,7 +479,7 @@
       </div>
 
       <div class="card">
-        <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 5</div>
+        <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 10</div>
         <div id="gameTypeLabel" class="subtitle" style="text-align:center;margin-bottom:8px;">Visual</div>
         <div id="questionText" style="font-size:34px;font-weight:800;text-align:center;margin-bottom:20px;">2 × 3</div>
         <div id="visualArea" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;"></div>
@@ -802,7 +791,7 @@
 
       const types = ['visual', 'sequence', 'addition', 'matching'];
 
-      for(let i=0;i<5;i++){
+      for(let i=0;i<10;i++){
         const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
         const multiplier = Math.floor(Math.random() * 10) + 1;
         const answer = table * multiplier;
@@ -823,15 +812,23 @@
 
       document.getElementById('gameProgress').textContent =
         `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
-      document.getElementById('questionText').textContent = `${q.table} × ${q.multiplier}`;
       document.getElementById('gameStatus').textContent = '';
 
       const visualArea = document.getElementById('visualArea');
       const answersArea = document.getElementById('answersArea');
       const typeLabel = document.getElementById('gameTypeLabel');
+      const questionText = document.getElementById('questionText');
 
       visualArea.innerHTML = '';
       answersArea.innerHTML = '';
+
+      if(q.type === 'sequence'){
+        questionText.textContent = 'Complete the pattern';
+      } else if(q.type === 'matching'){
+        questionText.textContent = 'Match each operation';
+      } else {
+        questionText.textContent = `${q.table} × ${q.multiplier}`;
+      }
 
       if(q.type === 'visual'){
         typeLabel.textContent = 'Visual';
@@ -901,7 +898,8 @@
 
         const pairs = [
           { left: `${q.table} × ${q.multiplier}`, right: q.answer },
-          { left: `${q.table} × ${Math.max(1, q.multiplier - 1)}`, right: q.table * Math.max(1, q.multiplier - 1) }
+          { left: `${q.table} × ${Math.max(1, q.multiplier - 1)}`, right: q.table * Math.max(1, q.multiplier - 1) },
+          { left: `${q.table} × ${Math.min(10, q.multiplier + 1)}`, right: q.table * Math.min(10, q.multiplier + 1) }
         ];
 
         const shuffledRight = shuffle(pairs.map(p => p.right));
@@ -915,19 +913,29 @@
         const rightCol = document.createElement('div');
         rightCol.className = 'match-col';
 
-        let selectedLeft = null;
-        let selectedRight = null;
+        let selectedLeftBtn = null;
+        let selectedRightBtn = null;
+        let selectedLeftPair = null;
+        let selectedRightValue = null;
+        let matchesCompleted = 0;
+        let wrongAttempt = false;
 
         pairs.forEach(pair=>{
           const btn = document.createElement('button');
           btn.className = 'match-btn';
           btn.textContent = pair.left;
+
           btn.onclick = () => {
-            document.querySelectorAll('.match-col:first-child .match-btn').forEach(b=>b.classList.remove('selected'));
+            if(btn.disabled) return;
+
+            leftCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
             btn.classList.add('selected');
-            selectedLeft = pair;
+
+            selectedLeftBtn = btn;
+            selectedLeftPair = pair;
             checkMatch();
           };
+
           leftCol.appendChild(btn);
         });
 
@@ -935,39 +943,71 @@
           const btn = document.createElement('button');
           btn.className = 'match-btn';
           btn.textContent = value;
+
           btn.onclick = () => {
-            document.querySelectorAll('.match-col:last-child .match-btn').forEach(b=>b.classList.remove('selected'));
+            if(btn.disabled) return;
+
+            rightCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
             btn.classList.add('selected');
-            selectedRight = value;
+
+            selectedRightBtn = btn;
+            selectedRightValue = value;
             checkMatch();
           };
+
           rightCol.appendChild(btn);
         });
 
         function checkMatch(){
-          if(!selectedLeft || selectedRight === null) return;
+          if(!selectedLeftPair || selectedRightValue === null) return;
 
-          const isCorrect = selectedLeft.right === selectedRight;
+          if(selectedLeftPair.right === selectedRightValue){
+            selectedLeftBtn.classList.remove('selected');
+            selectedRightBtn.classList.remove('selected');
 
-          if(selectedLeft.left === `${q.table} × ${q.multiplier}`){
-            if(isCorrect){
-              gameState.correct++;
-              document.getElementById('gameStatus').textContent = 'Correct!';
-            } else {
-              gameState.wrong++;
-              document.getElementById('gameStatus').textContent = `Correct answer: ${q.answer}`;
-            }
+            selectedLeftBtn.classList.add('correct');
+            selectedRightBtn.classList.add('correct');
 
-            setTimeout(() => {
-              gameState.currentIndex++;
-              if(gameState.currentIndex >= gameState.questions.length){
-                finishRound();
+            selectedLeftBtn.disabled = true;
+            selectedRightBtn.disabled = true;
+
+            matchesCompleted++;
+            document.getElementById('gameStatus').textContent = `Matches completed: ${matchesCompleted}/3`;
+
+            selectedLeftBtn = null;
+            selectedRightBtn = null;
+            selectedLeftPair = null;
+            selectedRightValue = null;
+
+            if(matchesCompleted === 3){
+              if(!wrongAttempt){
+                gameState.correct++;
+                document.getElementById('gameStatus').textContent = 'Perfect matching!';
               } else {
-                renderCurrentQuestion();
+                gameState.wrong++;
+                document.getElementById('gameStatus').textContent = 'Completed, but with mistakes.';
               }
-            }, 900);
+
+              setTimeout(() => {
+                gameState.currentIndex++;
+                if(gameState.currentIndex >= gameState.questions.length){
+                  finishRound();
+                } else {
+                  renderCurrentQuestion();
+                }
+              }, 900);
+            }
           } else {
-            renderCurrentQuestion();
+            wrongAttempt = true;
+            document.getElementById('gameStatus').textContent = 'Try again';
+
+            selectedLeftBtn.classList.remove('selected');
+            selectedRightBtn.classList.remove('selected');
+
+            selectedLeftBtn = null;
+            selectedRightBtn = null;
+            selectedLeftPair = null;
+            selectedRightValue = null;
           }
         }
 

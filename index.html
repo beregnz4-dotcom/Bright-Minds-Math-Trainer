@@ -699,7 +699,25 @@
       correct: 0,
       wrong: 0
     };
+let currentLevel = 1;
 
+const numberBuilderLevels = {
+  1: {
+    questionCount: 10,
+    enabledTypes: ['visual', 'sequence', 'addition', 'matching'],
+    maxTable: 5
+  },
+  2: {
+    questionCount: 12,
+    enabledTypes: ['sequence', 'addition', 'matching'],
+    maxTable: 10
+  },
+  3: {
+    questionCount: 15,
+    enabledTypes: ['addition', 'matching'],
+    maxTable: 12
+  }
+};
     // SOUND SYSTEM PRO
     let soundEnabled = JSON.parse(localStorage.getItem('bm_soundEnabled') ?? 'true');
     let musicVolume = Number(localStorage.getItem('bm_musicVolume') ?? '20');

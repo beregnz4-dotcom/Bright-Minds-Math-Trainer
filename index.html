@@ -1809,6 +1809,53 @@ function showUnlock(message){
     setTimeout(() => div.remove(), 250);
   }, 2000);
 }
+    function getAdaptiveRecommendation(){
+  const totalQuestions = gameState.correct + gameState.wrong;
+  const accuracy = totalQuestions > 0
+    ? Math.round((gameState.correct / totalQuestions) * 100)
+    : 0;
+
+  let weakestTable = null;
+  let weakestAccuracy = 101;
+
+  Object.keys(gameState.resultsByTable).forEach(tableKey => {
+    const stats = gameState.resultsByTable[tableKey];
+    const total = (stats.correct || 0) + (stats.wrong || 0);
+    if(total === 0) return;
+
+    const tableAccuracy = Math.round((stats.correct / total) * 100);
+
+    if(tableAccuracy < weakestAccuracy){
+      weakestAccuracy = tableAccuracy;
+      weakestTable = tableKey;
+    }
+  });
+
+  let levelMessage = '';
+
+  if(accuracy >= 85){
+    if(currentLevel < 3){
+      levelMessage = `⭐ Great job! Ready for Level ${currentLevel + 1}`;
+    } else {
+      levelMessage = '🌟 Excellent work! You are doing great at this level';
+    }
+  } else if(accuracy >= 60){
+    levelMessage = '👍 Keep practicing at this level';
+  } else {
+    levelMessage = `🧱 Stay on Level ${currentLevel} for a little more practice`;
+  }
+
+  let focusMessage = '';
+  if(weakestTable !== null){
+    focusMessage = `📌 Focus next: Table ${weakestTable}`;
+  }
+
+  return {
+    accuracy,
+    levelMessage,
+    focusMessage
+  };
+}
     async function openProgress(){
       const user = auth.currentUser;
       const childId = appState.currentChildId;

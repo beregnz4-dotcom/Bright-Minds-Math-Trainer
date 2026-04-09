@@ -1860,6 +1860,13 @@ if(value < 3){
       const tableStats = data.tableStats || {};
 let masteryLines = [];
 
+let masteredCount = 0;
+let improvingCount = 0;
+let needsPracticeCount = 0;
+
+let focusTable = null;
+let focusScore = 999;
+
 for(let i = 1; i <= 12; i++){
   const stats = tableStats[i];
   if(!stats) continue;
@@ -1870,17 +1877,45 @@ for(let i = 1; i <= 12; i++){
   const accuracy = Math.round(((stats.correct || 0) / total) * 100);
 
   if(total >= 20 && accuracy >= 85){
+    masteredCount++;
     masteryLines.push(`✅ Table ${i}: mastered (${accuracy}% • ${total} practice tries)`);
   } else if(total >= 5){
     if(accuracy >= 60){
+      improvingCount++;
       masteryLines.push(`🟡 Table ${i}: in progress (${accuracy}% • ${total} practice tries)`);
+
+      if(accuracy < focusScore){
+        focusScore = accuracy;
+        focusTable = i;
+      }
     } else {
+      needsPracticeCount++;
       masteryLines.push(`🔴 Table ${i}: needs practice (${accuracy}% • ${total} practice tries)`);
+
+      if(accuracy < focusScore){
+        focusScore = accuracy;
+        focusTable = i;
+      }
     }
   } else {
     masteryLines.push(`⚪ Table ${i}: not enough data yet (${total} practice tries)`);
   }
 }
+
+document.getElementById('progressSummaryMastered').textContent =
+  `🏅 Mastered tables: ${masteredCount}`;
+
+document.getElementById('progressSummaryImproving').textContent =
+  `🟡 Tables improving: ${improvingCount}`;
+
+document.getElementById('progressSummaryPractice').textContent =
+  `🔴 Needs practice: ${needsPracticeCount}`;
+
+if(focusTable){
+  document.getElementById('progressNextTable').textContent =
+    `📌 Focus next: Table ${focusTable}`;
+}
+
 document.getElementById('progressMastery').innerHTML =
   masteryLines.length > 0
     ? masteryLines.join('<br>')

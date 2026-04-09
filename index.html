@@ -1874,6 +1874,54 @@ function showUnlock(message){
     focusMessage
   };
 }
+
+    function practiceAgain(){
+  selectedTables = [];
+
+  if(latestRecommendation.focusTable !== null){
+    selectedTables = [latestRecommendation.focusTable];
+  }
+
+  renderTables();
+  showScreen('screen-setup');
+}
+
+async function applyRecommendation(){
+  const roundsPlayed = await getNumberBuilderRoundsPlayed();
+
+  let targetLevel = latestRecommendation.suggestedLevel || currentLevel;
+
+  if(targetLevel === 2 && roundsPlayed < 3){
+    targetLevel = 1;
+  }
+
+  if(targetLevel === 3 && roundsPlayed < 8){
+    targetLevel = 2;
+    if(roundsPlayed < 3){
+      targetLevel = 1;
+    }
+  }
+
+  currentLevel = targetLevel;
+
+  applyLevelLockUI(roundsPlayed);
+  updateLevelUI();
+
+  selectedTables = [];
+
+  const levelConfig = getCurrentLevelConfig();
+
+  if(
+    latestRecommendation.focusTable !== null &&
+    latestRecommendation.focusTable <= levelConfig.maxTable
+  ){
+    selectedTables = [latestRecommendation.focusTable];
+  }
+
+  renderTables();
+  document.getElementById('setupStatus').textContent = '';
+  showScreen('screen-setup');
+}
     async function openProgress(){
       const user = auth.currentUser;
       const childId = appState.currentChildId;

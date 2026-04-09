@@ -771,11 +771,12 @@
     };
 
     let gameState = {
-      questions: [],
-      currentIndex: 0,
-      correct: 0,
-      wrong: 0
-    };
+  questions: [],
+  currentIndex: 0,
+  correct: 0,
+  wrong: 0,
+  resultsByTable: {}
+};
 
     let soundEnabled = JSON.parse(localStorage.getItem('bm_soundEnabled') ?? 'true');
     let musicVolume = Number(localStorage.getItem('bm_musicVolume') ?? '20');

@@ -724,14 +724,15 @@ async function selectChild(childId, childName){
 
   const data = snap.data() || {};
   const xp = data.xp || 0;
-  const level = getLevelFromXP(xp);
+  const levelInfo = getLevelInfo(xp);
 
   document.getElementById('homeXP').textContent = `XP: ${xp}`;
-  document.getElementById('homeLevel').textContent = `Level: ${level}`;
+  document.getElementById('homeLevel').textContent = `Level: ${levelInfo.level}`;
+  document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
+  document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
 
   showScreen('screen-home');
 }
-    
     async function deleteChild(childId){
       const user = auth.currentUser;
       if(!user) return;

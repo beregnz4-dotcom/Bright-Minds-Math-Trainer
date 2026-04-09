@@ -1227,30 +1227,34 @@
         renderAnswerOptions(q.answer);
       }
 
-      if(q.type === 'sequence'){
-        typeLabel.textContent = '🔍 Find the pattern!';
+if(q.type === 'sequence'){
+  typeLabel.textContent = '🔍 Find the pattern!';
 
-        const strip = document.createElement('div');
-        strip.className = 'sequence-strip';
+  const strip = document.createElement('div');
+  strip.className = 'sequence-strip';
 
-        const seq = [
-          q.table * 1,
-          q.table * 2,
-          '?',
-          q.table * 4,
-          q.table * 5
-        ];
+  const start = Math.floor(Math.random() * 6) + 1; // de 1 a 6
+  const sequenceValues = [
+    q.table * start,
+    q.table * (start + 1),
+    q.table * (start + 2),
+    q.table * (start + 3),
+    q.table * (start + 4)
+  ];
 
-        seq.forEach(item=>{
-          const box = document.createElement('div');
-          box.className = 'sequence-box';
-          box.textContent = item;
-          strip.appendChild(box);
-        });
+  const missingIndex = Math.floor(Math.random() * 5);
+  const correctSequenceAnswer = sequenceValues[missingIndex];
 
-        visualArea.appendChild(strip);
-        renderAnswerOptions(q.table * 3);
-      }
+  sequenceValues.forEach((item, index)=>{
+    const box = document.createElement('div');
+    box.className = 'sequence-box';
+    box.textContent = index === missingIndex ? '?' : item;
+    strip.appendChild(box);
+  });
+
+  visualArea.appendChild(strip);
+  renderAnswerOptions(correctSequenceAnswer);
+}
 
       if(q.type === 'addition'){
         typeLabel.textContent = '➕ Add it up!';

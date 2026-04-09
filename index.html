@@ -1094,13 +1094,28 @@
   const answersArea = document.getElementById('answersArea');
   answersArea.innerHTML = '';
 
-  let options = [correctAnswer];
-  while(options.length < 3){
-    const wrong = Math.floor(Math.random() * 100) + 1;
-    if(!options.includes(wrong)) options.push(wrong);
+  const optionsSet = new Set();
+  optionsSet.add(correctAnswer);
+
+  const offsets = [-3, -2, -1, 1, 2, 3, 4, -4];
+  const shuffledOffsets = shuffle(offsets);
+
+  for(const offset of shuffledOffsets){
+    const candidate = correctAnswer + offset;
+    if(candidate > 0){
+      optionsSet.add(candidate);
+    }
+    if(optionsSet.size === 3) break;
   }
 
-  options = shuffle(options);
+  while(optionsSet.size < 3){
+    const candidate = correctAnswer + (Math.floor(Math.random() * 6) - 3);
+    if(candidate > 0){
+      optionsSet.add(candidate);
+    }
+  }
+
+  const options = shuffle([...optionsSet]);
 
   options.forEach(option => {
     const btn = document.createElement('button');

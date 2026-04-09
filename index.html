@@ -870,8 +870,51 @@
     }
 
     function getCurrentLevelConfig(){
-      return numberBuilderLevels[currentLevel];
-    }
+  return numberBuilderLevels[currentLevel];
+}
+
+
+
+async function getNumberBuilderRoundsPlayed(){
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
+
+  if(!user || !childId) return 0;
+
+  const snap = await db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId)
+    .get();
+
+  const data = snap.data() || {};
+  return data.numberBuilder?.roundsPlayed || 0;
+}
+
+function applyLevelLockUI(roundsPlayed){
+  const btn1 = document.getElementById('levelBtn1');
+  const btn2 = document.getElementById('levelBtn2');
+  const btn3 = document.getElementById('levelBtn3');
+
+  if(btn1){
+    btn1.disabled = false;
+    btn1.textContent = 'Level 1';
+  }
+
+  if(btn2){
+    const unlocked = roundsPlayed >= 3;
+    btn2.disabled = !unlocked;
+    btn2.textContent = unlocked ? 'Level 2' : '🔒 Level 2';
+    if(!unlocked && currentLevel === 2) currentLevel = 1;
+  }
+
+  if(btn3){
+    const unlocked = roundsPlayed >= 8;
+    btn3.disabled = !unlocked;
+    btn3.textContent = unlocked ? 'Level 3' : '🔒 Level 3';
+    if(!unlocked && currentLevel === 3) currentLevel = 1;
+  }
+}
 
     setTimeout(() => {
       applyAudioSettings();

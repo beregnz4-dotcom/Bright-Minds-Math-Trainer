@@ -1842,7 +1842,31 @@ function showUnlock(message){
       document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
       document.getElementById('progressHighestLevel').textContent =
   `Highest level reached: ${nb.highestLevelPlayed || 1}`;
+     const tableStats = data.tableStats || {};
+let masteryLines = [];
 
+for(let i = 1; i <= 12; i++){
+  const stats = tableStats[i];
+  if(!stats) continue;
+
+  const total = (stats.correct || 0) + (stats.wrong || 0);
+  if(total === 0) continue;
+
+  const accuracy = Math.round(((stats.correct || 0) / total) * 100);
+
+  if(total >= 10 && accuracy >= 80){
+    masteryLines.push(`✅ Table ${i}: mastered (${accuracy}%)`);
+  } else if(accuracy >= 50){
+    masteryLines.push(`🟡 Table ${i}: in progress (${accuracy}%)`);
+  } else {
+    masteryLines.push(`🔴 Table ${i}: needs practice (${accuracy}%)`);
+  }
+}
+
+document.getElementById('progressMastery').innerHTML =
+  masteryLines.length > 0
+    ? masteryLines.join('<br>')
+    : 'No table mastery data yet';
       showScreen('screen-progress');
     }
   </script>

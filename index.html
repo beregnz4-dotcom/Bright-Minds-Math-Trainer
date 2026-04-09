@@ -84,7 +84,8 @@
     .primary-btn,
     .secondary-btn,
     .main-btn,
-    .child-card{
+    .child-card,
+    .level-btn{
       border:none;
       cursor:pointer;
       font-weight:800;
@@ -261,6 +262,12 @@
       font-weight:700;
     }
 
+    .big-feedback{
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:.3px;
+    }
+
     .progress-bar{
       height:14px;
       border-radius:999px;
@@ -307,12 +314,26 @@
       accent-color:#2d8cff;
     }
 
-    @media (min-width: 768px){
-      .menu-list{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:16px;
-      }
+    .level-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .level-btn{
+      background:#fff;
+      border-radius:16px;
+      padding:14px 10px;
+      box-shadow:var(--shadow);
+      font-size:16px;
+      color:var(--blue-dark);
+      transition:all .15s ease;
+    }
+
+    .level-btn.selected{
+      background:linear-gradient(135deg, #2d8cff, #7a4dff);
+      color:#fff;
     }
 
     .table-option{
@@ -440,6 +461,14 @@
       margin:4px;
       font-size:20px;
     }
+
+    @media (min-width: 768px){
+      .menu-list{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -510,9 +539,7 @@
         </div>
 
         <div id="homeProgressText" class="subtitle">0 XP to next level</div>
-        <div class="subtitle" style="margin-top:8px;">
-          🚀 Keep going! You're getting smarter every day
-        </div>
+        <div class="subtitle" style="margin-top:8px;">🚀 Keep going! You're getting smarter every day</div>
       </div>
 
       <button class="secondary-btn" onclick="playSound('tap'); openProgress()">View Progress</button>
@@ -551,36 +578,18 @@
       <div class="card settings-card">
         <div class="setting-row">
           <div class="setting-label">Sound</div>
-          <button id="settingsSoundToggle" class="secondary-btn" onclick="toggleSound()">
-            Sound: ON
-          </button>
+          <button id="settingsSoundToggle" class="secondary-btn" onclick="toggleSound()">Sound: ON</button>
         </div>
 
         <div class="setting-row">
           <div class="setting-label">Music Volume</div>
-          <input
-            id="musicVolumeSlider"
-            class="volume-slider"
-            type="range"
-            min="0"
-            max="100"
-            value="20"
-            oninput="updateMusicVolume(this.value)"
-          />
+          <input id="musicVolumeSlider" class="volume-slider" type="range" min="0" max="100" value="20" oninput="updateMusicVolume(this.value)" />
           <div id="musicVolumeValue" class="setting-value">20%</div>
         </div>
 
         <div class="setting-row">
           <div class="setting-label">Effects Volume</div>
-          <input
-            id="effectsVolumeSlider"
-            class="volume-slider"
-            type="range"
-            min="0"
-            max="100"
-            value="80"
-            oninput="updateEffectsVolume(this.value)"
-          />
+          <input id="effectsVolumeSlider" class="volume-slider" type="range" min="0" max="100" value="80" oninput="updateEffectsVolume(this.value)" />
           <div id="effectsVolumeValue" class="setting-value">80%</div>
         </div>
       </div>
@@ -590,14 +599,23 @@
     <section id="screen-setup" class="screen">
       <div class="topbar">
         <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
-        <div class="topbar-title">Select Tables</div>
+        <div class="topbar-title">Select Level & Tables</div>
         <div style="width:46px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Choose level</div>
+        <div class="level-grid">
+          <button id="levelBtn1" class="level-btn selected" onclick="setNumberBuilderLevel(1)">Level 1</button>
+          <button id="levelBtn2" class="level-btn" onclick="setNumberBuilderLevel(2)">Level 2</button>
+          <button id="levelBtn3" class="level-btn" onclick="setNumberBuilderLevel(3)">Level 3</button>
+        </div>
+        <div id="levelInfoText" class="subtitle" style="text-align:center; margin-bottom:10px;"></div>
       </div>
 
       <div class="card">
         <div class="section-title">Choose tables</div>
         <div id="tablesContainer" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
-
         <button class="secondary-btn" onclick="playSound('tap'); selectAllTables()">Select All</button>
         <button class="secondary-btn" onclick="playSound('tap'); clearTables()">Clear</button>
         <button class="primary-btn" onclick="playSound('tap'); startGame()">Start</button>
@@ -615,6 +633,13 @@
 
       <div class="card">
         <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 10</div>
+
+        <div style="margin:8px auto 14px; max-width:320px;">
+          <div class="progress-bar">
+            <div id="gameProgressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
         <div id="gameTypeLabel" class="subtitle" style="text-align:center;margin-bottom:8px;">Visual</div>
         <div id="questionText" style="font-size:42px;font-weight:800;text-align:center;margin-bottom:20px;">2 × 3</div>
         <div id="visualArea" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;"></div>
@@ -693,32 +718,39 @@
 
     let selectedTables = [];
     let currentMode = null;
+    let currentLevel = 1;
+
+    const numberBuilderLevels = {
+      1: {
+        questionCount: 10,
+        enabledTypes: ['visual', 'sequence', 'addition', 'matching'],
+        maxTable: 5,
+        xpPerCorrect: 10,
+        label: 'Level 1 • Guided foundation'
+      },
+      2: {
+        questionCount: 12,
+        enabledTypes: ['sequence', 'addition', 'matching'],
+        maxTable: 10,
+        xpPerCorrect: 12,
+        label: 'Level 2 • Less visual support'
+      },
+      3: {
+        questionCount: 15,
+        enabledTypes: ['addition', 'matching'],
+        maxTable: 12,
+        xpPerCorrect: 15,
+        label: 'Level 3 • Advanced practice'
+      }
+    };
+
     let gameState = {
       questions: [],
       currentIndex: 0,
       correct: 0,
       wrong: 0
     };
-let currentLevel = 1;
 
-const numberBuilderLevels = {
-  1: {
-    questionCount: 10,
-    enabledTypes: ['visual', 'sequence', 'addition', 'matching'],
-    maxTable: 5
-  },
-  2: {
-    questionCount: 12,
-    enabledTypes: ['sequence', 'addition', 'matching'],
-    maxTable: 10
-  },
-  3: {
-    questionCount: 15,
-    enabledTypes: ['addition', 'matching'],
-    maxTable: 12
-  }
-};
-    // SOUND SYSTEM PRO
     let soundEnabled = JSON.parse(localStorage.getItem('bm_soundEnabled') ?? 'true');
     let musicVolume = Number(localStorage.getItem('bm_musicVolume') ?? '20');
     let effectsVolume = Number(localStorage.getItem('bm_effectsVolume') ?? '80');
@@ -735,21 +767,16 @@ const numberBuilderLevels = {
 
     function applyAudioSettings(){
       sounds.bg.volume = musicVolume / 100;
-
       sounds.tap.volume = effectsVolume / 100;
       sounds.correct.volume = effectsVolume / 100;
       sounds.wrong.volume = effectsVolume / 100;
       sounds.win.volume = effectsVolume / 100;
 
       const soundBtn = document.getElementById('soundToggleBtn');
-      if(soundBtn){
-        soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
-      }
+      if(soundBtn) soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
 
       const settingsBtn = document.getElementById('settingsSoundToggle');
-      if(settingsBtn){
-        settingsBtn.textContent = soundEnabled ? 'Sound: ON' : 'Sound: OFF';
-      }
+      if(settingsBtn) settingsBtn.textContent = soundEnabled ? 'Sound: ON' : 'Sound: OFF';
 
       const musicSlider = document.getElementById('musicVolumeSlider');
       const musicValue = document.getElementById('musicVolumeValue');
@@ -810,16 +837,46 @@ const numberBuilderLevels = {
       showScreen('screen-settings');
     }
 
-    setTimeout(() => {
-      applyAudioSettings();
-    }, 0);
-
     function showScreen(screenId){
       document.querySelectorAll('.screen').forEach(screen=>{
         screen.classList.remove('active');
       });
       document.getElementById(screenId).classList.add('active');
     }
+
+    function setNumberBuilderLevel(level){
+      currentLevel = level;
+      playSound('tap');
+      updateLevelUI();
+      selectedTables = [];
+      renderTables();
+    }
+
+    function updateLevelUI(){
+      const levelConfig = numberBuilderLevels[currentLevel];
+
+      ['levelBtn1','levelBtn2','levelBtn3'].forEach(id=>{
+        const btn = document.getElementById(id);
+        if(btn) btn.classList.remove('selected');
+      });
+
+      const selectedBtn = document.getElementById(`levelBtn${currentLevel}`);
+      if(selectedBtn) selectedBtn.classList.add('selected');
+
+      const levelInfo = document.getElementById('levelInfoText');
+      if(levelInfo){
+        levelInfo.textContent = `${levelConfig.label} • ${levelConfig.questionCount} questions • tables up to ${levelConfig.maxTable}`;
+      }
+    }
+
+    function getCurrentLevelConfig(){
+      return numberBuilderLevels[currentLevel];
+    }
+
+    setTimeout(() => {
+      applyAudioSettings();
+      updateLevelUI();
+    }, 0);
 
     async function signupUser(){
       const email = document.getElementById('loginEmail').value.trim();
@@ -935,9 +992,7 @@ const numberBuilderLevels = {
 
       list.innerHTML = '';
 
-      if(!user){
-        return;
-      }
+      if(!user) return;
 
       try{
         status.textContent = 'Loading profiles...';
@@ -956,7 +1011,6 @@ const numberBuilderLevels = {
 
         snapshot.forEach(doc=>{
           const child = doc.data();
-
           const row = document.createElement('div');
           row.className = 'child-card';
 
@@ -988,7 +1042,6 @@ const numberBuilderLevels = {
     async function selectChild(childId, childName){
       appState.currentChildId = childId;
       appState.currentChildName = childName;
-
       document.getElementById('homeChildName').textContent = childName;
 
       const user = auth.currentUser;
@@ -1037,6 +1090,7 @@ const numberBuilderLevels = {
     function openMode(mode){
       currentMode = mode;
       selectedTables = [];
+      updateLevelUI();
       renderTables();
       document.getElementById('setupStatus').textContent = '';
       showScreen('screen-setup');
@@ -1046,7 +1100,10 @@ const numberBuilderLevels = {
       const container = document.getElementById('tablesContainer');
       container.innerHTML = '';
 
-      for(let i=1;i<=10;i++){
+      const levelConfig = getCurrentLevelConfig();
+      const maxTable = levelConfig.maxTable;
+
+      for(let i = 1; i <= maxTable; i++){
         const btn = document.createElement('button');
         btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
         btn.textContent = i;
@@ -1066,7 +1123,13 @@ const numberBuilderLevels = {
     }
 
     function selectAllTables(){
-      selectedTables = [1,2,3,4,5,6,7,8,9,10];
+      const levelConfig = getCurrentLevelConfig();
+      selectedTables = [];
+
+      for(let i = 1; i <= levelConfig.maxTable; i++){
+        selectedTables.push(i);
+      }
+
       renderTables();
     }
 
@@ -1079,7 +1142,7 @@ const numberBuilderLevels = {
       const status = document.getElementById('setupStatus');
 
       if(selectedTables.length === 0){
-        status.textContent = 'Select at least one table.';
+        status.textContent = 'Choose at least one table to start.';
         return;
       }
 
@@ -1091,29 +1154,29 @@ const numberBuilderLevels = {
     }
 
     function buildNumberBuilderRound(){
-  gameState.questions = [];
-  gameState.currentIndex = 0;
-  gameState.correct = 0;
-  gameState.wrong = 0;
+      gameState.questions = [];
+      gameState.currentIndex = 0;
+      gameState.correct = 0;
+      gameState.wrong = 0;
 
-  const levelConfig = numberBuilderLevels[currentLevel];
-  const types = levelConfig.enabledTypes;
-  const questionCount = levelConfig.questionCount;
+      const levelConfig = getCurrentLevelConfig();
+      const types = levelConfig.enabledTypes;
+      const questionCount = levelConfig.questionCount;
 
-  for(let i = 0; i < questionCount; i++){
-    const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
-    const multiplier = Math.floor(Math.random() * 10) + 1;
-    const answer = table * multiplier;
-    const type = types[Math.floor(Math.random() * types.length)];
+      for(let i = 0; i < questionCount; i++){
+        const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+        const multiplier = Math.floor(Math.random() * 10) + 1;
+        const answer = table * multiplier;
+        const type = types[Math.floor(Math.random() * types.length)];
 
-    gameState.questions.push({
-      type,
-      table,
-      multiplier,
-      answer
-    });
-  }
-}
+        gameState.questions.push({
+          type,
+          table,
+          multiplier,
+          answer
+        });
+      }
+    }
 
     function renderCurrentQuestion(){
       const q = gameState.questions[gameState.currentIndex];
@@ -1121,7 +1184,13 @@ const numberBuilderLevels = {
 
       document.getElementById('gameProgress').textContent =
         `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
-      document.getElementById('gameStatus').textContent = '';
+
+      const progressPercent = ((gameState.currentIndex) / gameState.questions.length) * 100;
+      document.getElementById('gameProgressFill').style.width = `${progressPercent}%`;
+
+      const statusEl = document.getElementById('gameStatus');
+      statusEl.textContent = '';
+      statusEl.classList.remove('big-feedback');
 
       const visualArea = document.getElementById('visualArea');
       const answersArea = document.getElementById('answersArea');
@@ -1140,7 +1209,7 @@ const numberBuilderLevels = {
       }
 
       if(q.type === 'visual'){
-        typeLabel.textContent = 'Visual';
+        typeLabel.textContent = '🧱 Build it!';
 
         for(let r=0; r<q.multiplier; r++){
           const group = document.createElement('div');
@@ -1159,7 +1228,7 @@ const numberBuilderLevels = {
       }
 
       if(q.type === 'sequence'){
-        typeLabel.textContent = 'Sequence';
+        typeLabel.textContent = '🔍 Find the pattern!';
 
         const strip = document.createElement('div');
         strip.className = 'sequence-strip';
@@ -1184,7 +1253,7 @@ const numberBuilderLevels = {
       }
 
       if(q.type === 'addition'){
-        typeLabel.textContent = 'Repeated Addition';
+        typeLabel.textContent = '➕ Add it up!';
 
         const addWrap = document.createElement('div');
         addWrap.style.textAlign = 'center';
@@ -1203,7 +1272,7 @@ const numberBuilderLevels = {
       }
 
       if(q.type === 'matching'){
-        typeLabel.textContent = 'Matching';
+        typeLabel.textContent = '🔗 Match them!';
 
         const multiplierSet = new Set();
         multiplierSet.add(q.multiplier);
@@ -1294,7 +1363,7 @@ const numberBuilderLevels = {
             selectedRightBtn.disabled = true;
 
             matchesCompleted++;
-            document.getElementById('gameStatus').textContent = `Matches completed: ${matchesCompleted}/3`;
+            statusEl.textContent = `Matches completed: ${matchesCompleted}/3`;
 
             selectedLeftBtn = null;
             selectedRightBtn = null;
@@ -1302,12 +1371,14 @@ const numberBuilderLevels = {
             selectedRightValue = null;
 
             if(matchesCompleted === 3){
+              statusEl.classList.add('big-feedback');
+
               if(!wrongAttempt){
                 gameState.correct++;
-                document.getElementById('gameStatus').textContent = 'Perfect matching!';
+                statusEl.textContent = '🌟 Perfect matching!';
               } else {
                 gameState.wrong++;
-                document.getElementById('gameStatus').textContent = 'Completed, but with mistakes.';
+                statusEl.textContent = '👍 Completed!';
               }
 
               setTimeout(() => {
@@ -1322,7 +1393,7 @@ const numberBuilderLevels = {
           } else {
             playSound('wrong');
             wrongAttempt = true;
-            document.getElementById('gameStatus').textContent = 'Try again';
+            statusEl.textContent = 'Try again';
 
             selectedLeftBtn.classList.remove('selected');
             selectedRightBtn.classList.remove('selected');
@@ -1381,7 +1452,10 @@ const numberBuilderLevels = {
 
     function answerQuestion(button, selected, correct){
       const allButtons = document.querySelectorAll('.answer-btn');
+      const statusEl = document.getElementById('gameStatus');
+
       allButtons.forEach(b => b.disabled = true);
+      statusEl.classList.remove('big-feedback');
 
       if(selected === correct){
         playSound('correct');
@@ -1389,13 +1463,14 @@ const numberBuilderLevels = {
         gameState.correct++;
 
         const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
-        document.getElementById('gameStatus').textContent =
-          messages[Math.floor(Math.random() * messages.length)];
+        statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+        statusEl.classList.add('big-feedback');
       } else {
         playSound('wrong');
         button.classList.add('wrong');
         gameState.wrong++;
-        document.getElementById('gameStatus').textContent = `Correct answer: ${correct}`;
+        statusEl.textContent = `Correct answer: ${correct}`;
+        statusEl.classList.add('big-feedback');
 
         allButtons.forEach(b => {
           if(Number(b.textContent) === correct){
@@ -1415,8 +1490,11 @@ const numberBuilderLevels = {
     }
 
     async function finishRound(){
-      const xpEarned = gameState.correct * 10;
+      const levelConfig = getCurrentLevelConfig();
+      const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
       playSound('win');
+
+      document.getElementById('gameProgressFill').style.width = '100%';
 
       await saveNumberBuilderProgress(xpEarned);
 
@@ -1441,7 +1519,7 @@ const numberBuilderLevels = {
       }
 
       document.getElementById('resultSummary').textContent =
-        `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+        `Level ${currentLevel} • Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
 
       showScreen('screen-result');
     }
@@ -1469,12 +1547,13 @@ const numberBuilderLevels = {
       const snap = await childRef.get();
       const data = snap.exists ? snap.data() : {};
 
-      const currentXP = data.xp ? data.xp : 0;
+      const currentXP = data.xp || 0;
 
       const currentNumberBuilder = data.numberBuilder || {
         roundsPlayed: 0,
         totalCorrect: 0,
-        totalWrong: 0
+        totalWrong: 0,
+        highestLevelPlayed: 1
       };
 
       await childRef.set({
@@ -1484,6 +1563,7 @@ const numberBuilderLevels = {
           roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
           totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
           totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
+          highestLevelPlayed: Math.max(currentNumberBuilder.highestLevelPlayed || 1, currentLevel),
           lastPlayed: Date.now()
         }
       }, { merge: true });
@@ -1493,61 +1573,45 @@ const numberBuilderLevels = {
       if(xp >= 400){
         return {
           level: '👑 Genius',
-          currentMin: 400,
-          nextMin: 400,
           progressPercent: 100,
           remainingText: 'Max level reached'
         };
       }
 
       if(xp >= 250){
-        const currentMin = 250;
         const nextMin = 400;
-        const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+        const progressPercent = ((xp - 250) / (400 - 250)) * 100;
         return {
           level: '🧠 Math Hero',
-          currentMin,
-          nextMin,
           progressPercent,
           remainingText: `${nextMin - xp} XP to Genius`
         };
       }
 
       if(xp >= 120){
-        const currentMin = 120;
         const nextMin = 250;
-        const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+        const progressPercent = ((xp - 120) / (250 - 120)) * 100;
         return {
           level: '🚀 Smart Kid',
-          currentMin,
-          nextMin,
           progressPercent,
           remainingText: `${nextMin - xp} XP to Math Hero`
         };
       }
 
       if(xp >= 50){
-        const currentMin = 50;
         const nextMin = 120;
-        const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+        const progressPercent = ((xp - 50) / (120 - 50)) * 100;
         return {
           level: '⭐ Explorer',
-          currentMin,
-          nextMin,
           progressPercent,
           remainingText: `${nextMin - xp} XP to Smart Kid`
         };
       }
 
-      const currentMin = 0;
-      const nextMin = 50;
-      const progressPercent = (xp / nextMin) * 100;
       return {
         level: '🌱 Beginner',
-        currentMin,
-        nextMin,
-        progressPercent,
-        remainingText: `${nextMin - xp} XP to Explorer`
+        progressPercent: (xp / 50) * 100,
+        remainingText: `${50 - xp} XP to Explorer`
       };
     }
 
@@ -1557,7 +1621,7 @@ const numberBuilderLevels = {
       const childName = appState.currentChildName;
 
       if(!user || !childId){
-        alert('Select a child first.');
+        alert('Choose a child to continue.');
         return;
       }
 

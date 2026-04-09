@@ -1710,16 +1710,17 @@ Object.keys(gameState.resultsByTable).forEach(tableKey => {
   updatedTableStats[tableKey].wrong += gameState.resultsByTable[tableKey].wrong;
 });
       await childRef.set({
-        xp: currentXP + xpEarned,
-        lastMode: 'number-builder',
-        numberBuilder: {
-          roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
-          totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
-          totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
-          highestLevelPlayed: Math.max(currentNumberBuilder.highestLevelPlayed || 1, currentLevel),
-          lastPlayed: Date.now()
-        }
-      }, { merge: true });
+  xp: currentXP + xpEarned,
+  lastMode: 'number-builder',
+  tableStats: updatedTableStats,
+  numberBuilder: {
+    roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
+    totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
+    totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
+    highestLevelPlayed: Math.max(currentNumberBuilder.highestLevelPlayed || 1, currentLevel),
+    lastPlayed: Date.now()
+  }
+}, { merge: true });
     }
 
     function getLevelInfo(xp){

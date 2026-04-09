@@ -951,6 +951,7 @@ function applyLevelLockUI(roundsPlayed){
 
   if(btn2){
     const unlocked = roundsPlayed >= 3;
+    btn2.classList.toggle('locked', !unlocked);
     btn2.disabled = false;
     btn2.textContent = unlocked ? 'Level 2' : '🔒 Level 2';
     if(!unlocked && currentLevel === 2) currentLevel = 1;
@@ -958,6 +959,7 @@ function applyLevelLockUI(roundsPlayed){
 
   if(btn3){
     const unlocked = roundsPlayed >= 8;
+    btn3.classList.toggle('locked', !unlocked);
     btn3.disabled = false;
     btn3.textContent = unlocked ? 'Level 3' : '🔒 Level 3';
     if(!unlocked && currentLevel === 3) currentLevel = 1;

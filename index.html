@@ -1842,10 +1842,8 @@ function showUnlock(message){
       document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
       document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
       document.getElementById('progressHighestLevel').textContent =
-  `Tables mastered: ${nb.highestLevelPlayed || 1}`;
-     document.getElementById('progressHighestLevel').textContent =
-  `Tables mastered: ${nb.highestLevelPlayed || 1}`;
-
+  `Highest level reached: ${nb.highestLevelPlayed || 1}`;
+    
 const value = nb.highestLevelPlayed || 1;
 const nextText = document.getElementById('progressNextTable');
 

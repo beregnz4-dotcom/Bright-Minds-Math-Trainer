@@ -786,6 +786,10 @@
   wrong: 0,
   resultsByTable: {}
 };
+    let latestRecommendation = {
+  suggestedLevel: 1,
+  focusTable: null
+};
 
     let soundEnabled = JSON.parse(localStorage.getItem('bm_soundEnabled') ?? 'true');
     let musicVolume = Number(localStorage.getItem('bm_musicVolume') ?? '20');

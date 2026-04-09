@@ -1142,14 +1142,35 @@
     }
 
     async function finishRound(){
-      const xpEarned = gameState.correct * 10;
+  const xpEarned = gameState.correct * 10;
 
-      document.getElementById('resultSummary').textContent =
-        `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+  await saveNumberBuilderProgress(xpEarned);
 
-      await saveNumberBuilderProgress(xpEarned);
-      showScreen('screen-result');
-    }
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
+
+  if(user && childId){
+    const snap = await db.collection('users')
+      .doc(user.uid)
+      .collection('children')
+      .doc(childId)
+      .get();
+
+    const data = snap.data() || {};
+    const xp = data.xp || 0;
+    const levelInfo = getLevelInfo(xp);
+
+    document.getElementById('homeXP').textContent = `XP: ${xp}`;
+    document.getElementById('homeLevel').textContent = `Level: ${levelInfo.level}`;
+    document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
+    document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
+  }
+
+  document.getElementById('resultSummary').textContent =
+    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+
+  showScreen('screen-result');
+}
 
     function shuffle(arr){
       const copy = [...arr];

@@ -1136,6 +1136,13 @@
     }
   }, { merge: true });
 }
+    function getLevelFromXP(xp){
+  if(xp >= 400) return '👑 Genius';
+  if(xp >= 250) return '🧠 Math Hero';
+  if(xp >= 120) return '🚀 Smart Kid';
+  if(xp >= 50) return '⭐ Explorer';
+  return '🌱 Beginner';
+}
   </script>
 </body>
 </html>

@@ -1237,6 +1237,47 @@ async function selectChild(childId, childName){
     remainingText: `${nextMin - xp} XP to Explorer`
   };
 }
+    async function openProgress(){
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
+  const childName = appState.currentChildName;
+
+  if(!user || !childId){
+    alert('Select a child first.');
+    return;
+  }
+
+  const snap = await db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId)
+    .get();
+
+  const data = snap.data() || {};
+  const xp = data.xp || 0;
+  const levelInfo = getLevelInfo(xp);
+
+  const nb = data.numberBuilder || {
+    roundsPlayed: 0,
+    totalCorrect: 0,
+    totalWrong: 0
+  };
+
+  const totalAnswered = (nb.totalCorrect || 0) + (nb.totalWrong || 0);
+  const accuracy = totalAnswered > 0
+    ? Math.round((nb.totalCorrect / totalAnswered) * 100)
+    : 0;
+
+  document.getElementById('progressChildName').textContent = `${childName} Progress`;
+  document.getElementById('progressXP').textContent = `XP: ${xp}`;
+  document.getElementById('progressLevel').textContent = `Level: ${levelInfo.level}`;
+  document.getElementById('progressRounds').textContent = `Rounds played: ${nb.roundsPlayed || 0}`;
+  document.getElementById('progressCorrect').textContent = `Total correct: ${nb.totalCorrect || 0}`;
+  document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
+  document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
+
+  showScreen('screen-progress');
+}
   </script>
 </body>
 </html>

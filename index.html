@@ -957,128 +957,137 @@
         renderAnswerOptions(q.answer);
       }
 
-      if(q.type === 'matching'){
-        typeLabel.textContent = 'Matching';
+    if(q.type === 'matching'){
+  typeLabel.textContent = 'Matching';
 
-        const pairs = [
-          { left: `${q.table} × ${q.multiplier}`, right: q.answer },
-          { left: `${q.table} × ${Math.max(1, q.multiplier - 1)}`, right: q.table * Math.max(1, q.multiplier - 1) },
-          { left: `${q.table} × ${Math.min(10, q.multiplier + 1)}`, right: q.table * Math.min(10, q.multiplier + 1) }
-        ];
+  const multiplierSet = new Set();
+  multiplierSet.add(q.multiplier);
 
-        const shuffledRight = shuffle(pairs.map(p => p.right));
+  while(multiplierSet.size < 3){
+    const randomMultiplier = Math.floor(Math.random() * 10) + 1;
+    multiplierSet.add(randomMultiplier);
+  }
 
-        const grid = document.createElement('div');
-        grid.className = 'match-grid';
+  const multipliers = [...multiplierSet];
 
-        const leftCol = document.createElement('div');
-        leftCol.className = 'match-col';
+  const pairs = multipliers.map(m => ({
+    left: `${q.table} × ${m}`,
+    right: q.table * m
+  }));
 
-        const rightCol = document.createElement('div');
-        rightCol.className = 'match-col';
+  const shuffledRight = shuffle(pairs.map(p => p.right));
 
-        let selectedLeftBtn = null;
-        let selectedRightBtn = null;
-        let selectedLeftPair = null;
-        let selectedRightValue = null;
-        let matchesCompleted = 0;
-        let wrongAttempt = false;
+  const grid = document.createElement('div');
+  grid.className = 'match-grid';
 
-        pairs.forEach(pair=>{
-          const btn = document.createElement('button');
-          btn.className = 'match-btn';
-          btn.textContent = pair.left;
+  const leftCol = document.createElement('div');
+  leftCol.className = 'match-col';
 
-          btn.onclick = () => {
-            if(btn.disabled) return;
+  const rightCol = document.createElement('div');
+  rightCol.className = 'match-col';
 
-            leftCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
-            btn.classList.add('selected');
+  let selectedLeftBtn = null;
+  let selectedRightBtn = null;
+  let selectedLeftPair = null;
+  let selectedRightValue = null;
+  let matchesCompleted = 0;
+  let wrongAttempt = false;
 
-            selectedLeftBtn = btn;
-            selectedLeftPair = pair;
-            checkMatch();
-          };
+  pairs.forEach(pair=>{
+    const btn = document.createElement('button');
+    btn.className = 'match-btn';
+    btn.textContent = pair.left;
 
-          leftCol.appendChild(btn);
-        });
+    btn.onclick = () => {
+      if(btn.disabled) return;
 
-        shuffledRight.forEach(value=>{
-          const btn = document.createElement('button');
-          btn.className = 'match-btn';
-          btn.textContent = value;
+      leftCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
 
-          btn.onclick = () => {
-            if(btn.disabled) return;
+      selectedLeftBtn = btn;
+      selectedLeftPair = pair;
+      checkMatch();
+    };
 
-            rightCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
-            btn.classList.add('selected');
+    leftCol.appendChild(btn);
+  });
 
-            selectedRightBtn = btn;
-            selectedRightValue = value;
-            checkMatch();
-          };
+  shuffledRight.forEach(value=>{
+    const btn = document.createElement('button');
+    btn.className = 'match-btn';
+    btn.textContent = value;
 
-          rightCol.appendChild(btn);
-        });
+    btn.onclick = () => {
+      if(btn.disabled) return;
 
-        function checkMatch(){
-          if(!selectedLeftPair || selectedRightValue === null) return;
+      rightCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
 
-          if(selectedLeftPair.right === selectedRightValue){
-            selectedLeftBtn.classList.remove('selected');
-            selectedRightBtn.classList.remove('selected');
+      selectedRightBtn = btn;
+      selectedRightValue = value;
+      checkMatch();
+    };
 
-            selectedLeftBtn.classList.add('correct');
-            selectedRightBtn.classList.add('correct');
+    rightCol.appendChild(btn);
+  });
 
-            selectedLeftBtn.disabled = true;
-            selectedRightBtn.disabled = true;
+  function checkMatch(){
+    if(!selectedLeftPair || selectedRightValue === null) return;
 
-            matchesCompleted++;
-            document.getElementById('gameStatus').textContent = `Matches completed: ${matchesCompleted}/3`;
+    if(selectedLeftPair.right === selectedRightValue){
+      selectedLeftBtn.classList.remove('selected');
+      selectedRightBtn.classList.remove('selected');
 
-            selectedLeftBtn = null;
-            selectedRightBtn = null;
-            selectedLeftPair = null;
-            selectedRightValue = null;
+      selectedLeftBtn.classList.add('correct');
+      selectedRightBtn.classList.add('correct');
 
-            if(matchesCompleted === 3){
-              if(!wrongAttempt){
-                gameState.correct++;
-                document.getElementById('gameStatus').textContent = 'Perfect matching!';
-              } else {
-                gameState.wrong++;
-                document.getElementById('gameStatus').textContent = 'Completed, but with mistakes.';
-              }
+      selectedLeftBtn.disabled = true;
+      selectedRightBtn.disabled = true;
 
-              setTimeout(() => {
-                gameState.currentIndex++;
-                if(gameState.currentIndex >= gameState.questions.length){
-                  finishRound();
-                } else {
-                  renderCurrentQuestion();
-                }
-              }, 900);
-            }
-          } else {
-            wrongAttempt = true;
-            document.getElementById('gameStatus').textContent = 'Try again';
+      matchesCompleted++;
+      document.getElementById('gameStatus').textContent = `Matches completed: ${matchesCompleted}/3`;
 
-            selectedLeftBtn.classList.remove('selected');
-            selectedRightBtn.classList.remove('selected');
+      selectedLeftBtn = null;
+      selectedRightBtn = null;
+      selectedLeftPair = null;
+      selectedRightValue = null;
 
-            selectedLeftBtn = null;
-            selectedRightBtn = null;
-            selectedLeftPair = null;
-            selectedRightValue = null;
-          }
+      if(matchesCompleted === 3){
+        if(!wrongAttempt){
+          gameState.correct++;
+          document.getElementById('gameStatus').textContent = 'Perfect matching!';
+        } else {
+          gameState.wrong++;
+          document.getElementById('gameStatus').textContent = 'Completed, but with mistakes.';
         }
 
-        grid.appendChild(leftCol);
-        grid.appendChild(rightCol);
-        visualArea.appendChild(grid);
+        setTimeout(() => {
+          gameState.currentIndex++;
+          if(gameState.currentIndex >= gameState.questions.length){
+            finishRound();
+          } else {
+            renderCurrentQuestion();
+          }
+        }, 900);
       }
+    } else {
+      wrongAttempt = true;
+      document.getElementById('gameStatus').textContent = 'Try again';
+
+      selectedLeftBtn.classList.remove('selected');
+      selectedRightBtn.classList.remove('selected');
+
+      selectedLeftBtn = null;
+      selectedRightBtn = null;
+      selectedLeftPair = null;
+      selectedRightValue = null;
+    }
+  }
+
+  grid.appendChild(leftCol);
+  grid.appendChild(rightCol);
+  visualArea.appendChild(grid);
+}
     }
 
     function renderAnswerOptions(correctAnswer){

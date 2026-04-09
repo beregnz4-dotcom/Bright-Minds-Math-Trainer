@@ -1855,7 +1855,7 @@ for(let i = 1; i <= 12; i++){
   const accuracy = Math.round(((stats.correct || 0) / total) * 100);
 
   if(total >= 20 && accuracy >= 85){
-    masteryLines.push(`✅ Table ${i}: mastered (${accuracy}% • ${total} attempts)`);
+    masteryLines.push(`✅ Table ${i}: mastered (${accuracy}% • ${total} practice tries)`);
   } else if(total >= 5){
     if(accuracy >= 60){
       masteryLines.push(`🟡 Table ${i}: in progress (${accuracy}% • ${total} attempts)`);

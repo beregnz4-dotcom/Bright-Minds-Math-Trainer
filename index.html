@@ -1810,6 +1810,8 @@ function showUnlock(message){
       document.getElementById('progressCorrect').textContent = `Total correct: ${nb.totalCorrect || 0}`;
       document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
       document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
+      document.getElementById('progressHighestLevel').textContent =
+  `Highest level reached: ${nb.highestLevelPlayed || 1}`;
 
       showScreen('screen-progress');
     }

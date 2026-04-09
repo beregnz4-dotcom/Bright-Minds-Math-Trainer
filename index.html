@@ -1594,6 +1594,15 @@ if(q.type === 'sequence'){
         playSound('correct');
         button.classList.add('correct');
         gameState.correct++;
+        const currentQuestion = gameState.questions[gameState.currentIndex];
+const table = currentQuestion.table;
+
+if(!gameState.resultsByTable[table]){
+  gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
+}
+
+gameState.resultsByTable[table].correct++;
+        
 
         const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
         statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];

@@ -1434,43 +1434,66 @@ if(q.type === 'sequence'){
     }
 
     function renderAnswerOptions(correctAnswer){
-      const answersArea = document.getElementById('answersArea');
-      answersArea.innerHTML = '';
+  const answersArea = document.getElementById('answersArea');
+  answersArea.innerHTML = '';
 
-      const optionsSet = new Set();
-      optionsSet.add(correctAnswer);
+  const optionsSet = new Set();
+  optionsSet.add(correctAnswer);
 
-      const offsets = [-3, -2, -1, 1, 2, 3, 4, -4];
-      const shuffledOffsets = shuffle(offsets);
+  let offsets = [];
 
-      for(const offset of shuffledOffsets){
-        const candidate = correctAnswer + offset;
-        if(candidate > 0){
-          optionsSet.add(candidate);
-        }
-        if(optionsSet.size === 3) break;
-      }
+  if(currentLevel === 1){
+    offsets = [-4, -3, -2, 2, 3, 4, 5, -5];
+  }
 
-      while(optionsSet.size < 3){
-        const candidate = correctAnswer + (Math.floor(Math.random() * 6) - 3);
-        if(candidate > 0){
-          optionsSet.add(candidate);
-        }
-      }
+  if(currentLevel === 2){
+    offsets = [-3, -2, -1, 1, 2, 3];
+  }
 
-      const options = shuffle([...optionsSet]);
+  if(currentLevel === 3){
+    offsets = [-2, -1, 1, 2];
+  }
 
-      options.forEach(option => {
-        const btn = document.createElement('button');
-        btn.className = 'answer-btn';
-        btn.textContent = option;
-        btn.onclick = () => {
-          playSound('tap');
-          answerQuestion(btn, option, correctAnswer);
-        };
-        answersArea.appendChild(btn);
-      });
+  const shuffledOffsets = shuffle(offsets);
+
+  for(const offset of shuffledOffsets){
+    const candidate = correctAnswer + offset;
+    if(candidate > 0){
+      optionsSet.add(candidate);
     }
+    if(optionsSet.size === 3) break;
+  }
+
+  while(optionsSet.size < 3){
+    let randomOffset;
+
+    if(currentLevel === 1){
+      randomOffset = Math.floor(Math.random() * 10) - 5;
+    } else if(currentLevel === 2){
+      randomOffset = Math.floor(Math.random() * 7) - 3;
+    } else {
+      randomOffset = Math.floor(Math.random() * 5) - 2;
+    }
+
+    const candidate = correctAnswer + randomOffset;
+    if(candidate > 0){
+      optionsSet.add(candidate);
+    }
+  }
+
+  const options = shuffle([...optionsSet]);
+
+  options.forEach(option => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = option;
+    btn.onclick = () => {
+      playSound('tap');
+      answerQuestion(btn, option, correctAnswer);
+    };
+    answersArea.appendChild(btn);
+  });
+}
 
     function answerQuestion(button, selected, correct){
       const allButtons = document.querySelectorAll('.answer-btn');

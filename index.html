@@ -1257,23 +1257,41 @@ if(q.type === 'sequence'){
 }
 
       if(q.type === 'addition'){
-        typeLabel.textContent = '➕ Add it up!';
+  typeLabel.textContent = '➕ Add it up!';
 
-        const addWrap = document.createElement('div');
-        addWrap.style.textAlign = 'center';
-        addWrap.style.marginBottom = '18px';
+  const addWrap = document.createElement('div');
+  addWrap.style.textAlign = 'center';
+  addWrap.style.marginBottom = '18px';
 
-        let repeated = [];
-        for(let i=0;i<q.multiplier;i++) repeated.push(q.table);
+  const additionStyle = Math.floor(Math.random() * 3);
 
-        const pill = document.createElement('div');
-        pill.className = 'addition-pill';
-        pill.textContent = repeated.join(' + ');
-        addWrap.appendChild(pill);
+  if(additionStyle === 0){
+    let repeated = [];
+    for(let i = 0; i < q.multiplier; i++) repeated.push(q.table);
 
-        visualArea.appendChild(addWrap);
-        renderAnswerOptions(q.answer);
-      }
+    const pill = document.createElement('div');
+    pill.className = 'addition-pill';
+    pill.textContent = repeated.join(' + ');
+    addWrap.appendChild(pill);
+  }
+
+  if(additionStyle === 1){
+    const pill = document.createElement('div');
+    pill.className = 'addition-pill';
+    pill.textContent = `${q.multiplier} groups of ${q.table}`;
+    addWrap.appendChild(pill);
+  }
+
+  if(additionStyle === 2){
+    const pill = document.createElement('div');
+    pill.className = 'addition-pill';
+    pill.textContent = `${q.table} added ${q.multiplier} times`;
+    addWrap.appendChild(pill);
+  }
+
+  visualArea.appendChild(addWrap);
+  renderAnswerOptions(q.answer);
+}
 
       if(q.type === 'matching'){
         typeLabel.textContent = '🔗 Match them!';

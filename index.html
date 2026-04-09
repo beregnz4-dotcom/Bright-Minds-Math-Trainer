@@ -1847,10 +1847,10 @@ function showUnlock(message){
 const value = nb.highestLevelPlayed || 1;
 const nextText = document.getElementById('progressNextTable');
 
-if(value < 12){
-  nextText.textContent = `➡️ Next: Table ${value + 1}`;
+if(value < 3){
+  nextText.textContent = `➡️ Next Level: ${value + 1}`;
 } else {
-  nextText.textContent = '🎉 All tables completed';
+  nextText.textContent = '🎉 Max level reached';
 }
       const tableStats = data.tableStats || {};
 let masteryLines = [];

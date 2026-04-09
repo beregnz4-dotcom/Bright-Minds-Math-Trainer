@@ -514,7 +514,28 @@
         <button class="primary-btn" onclick="showScreen('screen-home')">Back to Home</button>
       </div>
     </section>
+<!-- PROGRESS -->
+<section id="screen-progress" class="screen">
+  <div class="topbar">
+    <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+    <div class="topbar-title">Progress</div>
+    <div style="width:46px;"></div>
+  </div>
 
+  <div class="card">
+    <div class="section-title" id="progressChildName">Child Progress</div>
+    <div id="progressXP" class="subtitle">XP: 0</div>
+    <div id="progressLevel" class="subtitle">Level: 🌱 Beginner</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Number Builder</div>
+    <div id="progressRounds" class="subtitle">Rounds played: 0</div>
+    <div id="progressCorrect" class="subtitle">Total correct: 0</div>
+    <div id="progressWrong" class="subtitle">Total wrong: 0</div>
+    <div id="progressAccuracy" class="subtitle">Accuracy: 0%</div>
+  </div>
+</section>
   </div>
 
   <script>

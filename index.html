@@ -1858,15 +1858,14 @@ for(let i = 1; i <= 12; i++){
     masteryLines.push(`✅ Table ${i}: mastered (${accuracy}% • ${total} practice tries)`);
   } else if(total >= 5){
     if(accuracy >= 60){
-      masteryLines.push(`🟡 Table ${i}: in progress (${accuracy}% • ${total} attempts)`);
+      masteryLines.push(`🟡 Table ${i}: in progress (${accuracy}% • ${total} practice tries)`);
     } else {
-      masteryLines.push(`🔴 Table ${i}: needs practice (${accuracy}% • ${total} attempts)`);
+      masteryLines.push(`🔴 Table ${i}: needs practice (${accuracy}% • ${total} practice tries)`);
     }
   } else {
-    masteryLines.push(`⚪ Table ${i}: not enough data yet (${total} attempts)`);
+    masteryLines.push(`⚪ Table ${i}: not enough data yet (${total} practice tries)`);
   }
 }
-
 document.getElementById('progressMastery').innerHTML =
   masteryLines.length > 0
     ? masteryLines.join('<br>')

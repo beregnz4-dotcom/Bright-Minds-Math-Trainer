@@ -1877,13 +1877,19 @@ function showUnlock(message){
 }
 
     function practiceAgain(){
+  updateLevelUI();
+
   selectedTables = [];
 
   if(latestRecommendation.focusTable !== null){
-    selectedTables = [latestRecommendation.focusTable];
+    const levelConfig = getCurrentLevelConfig();
+    if(latestRecommendation.focusTable <= levelConfig.maxTable){
+      selectedTables = [latestRecommendation.focusTable];
+    }
   }
 
   renderTables();
+  document.getElementById('setupStatus').textContent = '';
   showScreen('screen-setup');
 }
 

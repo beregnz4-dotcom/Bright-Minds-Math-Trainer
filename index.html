@@ -1692,6 +1692,8 @@ gameState.resultsByTable[table].wrong++;
       const data = snap.exists ? snap.data() : {};
 
       const currentXP = data.xp || 0;
+      const existingTableStats = data.tableStats || {};
+const updatedTableStats = { ...existingTableStats };
 
       const currentNumberBuilder = data.numberBuilder || {
         roundsPlayed: 0,

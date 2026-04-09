@@ -1289,9 +1289,12 @@ async function selectChild(childId, childName){
     ? Math.round((nb.totalCorrect / totalAnswered) * 100)
     : 0;
 
-  document.getElementById('progressChildName').textContent = `${childName} Progress`;
+  document.getElementById('progressChildName').textContent = `${childName}`;
   document.getElementById('progressXP').textContent = `XP: ${xp}`;
   document.getElementById('progressLevel').textContent = `Level: ${levelInfo.level}`;
+  document.getElementById('progressFill').style.width = `${levelInfo.progressPercent}%`;
+  document.getElementById('progressNextText').textContent = levelInfo.remainingText;
+
   document.getElementById('progressRounds').textContent = `Rounds played: ${nb.roundsPlayed || 0}`;
   document.getElementById('progressCorrect').textContent = `Total correct: ${nb.totalCorrect || 0}`;
   document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;

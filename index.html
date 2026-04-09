@@ -702,12 +702,26 @@
       }
     }
 
-    function selectChild(childId, childName){
-      appState.currentChildId = childId;
-      appState.currentChildName = childName;
-      document.getElementById('homeChildName').textContent = childName;
-      showScreen('screen-home');
-    }
+    async function selectChild(childId, childName){
+  appState.currentChildId = childId;
+  appState.currentChildName = childName;
+
+  document.getElementById('homeChildName').textContent = childName;
+
+  const user = auth.currentUser;
+  const snap = await db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId)
+    .get();
+
+  const data = snap.data() || {};
+  const xp = data.xp || 0;
+
+  document.getElementById('homeXP').textContent = `XP: ${xp}`;
+
+  showScreen('screen-home');
+}
 
     async function deleteChild(childId){
       const user = auth.currentUser;

@@ -1088,39 +1088,38 @@
     }
 
     async function saveNumberBuilderProgress(xpEarned){
-      const user = auth.currentUser;
-      const childId = appState.currentChildId;
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
 
-      if(!user || !childId) return;
+  if(!user || !childId) return;
 
-      const childRef = db.collection('users')
-        .doc(user.uid)
-        .collection('children')
-        .doc(childId);
+  const childRef = db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId);
 
-      const snap = await childRef.get();
-      const currentData = snap.exists ? snap.data() : {};
+  const snap = await childRef.get();
+  const data = snap.exists ? snap.data() : {};
 
-      const currentXP = currentData.xp || 0;
+  const currentXP = data.xp ? data.xp : 0;
 
-      const currentNumberBuilder = currentData.numberBuilder || {
-        roundsPlayed: 0,
-        totalCorrect: 0,
-        totalWrong: 0,
-        lastPlayed: null
-      };
+  const currentNumberBuilder = data.numberBuilder || {
+    roundsPlayed: 0,
+    totalCorrect: 0,
+    totalWrong: 0
+  };
 
-      await childRef.set({
-        xp: currentXP + xpEarned,
-        lastMode: 'number-builder',
-        numberBuilder: {
-          roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
-          totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
-          totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
-          lastPlayed: Date.now()
-        }
-      }, { merge: true });
+  await childRef.set({
+    xp: currentXP + xpEarned, // 👈 ahora SIEMPRE existe
+    lastMode: 'number-builder',
+    numberBuilder: {
+      roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
+      totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
+      totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
+      lastPlayed: Date.now()
     }
+  }, { merge: true });
+}
   </script>
 </body>
 </html>

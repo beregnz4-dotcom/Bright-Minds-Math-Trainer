@@ -945,9 +945,10 @@ function applyLevelLockUI(roundsPlayed){
   const btn3 = document.getElementById('levelBtn3');
 
   if(btn1){
-    btn1.disabled = false;
-    btn1.textContent = 'Level 1';
-  }
+  btn1.disabled = false;
+  btn1.textContent = 'Level 1';
+  btn1.classList.remove('locked');
+}
 
   if(btn2){
     const unlocked = roundsPlayed >= 3;

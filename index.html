@@ -376,22 +376,13 @@
   <div class="app-shell">
 
     <!-- LOGIN -->
-    <section id="screen-login" class="screen t
-<div class="hero">
-  <div class="subtitle">Selected child</div>
-  <h1 id="homeChildName">Child</h1>
-  <div id="homeXP" class="subtitle">XP: 0</div>
-  <div id="homeLevel" class="subtitle">Level: Beginner</div>
+    <section id="screen-login" class="screen active">
+      <div class="hero">
+        <div class="subtitle">Bright Minds Math</div>
+        <h1>Welcome Back</h1>
+        <div class="subtitle">Login and continue learning</div>
+      </div>
 
-  <div style="margin:12px auto 6px; max-width:320px;">
-    <div style="height:12px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
-      <div id="homeProgressFill" style="height:12px; width:0%; background:var(--blue); border-radius:999px;"></div>
-    </div>
-  </div>
-
-  <div id="homeProgressText" class="subtitle">0 XP to next level</div>
-  <div class="subtitle">Choose a mode to continue</div>
-</div>
       <div class="card">
         <div class="section-title">Login</div>
         <input id="loginEmail" class="input" placeholder="Email" />
@@ -428,28 +419,28 @@
       <div class="topbar">
         <button class="icon-btn" onclick="showScreen('screen-profiles')">←</button>
         <div class="topbar-title">Bright Minds</div>
-   <div style="display:flex; gap:8px;">
-  <button class="icon-btn" onclick="logoutUser()">⎋</button>
-</div>
+        <div style="display:flex; gap:8px;">
+          <button class="icon-btn" onclick="logoutUser()">⎋</button>
+        </div>
       </div>
 
       <div class="hero">
-  <div class="subtitle">Selected child</div>
-  <h1 id="homeChildName">Child</h1>
-  <div id="homeXP" class="subtitle">XP: 0</div>
-  <div id="homeLevel" class="subtitle">Level: Beginner</div>
+        <div class="subtitle">Selected child</div>
+        <h1 id="homeChildName">Child</h1>
+        <div id="homeXP" class="subtitle">XP: 0</div>
+        <div id="homeLevel" class="subtitle">Level: Beginner</div>
 
-  <div style="margin:12px auto 6px; max-width:320px;">
-    <div style="height:12px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
-      <div id="homeProgressFill" style="height:12px; width:0%; background:var(--blue); border-radius:999px;"></div>
-    </div>
-  </div>
+        <div style="margin:12px auto 6px; max-width:320px;">
+          <div style="height:12px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
+            <div id="homeProgressFill" style="height:12px; width:0%; background:var(--blue); border-radius:999px;"></div>
+          </div>
+        </div>
 
-  <div id="homeProgressText" class="subtitle">0 XP to next level</div>
-  <div class="subtitle">Choose a mode to continue</div>
-</div>
+        <div id="homeProgressText" class="subtitle">0 XP to next level</div>
+        <div class="subtitle">Choose a mode to continue</div>
+      </div>
 
-<button class="secondary-btn" onclick="openProgress()">View Progress</button>
+      <button class="secondary-btn" onclick="openProgress()">View Progress</button>
 
       <div class="menu-list">
         <button class="main-btn" onclick="openMode('number-builder')">
@@ -525,38 +516,39 @@
         <button class="primary-btn" onclick="showScreen('screen-home')">Back to Home</button>
       </div>
     </section>
-<!-- PROGRESS -->
-<!-- PROGRESS -->
-<section id="screen-progress" class="screen">
-  <div class="topbar">
-    <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
-    <div class="topbar-title">Progress</div>
-    <div style="width:46px;"></div>
-  </div>
 
-  <div class="hero">
-    <div class="subtitle">Progress Overview</div>
-    <h1 id="progressChildName">Child Progress</h1>
-    <div id="progressXP" class="subtitle">XP: 0</div>
-    <div id="progressLevel" class="subtitle">Level: 🌱 Beginner</div>
-
-    <div style="margin:12px auto 6px; max-width:320px;">
-      <div style="height:12px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
-        <div id="progressFill" style="height:12px; width:0%; background:var(--blue); border-radius:999px;"></div>
+    <!-- PROGRESS -->
+    <section id="screen-progress" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="showScreen('screen-home')">←</button>
+        <div class="topbar-title">Progress</div>
+        <div style="width:46px;"></div>
       </div>
-    </div>
 
-    <div id="progressNextText" class="subtitle">0 XP to next level</div>
-  </div>
+      <div class="hero">
+        <div class="subtitle">Progress Overview</div>
+        <h1 id="progressChildName">Child Progress</h1>
+        <div id="progressXP" class="subtitle">XP: 0</div>
+        <div id="progressLevel" class="subtitle">Level: 🌱 Beginner</div>
 
-  <div class="card">
-    <div class="section-title">Number Builder</div>
-    <div id="progressRounds" class="subtitle">Rounds played: 0</div>
-    <div id="progressCorrect" class="subtitle">Total correct: 0</div>
-    <div id="progressWrong" class="subtitle">Total wrong: 0</div>
-    <div id="progressAccuracy" class="subtitle">Accuracy: 0%</div>
-  </div>
-</section>
+        <div style="margin:12px auto 6px; max-width:320px;">
+          <div style="height:12px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
+            <div id="progressFill" style="height:12px; width:0%; background:var(--blue); border-radius:999px;"></div>
+          </div>
+        </div>
+
+        <div id="progressNextText" class="subtitle">0 XP to next level</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Number Builder</div>
+        <div id="progressRounds" class="subtitle">Rounds played: 0</div>
+        <div id="progressCorrect" class="subtitle">Total correct: 0</div>
+        <div id="progressWrong" class="subtitle">Total wrong: 0</div>
+        <div id="progressAccuracy" class="subtitle">Accuracy: 0%</div>
+      </div>
+    </section>
+
   </div>
 
   <script>
@@ -754,30 +746,32 @@
         status.textContent = error.message;
       }
     }
-async function selectChild(childId, childName){
-  appState.currentChildId = childId;
-  appState.currentChildName = childName;
 
-  document.getElementById('homeChildName').textContent = childName;
+    async function selectChild(childId, childName){
+      appState.currentChildId = childId;
+      appState.currentChildName = childName;
 
-  const user = auth.currentUser;
-  const snap = await db.collection('users')
-    .doc(user.uid)
-    .collection('children')
-    .doc(childId)
-    .get();
+      document.getElementById('homeChildName').textContent = childName;
 
-  const data = snap.data() || {};
-  const xp = data.xp || 0;
-  const levelInfo = getLevelInfo(xp);
+      const user = auth.currentUser;
+      const snap = await db.collection('users')
+        .doc(user.uid)
+        .collection('children')
+        .doc(childId)
+        .get();
 
-  document.getElementById('homeXP').textContent = `XP: ${xp}`;
-  document.getElementById('homeLevel').textContent = `Level: ${levelInfo.level}`;
-  document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
-  document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
+      const data = snap.data() || {};
+      const xp = data.xp || 0;
+      const levelInfo = getLevelInfo(xp);
 
-  showScreen('screen-home');
-}
+      document.getElementById('homeXP').textContent = `XP: ${xp}`;
+      document.getElementById('homeLevel').textContent = `Level: ${levelInfo.level}`;
+      document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
+      document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
+
+      showScreen('screen-home');
+    }
+
     async function deleteChild(childId){
       const user = auth.currentUser;
       if(!user) return;
@@ -1158,150 +1152,145 @@ async function selectChild(childId, childName){
     }
 
     async function saveNumberBuilderProgress(xpEarned){
-  const user = auth.currentUser;
-  const childId = appState.currentChildId;
+      const user = auth.currentUser;
+      const childId = appState.currentChildId;
 
-  if(!user || !childId) return;
+      if(!user || !childId) return;
 
-  const childRef = db.collection('users')
-    .doc(user.uid)
-    .collection('children')
-    .doc(childId);
+      const childRef = db.collection('users')
+        .doc(user.uid)
+        .collection('children')
+        .doc(childId);
 
-  const snap = await childRef.get();
-  const data = snap.exists ? snap.data() : {};
+      const snap = await childRef.get();
+      const data = snap.exists ? snap.data() : {};
 
-  const currentXP = data.xp ? data.xp : 0;
+      const currentXP = data.xp ? data.xp : 0;
 
-  const currentNumberBuilder = data.numberBuilder || {
-    roundsPlayed: 0,
-    totalCorrect: 0,
-    totalWrong: 0
-  };
+      const currentNumberBuilder = data.numberBuilder || {
+        roundsPlayed: 0,
+        totalCorrect: 0,
+        totalWrong: 0
+      };
 
-  await childRef.set({
-    xp: currentXP + xpEarned, // 👈 ahora SIEMPRE existe
-    lastMode: 'number-builder',
-    numberBuilder: {
-      roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
-      totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
-      totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
-      lastPlayed: Date.now()
+      await childRef.set({
+        xp: currentXP + xpEarned,
+        lastMode: 'number-builder',
+        numberBuilder: {
+          roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
+          totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
+          totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
+          lastPlayed: Date.now()
+        }
+      }, { merge: true });
     }
-  }, { merge: true });
-}
-    function getLevelFromXP(xp){
-  if(xp >= 400) return '👑 Genius';
-  if(xp >= 250) return '🧠 Math Hero';
-  if(xp >= 120) return '🚀 Smart Kid';
-  if(xp >= 50) return '⭐ Explorer';
-  return '🌱 Beginner';
-}
+
     function getLevelInfo(xp){
-  if(xp >= 400){
-    return {
-      level: '👑 Genius',
-      currentMin: 400,
-      nextMin: 400,
-      progressPercent: 100,
-      remainingText: 'Max level reached'
-    };
-  }
+      if(xp >= 400){
+        return {
+          level: '👑 Genius',
+          currentMin: 400,
+          nextMin: 400,
+          progressPercent: 100,
+          remainingText: 'Max level reached'
+        };
+      }
 
-  if(xp >= 250){
-    const currentMin = 250;
-    const nextMin = 400;
-    const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
-    return {
-      level: '🧠 Math Hero',
-      currentMin,
-      nextMin,
-      progressPercent,
-      remainingText: `${nextMin - xp} XP to Genius`
-    };
-  }
+      if(xp >= 250){
+        const currentMin = 250;
+        const nextMin = 400;
+        const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+        return {
+          level: '🧠 Math Hero',
+          currentMin,
+          nextMin,
+          progressPercent,
+          remainingText: `${nextMin - xp} XP to Genius`
+        };
+      }
 
-  if(xp >= 120){
-    const currentMin = 120;
-    const nextMin = 250;
-    const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
-    return {
-      level: '🚀 Smart Kid',
-      currentMin,
-      nextMin,
-      progressPercent,
-      remainingText: `${nextMin - xp} XP to Math Hero`
-    };
-  }
+      if(xp >= 120){
+        const currentMin = 120;
+        const nextMin = 250;
+        const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+        return {
+          level: '🚀 Smart Kid',
+          currentMin,
+          nextMin,
+          progressPercent,
+          remainingText: `${nextMin - xp} XP to Math Hero`
+        };
+      }
 
-  if(xp >= 50){
-    const currentMin = 50;
-    const nextMin = 120;
-    const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
-    return {
-      level: '⭐ Explorer',
-      currentMin,
-      nextMin,
-      progressPercent,
-      remainingText: `${nextMin - xp} XP to Smart Kid`
-    };
-  }
+      if(xp >= 50){
+        const currentMin = 50;
+        const nextMin = 120;
+        const progressPercent = ((xp - currentMin) / (nextMin - currentMin)) * 100;
+        return {
+          level: '⭐ Explorer',
+          currentMin,
+          nextMin,
+          progressPercent,
+          remainingText: `${nextMin - xp} XP to Smart Kid`
+        };
+      }
 
-  const currentMin = 0;
-  const nextMin = 50;
-  const progressPercent = (xp / nextMin) * 100;
-  return {
-    level: '🌱 Beginner',
-    currentMin,
-    nextMin,
-    progressPercent,
-    remainingText: `${nextMin - xp} XP to Explorer`
-  };
-}
+      const currentMin = 0;
+      const nextMin = 50;
+      const progressPercent = (xp / nextMin) * 100;
+      return {
+        level: '🌱 Beginner',
+        currentMin,
+        nextMin,
+        progressPercent,
+        remainingText: `${nextMin - xp} XP to Explorer`
+      };
+    }
+
     async function openProgress(){
-  const user = auth.currentUser;
-  const childId = appState.currentChildId;
-  const childName = appState.currentChildName;
+      const user = auth.currentUser;
+      const childId = appState.currentChildId;
+      const childName = appState.currentChildName;
 
-  if(!user || !childId){
-    alert('Select a child first.');
-    return;
-  }
+      if(!user || !childId){
+        alert('Select a child first.');
+        return;
+      }
 
-  const snap = await db.collection('users')
-    .doc(user.uid)
-    .collection('children')
-    .doc(childId)
-    .get();
+      const snap = await db.collection('users')
+        .doc(user.uid)
+        .collection('children')
+        .doc(childId)
+        .get();
 
-  const data = snap.data() || {};
-  const xp = data.xp || 0;
-  const levelInfo = getLevelInfo(xp);
+      const data = snap.data() || {};
+      const xp = data.xp || 0;
+      const levelInfo = getLevelInfo(xp);
 
-  const nb = data.numberBuilder || {
-    roundsPlayed: 0,
-    totalCorrect: 0,
-    totalWrong: 0
-  };
+      const nb = data.numberBuilder || {
+        roundsPlayed: 0,
+        totalCorrect: 0,
+        totalWrong: 0
+      };
 
-  const totalAnswered = (nb.totalCorrect || 0) + (nb.totalWrong || 0);
-  const accuracy = totalAnswered > 0
-    ? Math.round((nb.totalCorrect / totalAnswered) * 100)
-    : 0;
+      const totalAnswered = (nb.totalCorrect || 0) + (nb.totalWrong || 0);
+      const accuracy = totalAnswered > 0
+        ? Math.round((nb.totalCorrect / totalAnswered) * 100)
+        : 0;
 
-  document.getElementById('progressChildName').textContent = `${childName}`;
-  document.getElementById('progressXP').textContent = `XP: ${xp}`;
-  document.getElementById('progressLevel').textContent = `Level: ${levelInfo.level}`;
-  document.getElementById('progressFill').style.width = `${levelInfo.progressPercent}%`;
-  document.getElementById('progressNextText').textContent = levelInfo.remainingText;
+      document.getElementById('progressChildName').textContent = `${childName}`;
+      document.getElementById('progressXP').textContent = `XP: ${xp}`;
+      document.getElementById('progressLevel').textContent = `Level: ${levelInfo.level}`;
+      document.getElementById('progressFill').style.width = `${levelInfo.progressPercent}%`;
+      document.getElementById('progressNextText').textContent = levelInfo.remainingText;
 
-  document.getElementById('progressRounds').textContent = `Rounds played: ${nb.roundsPlayed || 0}`;
-  document.getElementById('progressCorrect').textContent = `Total correct: ${nb.totalCorrect || 0}`;
-  document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
-  document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
+      document.getElementById('progressRounds').textContent = `Rounds played: ${nb.roundsPlayed || 0}`;
+      document.getElementById('progressCorrect').textContent = `Total correct: ${nb.totalCorrect || 0}`;
+      document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
+      document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
 
-  showScreen('screen-progress');
-}
+      showScreen('screen-progress');
+    }
   </script>
 </body>
 </html>

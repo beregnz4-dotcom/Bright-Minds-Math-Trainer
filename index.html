@@ -152,16 +152,28 @@ body{
   height:auto;
   display:block;
   object-fit:contain;
-  filter:drop-shadow(0 10px 20px rgba(0,0,0,.14));
-  animation:logoEntrance .7s ease;
+  /*Ajuste para nitidez*/
+  image-rendering:-webkit-optimize-contrast;
+  /*sombra mas ligera*/
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.12));
+  animation:logoEntrance .6s ease;
   transition:transform .22s ease, filter .22s ease;
 }
 
 .hero-logo:hover{
-  transform:scale(1.04);
-  filter:drop-shadow(0 12px 24px rgba(0,0,0,.18));
+  transform:scale(1.05);
+  
 }
 
+  @keyframes floatLogo{
+       0%{ trnasform: translateY(0); }
+       50%{ trnasform: translateY(-4PX); }
+      100%{ trnasform: translateY(0); }
+  .hero-logo{
+     animation:logoEntrance .6s ease, floatLogo 3s ease-in-out infinite;
+  }
+    
+    
 .input{
   width:100%;
   border:none;

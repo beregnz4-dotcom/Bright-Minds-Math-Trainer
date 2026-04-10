@@ -2076,15 +2076,26 @@ async function applyRecommendation(){
       document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
       document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
       document.getElementById('progressHighestLevel').textContent =
-  `Highest level reached: ${nb.highestLevelPlayed || 1}`;
-    
-const value = nb.highestLevelPlayed || 1;
+  `Highest Number Builder level: ${nb.highestLevelPlayed || 1}`;
+
+let currentXPLevel = 1;
+
+if(xp >= 400){
+  currentXPLevel = 5;
+} else if(xp >= 250){
+  currentXPLevel = 4;
+} else if(xp >= 120){
+  currentXPLevel = 3;
+} else if(xp >= 50){
+  currentXPLevel = 2;
+}
+
 const nextText = document.getElementById('progressNextTable');
 
-if(value < 3){
-  nextText.textContent = `➡️ Next Level: ${value + 1}`;
-} else {
+if(currentXPLevel >= 5){
   nextText.textContent = '🎉 Max level reached';
+} else {
+  nextText.textContent = `➡️ Next Level: ${currentXPLevel + 1}`;
 }
       const tableStats = data.tableStats || {};
 let masteryLines = [];

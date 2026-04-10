@@ -116,6 +116,7 @@ body{
 .card{
   background:var(--card);
   box-shadow:var(--shadow);
+  border-radius:var(--radius);
   padding:20px;
   margin-top:14px;
 }
@@ -146,13 +147,13 @@ body{
 }
 
 .hero-logo{
-  width:170px;
-  max-width:70vw;
+  width:180px;
+  max-width:72vw;
   height:auto;
   display:block;
   object-fit:contain;
-  mix-blend-mode:normal;
-  filter:drop-shadow(0 10px 20px rgba(0,0,0,.15));
+  
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.14));
   animation:logoEntrance .7s ease;
   transition:transform .22s ease, filter .22s ease;
 }

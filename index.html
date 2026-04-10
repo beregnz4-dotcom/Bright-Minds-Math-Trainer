@@ -2078,24 +2078,13 @@ async function applyRecommendation(){
       document.getElementById('progressHighestLevel').textContent =
   `Highest Number Builder level: ${nb.highestLevelPlayed || 1}`;
 
-let currentXPLevel = 1;
-
-if(xp >= 400){
-  currentXPLevel = 5;
-} else if(xp >= 250){
-  currentXPLevel = 4;
-} else if(xp >= 120){
-  currentXPLevel = 3;
-} else if(xp >= 50){
-  currentXPLevel = 2;
-}
-
+const nbLevel = nb.highestLevelPlayed || 1;
 const nextText = document.getElementById('progressNextTable');
 
-if(currentXPLevel >= 5){
-  nextText.textContent = '🎉 Max level reached';
+if(nbLevel >= 3){
+  nextText.textContent = '🎉 Max Number Builder level reached';
 } else {
-  nextText.textContent = `➡️ Next Level: ${currentXPLevel + 1}`;
+  nextText.textContent = `➡️ Next Number Builder level: ${nbLevel + 1}`;
 }
       const tableStats = data.tableStats || {};
 let masteryLines = [];

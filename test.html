@@ -171,12 +171,30 @@
   margin-bottom:10px;
 }
 
+/* 👇 AQUÍ PEGAS TU CÓDIGO */
+
+@keyframes logoEntrance{
+  0%{
+    opacity:0;
+    transform:translateY(-10px) scale(.9);
+  }
+  60%{
+    opacity:1;
+    transform:translateY(2px) scale(1.05);
+  }
+  100%{
+    transform:translateY(0) scale(1);
+  }
+}
+
 .hero-logo{
-  width:140px;
+  width:120px;
   height:auto;
   display:block;
   object-fit:contain;
+  transform:scale(1.2);
   filter:drop-shadow(0 10px 22px rgba(0,0,0,.15));
+  animation:logoEntrance .6s ease;
 }
     .chips{
       display:flex;

@@ -2140,7 +2140,24 @@ document.getElementById('progressSummaryImproving').textContent =
 document.getElementById('progressSummaryPractice').textContent =
   `🔴 Needs practice: ${needsPracticeCount}`;
 
+const nextText = document.getElementById('progressNextTable');
+const focusEl = document.getElementById('progressFocusTable');
 
+let nextLevelText = '';
+
+if((nb.highestLevelPlayed || 1) >= 3){
+  nextLevelText = '🎉 Max Number Builder level reached';
+} else {
+  nextLevelText = `➡️ Next Level: ${(nb.highestLevelPlayed || 1) + 1}`;
+}
+
+nextText.textContent = nextLevelText;
+
+if(focusTable){
+  focusEl.textContent = `📌 Focus next: Table ${focusTable}`;
+} else {
+  focusEl.textContent = '';
+}
 
 document.getElementById('progressMastery').innerHTML =
   masteryLines.length > 0

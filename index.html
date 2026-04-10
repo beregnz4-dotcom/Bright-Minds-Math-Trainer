@@ -815,21 +815,42 @@ body{
       </div>
 
       <div class="card">
-        <div class="section-title">Number Builder</div>
-        <div id="progressRounds" class="subtitle">Rounds played: 0</div>
-        <div id="progressCorrect" class="subtitle">Total correct: 0</div>
-        <div id="progressWrong" class="subtitle">Total wrong: 0</div>
-        <div id="progressAccuracy" class="subtitle">Accuracy: 0%</div>
-     <div id="progressHighestLevel" class="subtitle">Highest level reached: 1</div>
-<div id="progressNextTable" class="subtitle"></div>
-     <div id="progressFocusTable" class="subtitle"></div>   
+  <div class="section-title">Number Builder Progress</div>
 
-<div id="progressSummaryMastered" class="subtitle" style="margin-top:10px;"></div>
-<div id="progressSummaryImproving" class="subtitle"></div>
-<div id="progressSummaryPractice" class="subtitle"></div>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-value" id="progressRounds">0</div>
+      <div class="stat-label">Rounds</div>
+    </div>
 
-<div id="progressMastery" class="subtitle" style="margin-top:10px;"></div>
-      </div>
+    <div class="stat-box">
+      <div class="stat-value" id="progressCorrect">0</div>
+      <div class="stat-label">Correct</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-value" id="progressWrong">0</div>
+      <div class="stat-label">Wrong</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-value" id="progressAccuracy">0%</div>
+      <div class="stat-label">Accuracy</div>
+    </div>
+  </div>
+
+  <div class="progress-highlight" id="progressHighestLevel">Highest Number Builder level: 1</div>
+  <div class="progress-highlight" id="progressNextTable"></div>
+  <div class="progress-highlight" id="progressFocusTable"></div>
+
+  <div class="summary-grid">
+    <div class="summary-pill mastered" id="progressSummaryMastered">🏅 Mastered tables: 0</div>
+    <div class="summary-pill improving" id="progressSummaryImproving">🟡 Tables improving: 0</div>
+    <div class="summary-pill practice" id="progressSummaryPractice">🔴 Needs practice: 0</div>
+  </div>
+
+  <div class="mastery-box" id="progressMastery">No table mastery data yet</div>
+</div>
     </section>
 
   </div>

@@ -1921,7 +1921,7 @@ function showUnlock(message){
     setTimeout(() => div.remove(), 250);
   }, 2000);
 }
-    function getAdaptiveRecommendation(){
+function getAdaptiveRecommendation(){
   const totalQuestions = gameState.correct + gameState.wrong;
   const accuracy = totalQuestions > 0
     ? Math.round((gameState.correct / totalQuestions) * 100)
@@ -1929,6 +1929,8 @@ function showUnlock(message){
 
   let weakestTable = null;
   let weakestAccuracy = 101;
+  let strongestTable = null;
+  let strongestAccuracy = -1;
 
   Object.keys(gameState.resultsByTable).forEach(tableKey => {
     const stats = gameState.resultsByTable[tableKey];
@@ -1941,12 +1943,18 @@ function showUnlock(message){
       weakestAccuracy = tableAccuracy;
       weakestTable = Number(tableKey);
     }
+
+    if(tableAccuracy > strongestAccuracy){
+      strongestAccuracy = tableAccuracy;
+      strongestTable = Number(tableKey);
+    }
   });
 
   let suggestedLevel = currentLevel;
   let levelMessage = '';
+  let focusMessage = '';
 
-  if(accuracy >= 85){
+  if(accuracy >= 90){
     if(currentLevel < 3){
       suggestedLevel = currentLevel + 1;
       levelMessage = `⭐ Great job! Ready for Level ${suggestedLevel}`;
@@ -1954,32 +1962,32 @@ function showUnlock(message){
       suggestedLevel = currentLevel;
       levelMessage = '🌟 Excellent work! You are doing great at this level';
     }
-  } else if(accuracy >= 60){
+  } else if(accuracy >= 70){
     suggestedLevel = currentLevel;
-    levelMessage = '👍 Keep practicing at this level';
+    levelMessage = `👍 Stay on Level ${currentLevel} and keep growing`;
   } else {
     suggestedLevel = currentLevel;
     levelMessage = `🧱 Stay on Level ${currentLevel} for a little more practice`;
   }
 
-  let focusMessage = '';
-
   if(accuracy === 100){
-    focusMessage = '🏆 Perfect round!';
-    weakestTable = null;
-  } else if(weakestTable !== null && weakestAccuracy < 100){
+    focusMessage = strongestTable !== null
+      ? `🏆 Perfect round! Keep building with Table ${strongestTable}`
+      : '🏆 Perfect round!';
+  } else if(weakestTable !== null){
     focusMessage = `📌 Focus next: Table ${weakestTable}`;
+  } else {
+    focusMessage = '📘 Keep practicing to unlock a smart recommendation';
   }
 
   return {
     accuracy,
     suggestedLevel,
-    focusTable: weakestTable,
+    focusTable: accuracy === 100 ? strongestTable : weakestTable,
     levelMessage,
     focusMessage
   };
 }
-
     function practiceAgain(){
   updateLevelUI();
 

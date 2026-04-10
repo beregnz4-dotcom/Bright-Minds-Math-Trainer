@@ -2180,10 +2180,10 @@ async function applyRecommendation(){
   document.getElementById('progressFill').style.width = `${levelInfo.progressPercent}%`;
   document.getElementById('progressNextText').textContent = levelInfo.remainingText;
 
-  document.getElementById('progressRounds').textContent = `Rounds played: ${nb.roundsPlayed || 0}`;
-  document.getElementById('progressCorrect').textContent = `Total correct: ${nb.totalCorrect || 0}`;
-  document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
-  document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
+  document.getElementById('progressRounds').textContent = `${nb.roundsPlayed || 0}`;
+document.getElementById('progressCorrect').textContent = `${nb.totalCorrect || 0}`;
+document.getElementById('progressWrong').textContent = `${nb.totalWrong || 0}`;
+document.getElementById('progressAccuracy').textContent = `${accuracy}%`;
   document.getElementById('progressHighestLevel').textContent =
     `Highest Number Builder level: ${nb.highestLevelPlayed || 1}`;
 

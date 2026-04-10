@@ -1255,6 +1255,7 @@ function applyLevelLockUI(roundsPlayed){
       const data = snap.data() || {};
       const xp = data.xp || 0;
       const levelInfo = getLevelInfo(xp);
+      const tableStats = data.tableStats || {};
 
       document.getElementById('homeXP').textContent = `XP: ${xp}`;
       document.getElementById('homeLevel').textContent = `${levelInfo.level}`;

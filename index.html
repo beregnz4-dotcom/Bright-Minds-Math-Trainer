@@ -2258,10 +2258,40 @@ document.getElementById('progressAccuracy').textContent = `${accuracy}%`;
     focusEl.textContent = '';
   }
 
-  document.getElementById('progressMastery').innerHTML =
-    masteryLines.length > 0
-      ? masteryLines.join('<br>')
-      : 'No table mastery data yet';
+  const masteryContainer = document.getElementById('progressMastery');
+
+let masteryHTML = '<div class="table-grid">';
+
+Object.keys(tableStats).forEach(tableKey => {
+  const stats = tableStats[tableKey];
+  const total = (stats.correct || 0) + (stats.wrong || 0);
+  if(total === 0) return;
+
+  const tableAccuracy = Math.round((stats.correct / total) * 100);
+
+  let statusClass = 'practice';
+  let statusIcon = '🔴';
+
+  if(tableAccuracy >= 90){
+    statusClass = 'mastered';
+    statusIcon = '🏅';
+  } else if(tableAccuracy >= 70){
+    statusClass = 'improving';
+    statusIcon = '🟡';
+  }
+
+  masteryHTML += `
+    <div class="table-card ${statusClass}">
+      <div class="table-number">Table ${tableKey}</div>
+      <div class="table-accuracy">${tableAccuracy}%</div>
+      <div class="table-icon">${statusIcon}</div>
+    </div>
+  `;
+});
+
+masteryHTML += '</div>';
+
+masteryContainer.innerHTML = masteryHTML;
 
   showScreen('screen-progress');
 }

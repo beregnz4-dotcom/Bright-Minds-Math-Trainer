@@ -1968,7 +1968,11 @@ function showUnlock(message){
   }
 
   let focusMessage = '';
-  if(weakestTable !== null){
+
+  if(accuracy === 100){
+    focusMessage = '🏆 Perfect round!';
+    weakestTable = null;
+  } else if(weakestTable !== null && weakestAccuracy < 100){
     focusMessage = `📌 Focus next: Table ${weakestTable}`;
   }
 

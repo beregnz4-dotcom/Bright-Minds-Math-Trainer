@@ -2043,129 +2043,129 @@ async function applyRecommendation(){
   showScreen('screen-setup');
 }
     async function openProgress(){
-      const user = auth.currentUser;
-      const childId = appState.currentChildId;
-      const childName = appState.currentChildName;
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
+  const childName = appState.currentChildName;
 
-      if(!user || !childId){
-        alert('Choose a child to continue.');
-        return;
-      }
+  if(!user || !childId){
+    alert('Choose a child to continue.');
+    return;
+  }
 
-      const snap = await db.collection('users')
-        .doc(user.uid)
-        .collection('children')
-        .doc(childId)
-        .get();
+  const snap = await db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId)
+    .get();
 
-      const data = snap.data() || {};
-      const xp = data.xp || 0;
-      const levelInfo = getLevelInfo(xp);
+  const data = snap.data() || {};
+  const xp = data.xp || 0;
+  const levelInfo = getLevelInfo(xp);
+  const tableStats = data.tableStats || {};
 
-      const nb = data.numberBuilder || {
-  roundsPlayed: 0,
-  totalCorrect: 0,
-  totalWrong: 0,
-  highestLevelPlayed: 1
-};
+  const nb = data.numberBuilder || {
+    roundsPlayed: 0,
+    totalCorrect: 0,
+    totalWrong: 0,
+    highestLevelPlayed: 1
+  };
 
-      const totalAnswered = (nb.totalCorrect || 0) + (nb.totalWrong || 0);
-      const accuracy = totalAnswered > 0
-        ? Math.round((nb.totalCorrect / totalAnswered) * 100)
-        : 0;
+  const totalAnswered = (nb.totalCorrect || 0) + (nb.totalWrong || 0);
+  const accuracy = totalAnswered > 0
+    ? Math.round((nb.totalCorrect / totalAnswered) * 100)
+    : 0;
 
-      document.getElementById('progressChildName').textContent = `${childName}`;
-      document.getElementById('progressXP').textContent = `XP: ${xp}`;
-      document.getElementById('progressLevel').textContent = `Level: ${levelInfo.level}`;
-      document.getElementById('progressFill').style.width = `${levelInfo.progressPercent}%`;
-      document.getElementById('progressNextText').textContent = levelInfo.remainingText;
+  document.getElementById('progressChildName').textContent = `${childName}`;
+  document.getElementById('progressXP').textContent = `XP: ${xp}`;
+  document.getElementById('progressLevel').textContent = `Level: ${levelInfo.level}`;
+  document.getElementById('progressFill').style.width = `${levelInfo.progressPercent}%`;
+  document.getElementById('progressNextText').textContent = levelInfo.remainingText;
 
-      document.getElementById('progressRounds').textContent = `Rounds played: ${nb.roundsPlayed || 0}`;
-      document.getElementById('progressCorrect').textContent = `Total correct: ${nb.totalCorrect || 0}`;
-      document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
-      document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
-      document.getElementById('progressHighestLevel').textContent =
-  `Highest Number Builder level: ${nb.highestLevelPlayed || 1}`;
+  document.getElementById('progressRounds').textContent = `Rounds played: ${nb.roundsPlayed || 0}`;
+  document.getElementById('progressCorrect').textContent = `Total correct: ${nb.totalCorrect || 0}`;
+  document.getElementById('progressWrong').textContent = `Total wrong: ${nb.totalWrong || 0}`;
+  document.getElementById('progressAccuracy').textContent = `Accuracy: ${accuracy}%`;
+  document.getElementById('progressHighestLevel').textContent =
+    `Highest Number Builder level: ${nb.highestLevelPlayed || 1}`;
 
+  let masteryLines = [];
+  let masteredCount = 0;
+  let improvingCount = 0;
+  let needsPracticeCount = 0;
 
-let masteryLines = [];
+  let focusTable = null;
+  let focusScore = 999;
 
-let masteredCount = 0;
-let improvingCount = 0;
-let needsPracticeCount = 0;
+  for(let i = 1; i <= 12; i++){
+    const stats = tableStats[i];
+    if(!stats) continue;
 
-let focusTable = null;
-let focusScore = 999;
+    const total = (stats.correct || 0) + (stats.wrong || 0);
+    if(total === 0) continue;
 
-for(let i = 1; i <= 12; i++){
-  const stats = tableStats[i];
-  if(!stats) continue;
+    const tableAccuracy = Math.round(((stats.correct || 0) / total) * 100);
 
-  const total = (stats.correct || 0) + (stats.wrong || 0);
-  if(total === 0) continue;
+    if(total >= 20 && tableAccuracy >= 85){
+      masteredCount++;
+      masteryLines.push(`✅ Table ${i}: mastered (${tableAccuracy}% • ${total} practice tries)`);
+    } else if(total >= 5){
+      if(tableAccuracy >= 60){
+        improvingCount++;
+        masteryLines.push(`🟡 Table ${i}: in progress (${tableAccuracy}% • ${total} practice tries)`);
 
-  const accuracy = Math.round(((stats.correct || 0) / total) * 100);
+        if(tableAccuracy < focusScore){
+          focusScore = tableAccuracy;
+          focusTable = i;
+        }
+      } else {
+        needsPracticeCount++;
+        masteryLines.push(`🔴 Table ${i}: needs practice (${tableAccuracy}% • ${total} practice tries)`);
 
-  if(total >= 20 && accuracy >= 85){
-    masteredCount++;
-    masteryLines.push(`✅ Table ${i}: mastered (${accuracy}% • ${total} practice tries)`);
-  } else if(total >= 5){
-    if(accuracy >= 60){
-      improvingCount++;
-      masteryLines.push(`🟡 Table ${i}: in progress (${accuracy}% • ${total} practice tries)`);
-
-      if(accuracy < focusScore){
-        focusScore = accuracy;
-        focusTable = i;
+        if(tableAccuracy < focusScore){
+          focusScore = tableAccuracy;
+          focusTable = i;
+        }
       }
     } else {
-      needsPracticeCount++;
-      masteryLines.push(`🔴 Table ${i}: needs practice (${accuracy}% • ${total} practice tries)`);
-
-      if(accuracy < focusScore){
-        focusScore = accuracy;
-        focusTable = i;
-      }
+      masteryLines.push(`⚪ Table ${i}: not enough data yet (${total} practice tries)`);
     }
-  } else {
-    masteryLines.push(`⚪ Table ${i}: not enough data yet (${total} practice tries)`);
   }
+
+  document.getElementById('progressSummaryMastered').textContent =
+    `🏅 Mastered tables: ${masteredCount}`;
+
+  document.getElementById('progressSummaryImproving').textContent =
+    `🟡 Tables improving: ${improvingCount}`;
+
+  document.getElementById('progressSummaryPractice').textContent =
+    `🔴 Needs practice: ${needsPracticeCount}`;
+
+  const nextText = document.getElementById('progressNextTable');
+  const focusEl = document.getElementById('progressFocusTable');
+
+  let nextLevelText = '';
+
+  if((nb.highestLevelPlayed || 1) >= 3){
+    nextLevelText = '🎉 Max Number Builder level reached';
+  } else {
+    nextLevelText = `➡️ Next Level: ${(nb.highestLevelPlayed || 1) + 1}`;
+  }
+
+  nextText.textContent = nextLevelText;
+
+  if(focusTable){
+    focusEl.textContent = `📌 Focus next: Table ${focusTable}`;
+  } else {
+    focusEl.textContent = '';
+  }
+
+  document.getElementById('progressMastery').innerHTML =
+    masteryLines.length > 0
+      ? masteryLines.join('<br>')
+      : 'No table mastery data yet';
+
+  showScreen('screen-progress');
 }
-
-document.getElementById('progressSummaryMastered').textContent =
-  `🏅 Mastered tables: ${masteredCount}`;
-
-document.getElementById('progressSummaryImproving').textContent =
-  `🟡 Tables improving: ${improvingCount}`;
-
-document.getElementById('progressSummaryPractice').textContent =
-  `🔴 Needs practice: ${needsPracticeCount}`;
-
-const nextText = document.getElementById('progressNextTable');
-const focusEl = document.getElementById('progressFocusTable');
-
-let nextLevelText = '';
-
-if((nb.highestLevelPlayed || 1) >= 3){
-  nextLevelText = '🎉 Max Number Builder level reached';
-} else {
-  nextLevelText = `➡️ Next Level: ${(nb.highestLevelPlayed || 1) + 1}`;
-}
-
-nextText.textContent = nextLevelText;
-
-if(focusTable){
-  focusEl.textContent = `📌 Focus next: Table ${focusTable}`;
-} else {
-  focusEl.textContent = '';
-}
-
-document.getElementById('progressMastery').innerHTML =
-  masteryLines.length > 0
-    ? masteryLines.join('<br>')
-    : 'No table mastery data yet';
-      showScreen('screen-progress');
-    }
   </script>
 </body>
 </html>

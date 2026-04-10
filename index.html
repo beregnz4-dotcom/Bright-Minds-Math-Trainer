@@ -2081,11 +2081,26 @@ async function applyRecommendation(){
 const nbLevel = nb.highestLevelPlayed || 1;
 const nextText = document.getElementById('progressNextTable');
 
+let nextLevelText = '';
+let focusText = '';
+
+// 🎯 Nivel siguiente
 if(nbLevel >= 3){
-  nextText.textContent = '🎉 Max Number Builder level reached';
+  nextLevelText = '🎉 Max Number Builder level reached';
 } else {
-  nextText.textContent = `➡️ Next Number Builder level: ${nbLevel + 1}`;
+  nextLevelText = `➡️ Next Level: ${nbLevel + 1}`;
 }
+
+// 🎯 Tabla a practicar (usa tu lógica existente)
+if(focusTable){
+  focusText = `📌 Focus next: Table ${focusTable}`;
+}
+
+// 🧠 Mensaje combinado tipo Duolingo
+nextText.innerHTML = `
+  ${nextLevelText}
+  ${focusText ? '<br>' + focusText : ''}
+`;
       const tableStats = data.tableStats || {};
 let masteryLines = [];
 

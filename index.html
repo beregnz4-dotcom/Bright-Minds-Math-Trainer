@@ -2086,30 +2086,7 @@ async function applyRecommendation(){
       document.getElementById('progressHighestLevel').textContent =
   `Highest Number Builder level: ${nb.highestLevelPlayed || 1}`;
 
-const nbLevel = nb.highestLevelPlayed || 1;
-const nextText = document.getElementById('progressNextTable');
 
-let nextLevelText = '';
-let focusText = '';
-
-// 🎯 Nivel siguiente
-if(nbLevel >= 3){
-  nextLevelText = '🎉 Max Number Builder level reached';
-} else {
-  nextLevelText = `➡️ Next Level: ${nbLevel + 1}`;
-}
-
-// 🎯 Tabla a practicar (usa tu lógica existente)
-if(focusTable){
-  focusText = `📌 Focus next: Table ${focusTable}`;
-}
-
-// 🧠 Mensaje combinado tipo Duolingo
-nextText.innerHTML = `
-  ${nextLevelText}
-  ${focusText ? '<br>' + focusText : ''}
-`;
-      const tableStats = data.tableStats || {};
 let masteryLines = [];
 
 let masteredCount = 0;
@@ -2163,12 +2140,7 @@ document.getElementById('progressSummaryImproving').textContent =
 document.getElementById('progressSummaryPractice').textContent =
   `🔴 Needs practice: ${needsPracticeCount}`;
 
-if(focusTable){
-  document.getElementById('progressFocusTable').textContent =
-    `📌 Focus next: Table ${focusTable}`;
-} else {
-  document.getElementById('progressFocusTable').textContent = '';
-}
+
 
 document.getElementById('progressMastery').innerHTML =
   masteryLines.length > 0

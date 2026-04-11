@@ -2499,12 +2499,14 @@ function applyLevelLockUI(roundsPlayed){
 }
 
 function startSkillGame(game){
-  alert(game);
+  selectedSkillGame = game;
+
+  document.getElementById('gameTitle').textContent = 'Skill Builder';
+
+  buildNumberBuilderRound();
+  showScreen('screen-game');
+  renderCurrentQuestion();
 }
-
-
-
-  
 
 
 

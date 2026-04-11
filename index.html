@@ -335,6 +335,162 @@ body{
     width:250px;
   }
 }
+  /* CHILD LIST */
+.children-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.child-card{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#fff;
+  padding:12px 16px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  font-weight:800;
+}
+
+.child-name{
+  font-size:16px;
+}
+
+.mini-btn{
+  border:none;
+  background:#e5e7eb;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+
+/* MENU TEXT */
+.big{
+  font-size:18px;
+  font-weight:800;
+}
+
+.small{
+  font-size:13px;
+  opacity:.85;
+}
+
+/* LEVEL BUTTONS */
+.level-grid{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin:10px 0;
+}
+
+.level-btn{
+  padding:10px 14px;
+  border-radius:12px;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+
+.level-btn.selected{
+  background:var(--blue);
+  color:#fff;
+}
+
+/* SETTINGS */
+.settings-card{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.setting-row{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.setting-label{
+  font-weight:700;
+}
+
+.setting-value{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.volume-slider{
+  width:100%;
+}
+
+/* STATS */
+.stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:10px 0;
+}
+
+.stat-box{
+  background:#fff;
+  border-radius:14px;
+  padding:12px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.stat-value{
+  font-size:20px;
+  font-weight:800;
+}
+
+.stat-label{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* PROGRESS EXTRA */
+.progress-highlight{
+  margin-top:6px;
+  font-size:14px;
+}
+
+.summary-grid{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-top:10px;
+}
+
+.summary-pill{
+  padding:8px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+.summary-pill.mastered{ background:#ecfdf3; }
+.summary-pill.improving{ background:#fff7db; }
+.summary-pill.practice{ background:#fee2e2; }
+
+/* UNLOCK POPUP */
+.unlock-popup{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%) scale(.9);
+  background:#22c55e;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:20px;
+  font-weight:800;
+  opacity:0;
+  transition:.25s;
+  z-index:999;
+}
+
+.unlock-popup.show{
+  opacity:1;
+  transform:translateX(-50%) scale(1);
+}
 </style>
 </head>
 <body>

@@ -2118,8 +2118,8 @@ gameState.resultsByTable[table].wrong++;
       const resultCard = document.getElementById('resultCard');
 resultCard.classList.remove('perfect','good','practice');
 
-  resultSummaryEl.textContent =
-    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+  resultSummaryEl.innerHTML =
+  `Correct: ${gameState.correct} · Wrong: ${gameState.wrong} · XP: ${xpEarned}`;
 
   const totalAnswers = gameState.correct + gameState.wrong;
   const accuracy = totalAnswers > 0

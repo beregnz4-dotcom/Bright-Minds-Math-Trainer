@@ -2459,9 +2459,11 @@ function applyLevelLockUI(roundsPlayed){
   }
 
   if(currentMode === 'skill-builder'){
-    status.textContent = 'Skill Builder coming next step 🚀';
-    return;
-  }
+  buildNumberBuilderRound();
+  showScreen('screen-game');
+  renderCurrentQuestion();
+  return;
+}
 }
 
     function buildNumberBuilderRound(){

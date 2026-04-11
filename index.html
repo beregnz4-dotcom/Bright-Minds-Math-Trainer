@@ -1059,7 +1059,10 @@ function applyLevelLockUI(roundsPlayed){
 
   document.getElementById('setupStatus').textContent = '';
 
+  const setupTitle = document.querySelector('#screen-setup .topbar-title');
+
   if(mode === 'number-builder'){
+    if(setupTitle) setupTitle.textContent = 'Number Builder';
     const roundsPlayed = await getNumberBuilderRoundsPlayed();
     applyLevelLockUI(roundsPlayed);
     updateLevelUI();
@@ -1069,6 +1072,7 @@ function applyLevelLockUI(roundsPlayed){
   }
 
   if(mode === 'skill-builder'){
+    if(setupTitle) setupTitle.textContent = 'Skill Builder';
     currentLevel = 1;
     updateLevelUI();
     renderTables();

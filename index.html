@@ -2525,7 +2525,13 @@ function startSkillGame(game){
         const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
         const multiplier = Math.floor(Math.random() * 10) + 1;
         const answer = table * multiplier;
-        const type = types[Math.floor(Math.random() * types.length)];
+       let type;
+
+if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  type = 'visual';
+} else {
+  type = types[Math.floor(Math.random() * types.length)];
+}
 
         gameState.questions.push({
           type,

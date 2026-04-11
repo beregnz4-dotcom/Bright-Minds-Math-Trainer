@@ -2293,8 +2293,7 @@ document.getElementById('progressAccuracy').textContent = `${accuracy}%`;
   }
 
   const masteryContainer = document.getElementById('progressMastery');
-
-let masteryHTML = '<div class="table-grid">';
+masteryContainer.innerHTML = '';
 
 Object.keys(tableStats).forEach(tableKey => {
   const stats = tableStats[tableKey];
@@ -2314,17 +2313,21 @@ Object.keys(tableStats).forEach(tableKey => {
     statusIcon = '🟡';
   }
 
-  masteryHTML += `
-  <div class="table-row ${statusClass}">
+  const row = document.createElement('button');
+  row.className = `table-row ${statusClass}`;
+  row.type = 'button';
+  row.innerHTML = `
     <div>Table ${tableKey}</div>
     <div>${tableAccuracy}% ${statusIcon}</div>
-  </div>
-`;
+  `;
+
+  row.onclick = () => {
+    playSound('tap');
+    practiceTableFromProgress(Number(tableKey));
+  };
+
+  masteryContainer.appendChild(row);
 });
-
-masteryHTML += '</div>';
-
-masteryContainer.innerHTML = masteryHTML;
 
   showScreen('screen-progress');
 }

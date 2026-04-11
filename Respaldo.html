@@ -1584,6 +1584,20 @@ body{
 #screen-home .subtitle{
   font-size:14px !important;
 }
+    .time-bar{
+  height:6px;
+  width:100%;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+
+.time-bar-fill{
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg,#4c87ea,#6f50f6);
+}
 </style>
  
 </head>
@@ -1757,6 +1771,9 @@ body{
             <div id="gameProgressFill" class="progress-fill"></div>
           </div>
         </div>
+        <div class="time-bar">
+  <div id="timeBarFill" class="time-bar-fill"></div>
+</div>
 
         <div id="gameTypeLabel" class="subtitle" style="text-align:center;margin-bottom:8px;">Visual</div>
         <div id="questionText">2 × 3</div>
@@ -1870,6 +1887,9 @@ body{
     let selectedTables = [];
     let currentMode = null;
     let currentLevel = 1;
+    let questionTimer = null;
+let timeLimit = 4000;
+let answered = false;
 
     const numberBuilderLevels = {
       1: {

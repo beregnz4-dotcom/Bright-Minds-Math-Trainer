@@ -2295,70 +2295,67 @@ function showUnlock(message){
   }, 2000);
 }
 function getAdaptiveRecommendation(){
-  const totalQuestions = gameState.correct + gameState.wrong;
-  const accuracy = totalQuestions > 0
-    ? Math.round((gameState.correct / totalQuestions) * 100)
-    : 0;
+  const accuracy = Math.round((gameState.correct / gameState.total) * 100);
+  const currentLevel = gameState.level;
 
-  let weakestTable = null;
-  let weakestAccuracy = 101;
-  let strongestTable = null;
-  let strongestAccuracy = -1;
-
-  Object.keys(gameState.resultsByTable).forEach(tableKey => {
-    const stats = gameState.resultsByTable[tableKey];
-    const total = (stats.correct || 0) + (stats.wrong || 0);
-    if(total === 0) return;
-
-    const tableAccuracy = Math.round((stats.correct / total) * 100);
-
-    if(tableAccuracy < weakestAccuracy){
-      weakestAccuracy = tableAccuracy;
-      weakestTable = Number(tableKey);
-    }
-
-    if(tableAccuracy > strongestAccuracy){
-      strongestAccuracy = tableAccuracy;
-      strongestTable = Number(tableKey);
-    }
-  });
-
-  let suggestedLevel = currentLevel;
   let levelMessage = '';
   let focusMessage = '';
+  let suggestedLevel = currentLevel;
 
-  if(accuracy >= 90){
-    if(currentLevel < 3){
-      suggestedLevel = currentLevel + 1;
-      levelMessage = `⭐ Great job! Ready for Level ${suggestedLevel}`;
-    } else {
-      suggestedLevel = currentLevel;
-      levelMessage = '🌟 Excellent work! You are doing great at this level';
+  // 🔹 Detect weakest table
+  let weakestTable = null;
+  let lowestScore = 999;
+
+  for(const table in gameState.tableStats){
+    const stats = gameState.tableStats[table];
+    if(stats.total > 0){
+      const score = stats.correct / stats.total;
+      if(score < lowestScore){
+        lowestScore = score;
+        weakestTable = table;
+      }
     }
-  } else if(accuracy >= 70){
-    suggestedLevel = currentLevel;
-    levelMessage = `👍 Stay on Level ${currentLevel} and keep growing`;
-  } else {
-    suggestedLevel = currentLevel;
-    levelMessage = `🧱 Stay on Level ${currentLevel} for a little more practice`;
   }
 
+  // 🔥 PREMIUM LOGIC (más claro, más vendible)
+
   if(accuracy === 100){
-    focusMessage = strongestTable !== null
-      ? `🏆 Perfect round! Keep building with Table ${strongestTable}`
-      : '🏆 Perfect round!';
-  } else if(weakestTable !== null){
-    focusMessage = `📌 Focus next: Table ${weakestTable}`;
+    suggestedLevel = currentLevel + 1;
+
+    levelMessage = `🚀 You’re ready for Level ${suggestedLevel}`;
+    focusMessage = weakestTable
+      ? `🎯 Boost your speed on Table ${weakestTable}`
+      : `🎯 Keep building your skills`;
+    
+  } else if(accuracy >= 80){
+    suggestedLevel = currentLevel;
+
+    levelMessage = `⭐ Stay on Level ${currentLevel}`;
+    focusMessage = weakestTable
+      ? `🎯 Strengthen Table ${weakestTable}`
+      : `🎯 You're doing great — keep going`;
+
+  } else if(accuracy >= 60){
+    suggestedLevel = currentLevel;
+
+    levelMessage = `👍 Keep practicing Level ${currentLevel}`;
+    focusMessage = weakestTable
+      ? `🎯 Focus on Table ${weakestTable}`
+      : `🎯 Practice a bit more to improve`;
+
   } else {
-    focusMessage = '📘 Keep practicing to unlock a smart recommendation';
+    suggestedLevel = currentLevel;
+
+    levelMessage = `💪 Let’s build stronger basics`;
+    focusMessage = weakestTable
+      ? `🎯 Start with Table ${weakestTable}`
+      : `🎯 Take it step by step`;
   }
 
   return {
-    accuracy,
-    suggestedLevel,
-    focusTable: accuracy === 100 ? strongestTable : weakestTable,
     levelMessage,
-    focusMessage
+    focusMessage,
+    suggestedLevel
   };
 }
     function practiceAgain(){

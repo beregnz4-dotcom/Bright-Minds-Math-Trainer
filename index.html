@@ -1690,31 +1690,58 @@ function applyLevelLockUI(roundsPlayed){
   }
 }
 
-    function renderTables(){
-      const container = document.getElementById('tablesContainer');
-      container.innerHTML = '';
+  function renderTables(){
+  const container = document.getElementById('tablesContainer');
+  container.innerHTML = '';
 
-      const levelConfig = getCurrentLevelConfig();
-      const maxTable = levelConfig.maxTable;
+  const levelConfig = getCurrentLevelConfig();
+  const maxTable = levelConfig.maxTable;
 
-      for(let i = 1; i <= maxTable; i++){
-        const btn = document.createElement('button');
-        btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
-        btn.textContent = i;
+  container.style.display = 'grid';
+  container.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  container.style.gap = '16px';
+  container.style.margin = '10px 0 22px';
 
-        btn.onclick = () => {
-          playSound('tap');
-          if(selectedTables.includes(i)){
-            selectedTables = selectedTables.filter(x => x !== i);
-          } else {
-            selectedTables.push(i);
-          }
-          renderTables();
-        };
+  for(let i = 1; i <= maxTable; i++){
+    const btn = document.createElement('button');
+    btn.className = 'table-option';
+    btn.textContent = i;
 
-        container.appendChild(btn);
-      }
+    btn.style.display = 'flex';
+    btn.style.alignItems = 'center';
+    btn.style.justifyContent = 'center';
+    btn.style.width = '100%';
+    btn.style.minHeight = '78px';
+    btn.style.border = 'none';
+    btn.style.borderRadius = '22px';
+    btn.style.fontSize = '28px';
+    btn.style.fontWeight = '900';
+    btn.style.cursor = 'pointer';
+    btn.style.boxShadow = '0 10px 22px rgba(0,0,0,.10)';
+
+    if(selectedTables.includes(i)){
+      btn.style.background = 'linear-gradient(135deg,#4c87ea,#6f50f6)';
+      btn.style.color = '#fff';
+    } else {
+      btn.style.background = '#ffffff';
+      btn.style.color = '#24324b';
     }
+
+    btn.onclick = () => {
+      playSound('tap');
+
+      if(selectedTables.includes(i)){
+        selectedTables = selectedTables.filter(x => x !== i);
+      } else {
+        selectedTables.push(i);
+      }
+
+      renderTables();
+    };
+
+    container.appendChild(btn);
+  }
+}
 
     function selectAllTables(){
       const levelConfig = getCurrentLevelConfig();

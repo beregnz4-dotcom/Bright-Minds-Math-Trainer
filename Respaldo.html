@@ -1289,6 +1289,166 @@ body{
   font-size:15px !important;
   font-weight:900 !important;
 }
+    /* ===== GAME SCREEN PREMIUM ===== */
+
+#screen-game .card{
+  max-width:760px;
+  margin-left:auto;
+  margin-right:auto;
+  padding:18px !important;
+  border-radius:26px !important;
+  box-shadow:
+    0 14px 34px rgba(36,50,75,.10),
+    0 3px 10px rgba(36,50,75,.05) !important;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.94) !important;
+}
+
+#screen-game .topbar-title{
+  font-size:18px !important;
+  font-weight:900 !important;
+  color:var(--blue-dark) !important;
+}
+
+#screen-game #gameProgress{
+  font-size:14px !important;
+  font-weight:800 !important;
+  color:#5d6880 !important;
+  margin-bottom:10px !important;
+}
+
+#screen-game #gameTypeLabel{
+  font-size:14px !important;
+  font-weight:900 !important;
+  color:#6b7280 !important;
+  margin-bottom:8px !important;
+}
+
+#screen-game #questionText{
+  font-size:32px !important;
+  font-weight:900 !important;
+  margin:8px 0 16px !important;
+  color:#24324b !important;
+}
+
+#screen-game #visualArea{
+  min-height:56px !important;
+  margin-bottom:18px !important;
+  gap:8px !important;
+}
+
+#screen-game .block-group{
+  padding:8px 10px !important;
+  border-radius:14px !important;
+}
+
+#screen-game .block-dot{
+  width:12px !important;
+  height:12px !important;
+}
+
+#screen-game .addition-pill{
+  padding:12px 16px !important;
+  border-radius:14px !important;
+  font-size:20px !important;
+}
+
+#screen-game .sequence-strip{
+  gap:8px !important;
+}
+
+#screen-game .sequence-box{
+  min-width:50px !important;
+  padding:10px 8px !important;
+  border-radius:14px !important;
+  font-size:18px !important;
+}
+
+#screen-game .match-grid{
+  gap:10px !important;
+}
+
+#screen-game .match-col{
+  gap:10px !important;
+}
+
+#screen-game .match-btn{
+  min-height:58px !important;
+  border-radius:14px !important;
+  font-size:15px !important;
+  padding:12px 8px !important;
+}
+
+#screen-game #answersArea{
+  display:grid !important;
+  grid-template-columns:repeat(3,1fr) !important;
+  gap:10px !important;
+}
+
+#screen-game .answer-btn{
+  min-height:58px !important;
+  border-radius:16px !important;
+  font-size:20px !important;
+  font-weight:900 !important;
+  padding:12px 8px !important;
+  background:linear-gradient(180deg,#ffffff 0%, #fbfcff 100%) !important;
+  box-shadow:
+    0 8px 18px rgba(36,50,75,.08),
+    inset 0 0 0 1px rgba(76,135,234,.06) !important;
+}
+
+#screen-game .answer-btn.correct{
+  background:linear-gradient(135deg,#61c266 0%, #46b85b 100%) !important;
+  color:#fff !important;
+}
+
+#screen-game .answer-btn.wrong{
+  background:linear-gradient(135deg,#ef4444 0%, #dc2626 100%) !important;
+  color:#fff !important;
+}
+
+#screen-game #gameStatus{
+  margin-top:14px !important;
+  min-height:24px !important;
+  font-size:15px !important;
+  font-weight:900 !important;
+}
+
+@media (max-width:700px){
+  #screen-game .card{
+    padding:16px !important;
+    border-radius:24px !important;
+  }
+
+  #screen-game #questionText{
+    font-size:28px !important;
+  }
+
+  #screen-game #answersArea{
+    grid-template-columns:repeat(2,1fr) !important;
+    gap:8px !important;
+  }
+
+  #screen-game .answer-btn{
+    min-height:54px !important;
+    font-size:18px !important;
+    border-radius:14px !important;
+  }
+
+  #screen-game .match-btn{
+    min-height:54px !important;
+    font-size:14px !important;
+  }
+
+  #screen-game .sequence-box{
+    min-width:46px !important;
+    font-size:16px !important;
+  }
+
+  #screen-game .addition-pill{
+    font-size:18px !important;
+  }
+}
 </style>
  
 </head>

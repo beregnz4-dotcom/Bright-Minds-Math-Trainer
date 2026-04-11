@@ -810,6 +810,113 @@ body{
     padding:22px 16px;
   }
 }
+    /* ===== RESCATE SOLO SCREEN-SETUP ===== */
+
+#screen-setup .topbar-title{
+  font-size:20px;
+}
+
+#screen-setup .card{
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#screen-setup .section-title{
+  font-size:24px;
+  margin-bottom:14px;
+}
+
+#screen-setup .level-grid{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin:12px 0 10px;
+}
+
+#screen-setup .level-btn{
+  min-width:120px;
+  padding:14px 18px;
+  border-radius:18px;
+  background:#eef2ff;
+  color:var(--blue-dark);
+  font-size:18px;
+  font-weight:800;
+  border:none;
+  box-shadow:none;
+}
+
+#screen-setup .level-btn.selected{
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  color:#fff;
+}
+
+#screen-setup #levelInfoText{
+  text-align:center;
+  font-size:16px;
+  line-height:1.45;
+  color:var(--text);
+  max-width:520px;
+  margin:8px auto 0;
+}
+
+#screen-setup #tablesContainer{
+  display:grid !important;
+  grid-template-columns:repeat(3,1fr) !important;
+  gap:16px !important;
+  margin:18px 0 10px !important;
+}
+
+#screen-setup .table-option{
+  min-height:72px;
+  border-radius:18px;
+  background:#fff;
+  color:var(--blue-dark);
+  font-size:24px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow);
+  border:none;
+}
+
+#screen-setup .table-option.selected{
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  color:#fff;
+}
+
+#screen-setup .secondary-btn,
+#screen-setup .primary-btn{
+  max-width:none;
+}
+
+@media (max-width:700px){
+  #screen-setup .section-title{
+    font-size:22px;
+  }
+
+  #screen-setup .level-btn{
+    min-width:110px;
+    font-size:17px;
+    padding:12px 16px;
+  }
+
+  #screen-setup #levelInfoText{
+    font-size:15px;
+  }
+
+  #screen-setup #tablesContainer{
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:14px !important;
+  }
+
+  #screen-setup .table-option{
+    min-height:64px;
+    font-size:20px;
+  }
+}
 </style>
  
 </head>

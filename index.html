@@ -2191,7 +2191,9 @@ async function applyRecommendation(){
 
   selectedTables = [table];
 
-  applyLevelLockUI(999);
+  getNumberBuilderRoundsPlayed().then(rounds => {
+  applyLevelLockUI(rounds);
+});
   updateLevelUI();
   renderTables();
   document.getElementById('setupStatus').textContent = '';

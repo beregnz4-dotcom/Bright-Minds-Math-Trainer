@@ -2557,7 +2557,15 @@ function startSkillGame(game){
       const isSkill = currentMode === 'skill-builder';
 
 if(isSkill){
-  typeLabel.textContent = `🚀 ${selectedSkillGame}`;
+  const gameNames = {
+  jump: '🚀 Jump In',
+  pick: '🎯 Pick It',
+  match: '🧩 Match Up',
+  blast: '💥 Math Blast',
+  color: '🎨 Color Quest'
+};
+
+typeLabel.textContent = gameNames[selectedSkillGame] || '';
 } else {
   typeLabel.textContent = '';
 }

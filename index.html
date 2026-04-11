@@ -8,7 +8,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<style>
 :root{
   --bg-1:#f6c445;
   --bg-2:#f4a261;
@@ -50,6 +49,7 @@ body{
   background:
     linear-gradient(135deg, rgba(255,255,255,.10), transparent 30%),
     linear-gradient(180deg, #f7d46a 0%, #f2bf63 45%, #eda764 100%);
+  overflow-x:hidden;
 }
 
 .screen{
@@ -132,6 +132,7 @@ body{
   text-align:center;
   margin-top:4px;
   animation:heroFade .45s ease;
+  overflow:hidden;
 }
 
 .hero h1{
@@ -146,19 +147,25 @@ body{
   justify-content:center;
   align-items:center;
   margin:6px 0 10px;
+  width:100%;
+  overflow:hidden;
 }
 
-.hero-logo{
+.hero-logo,
+.home-logo{
   width:170px;
   max-width:58vw;
   height:auto;
   display:block;
+  margin:0 auto;
+  object-fit:contain;
   filter:drop-shadow(0 6px 12px rgba(0,0,0,.12));
   animation:logoEntrance .6s ease, floatLogo 3s ease-in-out infinite;
   transition:transform .25s ease;
 }
 
-.hero-logo:hover{
+.hero-logo:hover,
+.home-logo:hover{
   transform:scale(1.03);
 }
 
@@ -731,7 +738,8 @@ body{
     font-size:18px;
   }
 
-  .hero-logo{
+  .hero-logo,
+  .home-logo{
     width:120px;
     max-width:46vw;
   }
@@ -777,7 +785,14 @@ body{
     font-size:14px;
   }
 }
-</style>
+
+@media (min-width:701px){
+  .hero-logo,
+  .home-logo{
+    width:180px;
+    max-width:180px;
+  }
+}
 </head>
 <body>
   <div class="app-shell">

@@ -2592,8 +2592,9 @@ if(isSkill){
         renderAnswerOptions(q.answer);
       }
 
-if(q.type === 'sequence'){
+if(currentMode !== 'skill-builder'){
   typeLabel.textContent = '🔍 Find the pattern!';
+}
 
   const strip = document.createElement('div');
   strip.className = 'sequence-strip';

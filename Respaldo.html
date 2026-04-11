@@ -918,23 +918,17 @@ body{
 }
     /* ===== FIX TABLAS ===== */
 
-
-  #screen-setup .table-option{
+#screen-setup .table-option{
   display:flex;
   align-items:center;
   justify-content:center;
-
   width:100%;
-  height:54px;        /* antes 70px */
-  
+  height:54px;
   background:#fff;
-  border-radius:16px; /* un poco más compacto */
-
-  font-size:18px;     /* antes 22px */
+  border-radius:16px;
+  font-size:18px;
   font-weight:900;
-}
   color:var(--blue-dark);
-
   box-shadow:var(--shadow);
 }
 
@@ -1083,6 +1077,196 @@ body{
 /* ESPACIADO GENERAL */
 #screen-setup .section{
   margin-bottom:14px !important;
+}
+    /* ===== PREMIUM SETUP SCREEN ===== */
+
+#screen-setup .topbar-title{
+  font-size:18px !important;
+  font-weight:900 !important;
+  letter-spacing:.2px;
+  color:var(--blue-dark) !important;
+}
+
+#screen-setup .card{
+  padding:18px !important;
+  border-radius:26px !important;
+  box-shadow:
+    0 14px 34px rgba(36,50,75,.10),
+    0 3px 10px rgba(36,50,75,.05) !important;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.92) !important;
+  backdrop-filter:blur(6px);
+}
+
+#screen-setup .section-title{
+  font-size:22px !important;
+  font-weight:900 !important;
+  letter-spacing:.2px;
+  color:#26334d !important;
+  margin-bottom:14px !important;
+}
+
+#screen-setup .level-grid{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:10px !important;
+  max-width:360px !important;
+  margin:8px auto 14px !important;
+}
+
+#screen-setup #levelBtn3{
+  grid-column:1 / span 2 !important;
+  justify-self:center !important;
+  width:130px !important;
+}
+
+#screen-setup .level-btn{
+  min-height:54px !important;
+  border:none !important;
+  border-radius:18px !important;
+  background:#eef1fb !important;
+  color:#24324b !important;
+  font-size:17px !important;
+  font-weight:900 !important;
+  box-shadow:inset 0 0 0 1px rgba(76,135,234,.08);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+#screen-setup .level-btn.selected{
+  background:linear-gradient(135deg,#5f8ff0 0%, #6f50f6 100%) !important;
+  color:#fff !important;
+  box-shadow:
+    0 10px 22px rgba(111,80,246,.22),
+    inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+#screen-setup .level-btn:active{
+  transform:scale(.98);
+}
+
+#screen-setup #levelInfoText{
+  text-align:center !important;
+  font-size:13px !important;
+  line-height:1.45 !important;
+  color:#4b5872 !important;
+  max-width:520px !important;
+  margin:4px auto 0 !important;
+}
+
+#screen-setup #tablesContainer{
+  display:grid !important;
+  grid-template-columns:repeat(5,1fr) !important;
+  gap:10px !important;
+  margin:14px 0 18px !important;
+}
+
+#screen-setup .table-option{
+  height:44px !important;
+  min-height:44px !important;
+  padding:0 !important;
+  border:none !important;
+  border-radius:14px !important;
+  background:linear-gradient(180deg,#ffffff 0%, #fbfcff 100%) !important;
+  color:#2c3957 !important;
+  font-size:16px !important;
+  font-weight:900 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:
+    0 8px 18px rgba(36,50,75,.08),
+    inset 0 0 0 1px rgba(76,135,234,.06) !important;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+#screen-setup .table-option.selected{
+  background:linear-gradient(135deg,#5f8ff0 0%, #6f50f6 100%) !important;
+  color:#fff !important;
+  box-shadow:
+    0 10px 22px rgba(111,80,246,.20),
+    inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+#screen-setup .table-option:active{
+  transform:scale(.97);
+}
+
+#screen-setup .secondary-btn,
+#screen-setup .primary-btn{
+  min-height:52px !important;
+  padding:12px 14px !important;
+  border:none !important;
+  border-radius:18px !important;
+  font-size:15px !important;
+  font-weight:900 !important;
+  letter-spacing:.2px;
+  transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+
+#screen-setup .secondary-btn{
+  background:linear-gradient(180deg,#6d88d7 0%, #6681cf 100%) !important;
+  color:#fff !important;
+  box-shadow:0 10px 22px rgba(91,120,197,.18) !important;
+}
+
+#screen-setup .primary-btn{
+  background:linear-gradient(135deg,#5f8ff0 0%, #6f50f6 100%) !important;
+  color:#fff !important;
+  box-shadow:0 12px 24px rgba(111,80,246,.24) !important;
+}
+
+#screen-setup .secondary-btn:active,
+#screen-setup .primary-btn:active{
+  transform:scale(.985);
+}
+
+@media (max-width:700px){
+  #screen-setup .card{
+    padding:16px !important;
+    border-radius:24px !important;
+  }
+
+  #screen-setup .section-title{
+    font-size:20px !important;
+    margin-bottom:12px !important;
+  }
+
+  #screen-setup .level-grid{
+    max-width:340px !important;
+    gap:8px !important;
+  }
+
+  #screen-setup .level-btn{
+    min-height:50px !important;
+    font-size:16px !important;
+    border-radius:16px !important;
+  }
+
+  #screen-setup #levelBtn3{
+    width:118px !important;
+  }
+
+  #screen-setup #levelInfoText{
+    font-size:12.5px !important;
+  }
+
+  #screen-setup #tablesContainer{
+    gap:8px !important;
+  }
+
+  #screen-setup .table-option{
+    height:40px !important;
+    min-height:40px !important;
+    border-radius:12px !important;
+    font-size:15px !important;
+  }
+
+  #screen-setup .secondary-btn,
+  #screen-setup .primary-btn{
+    min-height:48px !important;
+    font-size:14px !important;
+    border-radius:16px !important;
+  }
 }
 </style>
  
@@ -1840,34 +2024,14 @@ function applyLevelLockUI(roundsPlayed){
   const maxTable = levelConfig.maxTable;
 
   container.style.display = 'grid';
-  container.style.gridTemplateColumns = `repeat(${maxTable}, 1fr)`;
-  container.style.gap = '16px';
+  container.style.gridTemplateColumns = 'repeat(5, 1fr)';
+  container.style.gap = '10px';
   container.style.margin = '10px 0 22px';
 
   for(let i = 1; i <= maxTable; i++){
     const btn = document.createElement('button');
-    btn.className = 'table-option';
+    btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
     btn.textContent = i;
-
-    btn.style.display = 'flex';
-    btn.style.alignItems = 'center';
-    btn.style.justifyContent = 'center';
-    btn.style.width = '100%';
-    btn.style.minHeight = '56px';
-    btn.style.border = 'none';
-    btn.style.borderRadius = '22px';
-    btn.style.fontSize = '20px';
-    btn.style.fontWeight = '900';
-    btn.style.cursor = 'pointer';
-    btn.style.boxShadow = '0 10px 22px rgba(0,0,0,.10)';
-
-    if(selectedTables.includes(i)){
-      btn.style.background = 'linear-gradient(135deg,#4c87ea,#6f50f6)';
-      btn.style.color = '#fff';
-    } else {
-      btn.style.background = '#ffffff';
-      btn.style.color = '#24324b';
-    }
 
     btn.onclick = () => {
       playSound('tap');

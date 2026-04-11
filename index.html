@@ -2595,8 +2595,6 @@ if(isSkill){
 if(q.type === 'sequence'){
   if(currentMode !== 'skill-builder'){
     typeLabel.textContent = '🔍 Find the pattern!';
-  } else {
-    typeLabel.textContent = `🚀 ${selectedSkillGame}`;
   }
 
   const strip = document.createElement('div');
@@ -2622,6 +2620,8 @@ if(q.type === 'sequence'){
   });
 
   visualArea.appendChild(strip);
+  renderAnswerOptions(correctSequenceAnswer);
+}
  
 
       if(q.type === 'addition'){

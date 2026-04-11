@@ -2218,57 +2218,51 @@ function showUnlock(message){
   }, 2000);
 }
 function getAdaptiveRecommendation(){
-  const accuracy = Math.round((gameState.correct / gameState.total) * 100);
-  const currentLevel = gameState.level;
+  const totalAnswers = gameState.correct + gameState.wrong;
+  const accuracy = totalAnswers > 0
+    ? Math.round((gameState.correct / totalAnswers) * 100)
+    : 0;
+
+  const currentLevelValue = currentLevel;
 
   let levelMessage = '';
   let focusMessage = '';
-  let suggestedLevel = currentLevel;
-
-  // 🔹 Detect weakest table
+  let suggestedLevel = currentLevelValue;
   let weakestTable = null;
   let lowestScore = 999;
 
-  for(const table in gameState.tableStats){
-    const stats = gameState.tableStats[table];
-    if(stats.total > 0){
-      const score = stats.correct / stats.total;
+  for(const table in gameState.resultsByTable){
+    const stats = gameState.resultsByTable[table];
+    const total = (stats.correct || 0) + (stats.wrong || 0);
+    if(total > 0){
+      const score = (stats.correct || 0) / total;
       if(score < lowestScore){
         lowestScore = score;
-        weakestTable = table;
+        weakestTable = Number(table);
       }
     }
   }
 
-  // 🔥 PREMIUM LOGIC (más claro, más vendible)
-
   if(accuracy === 100){
-    suggestedLevel = currentLevel + 1;
-
+    suggestedLevel = currentLevelValue + 1;
     levelMessage = `🚀 You’re ready for Level ${suggestedLevel}`;
     focusMessage = weakestTable
       ? `🎯 Boost your speed on Table ${weakestTable}`
       : `🎯 Keep building your skills`;
-    
   } else if(accuracy >= 80){
-    suggestedLevel = currentLevel;
-
-    levelMessage = `⭐ Stay on Level ${currentLevel}`;
+    suggestedLevel = currentLevelValue;
+    levelMessage = `⭐ Stay on Level ${currentLevelValue}`;
     focusMessage = weakestTable
       ? `🎯 Strengthen Table ${weakestTable}`
       : `🎯 You're doing great — keep going`;
-
   } else if(accuracy >= 60){
-    suggestedLevel = currentLevel;
-
-    levelMessage = `👍 Keep practicing Level ${currentLevel}`;
+    suggestedLevel = currentLevelValue;
+    levelMessage = `👍 Keep practicing Level ${currentLevelValue}`;
     focusMessage = weakestTable
       ? `🎯 Focus on Table ${weakestTable}`
       : `🎯 Practice a bit more to improve`;
-
   } else {
-    suggestedLevel = currentLevel;
-
+    suggestedLevel = currentLevelValue;
     levelMessage = `💪 Let’s build stronger basics`;
     focusMessage = weakestTable
       ? `🎯 Start with Table ${weakestTable}`
@@ -2278,7 +2272,8 @@ function getAdaptiveRecommendation(){
   return {
     levelMessage,
     focusMessage,
-    suggestedLevel
+    suggestedLevel,
+    focusTable: weakestTable
   };
 }
     function practiceAgain(){

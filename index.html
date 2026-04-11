@@ -2659,7 +2659,9 @@ if(q.type === 'sequence'){
 }
 
       if(q.type === 'matching'){
-        typeLabel.textContent = '🔗 Match them!';
+        if(currentMode !== 'skill-builder'){
+  typeLabel.textContent = '🔗 Match them!';
+}
 
         const multiplierSet = new Set();
         multiplierSet.add(q.multiplier);

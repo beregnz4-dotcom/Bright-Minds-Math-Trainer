@@ -2175,25 +2175,34 @@ async function applyRecommendation(){
   document.getElementById('setupStatus').textContent = '';
   showScreen('screen-setup');
 }
-    function practiceTableFromProgress(table){
-  selectedProgressTable = table;
+    async function practiceTableFromProgress(table){
   currentMode = 'number-builder';
-
   playSound('tap');
 
+  const roundsPlayed = await getNumberBuilderRoundsPlayed();
+
+  let suggestedLevel = 1;
+
   if(table <= 5){
-    currentLevel = 1;
+    suggestedLevel = 1;
   } else if(table <= 10){
-    currentLevel = 2;
+    suggestedLevel = roundsPlayed >= 3 ? 2 : 1;
   } else {
-    currentLevel = 3;
+    if(roundsPlayed >= 8){
+      suggestedLevel = 3;
+    } else if(roundsPlayed >= 3){
+      suggestedLevel = 2;
+    } else {
+      suggestedLevel = 1;
+    }
   }
 
-  selectedTables = [table];
+  currentLevel = suggestedLevel;
 
-  getNumberBuilderRoundsPlayed().then(rounds => {
-  applyLevelLockUI(rounds);
-});
+  const maxTable = numberBuilderLevels[currentLevel].maxTable;
+  selectedTables = [Math.min(table, maxTable)];
+
+  applyLevelLockUI(roundsPlayed);
   updateLevelUI();
   renderTables();
   document.getElementById('setupStatus').textContent = '';

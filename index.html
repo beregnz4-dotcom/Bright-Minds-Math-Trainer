@@ -2592,14 +2592,17 @@ if(isSkill){
         renderAnswerOptions(q.answer);
       }
 
-if(currentMode !== 'skill-builder'){
-  typeLabel.textContent = '🔍 Find the pattern!';
-}
+if(q.type === 'sequence'){
+  if(currentMode !== 'skill-builder'){
+    typeLabel.textContent = '🔍 Find the pattern!';
+  } else {
+    typeLabel.textContent = `🚀 ${selectedSkillGame}`;
+  }
 
   const strip = document.createElement('div');
   strip.className = 'sequence-strip';
 
-  const start = Math.floor(Math.random() * 6) + 1; // de 1 a 6
+  const start = Math.floor(Math.random() * 6) + 1;
   const sequenceValues = [
     q.table * start,
     q.table * (start + 1),
@@ -2619,8 +2622,7 @@ if(currentMode !== 'skill-builder'){
   });
 
   visualArea.appendChild(strip);
-  renderAnswerOptions(correctSequenceAnswer);
-}
+ 
 
       if(q.type === 'addition'){
   typeLabel.textContent = '➕ Add it up!';

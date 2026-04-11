@@ -1923,7 +1923,8 @@ if(accuracy === 100){
   feedback = '💪 Keep going! You are learning!';
 }
 
-document.getElementById('resultSummary').innerHTML += '<br>' + feedback;
+document.getElementById('resultSummary').innerHTML += 
+  `<br><strong>${feedback}</strong>`;
       const recommendation = getAdaptiveRecommendation();
 latestRecommendation = recommendation;
 

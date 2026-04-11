@@ -941,6 +941,42 @@ body{
   background:linear-gradient(135deg,#4c87ea,#6f50f6);
   color:#fff;
 }
+    #screen-setup .level-grid{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:16px !important;
+  max-width:460px;
+  margin:0 auto 18px !important;
+}
+
+#screen-setup #levelBtn3{
+  grid-column:1 / span 2;
+  justify-self:center;
+  width:180px;
+}
+
+#screen-setup .level-btn{
+  min-height:78px;
+  border:none;
+  border-radius:22px;
+  font-size:22px;
+  font-weight:900;
+  background:#eef0fb;
+  color:#000;
+}
+
+#screen-setup .level-btn.selected{
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  color:#fff;
+}
+
+#screen-setup #levelInfoText{
+  text-align:center;
+  font-size:16px;
+  line-height:1.45;
+  max-width:520px;
+  margin:8px auto 0;
+}
     
 </style>
  

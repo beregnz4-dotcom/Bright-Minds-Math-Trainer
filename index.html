@@ -704,6 +704,24 @@ body{
 .table-row:active{
   transform:scale(0.98);
 }
+  .result-pop{
+  animation:resultPop .45s ease;
+}
+
+@keyframes resultPop{
+  0%{
+    transform:scale(.92);
+    opacity:.4;
+  }
+  60%{
+    transform:scale(1.03);
+    opacity:1;
+  }
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
+}
 </style>
 </head>
 <body>

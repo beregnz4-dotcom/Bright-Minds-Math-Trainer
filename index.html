@@ -1729,6 +1729,37 @@ body{
 
     <!-- SETUP -->
     <section id="screen-setup" class="screen">
+      <section id="screen-skill-games" class="screen">
+  <div class="topbar">
+    <button class="icon-btn" onclick="showScreen('screen-setup')">←</button>
+    <div class="topbar-title">Skill Builder</div>
+    <div style="width:46px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Choose game</div>
+
+    <button class="primary-btn" onclick="startSkillGame('jump')">
+      🚀 Jump In
+    </button>
+
+    <button class="primary-btn" onclick="startSkillGame('pick')">
+      🎯 Pick It
+    </button>
+
+    <button class="primary-btn" onclick="startSkillGame('match')">
+      🧩 Match Up
+    </button>
+
+    <button class="primary-btn" onclick="startSkillGame('blast')">
+      💥 Math Blast
+    </button>
+
+    <button class="primary-btn" onclick="startSkillGame('color')">
+      🎨 Color Quest
+    </button>
+  </div>
+</section>
       <div class="topbar">
         <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
         <div class="topbar-title">Select Level & Tables</div>

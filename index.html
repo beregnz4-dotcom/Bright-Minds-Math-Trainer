@@ -2175,6 +2175,29 @@ async function applyRecommendation(){
   document.getElementById('setupStatus').textContent = '';
   showScreen('screen-setup');
 }
+    function practiceTableFromProgress(table){
+  selectedProgressTable = table;
+  currentMode = 'number-builder';
+
+  playSound('tap');
+
+  if(table <= 5){
+    currentLevel = 1;
+  } else if(table <= 10){
+    currentLevel = 2;
+  } else {
+    currentLevel = 3;
+  }
+
+  selectedTables = [table];
+
+  applyLevelLockUI(999);
+  updateLevelUI();
+  renderTables();
+  document.getElementById('setupStatus').textContent = '';
+
+  showScreen('screen-setup');
+}
     async function openProgress(){
   const user = auth.currentUser;
   const childId = appState.currentChildId;

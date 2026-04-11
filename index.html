@@ -2339,10 +2339,10 @@ Object.keys(tableStats).forEach(tableKey => {
   let statusClass = 'practice';
   let statusIcon = '🔴';
 
-  if(tableAccuracy >= 90){
+  if(total >= 20 && tableAccuracy >= 85){
     statusClass = 'mastered';
     statusIcon = '🏅';
-  } else if(tableAccuracy >= 70){
+  } else if(total >= 5 && tableAccuracy >= 60){
     statusClass = 'improving';
     statusIcon = '🟡';
   }
@@ -2362,6 +2362,10 @@ Object.keys(tableStats).forEach(tableKey => {
 
   masteryContainer.appendChild(row);
 });
+
+if(masteryContainer.innerHTML === ''){
+  masteryContainer.innerHTML = 'No table mastery data yet';
+}
 
   showScreen('screen-progress');
 }

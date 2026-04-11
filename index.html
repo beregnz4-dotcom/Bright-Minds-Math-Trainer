@@ -2484,11 +2484,17 @@ function applyLevelLockUI(roundsPlayed){
   }
 
   if(currentMode === 'number-builder'){
-  document.getElementById('gameTitle').textContent = 'Number Builder';
-  buildNumberBuilderRound();
-  showScreen('screen-game');
-  renderCurrentQuestion();
-  return;
+    document.getElementById('gameTitle').textContent = 'Number Builder';
+    buildNumberBuilderRound();
+    showScreen('screen-game');
+    renderCurrentQuestion();
+    return;
+  }
+
+  if(currentMode === 'skill-builder'){
+    showScreen('screen-skill-games');
+    return;
+  }
 }
 
 if(currentMode === 'skill-builder'){

@@ -978,7 +978,50 @@ body{
   max-width:520px;
   margin:8px auto 0;
 }
-    
+    /* ===== COMPACT MODE (todo más pequeño y elegante) ===== */
+
+/* TABLAS */
+#screen-setup #tablesContainer{
+  grid-template-columns:repeat(5,1fr) !important;
+  gap:10px !important;
+}
+
+#screen-setup .table-option{
+  height:48px !important;
+  min-height:48px !important;
+  border-radius:14px !important;
+  font-size:16px !important;
+}
+
+/* NIVELES */
+#screen-setup .level-grid{
+  gap:10px !important;
+  max-width:420px !important;
+}
+
+#screen-setup .level-btn{
+  min-height:60px !important;
+  border-radius:18px !important;
+  font-size:18px !important;
+}
+
+/* LEVEL 3 centrado pero más chico */
+#screen-setup #levelBtn3{
+  width:140px !important;
+}
+
+/* TEXTO */
+#screen-setup #levelInfoText{
+  font-size:14px !important;
+  margin-top:6px !important;
+}
+
+/* BOTONES */
+#screen-setup .primary-btn,
+#screen-setup .secondary-btn{
+  padding:14px !important;
+  font-size:15px !important;
+}
 </style>
  
 </head>

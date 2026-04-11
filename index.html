@@ -671,7 +671,7 @@ body{
   line-height:1.55;
   box-shadow:var(--shadow);
 }
-  .table-row{
+ .table-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -680,6 +680,10 @@ body{
   background:#ffffff;
   font-weight:800;
   box-shadow:var(--shadow);
+  width:100%;
+  border:none;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease;
 }
 
 .table-row.mastered{
@@ -695,6 +699,10 @@ body{
 .table-row.practice{
   background:#fee2e2;
   color:#991b1b;
+}
+
+.table-row:active{
+  transform:scale(0.98);
 }
 </style>
 </head>

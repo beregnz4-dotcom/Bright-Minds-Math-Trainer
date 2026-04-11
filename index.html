@@ -794,6 +794,74 @@ body{
     max-width:180px;
   }
 }
+    /* ===== AJUSTE NUMBER BUILDER (responsive real) ===== */
+
+#questionText{
+  font-size:32px;
+  line-height:1.1;
+  margin:6px 0 16px;
+}
+
+/* fila de patrón */
+.pattern-row{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.pattern-box{
+  min-width:60px;
+  padding:14px 12px;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  font-size:22px;
+  font-weight:900;
+  text-align:center;
+}
+
+/* número central */
+.pattern-center{
+  margin:8px auto 14px;
+}
+
+/* respuestas */
+#answersArea{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.answer-btn{
+  padding:16px 10px;
+  font-size:20px;
+  border-radius:16px;
+}
+
+/* 📱 ajuste fuerte para celular */
+@media (max-width:480px){
+
+  #questionText{
+    font-size:26px;
+  }
+
+  .pattern-box{
+    min-width:50px;
+    padding:12px 8px;
+    font-size:18px;
+  }
+
+  .answer-btn{
+    font-size:18px;
+    padding:14px 8px;
+  }
+
+  #answersArea{
+    grid-template-columns:1fr 1fr;
+  }
+}
  </style>
 </head>
 <body>

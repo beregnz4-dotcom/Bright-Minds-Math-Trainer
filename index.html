@@ -1449,6 +1449,94 @@ body{
     font-size:18px !important;
   }
 }
+    /* ===== RESULT SCREEN PREMIUM ===== */
+
+#screen-result .card{
+  max-width:520px;
+  margin:20px auto;
+  padding:22px !important;
+  border-radius:28px !important;
+  text-align:center;
+  box-shadow:
+    0 18px 40px rgba(36,50,75,.12),
+    0 4px 12px rgba(36,50,75,.06) !important;
+  background:rgba(255,255,255,.95) !important;
+}
+
+#screen-result .section-title{
+  font-size:26px !important;
+  font-weight:900 !important;
+  margin-bottom:12px !important;
+}
+
+/* RESULT STATES */
+
+#screen-result .result-box.perfect{
+  background:linear-gradient(135deg,#eaf7ff,#f0ecff) !important;
+  border:2px solid #6f50f6 !important;
+}
+
+#screen-result .result-box.good{
+  background:linear-gradient(135deg,#fff8df,#fff2cc) !important;
+}
+
+#screen-result .result-box.practice{
+  background:linear-gradient(135deg,#ffe5e5,#ffd6d6) !important;
+}
+
+/* SUMMARY TEXT */
+
+#screen-result #resultSummary{
+  font-size:18px !important;
+  font-weight:800 !important;
+  margin-bottom:12px !important;
+  line-height:1.4 !important;
+}
+
+/* RECOMMENDATION */
+
+#screen-result #resultRecommendation{
+  font-size:15px !important;
+  font-weight:700 !important;
+  background:#ffffffcc !important;
+  padding:12px !important;
+  border-radius:16px !important;
+  margin-bottom:16px !important;
+  line-height:1.4 !important;
+}
+
+/* BOTONES */
+
+#screen-result .primary-btn{
+  margin-top:10px !important;
+  min-height:52px !important;
+  border-radius:18px !important;
+  font-size:15px !important;
+}
+
+#screen-result .secondary-btn{
+  margin-top:8px !important;
+  min-height:48px !important;
+  border-radius:16px !important;
+  font-size:14px !important;
+}
+
+/* ANIMACIÓN SUAVE */
+
+#screen-result .card{
+  animation:fadeUp .4s ease;
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
 </style>
  
 </head>

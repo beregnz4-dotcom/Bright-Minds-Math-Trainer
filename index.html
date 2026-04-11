@@ -1969,14 +1969,18 @@ resultCard.classList.remove('perfect','good','practice');
   let feedback = '';
 
   if(accuracy === 100){
-    feedback = '🏆 Perfect! You nailed it!';
-  } else if(accuracy >= 80){
-    feedback = '🔥 Great job! Almost perfect!';
-  } else if(accuracy >= 60){
-    feedback = '👍 Good work! Keep practicing!';
-  } else {
-    feedback = '💪 Keep going! You are learning!';
-  }
+  feedback = '🏆 Perfect! You nailed it!';
+  resultCard.classList.add('perfect');
+} else if(accuracy >= 80){
+  feedback = '🔥 Great job! Almost perfect!';
+  resultCard.classList.add('good');
+} else if(accuracy >= 60){
+  feedback = '👍 Good work! Keep practicing!';
+  resultCard.classList.add('good');
+} else {
+  feedback = '💪 Keep going! You are learning!';
+  resultCard.classList.add('practice');
+}
 
   resultSummaryEl.innerHTML += `<br><strong>${feedback}</strong>`;
 

@@ -2568,7 +2568,7 @@ function startSkillGame(game){
       }
 
       if(q.type === 'visual'){
-        typeLabel.textContent = '🧱 Build it!';
+        typeLabel.textContent = isSkill ? `🚀 ${selectedSkillGame}` : '🧱 Build it!';
 
         for(let r=0; r<q.multiplier; r++){
           const group = document.createElement('div');

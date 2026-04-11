@@ -1955,6 +1955,8 @@ gameState.resultsByTable[table].wrong++;
   const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
 
   const resultSummaryEl = document.getElementById('resultSummary');
+      const resultCard = document.getElementById('resultCard');
+resultCard.classList.remove('perfect','good','practice');
 
   resultSummaryEl.textContent =
     `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;

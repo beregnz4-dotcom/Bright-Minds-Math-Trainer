@@ -722,6 +722,33 @@ body{
     opacity:1;
   }
 }
+  .result-box{
+  transition:all .25s ease;
+}
+
+.result-box.perfect{
+  background:#ecfdf3;
+  border:2px solid #22c55e;
+}
+
+.result-box.good{
+  background:#fff7db;
+  border:2px solid #f4b000;
+}
+
+.result-box.practice{
+  background:#fee2e2;
+  border:2px solid #ef4444;
+}
+
+.result-pop{
+  animation:resultPop .35s ease;
+}
+
+@keyframes resultPop{
+  0%{ transform:scale(.96); opacity:.7; }
+  100%{ transform:scale(1); opacity:1; }
+}
 </style>
 </head>
 <body>

@@ -2021,6 +2021,21 @@ let answered = false;
       document.getElementById(screenId).classList.add('active');
     }
 
+function startTimeBar(){
+  clearTimeout(questionTimer);
+
+  const bar = document.getElementById('timeBarFill');
+  if(!bar) return;
+
+  answered = false;
+
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  bar.offsetWidth;
+
+  bar.style.transition = `width ${timeLimit}ms linear`;
+  bar.style.width = '0%';
+}
     
 async function setNumberBuilderLevel(level){
   const roundsPlayed = await getNumberBuilderRoundsPlayed();

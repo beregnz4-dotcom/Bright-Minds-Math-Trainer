@@ -2281,12 +2281,11 @@ Object.keys(tableStats).forEach(tableKey => {
   }
 
   masteryHTML += `
-    <div class="table-card ${statusClass}">
-      <div class="table-number">Table ${tableKey}</div>
-      <div class="table-accuracy">${tableAccuracy}%</div>
-      <div class="table-icon">${statusIcon}</div>
-    </div>
-  `;
+  <div class="table-row ${statusClass}">
+    <div>Table ${tableKey}</div>
+    <div>${tableAccuracy}% ${statusIcon}</div>
+  </div>
+`;
 });
 
 masteryHTML += '</div>';

@@ -2021,7 +2021,48 @@ let answered = false;
       document.getElementById(screenId).classList.add('active');
     }
 
-    
+function startTimeBar(){
+  clearTimeout(questionTimer);
+
+  const bar = document.getElementById('timeBarFill');
+  if(!bar) return;
+
+  answered = false;
+
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  bar.offsetWidth;
+
+  bar.style.transition = `width ${timeLimit}ms linear`;
+  bar.style.width = '0%';
+
+  questionTimer = setTimeout(() => {
+    if(!answered){
+      handleTimeOut();
+    }
+  }, timeLimit);
+}
+
+    function handleTimeOut(){
+  if(currentMode !== 'skill-builder') return;
+
+  playSound('wrong');
+
+  gameState.wrong++;
+
+  const statusEl = document.getElementById('gameStatus');
+  statusEl.textContent = 'Too slow!';
+  statusEl.classList.add('big-feedback');
+
+  setTimeout(() => {
+    gameState.currentIndex++;
+    if(gameState.currentIndex >= gameState.questions.length){
+      finishRound();
+    } else {
+      renderCurrentQuestion();
+    }
+  }, 700);
+}
 async function setNumberBuilderLevel(level){
   const roundsPlayed = await getNumberBuilderRoundsPlayed();
 
@@ -2418,9 +2459,11 @@ function applyLevelLockUI(roundsPlayed){
   }
 
   if(currentMode === 'skill-builder'){
-    status.textContent = 'Skill Builder coming next step 🚀';
-    return;
-  }
+  buildNumberBuilderRound();
+  showScreen('screen-game');
+  renderCurrentQuestion();
+  return;
+}
 }
 
     function buildNumberBuilderRound(){
@@ -2702,6 +2745,9 @@ if(q.type === 'sequence'){
         grid.appendChild(rightCol);
         visualArea.appendChild(grid);
       }
+      if(currentMode === 'skill-builder'){
+  startTimeBar();
+}
     }
 
     function renderAnswerOptions(correctAnswer){

@@ -1951,53 +1951,41 @@ gameState.resultsByTable[table].wrong++;
   const roundsBefore = beforeData.numberBuilder?.roundsPlayed || 0;
 
   const levelConfig = getCurrentLevelConfig();
-const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
+  const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
+
   const resultSummaryEl = document.getElementById('resultSummary');
 
-resultSummaryEl.textContent =
-  `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+  resultSummaryEl.textContent =
+    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
 
-const accuracy = Math.round((gameState.correct / (gameState.correct + gameState.wrong)) * 100);
+  const totalAnswers = gameState.correct + gameState.wrong;
+  const accuracy = totalAnswers > 0
+    ? Math.round((gameState.correct / totalAnswers) * 100)
+    : 0;
 
-let feedback = '';
+  let feedback = '';
 
-if(accuracy === 100){
-  feedback = '🏆 Perfect! You nailed it!';
-} else if(accuracy >= 80){
-  feedback = '🔥 Great job! Almost perfect!';
-} else if(accuracy >= 60){
-  feedback = '👍 Good work! Keep practicing!';
-} else {
-  feedback = '💪 Keep going! You are learning!';
-}
+  if(accuracy === 100){
+    feedback = '🏆 Perfect! You nailed it!';
+  } else if(accuracy >= 80){
+    feedback = '🔥 Great job! Almost perfect!';
+  } else if(accuracy >= 60){
+    feedback = '👍 Good work! Keep practicing!';
+  } else {
+    feedback = '💪 Keep going! You are learning!';
+  }
 
-resultSummaryEl.innerHTML += `<br><strong>${feedback}</strong>`;
+  resultSummaryEl.innerHTML += `<br><strong>${feedback}</strong>`;
 
-// animación
-resultSummaryEl.classList.remove('result-pop');
-void resultSummaryEl.offsetWidth;
-resultSummaryEl.classList.add('result-pop');
-      const accuracy = Math.round((gameState.correct / (gameState.correct + gameState.wrong)) * 100);
+  resultSummaryEl.classList.remove('result-pop');
+  void resultSummaryEl.offsetWidth;
+  resultSummaryEl.classList.add('result-pop');
 
-let feedback = '';
+  const recommendation = getAdaptiveRecommendation();
+  latestRecommendation = recommendation;
 
-if(accuracy === 100){
-  feedback = '🏆 Perfect! You nailed it!';
-} else if(accuracy >= 80){
-  feedback = '🔥 Great job! Almost perfect!';
-} else if(accuracy >= 60){
-  feedback = '👍 Good work! Keep practicing!';
-} else {
-  feedback = '💪 Keep going! You are learning!';
-}
-
-document.getElementById('resultSummary').innerHTML += 
-  `<br><strong>${feedback}</strong>`;
-      const recommendation = getAdaptiveRecommendation();
-latestRecommendation = recommendation;
-
-document.getElementById('resultRecommendation').innerHTML =
-  `${recommendation.levelMessage}<br>${recommendation.focusMessage}`;
+  document.getElementById('resultRecommendation').innerHTML =
+    `${recommendation.levelMessage}<br>${recommendation.focusMessage}`;
 
   await saveNumberBuilderProgress(xpEarned);
 

@@ -2556,6 +2556,12 @@ function startSkillGame(game){
       const questionText = document.getElementById('questionText');
       const isSkill = currentMode === 'skill-builder';
 
+if(isSkill){
+  typeLabel.textContent = `🚀 ${selectedSkillGame}`;
+} else {
+  typeLabel.textContent = '';
+}
+
       visualArea.innerHTML = '';
       answersArea.innerHTML = '';
 

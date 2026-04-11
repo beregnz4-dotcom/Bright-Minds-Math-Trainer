@@ -1925,8 +1925,31 @@ gameState.resultsByTable[table].wrong++;
 
   const levelConfig = getCurrentLevelConfig();
 const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
-  document.getElementById('resultSummary').textContent =
-    `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+  const resultSummaryEl = document.getElementById('resultSummary');
+
+resultSummaryEl.textContent =
+  `Correct: ${gameState.correct} | Wrong: ${gameState.wrong} | XP earned: ${xpEarned}`;
+
+const accuracy = Math.round((gameState.correct / (gameState.correct + gameState.wrong)) * 100);
+
+let feedback = '';
+
+if(accuracy === 100){
+  feedback = '🏆 Perfect! You nailed it!';
+} else if(accuracy >= 80){
+  feedback = '🔥 Great job! Almost perfect!';
+} else if(accuracy >= 60){
+  feedback = '👍 Good work! Keep practicing!';
+} else {
+  feedback = '💪 Keep going! You are learning!';
+}
+
+resultSummaryEl.innerHTML += `<br><strong>${feedback}</strong>`;
+
+// animación
+resultSummaryEl.classList.remove('result-pop');
+void resultSummaryEl.offsetWidth;
+resultSummaryEl.classList.add('result-pop');
       const accuracy = Math.round((gameState.correct / (gameState.correct + gameState.wrong)) * 100);
 
 let feedback = '';

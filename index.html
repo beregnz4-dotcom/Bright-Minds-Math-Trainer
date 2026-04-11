@@ -2152,7 +2152,7 @@ resultSummaryEl.innerHTML += `<br><br><strong>${feedback}</strong>`;
   latestRecommendation = recommendation;
 
   document.getElementById('resultRecommendation').innerHTML =
-    `${recommendation.levelMessage}<br>${recommendation.focusMessage}`;
+  `${recommendation.levelMessage}<br><br>${recommendation.focusMessage}`;
 
   await saveNumberBuilderProgress(xpEarned);
 

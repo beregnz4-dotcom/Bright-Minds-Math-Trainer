@@ -2667,6 +2667,10 @@ function renderTables(){
 function startSkillGame(game){
   selectedSkillGame = game;
 
+  if(game !== 'blast'){
+  selectedFacts = [];
+}
+
   const gameScreen = document.getElementById('screen-game');
   gameScreen.classList.remove('blast-mode');
 

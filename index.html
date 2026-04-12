@@ -2985,116 +2985,121 @@ if(q.type === 'sequence'){
 
     function answerQuestion(button, selected, correct){
   if(
-  currentMode === 'skill-builder' &&
-  selectedSkillGame === 'blast' &&
-  (!blastActive || blastFinishing)
-){
-  return;
-}
-}
-      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  document.getElementById('gameStatus').textContent = '';
-}
+    currentMode === 'skill-builder' &&
+    selectedSkillGame === 'blast' &&
+    (!blastActive || blastFinishing)
+  ){
+    return;
+  }
+
+  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    document.getElementById('gameStatus').textContent = '';
+  }
+
   if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
-  answered = true;
-  clearTimeout(questionTimer);
-}
+    answered = true;
+    clearTimeout(questionTimer);
+  }
 
   const allButtons = document.querySelectorAll('.answer-btn');
   const statusEl = document.getElementById('gameStatus');
 
- if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
-  allButtons.forEach(b => b.disabled = true);
-}
+  if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+    allButtons.forEach(b => b.disabled = true);
+  }
+
   statusEl.classList.remove('big-feedback');
 
-      if(selected === correct){
-        playSound('correct');
-        button.classList.add('correct');
-        gameState.correct++;
-        if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-          blastSolved++;
-         blastCorrect++;
-        }
-        const currentQuestion = gameState.questions[gameState.currentIndex];
-const table = currentQuestion.table;
+  if(selected === correct){
+    playSound('correct');
+    button.classList.add('correct');
+    gameState.correct++;
 
-if(!gameState.resultsByTable[table]){
-  gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
-}
+    if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+      blastSolved++;
+      blastCorrect++;
+    }
 
-gameState.resultsByTable[table].correct++;
-        
+    const currentQuestion = gameState.questions[gameState.currentIndex];
+    const table = currentQuestion.table;
 
-        const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
-        if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
-  statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
-  statusEl.classList.add('big-feedback');
-}
-      } else {
-        playSound('wrong');
-        button.classList.add('wrong');
-        gameState.wrong++;
+    if(!gameState.resultsByTable[table]){
+      gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
+    }
 
-if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  blastSolved++;
-}
+    gameState.resultsByTable[table].correct++;
 
-if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  if(!blastMistakes[blastCurrentQuestion]){
-    blastMistakes[blastCurrentQuestion] = 0;
-  }
-  blastMistakes[blastCurrentQuestion]++;
-}
-        const currentQuestion = gameState.questions[gameState.currentIndex];
-const table = currentQuestion.table;
+    const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
 
-if(!gameState.resultsByTable[table]){
-  gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
-}
+    if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+      statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+      statusEl.classList.add('big-feedback');
+    }
+  } else {
+    playSound('wrong');
+    button.classList.add('wrong');
+    gameState.wrong++;
 
-gameState.resultsByTable[table].wrong++;
-        if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
-  statusEl.textContent = `Correct answer: ${correct}`;
-  statusEl.classList.add('big-feedback');
-}
+    if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+      blastSolved++;
+    }
 
-        allButtons.forEach(b => {
-          if(Number(b.textContent) === correct){
-            b.classList.add('correct');
-          }
-        });
+    if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+      if(!blastMistakes[blastCurrentQuestion]){
+        blastMistakes[blastCurrentQuestion] = 0;
       }
-if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  if(!blastActive) return;
+      blastMistakes[blastCurrentQuestion]++;
+    }
 
-  document.getElementById('gameStatus').textContent = '';
+    const currentQuestion = gameState.questions[gameState.currentIndex];
+    const table = currentQuestion.table;
 
-  gameState.currentIndex++;
+    if(!gameState.resultsByTable[table]){
+      gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
+    }
 
-  if(gameState.currentIndex >= gameState.questions.length){
-    buildNumberBuilderRound();
-    gameState.currentIndex = 0;
+    gameState.resultsByTable[table].wrong++;
+
+    if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+      statusEl.textContent = `Correct answer: ${correct}`;
+      statusEl.classList.add('big-feedback');
+    }
+
+    allButtons.forEach(b => {
+      if(Number(b.textContent) === correct){
+        b.classList.add('correct');
+      }
+    });
   }
 
-  requestAnimationFrame(() => {
-    if(blastActive){
-      renderCurrentQuestion();
-    }
-  });
-}
-      
-      else {
-  setTimeout(() => {
+  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    if(!blastActive) return;
+
+    document.getElementById('gameStatus').textContent = '';
+
     gameState.currentIndex++;
+
     if(gameState.currentIndex >= gameState.questions.length){
-      finishRound();
-    } else {
-      renderCurrentQuestion();
+      buildNumberBuilderRound();
+      gameState.currentIndex = 0;
     }
-  }, 900);
+
+    requestAnimationFrame(() => {
+      if(blastActive){
+        renderCurrentQuestion();
+      }
+    });
+  } else {
+    setTimeout(() => {
+      gameState.currentIndex++;
+      if(gameState.currentIndex >= gameState.questions.length){
+        finishRound();
+      } else {
+        renderCurrentQuestion();
+      }
+    }, 900);
+  }
 }
-    }
 
     async function finishRound(){
   const user = auth.currentUser;

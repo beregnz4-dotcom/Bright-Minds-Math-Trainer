@@ -3036,72 +3036,7 @@ function renderBlastQuestion(){
   }
 }
 
-        function checkMatch(){
-          if(!selectedLeftPair || selectedRightValue === null) return;
-
-          if(selectedLeftPair.right === selectedRightValue){
-            playSound('correct');
-
-            selectedLeftBtn.classList.remove('selected');
-            selectedRightBtn.classList.remove('selected');
-
-            selectedLeftBtn.classList.add('correct');
-            selectedRightBtn.classList.add('correct');
-
-            selectedLeftBtn.disabled = true;
-            selectedRightBtn.disabled = true;
-
-            matchesCompleted++;
-            statusEl.textContent = `Matches completed: ${matchesCompleted}/3`;
-
-            selectedLeftBtn = null;
-            selectedRightBtn = null;
-            selectedLeftPair = null;
-            selectedRightValue = null;
-
-            if(matchesCompleted === 3){
-              statusEl.classList.add('big-feedback');
-
-              if(!wrongAttempt){
-                gameState.correct++;
-                statusEl.textContent = '🌟 Perfect matching!';
-              } else {
-                gameState.wrong++;
-                statusEl.textContent = '👍 Completed!';
-              }
-
-              setTimeout(() => {
-                gameState.currentIndex++;
-                if(gameState.currentIndex >= gameState.questions.length){
-                  finishRound();
-                } else {
-                  renderCurrentQuestion();
-                }
-              }, 900);
-            }
-          } else {
-            playSound('wrong');
-            wrongAttempt = true;
-            statusEl.textContent = 'Try again';
-
-            selectedLeftBtn.classList.remove('selected');
-            selectedRightBtn.classList.remove('selected');
-
-            selectedLeftBtn = null;
-            selectedRightBtn = null;
-            selectedLeftPair = null;
-            selectedRightValue = null;
-          }
-        }
-
-        grid.appendChild(leftCol);
-        grid.appendChild(rightCol);
-        visualArea.appendChild(grid);
-      }
-  if(currentMode === 'skill-builder' && selectedSkillGame !== 'blast'){
-  startTimeBar();
-}
-    }
+        
 
     function renderAnswerOptions(correctAnswer){
   const answersArea = document.getElementById('answersArea');

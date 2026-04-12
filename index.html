@@ -3604,15 +3604,17 @@ async function applyRecommendation(){
   applyLevelLockUI(roundsPlayed);
   updateLevelUI();
 
-  selectedTables = [];
+  if(selectedFacts.length === 0){
+    selectedTables = [];
 
-  const levelConfig = getCurrentLevelConfig();
+    const levelConfig = getCurrentLevelConfig();
 
-  if(
-    latestRecommendation.focusTable !== null &&
-    latestRecommendation.focusTable <= levelConfig.maxTable
-  ){
-    selectedTables = [latestRecommendation.focusTable];
+    if(
+      latestRecommendation.focusTable !== null &&
+      latestRecommendation.focusTable <= levelConfig.maxTable
+    ){
+      selectedTables = [latestRecommendation.focusTable];
+    }
   }
 
   renderTables();

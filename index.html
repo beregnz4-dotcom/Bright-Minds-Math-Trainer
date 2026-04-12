@@ -3042,19 +3042,18 @@ gameState.resultsByTable[table].wrong++;
           }
         });
       }
+if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  gameState.currentIndex++;
 
-      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  setTimeout(() => {
-    gameState.currentIndex++;
+  if(gameState.currentIndex >= gameState.questions.length){
+    buildNumberBuilderRound();
+    gameState.currentIndex = 0;
+  }
 
-    if(gameState.currentIndex >= gameState.questions.length){
-      buildNumberBuilderRound();
-      gameState.currentIndex = 0;
-    }
-
-    renderCurrentQuestion();
-  }, 400);
-} else {
+  renderCurrentQuestion();
+}
+      
+      else {
   setTimeout(() => {
     gameState.currentIndex++;
     if(gameState.currentIndex >= gameState.questions.length){

@@ -3187,24 +3187,23 @@ function renderBlastQuestion(){
   }
 
   if(selected === correct){
-    playSound('correct');
-    button.classList.add('correct');
-    gameState.correct++;
-    gameState.resultsByTable[table].correct++;
+  playSound('correct');
+  button.classList.add('correct');
+  gameState.correct++;
+  gameState.resultsByTable[table].correct++;
 
-    if(isBlast){
-  blastSolved++;
-  blastCorrect++;
+  if(isBlast){
+    blastSolved++;
+    blastCorrect++;
 
-  if(isPracticeMode){
-    practiceHits++;
-  }
-}
-     else {
-      const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
-      statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
-      statusEl.classList.add('big-feedback');
+    if(isPracticeMode){
+      practiceHits++;
     }
+  } else {
+    const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
+    statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+    statusEl.classList.add('big-feedback');
+  }
 
   } else {
     playSound('wrong');

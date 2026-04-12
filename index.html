@@ -2861,7 +2861,11 @@ if(q.type === 'sequence'){
     if(optionsSet.size === 3) break;
   }
 
-  while(optionsSet.size < 3){
+  const targetOptions = (
+  currentMode === 'skill-builder' && selectedSkillGame === 'blast'
+) ? 9 : 3;
+
+while(optionsSet.size < targetOptions){
     let randomOffset;
 
     if(currentLevel === 1){

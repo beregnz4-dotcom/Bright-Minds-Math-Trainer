@@ -2988,11 +2988,14 @@ while(optionsSet.size < targetOptions){
 }
 
     function answerQuestion(button, selected, correct){
-      const allButtons = document.querySelectorAll('.answer-btn');
-      const statusEl = document.getElementById('gameStatus');
+  answered = true;
+  clearTimeout(questionTimer);
 
-      allButtons.forEach(b => b.disabled = true);
-      statusEl.classList.remove('big-feedback');
+  const allButtons = document.querySelectorAll('.answer-btn');
+  const statusEl = document.getElementById('gameStatus');
+
+  allButtons.forEach(b => b.disabled = true);
+  statusEl.classList.remove('big-feedback');
 
       if(selected === correct){
         playSound('correct');

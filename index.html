@@ -2567,16 +2567,17 @@ function startSkillGame(game){
   const gameScreen = document.getElementById('screen-game');
   gameScreen.classList.remove('blast-mode');
 
-  if(game === 'blast'){
-    blastActive = true; // ✅ 👈 AQUÍ EXACTO
+ if(game === 'blast'){
+  blastActive = true;
+  blastFinishing = false;
 
-    gameScreen.classList.add('blast-mode');
-    blastCorrect = 0;
-    blastSolved = 0;
-    blastAnswer = 0;
-    blastMistakes = {};
-    blastCurrentQuestion = '';
-  }
+  gameScreen.classList.add('blast-mode');
+  blastCorrect = 0;
+  blastSolved = 0;
+  blastAnswer = 0;
+  blastMistakes = {};
+  blastCurrentQuestion = '';
+}
 
   document.getElementById('gameTitle').textContent = 'Skill Builder';
 

@@ -1958,6 +1958,9 @@ body{
     let blastInterval = null;
     let blastActive = false;
     let blastFinishing = false;
+    let blastQuestionLocked = false;
+    let blastRecentQuestions = [];
+    let blastCurrentData = null;
 
     const numberBuilderLevels = {
       1: {

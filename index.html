@@ -2199,13 +2199,21 @@ function startBlastTimer(){
   const bar = document.getElementById('timeBarFill');
   if(!bar) return;
 
-  if(currentLevel === 1) blastTime = 120;
-  if(currentLevel === 2) blastTime = 90;
-  if(currentLevel === 3) blastTime = 60;
+  // Practice Missed Facts = tiempo corto
+  if(isPracticeMode){
+    if(selectedFacts.length <= 2){
+      blastTime = 30;
+    } else {
+      blastTime = 45;
+    }
+  } else {
+    if(currentLevel === 1) blastTime = 120;
+    if(currentLevel === 2) blastTime = 90;
+    if(currentLevel === 3) blastTime = 60;
+  }
 
   const totalTime = blastTime;
 
-  // reset visual limpio
   bar.style.transition = 'none';
   bar.style.width = '100%';
   bar.offsetWidth;

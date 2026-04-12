@@ -2596,8 +2596,12 @@ if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
     blastCurrentQuestion = `${q.table}x${q.multiplier}`;
   }
 
-      document.getElementById('gameProgress').textContent =
-        `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
+      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  document.getElementById('gameProgress').textContent = `Time Challenge`;
+} else {
+  document.getElementById('gameProgress').textContent =
+    `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
+}
 
       const progressPercent = ((gameState.currentIndex) / gameState.questions.length) * 100;
       document.getElementById('gameProgressFill').style.width = `${progressPercent}%`;

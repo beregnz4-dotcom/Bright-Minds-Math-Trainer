@@ -2287,27 +2287,33 @@ document.getElementById('setupStatus').textContent = '';
 updateLevelUI();
 renderTables();
 }
-    function updateLevelUI(){
-      const levelConfig = numberBuilderLevels[currentLevel];
+    
+function updateLevelUI(){
+  ['levelBtn1','levelBtn2','levelBtn3'].forEach(id => {
+    const btn = document.getElementById(id);
+    if(btn) btn.classList.remove('selected');
+  });
 
-      ['levelBtn1','levelBtn2','levelBtn3'].forEach(id=>{
-        const btn = document.getElementById(id);
-        if(btn) btn.classList.remove('selected');
-      });
+  const selectedBtn = document.getElementById(`levelBtn${currentLevel}`);
+  if(selectedBtn) selectedBtn.classList.add('selected');
 
-      const selectedBtn = document.getElementById(`levelBtn${currentLevel}`);
-      if(selectedBtn) selectedBtn.classList.add('selected');
+  const levelInfo = document.getElementById('levelInfoText');
+  if(!levelInfo) return;
 
-      const levelInfo = document.getElementById('levelInfoText');
-      if(levelInfo){
-        levelInfo.textContent = `${levelConfig.label} • ${levelConfig.questionCount} questions • tables up to ${levelConfig.maxTable}`;
-      }
+  if(currentMode === 'skill-builder'){
+    if(currentLevel === 1){
+      levelInfo.textContent = 'Level 1 • 120 seconds • More time to think';
+    } else if(currentLevel === 2){
+      levelInfo.textContent = 'Level 2 • 90 seconds • Faster practice';
+    } else {
+      levelInfo.textContent = 'Level 3 • 60 seconds • Quick reflex challenge';
     }
+    return;
+  }
 
-    function getCurrentLevelConfig(){
-  return numberBuilderLevels[currentLevel];
+  const levelConfig = numberBuilderLevels[currentLevel];
+  levelInfo.textContent = `${levelConfig.label} • ${levelConfig.questionCount} questions • tables up to ${levelConfig.maxTable}`;
 }
-
 
 
 async function getNumberBuilderRoundsPlayed(){

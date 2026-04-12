@@ -2171,6 +2171,16 @@ function startBlastTimer(){
   }, 700);
 }
 async function setNumberBuilderLevel(level){
+  // Skill Builder: los niveles solo cambian tiempo
+  if(currentMode === 'skill-builder'){
+    currentLevel = level;
+    playSound('tap');
+    document.getElementById('setupStatus').textContent = '';
+    updateLevelUI();
+    return;
+  }
+
+  // Number Builder: sí mantiene desbloqueos por progreso
   const roundsPlayed = await getNumberBuilderRoundsPlayed();
 
   if(level === 2 && roundsPlayed < 3){

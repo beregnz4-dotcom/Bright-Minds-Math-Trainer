@@ -2629,6 +2629,73 @@ if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
       }
     }
 
+    function generateBlastQuestion(){
+  const recentLimit = 6;
+  let tries = 0;
+  let table, multiplier, answer, key;
+
+  do{
+    table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+    multiplier = Math.floor(Math.random() * 10) + 1;
+    answer = table * multiplier;
+    key = `${table}x${multiplier}`;
+    tries++;
+  } while (
+    blastRecentQuestions.includes(key) &&
+    tries < 30
+  );
+
+  blastRecentQuestions.push(key);
+  if(blastRecentQuestions.length > recentLimit){
+    blastRecentQuestions.shift();
+  }
+
+  blastCurrentQuestion = key;
+  blastCurrentData = {
+    type: 'visual',
+    table,
+    multiplier,
+    answer
+  };
+
+  blastQuestionLocked = false;
+}
+
+function renderBlastQuestion(){
+  if(!blastActive || blastFinishing) return;
+
+  generateBlastQuestion();
+
+  const q = blastCurrentData;
+  const visualArea = document.getElementById('visualArea');
+  const answersArea = document.getElementById('answersArea');
+  const typeLabel = document.getElementById('gameTypeLabel');
+  const questionText = document.getElementById('questionText');
+  const statusEl = document.getElementById('gameStatus');
+
+  document.getElementById('gameProgressFill').style.width = '100%';
+
+  if(currentLevel === 1){
+    document.getElementById('gameProgress').textContent = 'Level 1 • 120s • Learn & think';
+  }
+  if(currentLevel === 2){
+    document.getElementById('gameProgress').textContent = 'Level 2 • 90s • Faster answers';
+  }
+  if(currentLevel === 3){
+    document.getElementById('gameProgress').textContent = 'Level 3 • 60s • Quick reflex';
+  }
+
+  statusEl.textContent = '';
+  statusEl.classList.remove('big-feedback');
+
+  visualArea.innerHTML = '';
+  answersArea.innerHTML = '';
+
+  typeLabel.textContent = '💥 Math Blast';
+  questionText.textContent = `${q.table} × ${q.multiplier}`;
+
+  renderAnswerOptions(q.answer);
+}
   function renderCurrentQuestion(){
   const q = gameState.questions[gameState.currentIndex];
   if(!q) return;

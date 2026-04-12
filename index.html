@@ -3187,23 +3187,23 @@ function renderBlastQuestion(){
   }
 
   if(selected === correct){
-  playSound('correct');
-  button.classList.add('correct');
-  gameState.correct++;
-  gameState.resultsByTable[table].correct++;
+    playSound('correct');
+    button.classList.add('correct');
+    gameState.correct++;
+    gameState.resultsByTable[table].correct++;
 
-  if(isBlast){
-    blastSolved++;
-    blastCorrect++;
+    if(isBlast){
+      blastSolved++;
+      blastCorrect++;
 
-    if(isPracticeMode){
-      practiceHits++;
+      if(isPracticeMode){
+        practiceHits++;
+      }
+    } else {
+      const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
+      statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+      statusEl.classList.add('big-feedback');
     }
-  } else {
-    const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
-    statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
-    statusEl.classList.add('big-feedback');
-  }
 
   } else {
     playSound('wrong');
@@ -3232,6 +3232,11 @@ function renderBlastQuestion(){
 
   if(isBlast){
     if(!blastActive || blastFinishing) return;
+
+    if(isPracticeMode && practiceHits >= 3){
+      finishBlastRound();
+      return;
+    }
 
     setTimeout(() => {
       if(blastActive && !blastFinishing){

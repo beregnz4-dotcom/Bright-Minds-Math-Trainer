@@ -2302,11 +2302,11 @@ function updateLevelUI(){
 
   if(currentMode === 'skill-builder'){
     if(currentLevel === 1){
-      levelInfo.textContent = 'Level 1 • 120 seconds • More time to think';
+      levelInfo.textContent = 'Level 1 • 120 seconds • Easy pace';
     } else if(currentLevel === 2){
-      levelInfo.textContent = 'Level 2 • 90 seconds • Faster practice';
+      levelInfo.textContent = 'Level 2 • 90 seconds • Medium pace';
     } else {
-      levelInfo.textContent = 'Level 3 • 60 seconds • Quick reflex challenge';
+      levelInfo.textContent = 'Level 3 • 60 seconds • Fast pace';
     }
     return;
   }
@@ -2314,7 +2314,6 @@ function updateLevelUI(){
   const levelConfig = numberBuilderLevels[currentLevel];
   levelInfo.textContent = `${levelConfig.label} • ${levelConfig.questionCount} questions • tables up to ${levelConfig.maxTable}`;
 }
-
 
 async function getNumberBuilderRoundsPlayed(){
   const user = auth.currentUser;

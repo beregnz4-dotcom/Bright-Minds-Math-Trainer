@@ -1,1 +1,3567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Prueba Bright Minds Math</title>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <style>
+:root{
+  --bg-1:#f6c445;
+  --bg-2:#f4a261;
+  --card:#ffffff;
+  --text:#24324b;
+  --muted:#6b7280;
+  --blue:#4c87ea;
+  --blue-dark:#2f67c7;
+  --purple:#6f50f6;
+  --green:#61c266;
+  --red:#ef4444;
+  --shadow:0 10px 24px rgba(0,0,0,.12);
+  --radius:24px;
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html, body{
+  margin:0;
+  padding:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#f2f2f2;
+  color:var(--text);
+}
+
+body{
+  min-height:100vh;
+}
+
+.app-shell{
+  width:100%;
+  max-width:1100px;
+  min-height:100vh;
+  margin:0 auto;
+  padding:0 16px;
+  overflow-x:hidden;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.10), transparent 30%),
+    linear-gradient(180deg, #f7d46a 0%, #f2bf63 45%, #eda764 100%);
+}
+
+.screen{
+  display:none;
+  min-height:100vh;
+  padding:18px 18px 34px;
+}
+
+.screen.active{
+  display:block;
+}
+
+/* TOPBAR */
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.topbar-title{
+  flex:1;
+  text-align:center;
+  font-size:22px;
+  font-weight:800;
+  color:var(--blue-dark);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.icon-btn,
+.back-btn,
+.primary-btn,
+.secondary-btn,
+.main-btn,
+.level-btn,
+.table-option,
+.answer-btn,
+.match-btn,
+.mini-btn,
+.table-row{
+  border:none;
+  cursor:pointer;
+  font-weight:800;
+}
+
+.icon-btn,
+.back-btn{
+  width:56px;
+  height:56px;
+  flex:0 0 56px;
+  border-radius:18px;
+  background:#fff;
+  color:var(--blue);
+  box-shadow:var(--shadow);
+  font-size:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.icon-btn:active,
+.back-btn:active,
+.primary-btn:active,
+.secondary-btn:active,
+.main-btn:active,
+.level-btn:active,
+.table-option:active,
+.answer-btn:active,
+.match-btn:active,
+.mini-btn:active,
+.table-row:active{
+  transform:scale(.98);
+}
+
+/* HERO */
+
+.hero{
+  text-align:center;
+  margin-top:4px;
+}
+
+.hero h1{
+  margin:8px 0 8px;
+  font-size:30px;
+  color:var(--blue-dark);
+  line-height:1.1;
+}
+
+.logo-wrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:10px 0 14px;
+  width:100%;
+  overflow:hidden;
+}
+
+.hero-logo,
+.home-logo{
+  width:220px;
+  max-width:70vw;
+  min-width:160px;
+  height:auto;
+  display:block;
+  margin:0 auto;
+  object-fit:contain;
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.15));
+  animation:floatLogo 3s ease-in-out infinite;
+}
+
+@keyframes floatLogo{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-4px);}
+  100%{transform:translateY(0);}
+}
+
+/* TEXT */
+
+.section-title{
+  font-size:24px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+.subtitle{
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.35;
+}
+
+.status{
+  margin-top:10px;
+  font-size:14px;
+  font-weight:700;
+  color:var(--muted);
+  text-align:center;
+}
+
+.placeholder{
+  padding:14px;
+  border-radius:16px;
+  background:#f8fafc;
+  color:var(--muted);
+  text-align:center;
+  box-shadow:inset 0 0 0 1px #e5e7eb;
+}
+
+/* CARD */
+
+.card{
+  background:#fff;
+  border-radius:24px;
+  padding:20px;
+  margin-top:16px;
+  box-shadow:var(--shadow);
+}
+
+/* INPUTS */
+
+.input{
+  display:block;
+  width:100%;
+  max-width:100%;
+  border:none;
+  border-radius:16px;
+  padding:16px 18px;
+  background:#fff;
+  box-shadow:inset 0 0 0 2px #d9dde5;
+  margin:10px 0 0 0;
+  font-size:16px;
+  color:var(--text);
+}
+
+.input::placeholder{
+  color:#a3a3a3;
+}
+
+/* BUTTONS */
+
+.primary-btn,
+.secondary-btn{
+  display:block;
+  width:100%;
+  border-radius:18px;
+  padding:16px 18px;
+  color:#fff;
+  font-size:16px;
+  margin-top:12px;
+  text-align:center;
+}
+
+.primary-btn{
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  box-shadow:0 10px 18px rgba(76,135,234,.28);
+}
+
+.secondary-btn{
+  background:#5f84da;
+}
+
+.main-btn{
+  width:100%;
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  color:#fff;
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 10px 22px rgba(0,0,0,.16);
+  text-align:left;
+  margin-top:14px;
+}
+
+.big{
+  font-size:24px;
+  font-weight:900;
+  line-height:1.15;
+}
+
+.small{
+  font-size:16px;
+  font-weight:700;
+  opacity:.95;
+  margin-top:6px;
+  line-height:1.25;
+}
+
+/* CHILD LIST */
+
+.children-list{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:12px;
+}
+
+.child-card{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  background:#f8fafc;
+  padding:18px 20px;
+  border-radius:18px;
+  box-shadow:inset 0 0 0 1px #eceef3;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.child-name{
+  font-size:18px;
+  color:var(--text);
+  word-break:break-word;
+}
+
+.mini-btn{
+  background:#e5e7eb;
+  color:var(--blue-dark);
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:700;
+  flex:0 0 auto;
+}
+
+/* LEVELS */
+
+.level-grid{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin:10px 0 4px;
+}
+
+.level-btn{
+  padding:10px 14px;
+  border-radius:12px;
+  background:#eef2ff;
+  color:var(--blue-dark);
+  font-size:14px;
+  box-shadow:none;
+}
+
+.level-btn.selected{
+  background:var(--blue);
+  color:#fff;
+}
+
+.level-btn.locked{
+  opacity:.55;
+  background:#e5e7eb;
+  color:#6b7280;
+}
+
+/* TABLES */
+
+#tablesContainer{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  margin:14px 0;
+}
+
+.table-option{
+  background:#fff;
+  border-radius:16px;
+  padding:16px 8px;
+  font-size:18px;
+  color:var(--blue);
+  box-shadow:var(--shadow);
+  min-height:56px;
+}
+
+.table-option.selected{
+  background:var(--blue);
+  color:#fff;
+}
+
+/* PROGRESS BAR */
+
+.progress-bar{
+  height:12px;
+  border-radius:999px;
+  background:#e5e7eb;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#4c87ea,#6f50f6);
+  border-radius:999px;
+}
+
+/* GAME */
+
+#gameProgress{
+  text-align:center;
+  margin-bottom:10px;
+  font-weight:700;
+  color:var(--muted);
+  font-size:15px;
+}
+
+#gameTypeLabel{
+  text-align:center;
+  font-weight:800;
+  color:var(--muted);
+  margin-bottom:8px;
+  font-size:15px;
+}
+
+#questionText{
+  font-size:30px;
+  font-weight:900;
+  text-align:center;
+  margin:8px 0 16px;
+  color:var(--text);
+  line-height:1.05;
+  word-break:break-word;
+}
+
+#visualArea{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+  min-height:24px;
+  width:100%;
+  position:relative;
+  z-index:1;
+}
+
+
+  #answersArea{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:12px;
+  position:relative;
+  z-index:5;
+  width:100%;
+  max-width:640px;
+  margin:0 auto;
+}
+
+.answer-btn{
+  border-radius:18px;
+  padding:18px 10px;
+  font-size:22px;
+  background:#fff;
+  color:var(--text);
+  box-shadow:var(--shadow);
+  min-height:72px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+  z-index:6;
+  pointer-events:auto;
+}
+
+#screen-game.blast-mode #answersArea{
+  grid-template-columns:repeat(3, 1fr) !important;
+  gap:14px !important;
+  max-width:680px;
+}
+
+#screen-game.blast-mode .answer-btn{
+  min-height:90px;
+  font-size:28px;
+  border-radius:20px;
+}
+
+.answer-btn.correct{
+  background:var(--green);
+  color:#fff;
+}
+
+.answer-btn.wrong{
+  background:var(--red);
+  color:#fff;
+}
+
+/* VISUAL BLOCKS */
+
+.block-group{
+  display:flex;
+  gap:6px;
+  padding:10px 12px;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+
+.block-dot{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  background:var(--blue);
+}
+
+/* ADDITION */
+
+.addition-pill{
+  display:inline-block;
+  background:#fff;
+  box-shadow:var(--shadow);
+  border-radius:16px;
+  padding:14px 18px;
+  font-size:22px;
+  font-weight:800;
+  color:var(--text);
+  line-height:1.2;
+  max-width:100%;
+  word-break:break-word;
+}
+
+/* SEQUENCE */
+
+.sequence-strip{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  max-width:100%;
+}
+
+.sequence-box{
+  padding:12px;
+  min-width:56px;
+  font-size:20px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  font-weight:900;
+  text-align:center;
+}
+
+/* MATCH */
+
+.match-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.match-col{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.match-btn{
+  padding:14px;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  border:none;
+  font-size:16px;
+  min-height:64px;
+}
+
+.match-btn.selected{
+  outline:3px solid var(--blue);
+}
+
+.match-btn.correct{
+  background:var(--green);
+  color:#fff;
+}
+
+.big-feedback{
+  font-size:18px;
+  font-weight:900;
+  text-align:center;
+  color:var(--blue-dark);
+}
+
+/* RESULT */
+
+.result-box{
+  text-align:center;
+  border-radius:24px;
+  padding:20px;
+  margin-top:20px;
+}
+
+.result-box.perfect{
+  background:linear-gradient(135deg,#eaf2ff,#f3ecff);
+  border:2px solid #6f50f6;
+}
+
+.result-box.good{
+  background:linear-gradient(135deg,#fff8df,#fff2cc);
+}
+
+.result-box.practice{
+  background:linear-gradient(135deg,#ffe5e5,#ffd6d6);
+}
+
+#resultRecommendation{
+  margin-top:12px;
+  padding:12px;
+  border-radius:16px;
+  background:#ffffffaa;
+}
+
+/* SETTINGS */
+
+.settings-card{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.setting-row{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.setting-label{
+  font-weight:800;
+}
+
+.setting-value{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.volume-slider{
+  width:100%;
+}
+
+/* PROGRESS SCREEN */
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:12px 0;
+}
+
+.stat-box{
+  background:#fff;
+  border-radius:16px;
+  padding:14px 12px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.stat-value{
+  font-size:22px;
+  font-weight:900;
+}
+
+.stat-label{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.progress-highlight{
+  margin-top:8px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:#fff8e5;
+  font-weight:700;
+  color:var(--text);
+}
+
+.summary-grid{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:12px;
+}
+
+.summary-pill{
+  padding:10px 12px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:14px;
+}
+
+.summary-pill.mastered{ background:#ecfdf3; }
+.summary-pill.improving{ background:#fff7db; }
+.summary-pill.practice{ background:#fee2e2; }
+
+.mastery-box{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:14px;
+}
+
+.table-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  padding:14px 16px;
+  border-radius:16px;
+  font-weight:800;
+  box-shadow:var(--shadow);
+  background:#fff;
+  text-align:left;
+}
+
+.table-row.mastered{ background:#ecfdf3; }
+.table-row.improving{ background:#fff7db; }
+.table-row.practice{ background:#fee2e2; }
+
+/* POPUP */
+
+.unlock-popup{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%) scale(.9);
+  background:#22c55e;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:20px;
+  font-weight:800;
+  opacity:0;
+  transition:.25s;
+  z-index:9999;
+}
+
+.unlock-popup.show{
+  opacity:1;
+  transform:translateX(-50%) scale(1);
+}
+
+/* LOGIN */
+
+#screen-login{
+  padding-top:40px;
+}
+
+#screen-login .hero{
+  text-align:center;
+  margin-bottom:18px;
+}
+
+#screen-login .hero h1{
+  font-size:28px;
+  font-weight:900;
+  color:var(--blue-dark);
+  margin:0 0 10px;
+}
+
+#screen-login .subtitle{
+  font-size:16px;
+  color:var(--text);
+}
+
+#screen-login .card{
+  max-width:720px;
+  margin:24px auto 0;
+  padding:28px 22px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width:700px){
+  .screen{
+    padding:14px 14px 28px;
+  }
+
+  .icon-btn,
+  .back-btn{
+    width:50px;
+    height:50px;
+    flex:0 0 50px;
+    font-size:24px;
+  }
+
+  .topbar-title{
+    font-size:18px;
+  }
+
+  .hero-logo,
+  .home-logo{
+    width:170px;
+    max-width:65vw;
+  }
+
+  .hero h1{
+    font-size:22px;
+  }
+
+  .section-title{
+    font-size:22px;
+  }
+
+  #questionText{
+    font-size:24px;
+  }
+
+  #answersArea{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  #tablesContainer{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .sequence-box{
+    font-size:18px;
+    min-width:48px;
+  }
+
+  .answer-btn{
+    font-size:16px;
+  }
+
+  #screen-login .hero{
+    margin-top:28px;
+  }
+
+  #screen-login .hero h1{
+    font-size:24px;
+  }
+
+  #screen-login .subtitle{
+    font-size:15px;
+  }
+
+  #screen-login .card{
+    padding:22px 16px;
+  }
+}
+    /* ===== RESCATE SOLO SCREEN-SETUP ===== */
+
+#screen-setup .topbar-title{
+  font-size:20px;
+}
+
+#screen-setup .card{
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#screen-setup .section-title{
+  font-size:24px;
+  margin-bottom:14px;
+}
+
+#screen-setup .level-grid{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin:12px 0 10px;
+}
+
+#screen-setup .level-btn{
+  min-width:120px;
+  padding:14px 18px;
+  border-radius:18px;
+  background:#eef2ff;
+  color:var(--blue-dark);
+  font-size:18px;
+  font-weight:800;
+  border:none;
+  box-shadow:none;
+}
+
+#screen-setup .level-btn.selected{
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  color:#fff;
+}
+
+#screen-setup #levelInfoText{
+  text-align:center;
+  font-size:16px;
+  line-height:1.45;
+  color:var(--text);
+  max-width:520px;
+  margin:8px auto 0;
+}
+
+#screen-setup #tablesContainer{
+  display:grid !important;
+  grid-template-columns:repeat(5,1fr) !important;
+  gap:16px !important;
+  margin:18px 0 10px !important;
+}
+
+#screen-setup .table-option{
+  min-height:72px;
+  border-radius:18px;
+  background:#fff;
+  color:var(--blue-dark);
+  font-size:24px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow);
+  border:none;
+}
+
+#screen-setup .table-option.selected{
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  color:#fff;
+}
+
+#screen-setup .secondary-btn,
+#screen-setup .primary-btn{
+  max-width:none;
+}
+
+@media (max-width:700px){
+  #screen-setup .section-title{
+    font-size:22px;
+  }
+
+  #screen-setup .level-btn{
+    min-width:110px;
+    font-size:17px;
+    padding:12px 16px;
+  }
+
+  #screen-setup #levelInfoText{
+    font-size:15px;
+  }
+
+  #screen-setup #tablesContainer{
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:14px !important;
+  }
+
+  #screen-setup .table-option{
+    min-height:64px;
+    font-size:20px;
+  }
+}
+    /* ===== FIX TABLAS ===== */
+
+#screen-setup .table-option{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:54px;
+  background:#fff;
+  border-radius:16px;
+  font-size:18px;
+  font-weight:900;
+  color:var(--blue-dark);
+  box-shadow:var(--shadow);
+}
+
+#screen-setup .table-option.selected{
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  color:#fff;
+}
+    #screen-setup .level-grid{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:16px !important;
+  max-width:460px;
+  margin:0 auto 18px !important;
+}
+
+#screen-setup #levelBtn3{
+  grid-column:1 / span 2;
+  justify-self:center;
+  width:180px;
+}
+
+#screen-setup .level-btn{
+  min-height:78px;
+  border:none;
+  border-radius:22px;
+  font-size:22px;
+  font-weight:900;
+  background:#eef0fb;
+  color:#000;
+}
+
+#screen-setup .level-btn.selected{
+  background:linear-gradient(135deg,#4c87ea,#6f50f6);
+  color:#fff;
+}
+
+#screen-setup #levelInfoText{
+  text-align:center;
+  font-size:16px;
+  line-height:1.45;
+  max-width:520px;
+  margin:8px auto 0;
+}
+    /* ===== COMPACT MODE (todo más pequeño y elegante) ===== */
+
+/* TABLAS */
+#screen-setup #tablesContainer{
+  grid-template-columns:repeat(5,1fr) !important;
+  gap:10px !important;
+}
+
+#screen-setup .table-option{
+  height:48px !important;
+  min-height:48px !important;
+  border-radius:14px !important;
+  font-size:16px !important;
+}
+
+/* NIVELES */
+#screen-setup .level-grid{
+  gap:10px !important;
+  max-width:420px !important;
+}
+
+#screen-setup .level-btn{
+  min-height:60px !important;
+  border-radius:18px !important;
+  font-size:18px !important;
+}
+
+/* LEVEL 3 centrado pero más chico */
+#screen-setup #levelBtn3{
+  width:140px !important;
+}
+
+/* TEXTO */
+#screen-setup #levelInfoText{
+  font-size:14px !important;
+  margin-top:6px !important;
+}
+
+/* BOTONES */
+#screen-setup .primary-btn,
+#screen-setup .secondary-btn{
+  padding:14px !important;
+  font-size:15px !important;
+}
+    /* ===== ULTRA COMPACT MODE ===== */
+
+/* CONTENEDOR GENERAL */
+#screen-setup .card{
+  padding:16px !important;
+  border-radius:20px !important;
+}
+
+/* TÍTULOS */
+#screen-setup h2{
+  font-size:18px !important;
+  margin-bottom:10px !important;
+}
+
+/* ===== NIVELES ===== */
+#screen-setup .level-grid{
+  gap:8px !important;
+  max-width:360px !important;
+}
+
+#screen-setup .level-btn{
+  min-height:50px !important;
+  border-radius:14px !important;
+  font-size:16px !important;
+}
+
+/* Level 3 más pequeño */
+#screen-setup #levelBtn3{
+  width:120px !important;
+}
+
+/* TEXTO DESCRIPCIÓN */
+#screen-setup #levelInfoText{
+  font-size:13px !important;
+  margin-top:4px !important;
+}
+
+/* ===== TABLAS ===== */
+#screen-setup #tablesContainer{
+  grid-template-columns:repeat(5,1fr) !important;
+  gap:8px !important;
+}
+
+#screen-setup .table-option{
+  height:42px !important;
+  min-height:42px !important;
+  border-radius:12px !important;
+  font-size:15px !important;
+}
+
+/* ===== BOTONES ===== */
+#screen-setup .primary-btn,
+#screen-setup .secondary-btn{
+  padding:12px !important;
+  font-size:14px !important;
+  border-radius:16px !important;
+}
+
+/* ESPACIADO GENERAL */
+#screen-setup .section{
+  margin-bottom:14px !important;
+}
+    /* ===== PREMIUM SETUP SCREEN ===== */
+
+#screen-setup .topbar-title{
+  font-size:18px !important;
+  font-weight:900 !important;
+  letter-spacing:.2px;
+  color:var(--blue-dark) !important;
+}
+
+#screen-setup .card{
+  padding:18px !important;
+  border-radius:26px !important;
+  box-shadow:
+    0 14px 34px rgba(36,50,75,.10),
+    0 3px 10px rgba(36,50,75,.05) !important;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.92) !important;
+  backdrop-filter:blur(6px);
+}
+
+#screen-setup .section-title{
+  font-size:22px !important;
+  font-weight:900 !important;
+  letter-spacing:.2px;
+  color:#26334d !important;
+  margin-bottom:14px !important;
+}
+
+#screen-setup .level-grid{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:10px !important;
+  max-width:360px !important;
+  margin:8px auto 14px !important;
+}
+
+#screen-setup #levelBtn3{
+  grid-column:1 / span 2 !important;
+  justify-self:center !important;
+  width:130px !important;
+}
+
+#screen-setup .level-btn{
+  min-height:54px !important;
+  border:none !important;
+  border-radius:18px !important;
+  background:#eef1fb !important;
+  color:#24324b !important;
+  font-size:17px !important;
+  font-weight:900 !important;
+  box-shadow:inset 0 0 0 1px rgba(76,135,234,.08);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+#screen-setup .level-btn.selected{
+  background:linear-gradient(135deg,#5f8ff0 0%, #6f50f6 100%) !important;
+  color:#fff !important;
+  box-shadow:
+    0 10px 22px rgba(111,80,246,.22),
+    inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+#screen-setup .level-btn:active{
+  transform:scale(.98);
+}
+
+#screen-setup #levelInfoText{
+  text-align:center !important;
+  font-size:13px !important;
+  line-height:1.45 !important;
+  color:#4b5872 !important;
+  max-width:520px !important;
+  margin:4px auto 0 !important;
+}
+
+#screen-setup #tablesContainer{
+  display:grid !important;
+  grid-template-columns:repeat(5,1fr) !important;
+  gap:10px !important;
+  margin:14px 0 18px !important;
+}
+
+#screen-setup .table-option{
+  height:44px !important;
+  min-height:44px !important;
+  padding:0 !important;
+  border:none !important;
+  border-radius:14px !important;
+  background:linear-gradient(180deg,#ffffff 0%, #fbfcff 100%) !important;
+  color:#2c3957 !important;
+  font-size:16px !important;
+  font-weight:900 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:
+    0 8px 18px rgba(36,50,75,.08),
+    inset 0 0 0 1px rgba(76,135,234,.06) !important;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+#screen-setup .table-option.selected{
+  background:linear-gradient(135deg,#5f8ff0 0%, #6f50f6 100%) !important;
+  color:#fff !important;
+  box-shadow:
+    0 10px 22px rgba(111,80,246,.20),
+    inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+#screen-setup .table-option:active{
+  transform:scale(.97);
+}
+
+#screen-setup .secondary-btn,
+#screen-setup .primary-btn{
+  min-height:52px !important;
+  padding:12px 14px !important;
+  border:none !important;
+  border-radius:18px !important;
+  font-size:15px !important;
+  font-weight:900 !important;
+  letter-spacing:.2px;
+  transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+
+#screen-setup .secondary-btn{
+  background:linear-gradient(180deg,#6d88d7 0%, #6681cf 100%) !important;
+  color:#fff !important;
+  box-shadow:0 10px 22px rgba(91,120,197,.18) !important;
+}
+
+#screen-setup .primary-btn{
+  background:linear-gradient(135deg,#5f8ff0 0%, #6f50f6 100%) !important;
+  color:#fff !important;
+  box-shadow:0 12px 24px rgba(111,80,246,.24) !important;
+}
+
+#screen-setup .secondary-btn:active,
+#screen-setup .primary-btn:active{
+  transform:scale(.985);
+}
+
+@media (max-width:700px){
+  #screen-setup .card{
+    padding:16px !important;
+    border-radius:24px !important;
+  }
+
+  #screen-setup .section-title{
+    font-size:20px !important;
+    margin-bottom:12px !important;
+  }
+
+  #screen-setup .level-grid{
+    max-width:340px !important;
+    gap:8px !important;
+  }
+
+  #screen-setup .level-btn{
+    min-height:50px !important;
+    font-size:16px !important;
+    border-radius:16px !important;
+  }
+
+  #screen-setup #levelBtn3{
+    width:118px !important;
+  }
+
+  #screen-setup #levelInfoText{
+    font-size:12.5px !important;
+  }
+
+  #screen-setup #tablesContainer{
+    gap:8px !important;
+  }
+
+  #screen-setup .table-option{
+    height:40px !important;
+    min-height:40px !important;
+    border-radius:12px !important;
+    font-size:15px !important;
+  }
+
+  #screen-setup .secondary-btn,
+  #screen-setup .primary-btn{
+    min-height:48px !important;
+    font-size:14px !important;
+    border-radius:16px !important;
+  }
+}
+    /* ===== PULIDO FINAL NIVELES ===== */
+#screen-setup .level-grid{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:10px !important;
+  max-width:340px !important;
+  margin:8px auto 12px !important;
+}
+
+#screen-setup #levelBtn3{
+  grid-column:1 / span 2 !important;
+  justify-self:center !important;
+  width:118px !important;
+}
+
+#screen-setup .level-btn{
+  min-height:46px !important;
+  border-radius:14px !important;
+  font-size:15px !important;
+  font-weight:900 !important;
+}
+    /* ===== GAME SCREEN PREMIUM ===== */
+
+#screen-game .card{
+  max-width:760px;
+  margin-left:auto;
+  margin-right:auto;
+  padding:18px !important;
+  border-radius:26px !important;
+  box-shadow:
+    0 14px 34px rgba(36,50,75,.10),
+    0 3px 10px rgba(36,50,75,.05) !important;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.94) !important;
+}
+
+#screen-game .topbar-title{
+  font-size:18px !important;
+  font-weight:900 !important;
+  color:var(--blue-dark) !important;
+}
+
+#screen-game #gameProgress{
+  font-size:14px !important;
+  font-weight:800 !important;
+  color:#5d6880 !important;
+  margin-bottom:10px !important;
+}
+
+#screen-game #gameTypeLabel{
+  font-size:14px !important;
+  font-weight:900 !important;
+  color:#6b7280 !important;
+  margin-bottom:8px !important;
+}
+
+#screen-game #questionText{
+  font-size:32px !important;
+  font-weight:900 !important;
+  margin:8px 0 16px !important;
+  color:#24324b !important;
+}
+
+#screen-game #visualArea{
+  min-height:56px !important;
+  margin-bottom:18px !important;
+  gap:8px !important;
+}
+
+#screen-game .block-group{
+  padding:8px 10px !important;
+  border-radius:14px !important;
+}
+
+#screen-game .block-dot{
+  width:12px !important;
+  height:12px !important;
+}
+
+#screen-game .addition-pill{
+  padding:12px 16px !important;
+  border-radius:14px !important;
+  font-size:20px !important;
+}
+
+#screen-game .sequence-strip{
+  gap:8px !important;
+}
+
+#screen-game .sequence-box{
+  min-width:50px !important;
+  padding:10px 8px !important;
+  border-radius:14px !important;
+  font-size:18px !important;
+}
+
+#screen-game .match-grid{
+  gap:10px !important;
+}
+
+#screen-game .match-col{
+  gap:10px !important;
+}
+
+#screen-game .match-btn{
+  min-height:58px !important;
+  border-radius:14px !important;
+  font-size:15px !important;
+  padding:12px 8px !important;
+}
+
+#screen-game #answersArea{
+  display:grid !important;
+  grid-template-columns:repeat(3,1fr) !important;
+  gap:10px !important;
+}
+
+#screen-game .answer-btn{
+  min-height:58px !important;
+  border-radius:16px !important;
+  font-size:20px !important;
+  font-weight:900 !important;
+  padding:12px 8px !important;
+  background:linear-gradient(180deg,#ffffff 0%, #fbfcff 100%) !important;
+  box-shadow:
+    0 8px 18px rgba(36,50,75,.08),
+    inset 0 0 0 1px rgba(76,135,234,.06) !important;
+}
+
+#screen-game .answer-btn.correct{
+  background:linear-gradient(135deg,#61c266 0%, #46b85b 100%) !important;
+  color:#fff !important;
+}
+
+#screen-game .answer-btn.wrong{
+  background:linear-gradient(135deg,#ef4444 0%, #dc2626 100%) !important;
+  color:#fff !important;
+}
+
+#screen-game #gameStatus{
+  margin-top:14px !important;
+  min-height:24px !important;
+  font-size:15px !important;
+  font-weight:900 !important;
+}
+
+@media (max-width:700px){
+  #screen-game .card{
+    padding:16px !important;
+    border-radius:24px !important;
+  }
+
+  #screen-game #questionText{
+    font-size:28px !important;
+  }
+
+  #screen-game #answersArea{
+    grid-template-columns:repeat(2,1fr) !important;
+    gap:8px !important;
+  }
+
+  #screen-game .answer-btn{
+    min-height:54px !important;
+    font-size:18px !important;
+    border-radius:14px !important;
+  }
+
+  #screen-game .match-btn{
+    min-height:54px !important;
+    font-size:14px !important;
+  }
+
+  #screen-game .sequence-box{
+    min-width:46px !important;
+    font-size:16px !important;
+  }
+
+  #screen-game .addition-pill{
+    font-size:18px !important;
+  }
+}
+    /* ===== RESULT SCREEN PREMIUM ===== */
+
+#screen-result .card{
+  max-width:520px;
+  margin:20px auto;
+  padding:22px !important;
+  border-radius:28px !important;
+  text-align:center;
+  box-shadow:
+    0 18px 40px rgba(36,50,75,.12),
+    0 4px 12px rgba(36,50,75,.06) !important;
+  background:rgba(255,255,255,.95) !important;
+}
+
+#screen-result .section-title{
+  font-size:26px !important;
+  font-weight:900 !important;
+  margin-bottom:12px !important;
+}
+
+/* RESULT STATES */
+
+#screen-result .result-box.perfect{
+  background:linear-gradient(135deg,#eaf7ff,#f0ecff) !important;
+  border:2px solid #6f50f6 !important;
+}
+
+#screen-result .result-box.good{
+  background:linear-gradient(135deg,#fff8df,#fff2cc) !important;
+}
+
+#screen-result .result-box.practice{
+  background:linear-gradient(135deg,#ffe5e5,#ffd6d6) !important;
+}
+
+/* SUMMARY TEXT */
+
+#screen-result #resultSummary{
+  font-size:18px !important;
+  font-weight:800 !important;
+  margin-bottom:12px !important;
+  line-height:1.4 !important;
+}
+
+/* RECOMMENDATION */
+
+#screen-result #resultRecommendation{
+  font-size:15px !important;
+  font-weight:700 !important;
+  background:#ffffffcc !important;
+  padding:12px !important;
+  border-radius:16px !important;
+  margin-bottom:16px !important;
+  line-height:1.4 !important;
+}
+
+/* BOTONES */
+
+#screen-result .primary-btn{
+  margin-top:10px !important;
+  min-height:52px !important;
+  border-radius:18px !important;
+  font-size:15px !important;
+}
+
+#screen-result .secondary-btn{
+  margin-top:8px !important;
+  min-height:48px !important;
+  border-radius:16px !important;
+  font-size:14px !important;
+}
+
+/* ANIMACIÓN SUAVE */
+
+#screen-result .card{
+  animation:fadeUp .4s ease;
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+    /* ===== HOME HERO MÁS COMPACTO ===== */
+
+#screen-home .hero{
+  margin-top:0 !important;
+}
+
+#screen-home .logo-wrap{
+  margin:2px 0 6px !important;
+}
+
+#screen-home .home-logo{
+  width:180px !important;
+  max-width:60vw !important;
+}
+
+#screen-home h1{
+  margin:4px 0 4px !important;
+  font-size:26px !important;
+  line-height:1.05 !important;
+}
+
+#screen-home .subtitle{
+  margin-top:2px !important;
+}
+
+#screen-home #homeXP{
+  margin-top:2px !important;
+}
+
+#screen-home #homeProgressText{
+  margin-top:6px !important;
+}
+    /* ===== AJUSTE FINO PROGRESO HOME ===== */
+
+#screen-home .progress-bar{
+  margin-top:10px !important;
+  height:10px !important;
+}
+
+#screen-home #homeProgressText{
+  font-size:13px !important;
+  color:#5b657c !important;
+}
+
+#screen-home .subtitle{
+  font-size:14px !important;
+}
+    .time-bar{
+  height:6px;
+  width:100%;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+
+.time-bar-fill{
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg,#4c87ea,#6f50f6);
+}
+
+</style>
+ 
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- LOGIN -->
+    <section id="screen-login" class="screen active">
+      <div class="hero">
+        
+        <h1>Welcome Back</h1>
+        <div class="subtitle">Login and continue learning</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Login</div>
+        <input id="loginEmail" class="input" placeholder="Email" />
+        <input id="loginPassword" class="input" type="password" placeholder="Password" />
+        <button class="primary-btn" onclick="playSound('tap'); loginUser()">Login</button>
+        <button class="secondary-btn" onclick="playSound('tap'); signupUser()">Create account</button>
+        <div id="loginStatus" class="status"></div>
+      </div>
+    </section>
+
+    <!-- PROFILES -->
+    <section id="screen-profiles" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="playSound('tap'); logoutUser()">←</button>
+        <div class="topbar-title">Profiles</div>
+        <button class="icon-btn" onclick="playSound('tap'); loadChildren()">↻</button>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Choose a child</div>
+        <div id="childrenList" class="children-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Add profile</div>
+        <input id="newChildName" class="input" placeholder="Child name" />
+        <button class="primary-btn" onclick="playSound('tap'); addChild()">Add child</button>
+        <div id="profileStatus" class="status"></div>
+      </div>
+    </section>
+
+    <!-- HOME -->
+    <section id="screen-home" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-profiles')">←</button>
+        <div class="topbar-title">Bright Minds</div>
+        <div style="display:flex; gap:8px;">
+          <button class="icon-btn" onclick="playSound('tap'); openSettings()">⚙️</button>
+          <button class="icon-btn" onclick="toggleSound()" id="soundToggleBtn">🔊</button>
+          <button class="icon-btn" onclick="playSound('tap'); logoutUser()">⎋</button>
+        </div>
+      </div>
+
+   <div class="hero">
+ <div class="logo-wrap">
+  <img src="logo-full-V2.png" class="home-logo">
+</div>
+  
+  <h1 id="homeChildName">Child</h1>
+  <div id="homeLevel" class="subtitle" style="font-weight:700;">🌱 Beginner</div>
+  <div id="homeXP" class="subtitle">XP: 0</div>
+
+        <div style="margin:12px auto 6px; max-width:280px;">
+          <div class="progress-bar">
+            <div id="homeProgressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div id="homeProgressText" class="subtitle">0 XP to next level</div>
+        <div class="subtitle" style="margin-top:8px;">🚀 Keep going! You're getting smarter every day</div>
+      </div>
+
+      <button class="secondary-btn" onclick="playSound('tap'); openProgress()">View Progress</button>
+
+      <div class="menu-list">
+        <button class="main-btn" onclick="playSound('tap'); openMode('number-builder')">
+          <div class="big">🌱 Number Builder</div>
+          <div class="small">Build your understanding of multiplication</div>
+        </button>
+
+        <button class="main-btn" onclick="playSound('tap'); openMode('skill-builder')">
+  <div class="big">🚀 Skill Builder</div>
+  <div class="small">Practice and strengthen your skills</div>
+</button>
+
+        <button class="main-btn" onclick="playSound('tap')">
+          <div class="big">⚡ Speed Challenge</div>
+          <div class="small">Solve faster and improve your time</div>
+        </button>
+
+        <button class="main-btn" onclick="playSound('tap')">
+          <div class="big">🏆 Math Arena</div>
+          <div class="small">Compete and show your level</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="screen-settings" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
+        <div class="topbar-title">Sound Settings</div>
+        <div style="width:46px;"></div>
+      </div>
+
+      <div class="card settings-card">
+        <div class="setting-row">
+          <div class="setting-label">Sound</div>
+          <button id="settingsSoundToggle" class="secondary-btn" onclick="toggleSound()">Sound: ON</button>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">Music Volume</div>
+          <input id="musicVolumeSlider" class="volume-slider" type="range" min="0" max="100" value="20" oninput="updateMusicVolume(this.value)" />
+          <div id="musicVolumeValue" class="setting-value">20%</div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">Effects Volume</div>
+          <input id="effectsVolumeSlider" class="volume-slider" type="range" min="0" max="100" value="80" oninput="updateEffectsVolume(this.value)" />
+          <div id="effectsVolumeValue" class="setting-value">80%</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETUP -->
+    <section id="screen-setup" class="screen">
+      
+      <div class="topbar">
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
+        <div class="topbar-title">Select Level & Tables</div>
+        <div style="width:46px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Choose level</div>
+        <div class="level-grid">
+          <button id="levelBtn1" class="level-btn selected" onclick="setNumberBuilderLevel(1)">Level 1</button>
+          <button id="levelBtn2" class="level-btn" onclick="setNumberBuilderLevel(2)">Level 2</button>
+          <button id="levelBtn3" class="level-btn" onclick="setNumberBuilderLevel(3)">Level 3</button>
+        </div>
+        <div id="levelInfoText" class="subtitle" style="text-align:center; margin-bottom:10px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Choose tables</div>
+        <div id="tablesContainer"></div>
+        <button class="secondary-btn" onclick="playSound('tap'); selectAllTables()">Select All</button>
+        <button class="secondary-btn" onclick="playSound('tap'); clearTables()">Clear</button>
+        <button class="primary-btn" onclick="playSound('tap'); startGame()">Start</button>
+        <div id="setupStatus" class="status"></div>
+      </div>
+      
+    </section>
+<section id="screen-skill-games" class="screen">
+  <div class="topbar">
+    <button class="icon-btn" onclick="showScreen('screen-setup')">←</button>
+    <div class="topbar-title">Skill Builder</div>
+    <div style="width:46px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Choose game</div>
+
+    <button class="primary-btn" onclick="startSkillGame('jump')">
+      🚀 Jump In
+    </button>
+
+    <button class="primary-btn" onclick="startSkillGame('pick')">
+      🎯 Pick It
+    </button>
+
+    <button class="primary-btn" onclick="startSkillGame('match')">
+      🧩 Match Up
+    </button>
+
+    <button class="primary-btn" onclick="startSkillGame('blast')">
+      💥 Math Blast
+    </button>
+
+    <button class="primary-btn" onclick="startSkillGame('color')">
+      🎨 Color Quest
+    </button>
+  </div>
+</section>
+    <!-- GAME -->
+    <section id="screen-game" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
+        <div class="topbar-title" id="gameTitle">Number Builder</div>
+        <div style="width:46px;"></div>
+      </div>
+
+      <div class="card">
+        <div id="gameProgress" class="subtitle" style="text-align:center;margin-bottom:12px;">Question 1 of 10</div>
+
+        <div style="margin:8px auto 14px; max-width:320px;">
+          <div class="progress-bar">
+            <div id="gameProgressFill" class="progress-fill"></div>
+          </div>
+        </div>
+        <div class="time-bar">
+  <div id="timeBarFill" class="time-bar-fill"></div>
+</div>
+
+        <div id="gameTypeLabel" class="subtitle" style="text-align:center;margin-bottom:8px;">Visual</div>
+        <div id="questionText">2 × 3</div>
+<div id="visualArea"></div>
+<div id="answersArea"></div>
+        <div id="gameStatus" class="status"></div>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="screen-result" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
+        <div class="topbar-title">Results</div>
+        <div style="width:46px;"></div>
+      </div>
+
+      <div class="card result-box" id="resultCard">
+        <div class="section-title" style="text-align:center;">Round Complete</div>
+        <div id="resultSummary" class="subtitle" style="text-align:center;margin-bottom:16px;"></div>
+        <div id="resultRecommendation" class="subtitle" style="text-align:center;margin-bottom:16px;font-weight:700;"></div>
+<button class="primary-btn" onclick="playSound('tap'); applyRecommendation()">Use Recommendation</button>
+<button class="secondary-btn" onclick="playSound('tap'); practiceAgain()">Practice Again</button>
+<button class="secondary-btn" onclick="playSound('tap'); showScreen('screen-home')">Back to Home</button>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section id="screen-progress" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="playSound('tap'); showScreen('screen-home')">←</button>
+        <div class="topbar-title">Progress</div>
+        <div style="width:46px;"></div>
+      </div>
+
+      <div class="hero">
+        <div class="subtitle">Progress Overview</div>
+        <h1 id="progressChildName">Child Progress</h1>
+        <div id="progressXP" class="subtitle">XP: 0</div>
+        <div id="progressLevel" class="subtitle">Level: 🌱 Beginner</div>
+
+        <div style="margin:12px auto 6px; max-width:320px;">
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div id="progressNextText" class="subtitle">0 XP to next level</div>
+      </div>
+
+      <div class="card">
+  <div class="section-title">Number Builder Progress</div>
+
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-value" id="progressRounds">0</div>
+      <div class="stat-label">Rounds</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-value" id="progressCorrect">0</div>
+      <div class="stat-label">Correct</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-value" id="progressWrong">0</div>
+      <div class="stat-label">Wrong</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-value" id="progressAccuracy">0%</div>
+      <div class="stat-label">Accuracy</div>
+    </div>
+  </div>
+
+  <div class="progress-highlight" id="progressHighestLevel">Highest Number Builder level: 1</div>
+  <div class="progress-highlight" id="progressNextTable"></div>
+  <div class="progress-highlight" id="progressFocusTable"></div>
+
+  <div class="summary-grid">
+    <div class="summary-pill mastered" id="progressSummaryMastered">🏅 Mastered tables: 0</div>
+    <div class="summary-pill improving" id="progressSummaryImproving">🟡 Tables improving: 0</div>
+    <div class="summary-pill practice" id="progressSummaryPractice">🔴 Needs practice: 0</div>
+  </div>
+
+  <div class="mastery-box" id="progressMastery">No table mastery data yet</div>
+</div>
+    </section>
+
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
+      authDomain: "bright-minds-math.firebaseapp.com",
+      projectId: "bright-minds-math",
+      storageBucket: "bright-minds-math.firebasestorage.app",
+      messagingSenderId: "645800687175",
+      appId: "1:645800687175:web:75241f3cac5e5433442362"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let appState = {
+      currentChildId: null,
+      currentChildName: null
+    };
+
+    let selectedTables = [];
+    let currentMode = null;
+    let currentLevel = 1;
+    let questionTimer = null;
+    let timeLimit = 10000;
+    let answered = false;
+    let selectedSkillGame = null;
+    let blastTime = 60;
+    let blastCorrect = 0;
+    let blastSolved = 0;
+    let blastAnswer = 0;
+    let blastMistakes = {};
+    let blastCurrentQuestion = '';
+    let blastInterval = null;
+
+    const numberBuilderLevels = {
+      1: {
+        questionCount: 10,
+        enabledTypes: ['visual', 'sequence', 'addition', 'matching'],
+        maxTable: 5,
+        xpPerCorrect: 10,
+        label: 'Level 1 • Guided foundation'
+      },
+      2: {
+        questionCount: 12,
+        enabledTypes: ['sequence', 'addition', 'matching'],
+        maxTable: 10,
+        xpPerCorrect: 12,
+        label: 'Level 2 • Less visual support'
+      },
+      3: {
+        questionCount: 15,
+        enabledTypes: ['addition', 'matching'],
+        maxTable: 12,
+        xpPerCorrect: 15,
+        label: 'Level 3 • Advanced practice'
+      }
+    };
+
+    let gameState = {
+  questions: [],
+  currentIndex: 0,
+  correct: 0,
+  wrong: 0,
+  resultsByTable: {}
+};
+    let latestRecommendation = {
+  suggestedLevel: 1,
+  focusTable: null
+};
+    
+
+    let soundEnabled = JSON.parse(localStorage.getItem('bm_soundEnabled') ?? 'true');
+    let musicVolume = Number(localStorage.getItem('bm_musicVolume') ?? '20');
+    let effectsVolume = Number(localStorage.getItem('bm_effectsVolume') ?? '80');
+
+    const sounds = {
+      tap: new Audio('sounds/tap.mp3'),
+      correct: new Audio('sounds/correct.mp3'),
+      wrong: new Audio('sounds/wrong.mp3'),
+      win: new Audio('sounds/win.mp3'),
+      bg: new Audio('sounds/bg.mp3')
+    };
+
+    sounds.bg.loop = true;
+
+    function applyAudioSettings(){
+      sounds.bg.volume = musicVolume / 100;
+      sounds.tap.volume = effectsVolume / 100;
+      sounds.correct.volume = effectsVolume / 100;
+      sounds.wrong.volume = effectsVolume / 100;
+      sounds.win.volume = effectsVolume / 100;
+
+      const soundBtn = document.getElementById('soundToggleBtn');
+      if(soundBtn) soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
+
+      const settingsBtn = document.getElementById('settingsSoundToggle');
+      if(settingsBtn) settingsBtn.textContent = soundEnabled ? 'Sound: ON' : 'Sound: OFF';
+
+      const musicSlider = document.getElementById('musicVolumeSlider');
+      const musicValue = document.getElementById('musicVolumeValue');
+      if(musicSlider) musicSlider.value = musicVolume;
+      if(musicValue) musicValue.textContent = `${musicVolume}%`;
+
+      const effectsSlider = document.getElementById('effectsVolumeSlider');
+      const effectsValue = document.getElementById('effectsVolumeValue');
+      if(effectsSlider) effectsSlider.value = effectsVolume;
+      if(effectsValue) effectsValue.textContent = `${effectsVolume}%`;
+    }
+
+    function saveAudioSettings(){
+      localStorage.setItem('bm_soundEnabled', JSON.stringify(soundEnabled));
+      localStorage.setItem('bm_musicVolume', String(musicVolume));
+      localStorage.setItem('bm_effectsVolume', String(effectsVolume));
+    }
+
+    function playSound(name){
+      if(!soundEnabled) return;
+      const sound = sounds[name];
+      if(!sound) return;
+      sound.currentTime = 0;
+      sound.play().catch(()=>{});
+    }
+
+    function toggleSound(){
+      soundEnabled = !soundEnabled;
+      saveAudioSettings();
+      applyAudioSettings();
+
+      if(soundEnabled){
+        sounds.bg.play().catch(()=>{});
+      } else {
+        sounds.bg.pause();
+      }
+    }
+
+    function updateMusicVolume(value){
+      musicVolume = Number(value);
+      saveAudioSettings();
+      applyAudioSettings();
+
+      if(soundEnabled && musicVolume > 0){
+        sounds.bg.play().catch(()=>{});
+      }
+    }
+
+    function updateEffectsVolume(value){
+      effectsVolume = Number(value);
+      saveAudioSettings();
+      applyAudioSettings();
+      playSound('tap');
+    }
+
+    function openSettings(){
+      applyAudioSettings();
+      showScreen('screen-settings');
+    }
+
+    function showScreen(screenId){
+      document.querySelectorAll('.screen').forEach(screen=>{
+        screen.classList.remove('active');
+      });
+      document.getElementById(screenId).classList.add('active');
+    }
+
+function startTimeBar(){
+  clearTimeout(questionTimer);
+
+  const bar = document.getElementById('timeBarFill');
+  if(!bar) return;
+
+  answered = false;
+
+  // ⏱️ Ajustar tiempo según nivel
+  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    if(currentLevel === 1) timeLimit = 10000;
+    if(currentLevel === 2) timeLimit = 8000;
+    if(currentLevel === 3) timeLimit = 6000;
+  }
+
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  bar.offsetWidth;
+
+  bar.style.transition = `width ${timeLimit}ms linear`;
+  bar.style.width = '0%';
+
+  questionTimer = setTimeout(() => {
+    if(!answered){
+      handleTimeOut();
+    }
+  }, timeLimit);
+}
+function startBlastTimer(){
+  clearInterval(blastInterval);
+
+  const bar = document.getElementById('timeBarFill');
+  if(!bar) return;
+
+  if(currentLevel === 1) blastTime = 10;
+  if(currentLevel === 2) blastTime = 8;
+  if(currentLevel === 3) blastTime = 6;
+
+  const totalTime = blastTime;
+
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+
+  blastInterval = setInterval(() => {
+    blastTime--;
+
+    const percent = Math.max((blastTime / totalTime) * 100, 0);
+    bar.style.width = percent + '%';
+
+    if(blastTime <= 0){
+      clearInterval(blastInterval);
+      finishBlastRound();
+    }
+  }, 1000);
+}
+    function handleTimeOut(){
+  if(currentMode !== 'skill-builder') return;
+
+  playSound('wrong');
+
+  gameState.wrong++;
+
+  const statusEl = document.getElementById('gameStatus');
+  statusEl.textContent = '⏱️ Time out';
+  statusEl.classList.add('big-feedback');
+
+  setTimeout(() => {
+    gameState.currentIndex++;
+    if(gameState.currentIndex >= gameState.questions.length){
+      finishRound();
+    } else {
+      renderCurrentQuestion();
+    }
+  }, 700);
+}
+async function setNumberBuilderLevel(level){
+  const roundsPlayed = await getNumberBuilderRoundsPlayed();
+
+  if(level === 2 && roundsPlayed < 3){
+    document.getElementById('setupStatus').textContent = 'Play 3 rounds to unlock Level 2.';
+    return;
+  }
+
+  if(level === 3 && roundsPlayed < 8){
+    document.getElementById('setupStatus').textContent = 'Play 8 rounds to unlock Level 3.';
+    return;
+  }
+
+  currentLevel = level;
+  playSound('tap');
+  document.getElementById('setupStatus').textContent = '';
+  updateLevelUI();
+  selectedTables = [];
+  renderTables();
+}
+    function updateLevelUI(){
+      const levelConfig = numberBuilderLevels[currentLevel];
+
+      ['levelBtn1','levelBtn2','levelBtn3'].forEach(id=>{
+        const btn = document.getElementById(id);
+        if(btn) btn.classList.remove('selected');
+      });
+
+      const selectedBtn = document.getElementById(`levelBtn${currentLevel}`);
+      if(selectedBtn) selectedBtn.classList.add('selected');
+
+      const levelInfo = document.getElementById('levelInfoText');
+      if(levelInfo){
+        levelInfo.textContent = `${levelConfig.label} • ${levelConfig.questionCount} questions • tables up to ${levelConfig.maxTable}`;
+      }
+    }
+
+    function getCurrentLevelConfig(){
+  return numberBuilderLevels[currentLevel];
+}
+
+
+
+async function getNumberBuilderRoundsPlayed(){
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
+
+  if(!user || !childId) return 0;
+
+  const snap = await db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId)
+    .get();
+
+  const data = snap.data() || {};
+  return data.numberBuilder?.roundsPlayed || 0;
+}
+
+function applyLevelLockUI(roundsPlayed){
+  const btn1 = document.getElementById('levelBtn1');
+  const btn2 = document.getElementById('levelBtn2');
+  const btn3 = document.getElementById('levelBtn3');
+
+  if(btn1){
+  btn1.disabled = false;
+  btn1.textContent = 'Level 1';
+  btn1.classList.remove('locked');
+}
+
+  if(btn2){
+    const unlocked = roundsPlayed >= 3;
+    btn2.classList.toggle('locked', !unlocked);
+    btn2.disabled = false;
+    btn2.textContent = unlocked ? 'Level 2' : '🔒 Level 2';
+    if(!unlocked && currentLevel === 2) currentLevel = 1;
+  }
+
+  if(btn3){
+    const unlocked = roundsPlayed >= 8;
+    btn3.classList.toggle('locked', !unlocked);
+    btn3.disabled = false;
+    btn3.textContent = unlocked ? 'Level 3' : '🔒 Level 3';
+    if(!unlocked && currentLevel === 3) currentLevel = 1;
+  }
+}
+
+    setTimeout(() => {
+      applyAudioSettings();
+      updateLevelUI();
+    }, 0);
+
+    async function signupUser(){
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const status = document.getElementById('loginStatus');
+
+      if(!email || !password){
+        status.textContent = 'Please enter email and password.';
+        return;
+      }
+
+      try{
+        status.textContent = 'Creating account...';
+        await auth.createUserWithEmailAndPassword(email, password);
+        status.textContent = '';
+      }catch(error){
+        status.textContent = error.message;
+      }
+    }
+
+    async function loginUser(){
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const status = document.getElementById('loginStatus');
+
+      if(!email || !password){
+        status.textContent = 'Please enter email and password.';
+        return;
+      }
+
+      try{
+        status.textContent = 'Logging in...';
+        await auth.signInWithEmailAndPassword(email, password);
+        status.textContent = '';
+      }catch(error){
+        status.textContent = error.message;
+      }
+    }
+
+    async function logoutUser(){
+      try{
+        sounds.bg.pause();
+        await auth.signOut();
+        appState.currentChildId = null;
+        appState.currentChildName = null;
+        showScreen('screen-login');
+      }catch(error){
+        alert(error.message);
+      }
+    }
+
+    auth.onAuthStateChanged(async (user)=>{
+      if(user){
+        await ensureUserDoc(user);
+        await loadChildren();
+        showScreen('screen-profiles');
+      }else{
+        showScreen('screen-login');
+      }
+    });
+
+    async function ensureUserDoc(user){
+      const userRef = db.collection('users').doc(user.uid);
+      const snap = await userRef.get();
+
+      if(!snap.exists){
+        await userRef.set({
+          email: user.email,
+          createdAt: Date.now()
+        });
+      }
+    }
+
+    async function addChild(){
+      const input = document.getElementById('newChildName');
+      const status = document.getElementById('profileStatus');
+      const name = input.value.trim();
+      const user = auth.currentUser;
+
+      if(!name){
+        status.textContent = 'Please enter a child name.';
+        return;
+      }
+
+      if(!user){
+        status.textContent = 'No active user session.';
+        return;
+      }
+
+      try{
+        status.textContent = 'Saving child...';
+        await db.collection('users')
+          .doc(user.uid)
+          .collection('children')
+          .add({
+            name,
+            xp: 0,
+            createdAt: Date.now()
+          });
+
+        input.value = '';
+        status.textContent = 'Child added.';
+        await loadChildren();
+      }catch(error){
+        status.textContent = error.message;
+      }
+    }
+
+    async function loadChildren(){
+      const list = document.getElementById('childrenList');
+      const status = document.getElementById('profileStatus');
+      const user = auth.currentUser;
+
+      list.innerHTML = '';
+
+      if(!user) return;
+
+      try{
+        status.textContent = 'Loading profiles...';
+
+        const snapshot = await db.collection('users')
+          .doc(user.uid)
+          .collection('children')
+          .orderBy('createdAt', 'asc')
+          .get();
+
+        if(snapshot.empty){
+          list.innerHTML = '<div class="placeholder">No profiles yet. Add your first child.</div>';
+          status.textContent = '';
+          return;
+        }
+
+        snapshot.forEach(doc=>{
+          const child = doc.data();
+          const row = document.createElement('div');
+          row.className = 'child-card';
+
+          row.innerHTML = `
+            <span class="child-name">${child.name}</span>
+            <button class="mini-btn" type="button">Delete</button>
+          `;
+
+          row.onclick = () => {
+            playSound('tap');
+            selectChild(doc.id, child.name);
+          };
+
+          row.querySelector('.mini-btn').onclick = async (event) => {
+            event.stopPropagation();
+            playSound('tap');
+            await deleteChild(doc.id);
+          };
+
+          list.appendChild(row);
+        });
+
+        status.textContent = '';
+      }catch(error){
+        status.textContent = error.message;
+      }
+    }
+
+    async function selectChild(childId, childName){
+      appState.currentChildId = childId;
+      appState.currentChildName = childName;
+      document.getElementById('homeChildName').textContent = childName;
+
+      const user = auth.currentUser;
+      const snap = await db.collection('users')
+        .doc(user.uid)
+        .collection('children')
+        .doc(childId)
+        .get();
+
+      const data = snap.data() || {};
+      const xp = data.xp || 0;
+      const levelInfo = getLevelInfo(xp);
+      
+
+      document.getElementById('homeXP').textContent = `XP: ${xp}`;
+      document.getElementById('homeLevel').textContent = `${levelInfo.level}`;
+      document.getElementById('homeProgressFill').style.width = `${levelInfo.progressPercent}%`;
+      document.getElementById('homeProgressText').textContent = levelInfo.remainingText;
+
+      if(soundEnabled && musicVolume > 0){
+        sounds.bg.play().catch(()=>{});
+      }
+
+      showScreen('screen-home');
+    }
+
+    async function deleteChild(childId){
+      const user = auth.currentUser;
+      if(!user) return;
+
+      const confirmDelete = confirm('Delete this profile?');
+      if(!confirmDelete) return;
+
+      try{
+        await db.collection('users')
+          .doc(user.uid)
+          .collection('children')
+          .doc(childId)
+          .delete();
+
+        await loadChildren();
+      }catch(error){
+        alert(error.message);
+      }
+    }
+
+  async function openMode(mode){
+  currentMode = mode;
+  selectedTables = [];
+
+  document.getElementById('setupStatus').textContent = '';
+
+  const setupTitle = document.querySelector('#screen-setup .topbar-title');
+
+  if(mode === 'number-builder'){
+    if(setupTitle) setupTitle.textContent = 'Number Builder';
+    const roundsPlayed = await getNumberBuilderRoundsPlayed();
+    applyLevelLockUI(roundsPlayed);
+    updateLevelUI();
+    renderTables();
+    showScreen('screen-setup');
+    return;
+  }
+
+  if(mode === 'skill-builder'){
+    if(setupTitle) setupTitle.textContent = 'Skill Builder';
+    currentLevel = 1;
+    updateLevelUI();
+    renderTables();
+    showScreen('screen-setup');
+    return;
+  }
+}
+
+ 
+function renderTables(){
+  const container = document.getElementById('tablesContainer');
+  container.innerHTML = '';
+
+  const levelConfig = getCurrentLevelConfig();
+  const maxTable = levelConfig.maxTable;
+
+  for(let i = 1; i <= maxTable; i++){
+    const btn = document.createElement('button');
+    btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
+    btn.textContent = i;
+
+    btn.onclick = () => {
+      playSound('tap');
+
+      if(selectedTables.includes(i)){
+        selectedTables = selectedTables.filter(x => x !== i);
+      } else {
+        selectedTables.push(i);
+      }
+
+      renderTables();
+    };
+
+    container.appendChild(btn);
+  }
+}
+    function selectAllTables(){
+      const levelConfig = getCurrentLevelConfig();
+      selectedTables = [];
+
+      for(let i = 1; i <= levelConfig.maxTable; i++){
+        selectedTables.push(i);
+      }
+
+      renderTables();
+    }
+
+    function clearTables(){
+      selectedTables = [];
+      renderTables();
+    }
+
+    function startGame(){
+  const status = document.getElementById('setupStatus');
+  document.getElementById('resultRecommendation').innerHTML = '';
+
+  if(selectedTables.length === 0){
+    status.textContent = 'Choose at least one table to start.';
+    return;
+  }
+
+  if(currentMode === 'number-builder'){
+    document.getElementById('gameTitle').textContent = 'Number Builder';
+    buildNumberBuilderRound();
+    showScreen('screen-game');
+    renderCurrentQuestion();
+    return;
+  }
+
+  if(currentMode === 'skill-builder'){
+    showScreen('screen-skill-games');
+    return;
+  }
+}
+
+function startSkillGame(game){
+  selectedSkillGame = game;
+
+  const gameScreen = document.getElementById('screen-game');
+  gameScreen.classList.remove('blast-mode');
+
+  if(game === 'blast'){
+    gameScreen.classList.add('blast-mode');
+    blastTime = 60;
+    blastCorrect = 0;
+    blastSolved = 0;
+    blastAnswer = 0;
+    blastMistakes = {};
+    blastCurrentQuestion = '';
+    startBlastTimer(); // ← AGREGA ESTA LÍNEA
+
+    startBlastTimer();
+  }
+
+  document.getElementById('gameTitle').textContent = 'Skill Builder';
+
+  buildNumberBuilderRound();
+  showScreen('screen-game');
+  renderCurrentQuestion();
+}
+
+
+
+    function buildNumberBuilderRound(){
+      gameState.questions = [];
+      gameState.currentIndex = 0;
+      gameState.correct = 0;
+      gameState.wrong = 0;
+      gameState.resultsByTable = {};
+
+      const levelConfig = getCurrentLevelConfig();
+      const types = levelConfig.enabledTypes;
+      const questionCount = levelConfig.questionCount;
+
+      for(let i = 0; i < questionCount; i++){
+        const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+        const multiplier = Math.floor(Math.random() * 10) + 1;
+        const answer = table * multiplier;
+       let type;
+
+if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  type = 'visual';
+} else {
+  type = types[Math.floor(Math.random() * types.length)];
+}
+
+        gameState.questions.push({
+          type,
+          table,
+          multiplier,
+          answer
+        });
+      }
+    }
+
+  function renderCurrentQuestion(){
+  const q = gameState.questions[gameState.currentIndex];
+  if(!q) return;
+
+  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    blastCurrentQuestion = `${q.table}x${q.multiplier}`;
+  }
+
+      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  document.getElementById('gameProgress').textContent = `Time Challenge`;
+} else {
+  document.getElementById('gameProgress').textContent =
+    `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
+}
+
+      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  document.getElementById('gameProgressFill').style.width = '100%';
+} else {
+  const progressPercent = ((gameState.currentIndex) / gameState.questions.length) * 100;
+  document.getElementById('gameProgressFill').style.width = `${progressPercent}%`;
+}
+
+      const statusEl = document.getElementById('gameStatus');
+      statusEl.textContent = '';
+      statusEl.classList.remove('big-feedback');
+
+      const visualArea = document.getElementById('visualArea');
+      const answersArea = document.getElementById('answersArea');
+      const typeLabel = document.getElementById('gameTypeLabel');
+      const questionText = document.getElementById('questionText');
+      const isSkill = currentMode === 'skill-builder';
+
+if(isSkill){
+  typeLabel.textContent = `🚀 ${selectedSkillGame}`;
+} else {
+  typeLabel.textContent = '';
+}
+
+      visualArea.innerHTML = '';
+      answersArea.innerHTML = '';
+
+      if(q.type === 'sequence'){
+        questionText.textContent = 'Complete the pattern';
+      } else if(q.type === 'matching'){
+        questionText.textContent = 'Match each operation';
+      } else {
+        questionText.textContent = `${q.table} × ${q.multiplier}`;
+      }
+
+      if(q.type === 'visual'){
+  typeLabel.textContent = isSkill ? `🚀 ${selectedSkillGame}` : '🧱 Build it!';
+
+  if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+    for(let r=0; r<q.multiplier; r++){
+      const group = document.createElement('div');
+      group.className = 'block-group';
+
+      for(let c=0; c<q.table; c++){
+        const dot = document.createElement('div');
+        dot.className = 'block-dot';
+        group.appendChild(dot);
+      }
+
+      visualArea.appendChild(group);
+    }
+  }
+
+  renderAnswerOptions(q.answer);
+}
+
+if(q.type === 'sequence'){
+  if(currentMode !== 'skill-builder'){
+    typeLabel.textContent = '🔍 Find the pattern!';
+  }
+
+  const strip = document.createElement('div');
+  strip.className = 'sequence-strip';
+
+  const start = Math.floor(Math.random() * 6) + 1;
+  const sequenceValues = [
+    q.table * start,
+    q.table * (start + 1),
+    q.table * (start + 2),
+    q.table * (start + 3),
+    q.table * (start + 4)
+  ];
+
+  const missingIndex = Math.floor(Math.random() * 5);
+  const correctSequenceAnswer = sequenceValues[missingIndex];
+
+  sequenceValues.forEach((item, index)=>{
+    const box = document.createElement('div');
+    box.className = 'sequence-box';
+    box.textContent = index === missingIndex ? '?' : item;
+    strip.appendChild(box);
+  });
+
+  visualArea.appendChild(strip);
+  renderAnswerOptions(correctSequenceAnswer);
+}
+ 
+
+      if(q.type === 'addition'){
+  typeLabel.textContent = '➕ Add it up!';
+
+  const addWrap = document.createElement('div');
+  addWrap.style.textAlign = 'center';
+  addWrap.style.marginBottom = '18px';
+
+  const additionStyle = Math.floor(Math.random() * 3);
+
+  if(additionStyle === 0){
+    let repeated = [];
+    for(let i = 0; i < q.multiplier; i++) repeated.push(q.table);
+
+    const pill = document.createElement('div');
+    pill.className = 'addition-pill';
+    pill.textContent = repeated.join(' + ');
+    addWrap.appendChild(pill);
+  }
+
+  if(additionStyle === 1){
+    const pill = document.createElement('div');
+    pill.className = 'addition-pill';
+    pill.textContent = `${q.multiplier} groups of ${q.table}`;
+    addWrap.appendChild(pill);
+  }
+
+  if(additionStyle === 2){
+    const pill = document.createElement('div');
+    pill.className = 'addition-pill';
+    pill.textContent = `${q.table} added ${q.multiplier} times`;
+    addWrap.appendChild(pill);
+  }
+
+  visualArea.appendChild(addWrap);
+  renderAnswerOptions(q.answer);
+}
+
+      if(q.type === 'matching'){
+        if(currentMode !== 'skill-builder'){
+  typeLabel.textContent = '🔗 Match them!';
+}
+
+        const multiplierSet = new Set();
+        multiplierSet.add(q.multiplier);
+
+        while(multiplierSet.size < 3){
+          const randomMultiplier = Math.floor(Math.random() * 10) + 1;
+          multiplierSet.add(randomMultiplier);
+        }
+
+        const multipliers = [...multiplierSet];
+
+        const pairs = multipliers.map(m => ({
+          left: `${q.table} × ${m}`,
+          right: q.table * m
+        }));
+
+        const shuffledRight = shuffle(pairs.map(p => p.right));
+
+        const grid = document.createElement('div');
+        grid.className = 'match-grid';
+
+        const leftCol = document.createElement('div');
+        leftCol.className = 'match-col';
+
+        const rightCol = document.createElement('div');
+        rightCol.className = 'match-col';
+
+        let selectedLeftBtn = null;
+        let selectedRightBtn = null;
+        let selectedLeftPair = null;
+        let selectedRightValue = null;
+        let matchesCompleted = 0;
+        let wrongAttempt = false;
+
+        pairs.forEach(pair=>{
+          const btn = document.createElement('button');
+          btn.className = 'match-btn';
+          btn.textContent = pair.left;
+
+          btn.onclick = () => {
+            if(btn.disabled) return;
+            playSound('tap');
+
+            leftCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
+            btn.classList.add('selected');
+
+            selectedLeftBtn = btn;
+            selectedLeftPair = pair;
+            checkMatch();
+          };
+
+          leftCol.appendChild(btn);
+        });
+
+        shuffledRight.forEach(value=>{
+          const btn = document.createElement('button');
+          btn.className = 'match-btn';
+          btn.textContent = value;
+
+          btn.onclick = () => {
+            if(btn.disabled) return;
+            playSound('tap');
+
+            rightCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
+            btn.classList.add('selected');
+
+            selectedRightBtn = btn;
+            selectedRightValue = value;
+            checkMatch();
+          };
+
+          rightCol.appendChild(btn);
+        });
+
+        function checkMatch(){
+          if(!selectedLeftPair || selectedRightValue === null) return;
+
+          if(selectedLeftPair.right === selectedRightValue){
+            playSound('correct');
+
+            selectedLeftBtn.classList.remove('selected');
+            selectedRightBtn.classList.remove('selected');
+
+            selectedLeftBtn.classList.add('correct');
+            selectedRightBtn.classList.add('correct');
+
+            selectedLeftBtn.disabled = true;
+            selectedRightBtn.disabled = true;
+
+            matchesCompleted++;
+            statusEl.textContent = `Matches completed: ${matchesCompleted}/3`;
+
+            selectedLeftBtn = null;
+            selectedRightBtn = null;
+            selectedLeftPair = null;
+            selectedRightValue = null;
+
+            if(matchesCompleted === 3){
+              statusEl.classList.add('big-feedback');
+
+              if(!wrongAttempt){
+                gameState.correct++;
+                statusEl.textContent = '🌟 Perfect matching!';
+              } else {
+                gameState.wrong++;
+                statusEl.textContent = '👍 Completed!';
+              }
+
+              setTimeout(() => {
+                gameState.currentIndex++;
+                if(gameState.currentIndex >= gameState.questions.length){
+                  finishRound();
+                } else {
+                  renderCurrentQuestion();
+                }
+              }, 900);
+            }
+          } else {
+            playSound('wrong');
+            wrongAttempt = true;
+            statusEl.textContent = 'Try again';
+
+            selectedLeftBtn.classList.remove('selected');
+            selectedRightBtn.classList.remove('selected');
+
+            selectedLeftBtn = null;
+            selectedRightBtn = null;
+            selectedLeftPair = null;
+            selectedRightValue = null;
+          }
+        }
+
+        grid.appendChild(leftCol);
+        grid.appendChild(rightCol);
+        visualArea.appendChild(grid);
+      }
+  if(currentMode === 'skill-builder' && selectedSkillGame !== 'blast'){
+  startTimeBar();
+}
+    }
+
+    function renderAnswerOptions(correctAnswer){
+  const answersArea = document.getElementById('answersArea');
+  answersArea.innerHTML = '';
+      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  answersArea.style.display = 'grid';
+  answersArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  answersArea.style.gap = '14px';
+  answersArea.style.maxWidth = '680px';
+  answersArea.style.margin = '0 auto';
+} else {
+  answersArea.style.display = 'grid';
+  answersArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  answersArea.style.gap = '12px';
+  answersArea.style.maxWidth = '';
+  answersArea.style.margin = '';
+}
+
+  const optionsSet = new Set();
+  optionsSet.add(correctAnswer);
+
+  let offsets = [];
+
+  if(currentLevel === 1){
+    offsets = [-4, -3, -2, 2, 3, 4, 5, -5];
+  }
+
+  if(currentLevel === 2){
+    offsets = [-3, -2, -1, 1, 2, 3];
+  }
+
+  if(currentLevel === 3){
+    offsets = [-2, -1, 1, 2];
+  }
+
+  const shuffledOffsets = shuffle(offsets);
+
+  for(const offset of shuffledOffsets){
+    const candidate = correctAnswer + offset;
+    if(candidate > 0){
+      optionsSet.add(candidate);
+    }
+    if(optionsSet.size === 3) break;
+  }
+
+  const targetOptions = (
+  currentMode === 'skill-builder' && selectedSkillGame === 'blast'
+) ? 9 : 3;
+
+while(optionsSet.size < targetOptions){
+    let randomOffset;
+
+    if(currentLevel === 1){
+      randomOffset = Math.floor(Math.random() * 10) - 5;
+    } else if(currentLevel === 2){
+      randomOffset = Math.floor(Math.random() * 7) - 3;
+    } else {
+      randomOffset = Math.floor(Math.random() * 5) - 2;
+    }
+
+    const candidate = correctAnswer + randomOffset;
+    if(candidate > 0){
+      optionsSet.add(candidate);
+    }
+  }
+
+  const options = shuffle([...optionsSet]);
+
+  options.forEach(option => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = option;
+    btn.onclick = () => {
+      playSound('tap');
+      answerQuestion(btn, option, correctAnswer);
+    };
+    answersArea.appendChild(btn);
+  });
+}
+
+    function answerQuestion(button, selected, correct){
+  if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+  answered = true;
+  clearTimeout(questionTimer);
+}
+
+  const allButtons = document.querySelectorAll('.answer-btn');
+  const statusEl = document.getElementById('gameStatus');
+
+  allButtons.forEach(b => b.disabled = true);
+  statusEl.classList.remove('big-feedback');
+
+      if(selected === correct){
+        playSound('correct');
+        button.classList.add('correct');
+        gameState.correct++;
+        if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+          blastSolved++;
+         blastCorrect++;
+        }
+        const currentQuestion = gameState.questions[gameState.currentIndex];
+const table = currentQuestion.table;
+
+if(!gameState.resultsByTable[table]){
+  gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
+}
+
+gameState.resultsByTable[table].correct++;
+        
+
+        const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
+        statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+        statusEl.classList.add('big-feedback');
+      } else {
+        playSound('wrong');
+        button.classList.add('wrong');
+        gameState.wrong++;
+
+if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  blastSolved++;
+}
+
+if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  if(!blastMistakes[blastCurrentQuestion]){
+    blastMistakes[blastCurrentQuestion] = 0;
+  }
+  blastMistakes[blastCurrentQuestion]++;
+}
+        const currentQuestion = gameState.questions[gameState.currentIndex];
+const table = currentQuestion.table;
+
+if(!gameState.resultsByTable[table]){
+  gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
+}
+
+gameState.resultsByTable[table].wrong++;
+        statusEl.textContent = `Correct answer: ${correct}`;
+        statusEl.classList.add('big-feedback');
+
+        allButtons.forEach(b => {
+          if(Number(b.textContent) === correct){
+            b.classList.add('correct');
+          }
+        });
+      }
+
+      setTimeout(() => {
+        gameState.currentIndex++;
+        if(gameState.currentIndex >= gameState.questions.length){
+          finishRound();
+        } else {
+          renderCurrentQuestion();
+        }
+      }, 900);
+    }
+
+    async function finishRound(){
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
+
+  const childRef = db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId);
+
+  const snapBefore = await childRef.get();
+  const beforeData = snapBefore.data() || {};
+  const roundsBefore = beforeData.numberBuilder?.roundsPlayed || 0;
+
+  const levelConfig = getCurrentLevelConfig();
+  const xpEarned = gameState.correct * levelConfig.xpPerCorrect;
+
+  const resultSummaryEl = document.getElementById('resultSummary');
+      const resultCard = document.getElementById('resultCard');
+resultCard.classList.remove('perfect','good','practice');
+
+  resultSummaryEl.innerHTML =
+  `Correct: ${gameState.correct} · Wrong: ${gameState.wrong} · XP: ${xpEarned}`;
+
+  const totalAnswers = gameState.correct + gameState.wrong;
+  const accuracy = totalAnswers > 0
+    ? Math.round((gameState.correct / totalAnswers) * 100)
+    : 0;
+
+  let feedback = '';
+
+  if(accuracy === 100){
+  feedback = '🏆 Perfect! You nailed it!';
+  resultCard.classList.add('perfect');
+} else if(accuracy >= 80){
+  feedback = '🔥 Great job! Almost perfect!';
+  resultCard.classList.add('good');
+} else if(accuracy >= 60){
+  feedback = '👍 Good work! Keep practicing!';
+  resultCard.classList.add('good');
+} else {
+  feedback = '💪 Keep going! You are learning!';
+  resultCard.classList.add('practice');
+}
+
+resultSummaryEl.innerHTML += `<br><br><strong>${feedback}</strong>`;
+
+  resultSummaryEl.classList.remove('result-pop');
+  void resultSummaryEl.offsetWidth;
+  resultSummaryEl.classList.add('result-pop');
+
+  const recommendation = getAdaptiveRecommendation();
+  latestRecommendation = recommendation;
+
+  document.getElementById('resultRecommendation').innerHTML =
+  `${recommendation.levelMessage}<br><br>${recommendation.focusMessage}`;
+
+  await saveNumberBuilderProgress(xpEarned);
+
+  const snapAfter = await childRef.get();
+  const afterData = snapAfter.data() || {};
+  const roundsAfter = afterData.numberBuilder?.roundsPlayed || 0;
+
+  checkUnlocks(roundsBefore, roundsAfter);
+
+  showScreen('screen-result');
+}
+
+    function shuffle(arr){
+      const copy = [...arr];
+      for(let i = copy.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    async function saveNumberBuilderProgress(xpEarned){
+      const user = auth.currentUser;
+      const childId = appState.currentChildId;
+
+      if(!user || !childId) return;
+
+      const childRef = db.collection('users')
+        .doc(user.uid)
+        .collection('children')
+        .doc(childId);
+
+      const snap = await childRef.get();
+      const data = snap.exists ? snap.data() : {};
+
+      const currentXP = data.xp || 0;
+      const existingTableStats = data.tableStats || {};
+const updatedTableStats = { ...existingTableStats };
+
+      const currentNumberBuilder = data.numberBuilder || {
+        roundsPlayed: 0,
+        totalCorrect: 0,
+        totalWrong: 0,
+        highestLevelPlayed: 1
+      };
+Object.keys(gameState.resultsByTable).forEach(tableKey => {
+  if(!updatedTableStats[tableKey]){
+    updatedTableStats[tableKey] = { correct: 0, wrong: 0 };
+  }
+
+  updatedTableStats[tableKey].correct += gameState.resultsByTable[tableKey].correct;
+  updatedTableStats[tableKey].wrong += gameState.resultsByTable[tableKey].wrong;
+});
+      await childRef.set({
+  xp: currentXP + xpEarned,
+  lastMode: 'number-builder',
+  tableStats: updatedTableStats,
+  numberBuilder: {
+    roundsPlayed: currentNumberBuilder.roundsPlayed + 1,
+    totalCorrect: currentNumberBuilder.totalCorrect + gameState.correct,
+    totalWrong: currentNumberBuilder.totalWrong + gameState.wrong,
+    highestLevelPlayed: Math.max(currentNumberBuilder.highestLevelPlayed || 1, currentLevel),
+    lastPlayed: Date.now()
+  }
+}, { merge: true });
+    }
+
+    function getLevelInfo(xp){
+      if(xp >= 400){
+        return {
+          level: '👑 Genius',
+          progressPercent: 100,
+          remainingText: 'Max level reached'
+        };
+      }
+
+      if(xp >= 250){
+        const nextMin = 400;
+        const progressPercent = ((xp - 250) / (400 - 250)) * 100;
+        return {
+          level: '🧠 Math Hero',
+          progressPercent,
+          remainingText: `${nextMin - xp} XP to Genius`
+        };
+      }
+
+      if(xp >= 120){
+        const nextMin = 250;
+        const progressPercent = ((xp - 120) / (250 - 120)) * 100;
+        return {
+          level: '🚀 Smart Kid',
+          progressPercent,
+          remainingText: `${nextMin - xp} XP to Math Hero`
+        };
+      }
+
+      if(xp >= 50){
+        const nextMin = 120;
+        const progressPercent = ((xp - 50) / (120 - 50)) * 100;
+        return {
+          level: '⭐ Explorer',
+          progressPercent,
+          remainingText: `${nextMin - xp} XP to Smart Kid`
+        };
+      }
+
+      return {
+        level: '🌱 Beginner',
+        progressPercent: (xp / 50) * 100,
+        remainingText: `${50 - xp} XP to Explorer`
+      };
+    }
+
+    function checkUnlocks(before, after){
+  if(before < 3 && after >= 3){
+    showUnlock('🎉 Level 2 Unlocked!');
+  }
+
+  if(before < 8 && after >= 8){
+    showUnlock('🎉 Level 3 Unlocked!');
+  }
+}
+
+function showUnlock(message){
+  playSound('win');
+
+  const div = document.createElement('div');
+  div.className = 'unlock-popup';
+  div.textContent = message;
+
+  document.body.appendChild(div);
+
+  requestAnimationFrame(() => {
+    div.classList.add('show');
+  });
+
+  setTimeout(() => {
+    div.classList.remove('show');
+    setTimeout(() => div.remove(), 250);
+  }, 2000);
+}
+function getAdaptiveRecommendation(){
+  const totalAnswers = gameState.correct + gameState.wrong;
+  const accuracy = totalAnswers > 0
+    ? Math.round((gameState.correct / totalAnswers) * 100)
+    : 0;
+
+  const currentLevelValue = currentLevel;
+
+  let levelMessage = '';
+  let focusMessage = '';
+  let suggestedLevel = currentLevelValue;
+  let weakestTable = null;
+  let lowestScore = 999;
+
+  for(const table in gameState.resultsByTable){
+    const stats = gameState.resultsByTable[table];
+    const total = (stats.correct || 0) + (stats.wrong || 0);
+    if(total > 0){
+      const score = (stats.correct || 0) / total;
+      if(score < lowestScore){
+        lowestScore = score;
+        weakestTable = Number(table);
+      }
+    }
+  }
+
+  if(accuracy === 100){
+    suggestedLevel = currentLevelValue + 1;
+    levelMessage = `🚀 You’re ready for Level ${suggestedLevel}`;
+    focusMessage = weakestTable
+      ? `🎯 Boost your speed on Table ${weakestTable}`
+      : `🎯 Keep building your skills`;
+  } else if(accuracy >= 80){
+    suggestedLevel = currentLevelValue;
+    levelMessage = `⭐ Stay on Level ${currentLevelValue}`;
+    focusMessage = weakestTable
+      ? `🎯 Strengthen Table ${weakestTable}`
+      : `🎯 You're doing great — keep going`;
+  } else if(accuracy >= 60){
+    suggestedLevel = currentLevelValue;
+    levelMessage = `👍 Keep practicing Level ${currentLevelValue}`;
+    focusMessage = weakestTable
+      ? `🎯 Focus on Table ${weakestTable}`
+      : `🎯 Practice a bit more to improve`;
+  } else {
+    suggestedLevel = currentLevelValue;
+    levelMessage = `💪 Let’s build stronger basics`;
+    focusMessage = weakestTable
+      ? `🎯 Start with Table ${weakestTable}`
+      : `🎯 Take it step by step`;
+  }
+
+  return {
+    levelMessage,
+    focusMessage,
+    suggestedLevel,
+    focusTable: weakestTable
+  };
+}
+    function practiceAgain(){
+  updateLevelUI();
+
+  selectedTables = [];
+
+  if(latestRecommendation.focusTable !== null){
+    const levelConfig = getCurrentLevelConfig();
+    if(latestRecommendation.focusTable <= levelConfig.maxTable){
+      selectedTables = [latestRecommendation.focusTable];
+    }
+  }
+
+  renderTables();
+  document.getElementById('setupStatus').textContent = '';
+  showScreen('screen-setup');
+}
+
+async function applyRecommendation(){
+  const roundsPlayed = await getNumberBuilderRoundsPlayed();
+
+  let targetLevel = latestRecommendation.suggestedLevel || currentLevel;
+
+  if(targetLevel === 2 && roundsPlayed < 3){
+    targetLevel = 1;
+  }
+
+  if(targetLevel === 3 && roundsPlayed < 8){
+    targetLevel = 2;
+    if(roundsPlayed < 3){
+      targetLevel = 1;
+    }
+  }
+
+  currentLevel = targetLevel;
+
+  applyLevelLockUI(roundsPlayed);
+  updateLevelUI();
+
+  selectedTables = [];
+
+  const levelConfig = getCurrentLevelConfig();
+
+  if(
+    latestRecommendation.focusTable !== null &&
+    latestRecommendation.focusTable <= levelConfig.maxTable
+  ){
+    selectedTables = [latestRecommendation.focusTable];
+  }
+
+  renderTables();
+  document.getElementById('setupStatus').textContent = '';
+  showScreen('screen-setup');
+}
+    async function practiceTableFromProgress(table){
+  currentMode = 'number-builder';
+  playSound('tap');
+
+  const roundsPlayed = await getNumberBuilderRoundsPlayed();
+
+  let suggestedLevel = 1;
+
+  if(table <= 5){
+    suggestedLevel = 1;
+  } else if(table <= 10){
+    suggestedLevel = roundsPlayed >= 3 ? 2 : 1;
+  } else {
+    if(roundsPlayed >= 8){
+      suggestedLevel = 3;
+    } else if(roundsPlayed >= 3){
+      suggestedLevel = 2;
+    } else {
+      suggestedLevel = 1;
+    }
+  }
+
+  currentLevel = suggestedLevel;
+
+  const maxTable = numberBuilderLevels[currentLevel].maxTable;
+  selectedTables = [Math.min(table, maxTable)];
+
+  applyLevelLockUI(roundsPlayed);
+  updateLevelUI();
+  renderTables();
+  document.getElementById('setupStatus').textContent = '';
+
+ startGame();
+}
+    async function openProgress(){
+  const user = auth.currentUser;
+  const childId = appState.currentChildId;
+  const childName = appState.currentChildName;
+
+  if(!user || !childId){
+    alert('Choose a child to continue.');
+    return;
+  }
+
+  const snap = await db.collection('users')
+    .doc(user.uid)
+    .collection('children')
+    .doc(childId)
+    .get();
+
+  const data = snap.data() || {};
+  const xp = data.xp || 0;
+  const levelInfo = getLevelInfo(xp);
+  const tableStats = data.tableStats || {};
+
+  const nb = data.numberBuilder || {
+    roundsPlayed: 0,
+    totalCorrect: 0,
+    totalWrong: 0,
+    highestLevelPlayed: 1
+  };
+
+  const totalAnswered = (nb.totalCorrect || 0) + (nb.totalWrong || 0);
+  const accuracy = totalAnswered > 0
+    ? Math.round((nb.totalCorrect / totalAnswered) * 100)
+    : 0;
+
+  document.getElementById('progressChildName').textContent = `${childName}`;
+  document.getElementById('progressXP').textContent = `XP: ${xp}`;
+  document.getElementById('progressLevel').textContent = `Level: ${levelInfo.level}`;
+  document.getElementById('progressFill').style.width = `${levelInfo.progressPercent}%`;
+  document.getElementById('progressNextText').textContent = levelInfo.remainingText;
+
+  document.getElementById('progressRounds').textContent = `${nb.roundsPlayed || 0}`;
+document.getElementById('progressCorrect').textContent = `${nb.totalCorrect || 0}`;
+document.getElementById('progressWrong').textContent = `${nb.totalWrong || 0}`;
+document.getElementById('progressAccuracy').textContent = `${accuracy}%`;
+  document.getElementById('progressHighestLevel').textContent =
+    `Highest Number Builder level: ${nb.highestLevelPlayed || 1}`;
+
+  let masteryLines = [];
+  let masteredCount = 0;
+  let improvingCount = 0;
+  let needsPracticeCount = 0;
+
+  let focusTable = null;
+  let focusScore = 999;
+
+  for(let i = 1; i <= 12; i++){
+    const stats = tableStats[i];
+    if(!stats) continue;
+
+    const total = (stats.correct || 0) + (stats.wrong || 0);
+    if(total === 0) continue;
+
+    const tableAccuracy = Math.round(((stats.correct || 0) / total) * 100);
+
+    if(total >= 20 && tableAccuracy >= 85){
+      masteredCount++;
+      masteryLines.push(`✅ Table ${i}: mastered (${tableAccuracy}% • ${total} practice tries)`);
+    } else if(total >= 5){
+      if(tableAccuracy >= 60){
+        improvingCount++;
+        masteryLines.push(`🟡 Table ${i}: in progress (${tableAccuracy}% • ${total} practice tries)`);
+
+        if(tableAccuracy < focusScore){
+          focusScore = tableAccuracy;
+          focusTable = i;
+        }
+      } else {
+        needsPracticeCount++;
+        masteryLines.push(`🔴 Table ${i}: needs practice (${tableAccuracy}% • ${total} practice tries)`);
+
+        if(tableAccuracy < focusScore){
+          focusScore = tableAccuracy;
+          focusTable = i;
+        }
+      }
+    } else {
+      masteryLines.push(`⚪ Table ${i}: not enough data yet (${total} practice tries)`);
+    }
+  }
+
+  document.getElementById('progressSummaryMastered').textContent =
+    `🏅 Mastered tables: ${masteredCount}`;
+
+  document.getElementById('progressSummaryImproving').textContent =
+    `🟡 Tables improving: ${improvingCount}`;
+
+  document.getElementById('progressSummaryPractice').textContent =
+    `🔴 Needs practice: ${needsPracticeCount}`;
+
+  const nextText = document.getElementById('progressNextTable');
+  const focusEl = document.getElementById('progressFocusTable');
+
+  let nextLevelText = '';
+
+  if((nb.highestLevelPlayed || 1) >= 3){
+    nextLevelText = '🎉 Max Number Builder level reached';
+  } else {
+    nextLevelText = `➡️ Next Level: ${(nb.highestLevelPlayed || 1) + 1}`;
+  }
+
+  nextText.textContent = nextLevelText;
+
+  if(focusTable){
+    focusEl.textContent = `📌 Focus next: Table ${focusTable}`;
+  } else {
+    focusEl.textContent = '';
+  }
+
+  const masteryContainer = document.getElementById('progressMastery');
+masteryContainer.innerHTML = '';
+
+Object.keys(tableStats).forEach(tableKey => {
+  const stats = tableStats[tableKey];
+  const total = (stats.correct || 0) + (stats.wrong || 0);
+  if(total === 0) return;
+
+  const tableAccuracy = Math.round((stats.correct / total) * 100);
+
+  let statusClass = 'practice';
+  let statusIcon = '🔴';
+
+  if(total >= 20 && tableAccuracy >= 85){
+    statusClass = 'mastered';
+    statusIcon = '🏅';
+  } else if(total >= 5 && tableAccuracy >= 60){
+    statusClass = 'improving';
+    statusIcon = '🟡';
+  }
+
+  const row = document.createElement('button');
+  row.className = `table-row ${statusClass}`;
+  row.type = 'button';
+  row.innerHTML = `
+    <div>Table ${tableKey}</div>
+    <div>${tableAccuracy}% ${statusIcon}</div>
+  `;
+
+  row.onclick = () => {
+    playSound('tap');
+    practiceTableFromProgress(Number(tableKey));
+  };
+
+  masteryContainer.appendChild(row);
+});
+
+if(masteryContainer.innerHTML === ''){
+  masteryContainer.innerHTML = 'No table mastery data yet';
+}
+
+  showScreen('screen-progress');
+}
+  </script>
+</body>
+</html>
+
+
 

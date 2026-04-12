@@ -3159,10 +3159,14 @@ if(q.type === 'sequence'){
   }
 
   if(isBlast){
+    if(!blastActive || blastFinishing) return;
+
     setTimeout(() => {
-      if(!blastActive || blastFinishing) return;
-      renderBlastQuestion();
-    }, 120);
+      if(blastActive && !blastFinishing){
+        renderBlastQuestion();
+      }
+    }, 180);
+
     return;
   }
 

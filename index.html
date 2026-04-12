@@ -2325,6 +2325,9 @@ function updateLevelUI(){
   levelInfo.textContent = `${levelConfig.label} • ${levelConfig.questionCount} questions • tables up to ${levelConfig.maxTable}`;
 }
 
+    function getCurrentLevelConfig(){
+  return numberBuilderLevels[currentLevel];
+}
 async function getNumberBuilderRoundsPlayed(){
   const user = auth.currentUser;
   const childId = appState.currentChildId;

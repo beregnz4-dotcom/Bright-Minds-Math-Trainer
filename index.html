@@ -2098,11 +2098,41 @@ window.addEventListener('unhandledrejection', function(event){
     }
 
     function showScreen(screenId){
-      document.querySelectorAll('.screen').forEach(screen=>{
-        screen.classList.remove('active');
-      });
-      document.getElementById(screenId).classList.add('active');
+  // limpiar estado del juego al salir
+  if(screenId !== 'screen-game'){
+    clearTimeout(questionTimer);
+    clearInterval(blastInterval);
+
+    questionTimer = null;
+    blastInterval = null;
+
+    answered = false;
+
+    blastActive = false;
+    blastFinishing = false;
+    blastQuestionLocked = false;
+    blastCurrentData = null;
+    blastCurrentQuestion = '';
+
+    const bar = document.getElementById('timeBarFill');
+    if(bar){
+      bar.style.transition = 'none';
+      bar.style.width = '100%';
     }
+
+    const statusEl = document.getElementById('gameStatus');
+    if(statusEl){
+      statusEl.textContent = '';
+      statusEl.classList.remove('big-feedback');
+    }
+  }
+
+  document.querySelectorAll('.screen').forEach(screen=>{
+    screen.classList.remove('active');
+  });
+
+  document.getElementById(screenId).classList.add('active');
+}
 function showGlobalError(message){
   let box = document.getElementById('globalErrorBox');
 

@@ -3101,8 +3101,9 @@ function renderBlastQuestion(){
   }
 
   const targetOptions = (
-    currentMode === 'skill-builder' && selectedSkillGame === 'blast'
-  ) ? 9 : 3;
+    const targetOptions = (
+  currentMode === 'skill-builder' && selectedSkillGame === 'blast'
+) ? 6 : 3;
 
   while(optionsSet.size < targetOptions){
     let randomOffset;

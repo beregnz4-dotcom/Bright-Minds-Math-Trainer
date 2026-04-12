@@ -3035,8 +3035,10 @@ if(!gameState.resultsByTable[table]){
 }
 
 gameState.resultsByTable[table].wrong++;
-        statusEl.textContent = `Correct answer: ${correct}`;
-        statusEl.classList.add('big-feedback');
+        if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+  statusEl.textContent = `Correct answer: ${correct}`;
+  statusEl.classList.add('big-feedback');
+}
 
         allButtons.forEach(b => {
           if(Number(b.textContent) === correct){

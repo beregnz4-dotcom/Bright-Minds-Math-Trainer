@@ -2734,8 +2734,15 @@ if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
   let table, multiplier, answer, key;
 
   do{
-    table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
-    multiplier = Math.floor(Math.random() * 10) + 1;
+    if(selectedFacts.length > 0){
+      const fact = selectedFacts[Math.floor(Math.random() * selectedFacts.length)];
+      table = fact.table;
+      multiplier = fact.multiplier;
+    } else {
+      table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
+      multiplier = Math.floor(Math.random() * 10) + 1;
+    }
+
     answer = table * multiplier;
     key = `${table}x${multiplier}`;
     tries++;

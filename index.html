@@ -2459,37 +2459,50 @@ function applyLevelLockUI(roundsPlayed){
   }
 }
 
-  function renderTables(){
-  const container = document.getElementById('tablesContainer');
-  container.innerHTML = '';
+  function renderAnswerOptions(correctAnswer){
+  const answersArea = document.getElementById('answersArea');
+  answersArea.innerHTML = '';
 
-  const levelConfig = getCurrentLevelConfig();
-  const maxTable = levelConfig.maxTable;
+  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    answersArea.style.display = 'grid';
+    answersArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    answersArea.style.gap = '14px';
+    answersArea.style.maxWidth = '680px';
+    answersArea.style.margin = '0 auto';
+  } else {
+    answersArea.style.display = 'grid';
+    answersArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    answersArea.style.gap = '12px';
+    answersArea.style.maxWidth = '';
+    answersArea.style.margin = '';
+  }
 
-  container.style.display = 'grid';
-  container.style.gridTemplateColumns = 'repeat(5, 1fr)';
-  container.style.gap = '10px';
-  container.style.margin = '10px 0 22px';
+  const optionsSet = new Set();
+  optionsSet.add(correctAnswer);
 
-  for(let i = 1; i <= maxTable; i++){
+  // ... tu lógica actual ...
+
+  const options = shuffle([...optionsSet]);
+
+  options.forEach(option => {
     const btn = document.createElement('button');
-    btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
-    btn.textContent = i;
+    btn.className = 'answer-btn';
+    btn.textContent = option;
+
+    if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+      btn.style.minHeight = '90px';
+      btn.style.fontSize = '28px';
+      btn.style.borderRadius = '20px';
+      btn.style.width = '100%';
+    }
 
     btn.onclick = () => {
       playSound('tap');
-
-      if(selectedTables.includes(i)){
-        selectedTables = selectedTables.filter(x => x !== i);
-      } else {
-        selectedTables.push(i);
-      }
-
-      renderTables();
+      answerQuestion(btn, option, correctAnswer);
     };
 
-    container.appendChild(btn);
-  }
+    answersArea.appendChild(btn);
+  });
 }
 
     function selectAllTables(){

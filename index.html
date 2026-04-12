@@ -2699,6 +2699,11 @@ function renderBlastQuestion(){
   renderAnswerOptions(q.answer);
 }
   function renderCurrentQuestion(){
+  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    renderBlastQuestion();
+    return;
+  }
+
   const q = gameState.questions[gameState.currentIndex];
   if(!q) return;
 

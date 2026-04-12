@@ -2093,16 +2093,17 @@ function startTimeBar(){
 
   answered = false;
 
+  // ⏱️ Ajustar tiempo según nivel
+  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    if(currentLevel === 1) timeLimit = 10000;
+    if(currentLevel === 2) timeLimit = 8000;
+    if(currentLevel === 3) timeLimit = 6000;
+  }
+
   bar.style.transition = 'none';
   bar.style.width = '100%';
   bar.offsetWidth;
 
-  // ⏱️ Ajustar tiempo según nivel en Math Blast
-if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  if(currentLevel === 1) timeLimit = 10000;
-  if(currentLevel === 2) timeLimit = 8000;
-  if(currentLevel === 3) timeLimit = 6000;
-}
   bar.style.transition = `width ${timeLimit}ms linear`;
   bar.style.width = '0%';
 

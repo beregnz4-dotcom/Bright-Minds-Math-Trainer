@@ -2860,6 +2860,19 @@ if(q.type === 'sequence'){
     function renderAnswerOptions(correctAnswer){
   const answersArea = document.getElementById('answersArea');
   answersArea.innerHTML = '';
+      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  answersArea.style.display = 'grid';
+  answersArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  answersArea.style.gap = '14px';
+  answersArea.style.maxWidth = '680px';
+  answersArea.style.margin = '0 auto';
+} else {
+  answersArea.style.display = 'grid';
+  answersArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  answersArea.style.gap = '12px';
+  answersArea.style.maxWidth = '';
+  answersArea.style.margin = '';
+}
 
   const optionsSet = new Set();
   optionsSet.add(correctAnswer);

@@ -2984,7 +2984,9 @@ if(q.type === 'sequence'){
   const allButtons = document.querySelectorAll('.answer-btn');
   const statusEl = document.getElementById('gameStatus');
 
+ if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
   allButtons.forEach(b => b.disabled = true);
+}
   statusEl.classList.remove('big-feedback');
 
       if(selected === correct){

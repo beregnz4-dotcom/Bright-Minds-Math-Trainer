@@ -3178,6 +3178,23 @@ async function finishBlastRound(){
   </div>
 `;
 
+
+// 👇 PEGA ESTO JUSTO AQUÍ 👇
+
+let worst = Object.entries(blastMistakes)
+  .sort((a,b) => b[1] - a[1])
+  .slice(0,3);
+
+if(worst.length > 0){
+  const list = worst.map(x => `• ${x[0]}`).join('<br>');
+  
+  document.getElementById('resultRecommendation').innerHTML = `
+    🎯 Practice these:
+    <br><br>
+    ${list}
+  `;
+}
+
   document.getElementById('resultRecommendation').innerHTML = 'Practice again to beat your score!';
   showScreen('screen-result');
 }

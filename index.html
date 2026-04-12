@@ -2665,7 +2665,7 @@ if(isSkill){
         questionText.textContent = `${q.table} × ${q.multiplier}`;
       }
 
-      if(q.type === 'visual'){
+      if(q.type === 'visual' && !(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
         typeLabel.textContent = isSkill ? `🚀 ${selectedSkillGame}` : '🧱 Build it!';
 
         for(let r=0; r<q.multiplier; r++){

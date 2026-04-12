@@ -3165,11 +3165,13 @@ if(q.type === 'sequence'){
       gameState.currentIndex = 0;
     }
 
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       if(blastActive && !blastFinishing){
         renderCurrentQuestion();
       }
-    });
+    }, 0);
+
+    return;
   } else {
     setTimeout(() => {
       gameState.currentIndex++;

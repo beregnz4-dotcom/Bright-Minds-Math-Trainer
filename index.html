@@ -3056,7 +3056,8 @@ gameState.resultsByTable[table].wrong++;
         });
       }
 if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  // 🔥 limpiar cualquier estado visual viejo
+  if(!blastActive) return;
+
   document.getElementById('gameStatus').textContent = '';
 
   gameState.currentIndex++;
@@ -3066,9 +3067,10 @@ if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
     gameState.currentIndex = 0;
   }
 
-  // 🔥 render limpio
   requestAnimationFrame(() => {
-    renderCurrentQuestion();
+    if(blastActive){
+      renderCurrentQuestion();
+    }
   });
 }
       

@@ -2550,6 +2550,9 @@ if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
 
     function renderCurrentQuestion(){
       const q = gameState.questions[gameState.currentIndex];
+     if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  blastCurrentQuestion = `${q.table}x${q.multiplier}`;
+}
       if(!q) return;
 
       document.getElementById('gameProgress').textContent =

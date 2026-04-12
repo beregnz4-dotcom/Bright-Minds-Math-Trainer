@@ -2952,8 +2952,10 @@ while(optionsSet.size < targetOptions){
 }
 
     function answerQuestion(button, selected, correct){
+  if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
   answered = true;
   clearTimeout(questionTimer);
+}
 
   const allButtons = document.querySelectorAll('.answer-btn');
   const statusEl = document.getElementById('gameStatus');

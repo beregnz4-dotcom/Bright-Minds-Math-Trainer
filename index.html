@@ -3046,14 +3046,27 @@ gameState.resultsByTable[table].wrong++;
         });
       }
 
-      setTimeout(() => {
-        gameState.currentIndex++;
-        if(gameState.currentIndex >= gameState.questions.length){
-          finishRound();
-        } else {
-          renderCurrentQuestion();
-        }
-      }, 900);
+      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  setTimeout(() => {
+    gameState.currentIndex++;
+
+    if(gameState.currentIndex >= gameState.questions.length){
+      buildNumberBuilderRound();
+      gameState.currentIndex = 0;
+    }
+
+    renderCurrentQuestion();
+  }, 400);
+} else {
+  setTimeout(() => {
+    gameState.currentIndex++;
+    if(gameState.currentIndex >= gameState.questions.length){
+      finishRound();
+    } else {
+      renderCurrentQuestion();
+    }
+  }, 900);
+}
     }
 
     async function finishRound(){

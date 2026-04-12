@@ -1923,6 +1923,12 @@ body{
     let timeLimit = 4000;
     let answered = false;
     let selectedSkillGame = null;
+    let blastTime = 60;
+    let blastCorrect = 0;
+    let blastSolved = 0;
+    let blastAnswer = 0;
+    let blastMistakes = {};
+    let blastCurrentQuestion = '';
 
     const numberBuilderLevels = {
       1: {

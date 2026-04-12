@@ -2289,6 +2289,16 @@ renderTables();
 }
     
 function updateLevelUI(){
+  const title = document.getElementById('levelTitle');
+
+  if(title){
+    if(currentMode === 'skill-builder'){
+      title.textContent = 'Choose speed';
+    } else {
+      title.textContent = 'Choose level';
+    }
+  }
+
   ['levelBtn1','levelBtn2','levelBtn3'].forEach(id => {
     const btn = document.getElementById(id);
     if(btn) btn.classList.remove('selected');

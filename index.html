@@ -3122,7 +3122,41 @@ resultSummaryEl.innerHTML += `<br><br><strong>${feedback}</strong>`;
 
   showScreen('screen-result');
 }
+async function finishBlastRound(){
+  clearInterval(blastInterval);
 
+  const resultSummaryEl = document.getElementById('resultSummary');
+  const resultCard = document.getElementById('resultCard');
+  resultCard.classList.remove('perfect','good','practice');
+
+  const accuracy = blastSolved > 0
+    ? Math.round((blastCorrect / blastSolved) * 100)
+    : 0;
+
+  let feedback = '';
+
+  if(accuracy >= 90){
+    feedback = '🏆 Amazing speed!';
+    resultCard.classList.add('perfect');
+  } else if(accuracy >= 70){
+    feedback = '🔥 Great job!';
+    resultCard.classList.add('good');
+  } else {
+    feedback = '💪 Keep practicing!';
+    resultCard.classList.add('practice');
+  }
+
+  resultSummaryEl.innerHTML = `
+    Correct: ${blastCorrect}<br>
+    Solved: ${blastSolved}<br>
+    Accuracy: ${accuracy}%<br><br>
+    <strong>${feedback}</strong>
+  `;
+
+  document.getElementById('resultRecommendation').innerHTML = 'Practice again to beat your score!';
+  showScreen('screen-result');
+}
+    
     function shuffle(arr){
       const copy = [...arr];
       for(let i = copy.length - 1; i > 0; i--){

@@ -2911,6 +2911,13 @@ gameState.resultsByTable[table].correct++;
         playSound('wrong');
         button.classList.add('wrong');
         gameState.wrong++;
+
+        if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  if(!blastMistakes[blastCurrentQuestion]){
+    blastMistakes[blastCurrentQuestion] = 0;
+  }
+  blastMistakes[blastCurrentQuestion]++;
+}
         const currentQuestion = gameState.questions[gameState.currentIndex];
 const table = currentQuestion.table;
 

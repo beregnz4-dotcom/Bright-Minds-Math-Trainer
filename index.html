@@ -3008,8 +3008,10 @@ gameState.resultsByTable[table].correct++;
         
 
         const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
-        statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
-        statusEl.classList.add('big-feedback');
+        if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+  statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+  statusEl.classList.add('big-feedback');
+}
       } else {
         playSound('wrong');
         button.classList.add('wrong');

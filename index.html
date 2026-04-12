@@ -2626,7 +2626,13 @@ if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
   }
 
       if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  document.getElementById('gameProgress').textContent = `Time Challenge`;
+  let levelText = '';
+
+if(currentLevel === 1) levelText = 'Level 1 • 120s • Learn & think';
+if(currentLevel === 2) levelText = 'Level 2 • 90s • Faster answers';
+if(currentLevel === 3) levelText = 'Level 3 • 60s • Quick reflex';
+
+document.getElementById('gameProgress').textContent = levelText;
 } else {
   document.getElementById('gameProgress').textContent =
     `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;

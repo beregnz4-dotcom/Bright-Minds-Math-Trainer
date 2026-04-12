@@ -3148,6 +3148,7 @@ resultSummaryEl.innerHTML += `<br><br><strong>${feedback}</strong>`;
   showScreen('screen-result');
 }
 async function finishBlastRound(){
+  blastActive = false;
   clearInterval(blastInterval);
 
   const resultSummaryEl = document.getElementById('resultSummary');

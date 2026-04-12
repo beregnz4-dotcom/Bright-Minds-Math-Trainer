@@ -459,6 +459,17 @@ body{
   z-index:6;
   pointer-events:auto;
 }
+  #screen-game.blast-mode #answersArea{
+  grid-template-columns:repeat(3, 1fr) !important;
+  gap:14px !important;
+  max-width:680px;
+}
+
+#screen-game.blast-mode .answer-btn{
+  min-height:90px;
+  font-size:28px;
+  border-radius:20px;
+}
 .answer-btn.correct{
   background:var(--green);
   color:#fff;

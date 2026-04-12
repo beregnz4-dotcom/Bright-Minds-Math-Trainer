@@ -2114,7 +2114,33 @@ function startTimeBar(){
     }
   }, timeLimit);
 }
+function startBlastTimer(){
+  clearInterval(blastInterval);
 
+  const bar = document.getElementById('timeBarFill');
+  if(!bar) return;
+
+  if(currentLevel === 1) blastTime = 10;
+  if(currentLevel === 2) blastTime = 8;
+  if(currentLevel === 3) blastTime = 6;
+
+  const totalTime = blastTime;
+
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+
+  blastInterval = setInterval(() => {
+    blastTime--;
+
+    const percent = Math.max((blastTime / totalTime) * 100, 0);
+    bar.style.width = percent + '%';
+
+    if(blastTime <= 0){
+      clearInterval(blastInterval);
+      finishBlastRound();
+    }
+  }, 1000);
+}
     function handleTimeOut(){
   if(currentMode !== 'skill-builder') return;
 

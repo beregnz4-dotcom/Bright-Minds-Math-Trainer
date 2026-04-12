@@ -2507,6 +2507,15 @@ function applyLevelLockUI(roundsPlayed){
 function startSkillGame(game){
   selectedSkillGame = game;
 
+  if(game === 'blast'){
+    blastTime = 60;
+    blastCorrect = 0;
+    blastSolved = 0;
+    blastAnswer = 0;
+    blastMistakes = {};
+    blastCurrentQuestion = '';
+  }
+
   document.getElementById('gameTitle').textContent = 'Skill Builder';
 
   buildNumberBuilderRound();

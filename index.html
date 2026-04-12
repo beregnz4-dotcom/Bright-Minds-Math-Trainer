@@ -3160,6 +3160,9 @@ resultSummaryEl.innerHTML += `<br><br><strong>${feedback}</strong>`;
   showScreen('screen-result');
 }
 async function finishBlastRound(){
+  if(blastFinishing) return;
+
+  blastFinishing = true;
   blastActive = false;
   clearInterval(blastInterval);
 
@@ -3204,29 +3207,26 @@ async function finishBlastRound(){
   <div style="font-size:18px;">
     ${feedback}
   </div>
-`;
-
-
-// 👇 PEGA ESTO JUSTO AQUÍ 👇
-
-let worst = Object.entries(blastMistakes)
-  .sort((a,b) => b[1] - a[1])
-  .slice(0,3);
-
-if(worst.length > 0){
-  const list = worst.map(x => `• ${x[0]}`).join('<br>');
-  
-  document.getElementById('resultRecommendation').innerHTML = `
-    🎯 Practice these:
-    <br><br>
-    ${list}
   `;
-}
 
-  document.getElementById('resultRecommendation').innerHTML = 'Practice again to beat your score!';
+  let worst = Object.entries(blastMistakes)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0,3);
+
+  if(worst.length > 0){
+    const list = worst.map(x => `• ${x[0]}`).join('<br>');
+    
+    document.getElementById('resultRecommendation').innerHTML = `
+      🎯 Practice these:
+      <br><br>
+      ${list}
+    `;
+  } else {
+    document.getElementById('resultRecommendation').innerHTML = 'Practice again to beat your score!';
+  }
+
   showScreen('screen-result');
 }
-    
     function shuffle(arr){
       const copy = [...arr];
       for(let i = copy.length - 1; i > 0; i--){

@@ -3073,56 +3073,53 @@ function renderBlastQuestion(){
   answersArea.innerHTML = '';
   answersArea.style.display = 'grid';
 
-  const optionsSet = new Set();
-  optionsSet.add(correctAnswer);
+  const isBlast = currentMode === 'skill-builder' && selectedSkillGame === 'blast';
+  const targetOptions = isBlast ? 6 : 3;
 
-  let offsets = [];
+  const optionsSet = new Set([correctAnswer]);
+
+  // Primero intenta con distractores cercanos
+  let nearbyOffsets = [];
 
   if(currentLevel === 1){
-    offsets = [-4, -3, -2, 2, 3, 4, 5, -5];
+    nearbyOffsets = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5];
+  } else if(currentLevel === 2){
+    nearbyOffsets = [-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6];
+  } else {
+    nearbyOffsets = [-8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8];
   }
 
-  if(currentLevel === 2){
-    offsets = [-3, -2, -1, 1, 2, 3];
-  }
-
-  if(currentLevel === 3){
-    offsets = [-2, -1, 1, 2];
-  }
-
-  const shuffledOffsets = shuffle(offsets);
-
-  for(const offset of shuffledOffsets){
+  shuffle(nearbyOffsets).forEach(offset => {
     const candidate = correctAnswer + offset;
+    if(candidate > 0 && candidate !== correctAnswer){
+      optionsSet.add(candidate);
+    }
+  });
+
+  // Si aún faltan opciones, rellena con números positivos aleatorios amplios
+  let safety = 0;
+  while(optionsSet.size < targetOptions && safety < 500){
+    const min = Math.max(1, correctAnswer - 12);
+    const max = correctAnswer + 20;
+    const candidate = Math.floor(Math.random() * (max - min + 1)) + min;
+
     if(candidate > 0){
       optionsSet.add(candidate);
     }
-    if(optionsSet.size === 3) break;
+
+    safety++;
   }
 
-  const targetOptions = (
-    const targetOptions = (
-  currentMode === 'skill-builder' && selectedSkillGame === 'blast'
-) ? 6 : 3;
-
+  // Último rescate
+  let filler = 1;
   while(optionsSet.size < targetOptions){
-    let randomOffset;
-
-    if(currentLevel === 1){
-      randomOffset = Math.floor(Math.random() * 10) - 5;
-    } else if(currentLevel === 2){
-      randomOffset = Math.floor(Math.random() * 7) - 3;
-    } else {
-      randomOffset = Math.floor(Math.random() * 5) - 2;
+    if(filler !== correctAnswer){
+      optionsSet.add(filler);
     }
-
-    const candidate = correctAnswer + randomOffset;
-    if(candidate > 0){
-      optionsSet.add(candidate);
-    }
+    filler++;
   }
 
-  const options = shuffle([...optionsSet]);
+  const options = shuffle([...optionsSet]).slice(0, targetOptions);
 
   options.forEach(option => {
     const btn = document.createElement('button');

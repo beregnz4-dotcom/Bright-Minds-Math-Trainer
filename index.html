@@ -2125,32 +2125,40 @@ function startTimeBar(){
 }
 function startBlastTimer(){
   clearInterval(blastInterval);
+  clearTimeout(questionTimer);
 
   const bar = document.getElementById('timeBarFill');
   if(!bar) return;
 
-   if(currentLevel === 1) blastTime = 120;
-   if(currentLevel === 2) blastTime = 90;
-   if(currentLevel === 3) blastTime = 60;
+  if(currentLevel === 1) blastTime = 120;
+  if(currentLevel === 2) blastTime = 90;
+  if(currentLevel === 3) blastTime = 60;
 
   const totalTime = blastTime;
 
+  // reset visual limpio
   bar.style.transition = 'none';
   bar.style.width = '100%';
+  bar.offsetWidth;
 
   blastInterval = setInterval(() => {
+    if(!blastActive || blastFinishing){
+      clearInterval(blastInterval);
+      return;
+    }
+
     blastTime--;
 
     const percent = Math.max((blastTime / totalTime) * 100, 0);
     bar.style.width = percent + '%';
 
     if(blastTime <= 0){
-  clearInterval(blastInterval);
+      clearInterval(blastInterval);
 
-  if(!blastFinishing){
-    finishBlastRound();
-  }
-}
+      if(!blastFinishing){
+        finishBlastRound();
+      }
+    }
   }, 1000);
 }
     function handleTimeOut(){

@@ -2533,15 +2533,21 @@ function renderTables(){
   }
 }
     function selectAllTables(){
-      const levelConfig = getCurrentLevelConfig();
-      selectedTables = [];
+  selectedTables = [];
 
-      for(let i = 1; i <= levelConfig.maxTable; i++){
-        selectedTables.push(i);
-      }
+  let maxTable = 12;
 
-      renderTables();
-    }
+  if(currentMode === 'number-builder'){
+    const levelConfig = getCurrentLevelConfig();
+    maxTable = levelConfig.maxTable;
+  }
+
+  for(let i = 1; i <= maxTable; i++){
+    selectedTables.push(i);
+  }
+
+  renderTables();
+}
 
     function clearTables(){
       selectedTables = [];

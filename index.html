@@ -3193,9 +3193,14 @@ function renderBlastQuestion(){
     gameState.resultsByTable[table].correct++;
 
     if(isBlast){
-      blastSolved++;
-      blastCorrect++;
-    } else {
+  blastSolved++;
+  blastCorrect++;
+
+  if(isPracticeMode){
+    practiceHits++;
+  }
+}
+     else {
       const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
       statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
       statusEl.classList.add('big-feedback');

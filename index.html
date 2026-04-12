@@ -2925,7 +2925,11 @@ gameState.resultsByTable[table].correct++;
         button.classList.add('wrong');
         gameState.wrong++;
 
-        if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  blastSolved++;
+}
+
+if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
   if(!blastMistakes[blastCurrentQuestion]){
     blastMistakes[blastCurrentQuestion] = 0;
   }

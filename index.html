@@ -2567,6 +2567,8 @@ function startSkillGame(game){
   gameScreen.classList.remove('blast-mode');
 
   if(game === 'blast'){
+    blastActive = true; // ✅ 👈 AQUÍ EXACTO
+
     gameScreen.classList.add('blast-mode');
     blastCorrect = 0;
     blastSolved = 0;

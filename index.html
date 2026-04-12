@@ -2976,6 +2976,9 @@ if(q.type === 'sequence'){
 }
 
     function answerQuestion(button, selected, correct){
+      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  document.getElementById('gameStatus').textContent = '';
+}
   if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
   answered = true;
   clearTimeout(questionTimer);

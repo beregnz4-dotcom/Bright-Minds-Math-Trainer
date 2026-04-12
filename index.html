@@ -3076,9 +3076,9 @@ function renderBlastQuestion(){
   const isBlast = currentMode === 'skill-builder' && selectedSkillGame === 'blast';
   const targetOptions = isBlast ? 6 : 3;
 
-  const optionsSet = new Set([correctAnswer]);
+  // La correcta siempre va primero y nunca se pierde
+  const wrongOptions = new Set();
 
-  // Primero intenta con distractores cercanos
   let nearbyOffsets = [];
 
   if(currentLevel === 1){
@@ -3089,22 +3089,23 @@ function renderBlastQuestion(){
     nearbyOffsets = [-8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8];
   }
 
-  shuffle(nearbyOffsets).forEach(offset => {
+  // Primero distractores cercanos
+  shuffle([...nearbyOffsets]).forEach(offset => {
     const candidate = correctAnswer + offset;
-    if(candidate > 0 && candidate !== correctAnswer){
-      optionsSet.add(candidate);
+    if(candidate > 0 && candidate !== correctAnswer && wrongOptions.size < targetOptions - 1){
+      wrongOptions.add(candidate);
     }
   });
 
-  // Si aún faltan opciones, rellena con números positivos aleatorios amplios
+  // Luego rellena con aleatorios si faltan
   let safety = 0;
-  while(optionsSet.size < targetOptions && safety < 500){
+  while(wrongOptions.size < targetOptions - 1 && safety < 500){
     const min = Math.max(1, correctAnswer - 12);
     const max = correctAnswer + 20;
     const candidate = Math.floor(Math.random() * (max - min + 1)) + min;
 
-    if(candidate > 0){
-      optionsSet.add(candidate);
+    if(candidate > 0 && candidate !== correctAnswer){
+      wrongOptions.add(candidate);
     }
 
     safety++;
@@ -3112,14 +3113,16 @@ function renderBlastQuestion(){
 
   // Último rescate
   let filler = 1;
-  while(optionsSet.size < targetOptions){
+  while(wrongOptions.size < targetOptions - 1){
     if(filler !== correctAnswer){
-      optionsSet.add(filler);
+      wrongOptions.add(filler);
     }
     filler++;
   }
 
-  const options = shuffle([...optionsSet]).slice(0, targetOptions);
+  // Aquí la correcta se agrega al final y luego se mezcla,
+  // pero ya NO se corta, así que nunca desaparece
+  const options = shuffle([correctAnswer, ...wrongOptions]);
 
   options.forEach(option => {
     const btn = document.createElement('button');

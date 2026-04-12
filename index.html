@@ -3262,22 +3262,17 @@ function renderBlastQuestion(){
     });
   }
 
-  if(isBlast){
-    if(!blastActive || blastFinishing) return;
+if(isBlast){
+  if(!blastActive || blastFinishing) return;
 
-    if(isPracticeMode && practiceHits >= 3){
-      finishBlastRound();
-      return;
+  setTimeout(() => {
+    if(blastActive && !blastFinishing){
+      renderBlastQuestion();
     }
+  }, 180);
 
-    setTimeout(() => {
-      if(blastActive && !blastFinishing){
-        renderBlastQuestion();
-      }
-    }, 180);
-
-    return;
-  }
+  return;
+}
 
   setTimeout(() => {
     gameState.currentIndex++;

@@ -3080,17 +3080,16 @@ if(q.type === 'sequence'){
 }
 
     function answerQuestion(button, selected, correct){
-  if(
-    currentMode === 'skill-builder' &&
-    selectedSkillGame === 'blast' &&
-    (!blastActive || blastFinishing)
-  ){
+  const isBlast = currentMode === 'skill-builder' && selectedSkillGame === 'blast';
+
+  if(isBlast && (!blastActive || blastFinishing || blastQuestionLocked)){
     return;
   }
 
-  const isBlast = currentMode === 'skill-builder' && selectedSkillGame === 'blast';
-
-  if(!isBlast){
+  if(isBlast){
+    blastQuestionLocked = true;
+    document.getElementById('gameStatus').textContent = '';
+  } else {
     answered = true;
     clearTimeout(questionTimer);
   }
@@ -3100,13 +3099,14 @@ if(q.type === 'sequence'){
 
   if(!isBlast){
     allButtons.forEach(b => b.disabled = true);
-  } else {
-    statusEl.textContent = '';
   }
 
   statusEl.classList.remove('big-feedback');
 
-  const currentQuestion = gameState.questions[gameState.currentIndex];
+  const currentQuestion = isBlast
+    ? blastCurrentData
+    : gameState.questions[gameState.currentIndex];
+
   if(!currentQuestion) return;
 
   const table = currentQuestion.table;
@@ -3156,32 +3156,21 @@ if(q.type === 'sequence'){
   }
 
   if(isBlast){
-    if(!blastActive || blastFinishing) return;
-
-    gameState.currentIndex++;
-
-    if(gameState.currentIndex >= gameState.questions.length){
-      buildNumberBuilderRound();
-      gameState.currentIndex = 0;
-    }
-
     setTimeout(() => {
-      if(blastActive && !blastFinishing){
-        renderCurrentQuestion();
-      }
-    }, 0);
-
+      if(!blastActive || blastFinishing) return;
+      renderBlastQuestion();
+    }, 120);
     return;
-  } else {
-    setTimeout(() => {
-      gameState.currentIndex++;
-      if(gameState.currentIndex >= gameState.questions.length){
-        finishRound();
-      } else {
-        renderCurrentQuestion();
-      }
-    }, 900);
   }
+
+  setTimeout(() => {
+    gameState.currentIndex++;
+    if(gameState.currentIndex >= gameState.questions.length){
+      finishRound();
+    } else {
+      renderCurrentQuestion();
+    }
+  }, 900);
 }
     async function finishRound(){
   const user = auth.currentUser;

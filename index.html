@@ -2729,6 +2729,7 @@ function renderBlastQuestion(){
   renderAnswerOptions(q.answer);
 }
   function renderCurrentQuestion(){
+  // Math Blast usa su propia lógica
   if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
     renderBlastQuestion();
     return;
@@ -2737,66 +2738,43 @@ function renderBlastQuestion(){
   const q = gameState.questions[gameState.currentIndex];
   if(!q) return;
 
-  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-    blastCurrentQuestion = `${q.table}x${q.multiplier}`;
-  }
-
-      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  let levelText = '';
-
-if(currentLevel === 1) levelText = 'Level 1 • 120s • Learn & think';
-if(currentLevel === 2) levelText = 'Level 2 • 90s • Faster answers';
-if(currentLevel === 3) levelText = 'Level 3 • 60s • Quick reflex';
-
-document.getElementById('gameProgress').textContent = levelText;
-} else {
   document.getElementById('gameProgress').textContent =
     `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
-}
 
-      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-  document.getElementById('gameProgressFill').style.width = '100%';
-} else {
-  const progressPercent = ((gameState.currentIndex) / gameState.questions.length) * 100;
+  const progressPercent = (gameState.currentIndex / gameState.questions.length) * 100;
   document.getElementById('gameProgressFill').style.width = `${progressPercent}%`;
-}
 
-      const statusEl = document.getElementById('gameStatus');
-      statusEl.textContent = '';
-      statusEl.classList.remove('big-feedback');
+  const statusEl = document.getElementById('gameStatus');
+  statusEl.textContent = '';
+  statusEl.classList.remove('big-feedback');
 
-      const visualArea = document.getElementById('visualArea');
-      const answersArea = document.getElementById('answersArea');
-      const typeLabel = document.getElementById('gameTypeLabel');
-      const questionText = document.getElementById('questionText');
-      const isSkill = currentMode === 'skill-builder';
+  const visualArea = document.getElementById('visualArea');
+  const answersArea = document.getElementById('answersArea');
+  const typeLabel = document.getElementById('gameTypeLabel');
+  const questionText = document.getElementById('questionText');
+  const isSkill = currentMode === 'skill-builder';
 
-if(isSkill){
-  typeLabel.textContent = `🚀 ${selectedSkillGame}`;
-} else {
-  typeLabel.textContent = '';
-}
+  typeLabel.textContent = isSkill ? `🚀 ${selectedSkillGame}` : '';
 
-      visualArea.innerHTML = '';
-      answersArea.innerHTML = '';
+  visualArea.innerHTML = '';
+  answersArea.innerHTML = '';
 
-      if(q.type === 'sequence'){
-        questionText.textContent = 'Complete the pattern';
-      } else if(q.type === 'matching'){
-        questionText.textContent = 'Match each operation';
-      } else {
-        questionText.textContent = `${q.table} × ${q.multiplier}`;
-      }
+  if(q.type === 'sequence'){
+    questionText.textContent = 'Complete the pattern';
+  } else if(q.type === 'matching'){
+    questionText.textContent = 'Match each operation';
+  } else {
+    questionText.textContent = `${q.table} × ${q.multiplier}`;
+  }
 
-      if(q.type === 'visual'){
-  typeLabel.textContent = isSkill ? `🚀 ${selectedSkillGame}` : '🧱 Build it!';
+  if(q.type === 'visual'){
+    typeLabel.textContent = isSkill ? `🚀 ${selectedSkillGame}` : '🧱 Build it!';
 
-  if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
-    for(let r=0; r<q.multiplier; r++){
+    for(let r = 0; r < q.multiplier; r++){
       const group = document.createElement('div');
       group.className = 'block-group';
 
-      for(let c=0; c<q.table; c++){
+      for(let c = 0; c < q.table; c++){
         const dot = document.createElement('div');
         dot.className = 'block-dot';
         group.appendChild(dot);
@@ -2804,157 +2782,223 @@ if(isSkill){
 
       visualArea.appendChild(group);
     }
+
+    renderAnswerOptions(q.answer);
   }
 
-  renderAnswerOptions(q.answer);
-}
+  if(q.type === 'sequence'){
+    if(currentMode !== 'skill-builder'){
+      typeLabel.textContent = '🔍 Find the pattern!';
+    }
 
-if(q.type === 'sequence'){
-  if(currentMode !== 'skill-builder'){
-    typeLabel.textContent = '🔍 Find the pattern!';
+    const strip = document.createElement('div');
+    strip.className = 'sequence-strip';
+
+    const start = Math.floor(Math.random() * 6) + 1;
+    const sequenceValues = [
+      q.table * start,
+      q.table * (start + 1),
+      q.table * (start + 2),
+      q.table * (start + 3),
+      q.table * (start + 4)
+    ];
+
+    const missingIndex = Math.floor(Math.random() * 5);
+    const correctSequenceAnswer = sequenceValues[missingIndex];
+
+    sequenceValues.forEach((item, index) => {
+      const box = document.createElement('div');
+      box.className = 'sequence-box';
+      box.textContent = index === missingIndex ? '?' : item;
+      strip.appendChild(box);
+    });
+
+    visualArea.appendChild(strip);
+    renderAnswerOptions(correctSequenceAnswer);
   }
 
-  const strip = document.createElement('div');
-  strip.className = 'sequence-strip';
+  if(q.type === 'addition'){
+    typeLabel.textContent = '➕ Add it up!';
 
-  const start = Math.floor(Math.random() * 6) + 1;
-  const sequenceValues = [
-    q.table * start,
-    q.table * (start + 1),
-    q.table * (start + 2),
-    q.table * (start + 3),
-    q.table * (start + 4)
-  ];
+    const addWrap = document.createElement('div');
+    addWrap.style.textAlign = 'center';
+    addWrap.style.marginBottom = '18px';
 
-  const missingIndex = Math.floor(Math.random() * 5);
-  const correctSequenceAnswer = sequenceValues[missingIndex];
+    const additionStyle = Math.floor(Math.random() * 3);
 
-  sequenceValues.forEach((item, index)=>{
-    const box = document.createElement('div');
-    box.className = 'sequence-box';
-    box.textContent = index === missingIndex ? '?' : item;
-    strip.appendChild(box);
-  });
+    if(additionStyle === 0){
+      let repeated = [];
+      for(let i = 0; i < q.multiplier; i++) repeated.push(q.table);
 
-  visualArea.appendChild(strip);
-  renderAnswerOptions(correctSequenceAnswer);
-}
- 
+      const pill = document.createElement('div');
+      pill.className = 'addition-pill';
+      pill.textContent = repeated.join(' + ');
+      addWrap.appendChild(pill);
+    }
 
-      if(q.type === 'addition'){
-  typeLabel.textContent = '➕ Add it up!';
+    if(additionStyle === 1){
+      const pill = document.createElement('div');
+      pill.className = 'addition-pill';
+      pill.textContent = `${q.multiplier} groups of ${q.table}`;
+      addWrap.appendChild(pill);
+    }
 
-  const addWrap = document.createElement('div');
-  addWrap.style.textAlign = 'center';
-  addWrap.style.marginBottom = '18px';
+    if(additionStyle === 2){
+      const pill = document.createElement('div');
+      pill.className = 'addition-pill';
+      pill.textContent = `${q.table} added ${q.multiplier} times`;
+      addWrap.appendChild(pill);
+    }
 
-  const additionStyle = Math.floor(Math.random() * 3);
-
-  if(additionStyle === 0){
-    let repeated = [];
-    for(let i = 0; i < q.multiplier; i++) repeated.push(q.table);
-
-    const pill = document.createElement('div');
-    pill.className = 'addition-pill';
-    pill.textContent = repeated.join(' + ');
-    addWrap.appendChild(pill);
+    visualArea.appendChild(addWrap);
+    renderAnswerOptions(q.answer);
   }
 
-  if(additionStyle === 1){
-    const pill = document.createElement('div');
-    pill.className = 'addition-pill';
-    pill.textContent = `${q.multiplier} groups of ${q.table}`;
-    addWrap.appendChild(pill);
-  }
+  if(q.type === 'matching'){
+    if(currentMode !== 'skill-builder'){
+      typeLabel.textContent = '🔗 Match them!';
+    }
 
-  if(additionStyle === 2){
-    const pill = document.createElement('div');
-    pill.className = 'addition-pill';
-    pill.textContent = `${q.table} added ${q.multiplier} times`;
-    addWrap.appendChild(pill);
-  }
+    const multiplierSet = new Set();
+    multiplierSet.add(q.multiplier);
 
-  visualArea.appendChild(addWrap);
-  renderAnswerOptions(q.answer);
-}
+    while(multiplierSet.size < 3){
+      const randomMultiplier = Math.floor(Math.random() * 10) + 1;
+      multiplierSet.add(randomMultiplier);
+    }
 
-      if(q.type === 'matching'){
-        if(currentMode !== 'skill-builder'){
-  typeLabel.textContent = '🔗 Match them!';
-}
+    const multipliers = [...multiplierSet];
 
-        const multiplierSet = new Set();
-        multiplierSet.add(q.multiplier);
+    const pairs = multipliers.map(m => ({
+      left: `${q.table} × ${m}`,
+      right: q.table * m
+    }));
 
-        while(multiplierSet.size < 3){
-          const randomMultiplier = Math.floor(Math.random() * 10) + 1;
-          multiplierSet.add(randomMultiplier);
+    const shuffledRight = shuffle(pairs.map(p => p.right));
+
+    const grid = document.createElement('div');
+    grid.className = 'match-grid';
+
+    const leftCol = document.createElement('div');
+    leftCol.className = 'match-col';
+
+    const rightCol = document.createElement('div');
+    rightCol.className = 'match-col';
+
+    let selectedLeftBtn = null;
+    let selectedRightBtn = null;
+    let selectedLeftPair = null;
+    let selectedRightValue = null;
+    let matchesCompleted = 0;
+    let wrongAttempt = false;
+
+    pairs.forEach(pair => {
+      const btn = document.createElement('button');
+      btn.className = 'match-btn';
+      btn.textContent = pair.left;
+
+      btn.onclick = () => {
+        if(btn.disabled) return;
+        playSound('tap');
+
+        leftCol.querySelectorAll('.match-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+
+        selectedLeftBtn = btn;
+        selectedLeftPair = pair;
+        checkMatch();
+      };
+
+      leftCol.appendChild(btn);
+    });
+
+    shuffledRight.forEach(value => {
+      const btn = document.createElement('button');
+      btn.className = 'match-btn';
+      btn.textContent = value;
+
+      btn.onclick = () => {
+        if(btn.disabled) return;
+        playSound('tap');
+
+        rightCol.querySelectorAll('.match-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+
+        selectedRightBtn = btn;
+        selectedRightValue = value;
+        checkMatch();
+      };
+
+      rightCol.appendChild(btn);
+    });
+
+    function checkMatch(){
+      if(!selectedLeftPair || selectedRightValue === null) return;
+
+      if(selectedLeftPair.right === selectedRightValue){
+        playSound('correct');
+
+        selectedLeftBtn.classList.remove('selected');
+        selectedRightBtn.classList.remove('selected');
+
+        selectedLeftBtn.classList.add('correct');
+        selectedRightBtn.classList.add('correct');
+
+        selectedLeftBtn.disabled = true;
+        selectedRightBtn.disabled = true;
+
+        matchesCompleted++;
+        statusEl.textContent = `Matches completed: ${matchesCompleted}/3`;
+
+        selectedLeftBtn = null;
+        selectedRightBtn = null;
+        selectedLeftPair = null;
+        selectedRightValue = null;
+
+        if(matchesCompleted === 3){
+          statusEl.classList.add('big-feedback');
+
+          if(!wrongAttempt){
+            gameState.correct++;
+            statusEl.textContent = '🌟 Perfect matching!';
+          } else {
+            gameState.wrong++;
+            statusEl.textContent = '👍 Completed!';
+          }
+
+          setTimeout(() => {
+            gameState.currentIndex++;
+            if(gameState.currentIndex >= gameState.questions.length){
+              finishRound();
+            } else {
+              renderCurrentQuestion();
+            }
+          }, 900);
         }
+      } else {
+        playSound('wrong');
+        wrongAttempt = true;
+        statusEl.textContent = 'Try again';
 
-        const multipliers = [...multiplierSet];
+        selectedLeftBtn.classList.remove('selected');
+        selectedRightBtn.classList.remove('selected');
 
-        const pairs = multipliers.map(m => ({
-          left: `${q.table} × ${m}`,
-          right: q.table * m
-        }));
+        selectedLeftBtn = null;
+        selectedRightBtn = null;
+        selectedLeftPair = null;
+        selectedRightValue = null;
+      }
+    }
 
-        const shuffledRight = shuffle(pairs.map(p => p.right));
+    grid.appendChild(leftCol);
+    grid.appendChild(rightCol);
+    visualArea.appendChild(grid);
+  }
 
-        const grid = document.createElement('div');
-        grid.className = 'match-grid';
-
-        const leftCol = document.createElement('div');
-        leftCol.className = 'match-col';
-
-        const rightCol = document.createElement('div');
-        rightCol.className = 'match-col';
-
-        let selectedLeftBtn = null;
-        let selectedRightBtn = null;
-        let selectedLeftPair = null;
-        let selectedRightValue = null;
-        let matchesCompleted = 0;
-        let wrongAttempt = false;
-
-        pairs.forEach(pair=>{
-          const btn = document.createElement('button');
-          btn.className = 'match-btn';
-          btn.textContent = pair.left;
-
-          btn.onclick = () => {
-            if(btn.disabled) return;
-            playSound('tap');
-
-            leftCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
-            btn.classList.add('selected');
-
-            selectedLeftBtn = btn;
-            selectedLeftPair = pair;
-            checkMatch();
-          };
-
-          leftCol.appendChild(btn);
-        });
-
-        shuffledRight.forEach(value=>{
-          const btn = document.createElement('button');
-          btn.className = 'match-btn';
-          btn.textContent = value;
-
-          btn.onclick = () => {
-            if(btn.disabled) return;
-            playSound('tap');
-
-            rightCol.querySelectorAll('.match-btn').forEach(b=>b.classList.remove('selected'));
-            btn.classList.add('selected');
-
-            selectedRightBtn = btn;
-            selectedRightValue = value;
-            checkMatch();
-          };
-
-          rightCol.appendChild(btn);
-        });
+  if(currentMode === 'skill-builder'){
+    startTimeBar();
+  }
+}
 
         function checkMatch(){
           if(!selectedLeftPair || selectedRightValue === null) return;

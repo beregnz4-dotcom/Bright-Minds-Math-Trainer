@@ -2981,8 +2981,13 @@ if(q.type === 'sequence'){
 }
 
     function answerQuestion(button, selected, correct){
-      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast' && !blastActive){
+  if(
+  currentMode === 'skill-builder' &&
+  selectedSkillGame === 'blast' &&
+  (!blastActive || blastFinishing)
+){
   return;
+}
 }
       if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
   document.getElementById('gameStatus').textContent = '';

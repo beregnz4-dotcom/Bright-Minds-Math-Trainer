@@ -2575,7 +2575,11 @@ function renderTables(){
 function startSkillGame(game){
   selectedSkillGame = game;
 
+  const gameScreen = document.getElementById('screen-game');
+  gameScreen.classList.remove('blast-mode');
+
   if(game === 'blast'){
+    gameScreen.classList.add('blast-mode');
     blastTime = 60;
     blastCorrect = 0;
     blastSolved = 0;

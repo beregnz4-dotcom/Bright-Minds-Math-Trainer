@@ -2093,6 +2093,9 @@ body{
     }
 
 function startTimeBar(){
+  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  return;
+}
   clearTimeout(questionTimer);
 
   const bar = document.getElementById('timeBarFill');

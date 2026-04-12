@@ -2573,27 +2573,29 @@ function startSkillGame(game){
   const gameScreen = document.getElementById('screen-game');
   gameScreen.classList.remove('blast-mode');
 
- if(game === 'blast'){
-  blastActive = true;
-  blastFinishing = false;
-
-  gameScreen.classList.add('blast-mode');
-  blastCorrect = 0;
-  blastSolved = 0;
-  blastAnswer = 0;
-  blastMistakes = {};
-  blastCurrentQuestion = '';
-}
-
   document.getElementById('gameTitle').textContent = 'Skill Builder';
-
-  buildNumberBuilderRound();
   showScreen('screen-game');
-  renderCurrentQuestion();
 
   if(game === 'blast'){
+    blastActive = true;
+    blastFinishing = false;
+    blastQuestionLocked = false;
+    blastRecentQuestions = [];
+    blastCurrentData = null;
+    blastCorrect = 0;
+    blastSolved = 0;
+    blastMistakes = {};
+    blastCurrentQuestion = '';
+
+    gameScreen.classList.add('blast-mode');
+
+    renderBlastQuestion();
     startBlastTimer();
+    return;
   }
+
+  buildNumberBuilderRound();
+  renderCurrentQuestion();
 }
 
 

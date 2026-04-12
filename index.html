@@ -3010,6 +3010,13 @@ if(q.type === 'sequence'){
 
   statusEl.classList.remove('big-feedback');
 
+  const currentQuestion = gameState.questions[gameState.currentIndex];
+  const table = currentQuestion.table;
+
+  if(!gameState.resultsByTable[table]){
+    gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
+  }
+
   if(selected === correct){
     playSound('correct');
     button.classList.add('correct');
@@ -3020,13 +3027,6 @@ if(q.type === 'sequence'){
       blastCorrect++;
     }
 
-    const currentQuestion = gameState.questions[gameState.currentIndex];
-    const table = currentQuestion.table;
-
-    if(!gameState.resultsByTable[table]){
-      gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
-    }
-
     gameState.resultsByTable[table].correct++;
 
     const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
@@ -3035,6 +3035,7 @@ if(q.type === 'sequence'){
       statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
       statusEl.classList.add('big-feedback');
     }
+
   } else {
     playSound('wrong');
     button.classList.add('wrong');
@@ -3042,20 +3043,11 @@ if(q.type === 'sequence'){
 
     if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
       blastSolved++;
-    }
 
-    if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
       if(!blastMistakes[blastCurrentQuestion]){
         blastMistakes[blastCurrentQuestion] = 0;
       }
       blastMistakes[blastCurrentQuestion]++;
-    }
-
-    const currentQuestion = gameState.questions[gameState.currentIndex];
-    const table = currentQuestion.table;
-
-    if(!gameState.resultsByTable[table]){
-      gameState.resultsByTable[table] = { correct: 0, wrong: 0 };
     }
 
     gameState.resultsByTable[table].wrong++;
@@ -3073,9 +3065,7 @@ if(q.type === 'sequence'){
   }
 
   if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-    if(!blastActive) return;
-
-    document.getElementById('gameStatus').textContent = '';
+    if(!blastActive || blastFinishing) return;
 
     gameState.currentIndex++;
 
@@ -3085,7 +3075,7 @@ if(q.type === 'sequence'){
     }
 
     requestAnimationFrame(() => {
-      if(blastActive){
+      if(blastActive && !blastFinishing){
         renderCurrentQuestion();
       }
     });
@@ -3100,7 +3090,6 @@ if(q.type === 'sequence'){
     }, 900);
   }
 }
-
     async function finishRound(){
   const user = auth.currentUser;
   const childId = appState.currentChildId;

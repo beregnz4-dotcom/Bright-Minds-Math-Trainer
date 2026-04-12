@@ -2505,8 +2505,12 @@ function renderTables(){
   const container = document.getElementById('tablesContainer');
   container.innerHTML = '';
 
-  const levelConfig = getCurrentLevelConfig();
-  const maxTable = levelConfig.maxTable;
+  let maxTable = 12;
+
+  if(currentMode === 'number-builder'){
+    const levelConfig = getCurrentLevelConfig();
+    maxTable = levelConfig.maxTable;
+  }
 
   for(let i = 1; i <= maxTable; i++){
     const btn = document.createElement('button');

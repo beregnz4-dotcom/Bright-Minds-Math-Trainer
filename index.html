@@ -2603,8 +2603,12 @@ if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
     `Question ${gameState.currentIndex + 1} of ${gameState.questions.length}`;
 }
 
-      const progressPercent = ((gameState.currentIndex) / gameState.questions.length) * 100;
-      document.getElementById('gameProgressFill').style.width = `${progressPercent}%`;
+      if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  document.getElementById('gameProgressFill').style.width = '100%';
+} else {
+  const progressPercent = ((gameState.currentIndex) / gameState.questions.length) * 100;
+  document.getElementById('gameProgressFill').style.width = `${progressPercent}%`;
+}
 
       const statusEl = document.getElementById('gameStatus');
       statusEl.textContent = '';

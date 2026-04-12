@@ -3185,25 +3185,25 @@ async function finishBlastRound(){
   }
 
   resultSummaryEl.innerHTML = `
-  <div style="font-size:22px; font-weight:900; margin-bottom:10px;">
-    💥 Math Blast Results
-  </div>
+    <div style="font-size:22px; font-weight:900; margin-bottom:10px;">
+      💥 Math Blast Results
+    </div>
 
-  <div style="font-size:18px; margin-bottom:6px;">
-    ✅ Correct: <strong>${blastCorrect}</strong>
-  </div>
+    <div style="font-size:18px; margin-bottom:6px;">
+      ✅ Correct: <strong>${blastCorrect}</strong>
+    </div>
 
-  <div style="font-size:18px; margin-bottom:6px;">
-    ⚡ Solved: <strong>${blastSolved}</strong>
-  </div>
+    <div style="font-size:18px; margin-bottom:6px;">
+      ⚡ Solved: <strong>${blastSolved}</strong>
+    </div>
 
-  <div style="font-size:18px; margin-bottom:12px;">
-    🎯 Accuracy: <strong>${accuracy}%</strong>
-  </div>
+    <div style="font-size:18px; margin-bottom:12px;">
+      🎯 Accuracy: <strong>${accuracy}%</strong>
+    </div>
 
-  <div style="font-size:18px;">
-    ${feedback}
-  </div>
+    <div style="font-size:18px;">
+      ${feedback}
+    </div>
   `;
 
   let worst = Object.entries(blastMistakes)
@@ -3212,7 +3212,6 @@ async function finishBlastRound(){
 
   if(worst.length > 0){
     const list = worst.map(x => `• ${x[0]}`).join('<br>');
-    
     document.getElementById('resultRecommendation').innerHTML = `
       🎯 Practice these:
       <br><br>

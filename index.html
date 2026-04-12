@@ -3352,10 +3352,12 @@ async function finishBlastRound(){
     </div>
   `;
 
+  
   let worst = Object.entries(blastMistakes)
-    .sort((a,b) => b[1] - a[1])
-    .slice(0,3);
-  selectedFacts = worst.map(x => {
+  .sort((a,b) => b[1] - a[1])
+  .slice(0,3);
+
+selectedFacts = worst.map(x => {
   const parts = x[0].split('x');
   return {
     table: Number(parts[0]),

@@ -3230,10 +3230,13 @@ async function finishBlastRound(){
 
   blastFinishing = true;
   blastActive = false;
+  blastQuestionLocked = true;
   clearInterval(blastInterval);
 
   const resultSummaryEl = document.getElementById('resultSummary');
   const resultCard = document.getElementById('resultCard');
+  const resultRecommendationEl = document.getElementById('resultRecommendation');
+
   resultCard.classList.remove('perfect','good','practice');
 
   const accuracy = blastSolved > 0
@@ -3281,13 +3284,13 @@ async function finishBlastRound(){
 
   if(worst.length > 0){
     const list = worst.map(x => `• ${x[0]}`).join('<br>');
-    document.getElementById('resultRecommendation').innerHTML = `
+    resultRecommendationEl.innerHTML = `
       🎯 Practice these:
       <br><br>
       ${list}
     `;
   } else {
-    document.getElementById('resultRecommendation').innerHTML = 'Practice again to beat your score!';
+    resultRecommendationEl.innerHTML = 'Practice again to beat your score!';
   }
 
   showScreen('screen-result');

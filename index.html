@@ -2566,15 +2566,11 @@ function startSkillGame(game){
 
   if(game === 'blast'){
     gameScreen.classList.add('blast-mode');
-    blastTime = 60;
     blastCorrect = 0;
     blastSolved = 0;
     blastAnswer = 0;
     blastMistakes = {};
     blastCurrentQuestion = '';
-    startBlastTimer(); // ← AGREGA ESTA LÍNEA
-
-    startBlastTimer();
   }
 
   document.getElementById('gameTitle').textContent = 'Skill Builder';
@@ -2582,8 +2578,11 @@ function startSkillGame(game){
   buildNumberBuilderRound();
   showScreen('screen-game');
   renderCurrentQuestion();
-}
 
+  if(game === 'blast'){
+    startBlastTimer();
+  }
+}
 
 
     function buildNumberBuilderRound(){

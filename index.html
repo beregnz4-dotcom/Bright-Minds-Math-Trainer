@@ -3630,7 +3630,8 @@ async function applyRecommendation(){
 
   renderTables();
   document.getElementById('setupStatus').textContent = '';
-  showScreen('screen-setup');
+  currentMode = 'skill-builder';
+startSkillGame('blast');
 }
     async function practiceTableFromProgress(table){
   currentMode = 'number-builder';

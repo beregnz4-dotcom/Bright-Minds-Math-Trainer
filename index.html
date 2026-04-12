@@ -3061,19 +3061,16 @@ if(q.type === 'sequence'){
 }
 
     function answerQuestion(button, selected, correct){
-  if(
-    currentMode === 'skill-builder' &&
-    selectedSkillGame === 'blast' &&
-    (!blastActive || blastFinishing)
-  ){
+  const isBlast = currentMode === 'skill-builder' && selectedSkillGame === 'blast';
+
+  if(isBlast && (!blastActive || blastFinishing || blastQuestionLocked)){
     return;
   }
 
-  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+  if(isBlast){
+    blastQuestionLocked = true;
     document.getElementById('gameStatus').textContent = '';
-  }
-
-  if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+  } else {
     answered = true;
     clearTimeout(questionTimer);
   }
@@ -3081,13 +3078,16 @@ if(q.type === 'sequence'){
   const allButtons = document.querySelectorAll('.answer-btn');
   const statusEl = document.getElementById('gameStatus');
 
-  if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+  if(!isBlast){
     allButtons.forEach(b => b.disabled = true);
   }
 
   statusEl.classList.remove('big-feedback');
 
-  const currentQuestion = gameState.questions[gameState.currentIndex];
+  const currentQuestion = isBlast
+    ? blastCurrentData
+    : gameState.questions[gameState.currentIndex];
+
   const table = currentQuestion.table;
 
   if(!gameState.resultsByTable[table]){
@@ -3097,18 +3097,18 @@ if(q.type === 'sequence'){
   if(selected === correct){
     playSound('correct');
     button.classList.add('correct');
-    gameState.correct++;
 
-    if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    if(isBlast){
       blastSolved++;
       blastCorrect++;
+    } else {
+      gameState.correct++;
     }
 
     gameState.resultsByTable[table].correct++;
 
-    const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
-
-    if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
+    if(!isBlast){
+      const messages = ['🔥 Great!', '👏 Nice!', '⭐ Awesome!', '💪 You got it!'];
       statusEl.textContent = messages[Math.floor(Math.random() * messages.length)];
       statusEl.classList.add('big-feedback');
     }
@@ -3116,46 +3116,38 @@ if(q.type === 'sequence'){
   } else {
     playSound('wrong');
     button.classList.add('wrong');
-    gameState.wrong++;
 
-    if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+    if(isBlast){
       blastSolved++;
 
       if(!blastMistakes[blastCurrentQuestion]){
         blastMistakes[blastCurrentQuestion] = 0;
       }
       blastMistakes[blastCurrentQuestion]++;
+    } else {
+      gameState.wrong++;
     }
 
     gameState.resultsByTable[table].wrong++;
-
-    if(!(currentMode === 'skill-builder' && selectedSkillGame === 'blast')){
-      statusEl.textContent = `Correct answer: ${correct}`;
-      statusEl.classList.add('big-feedback');
-    }
 
     allButtons.forEach(b => {
       if(Number(b.textContent) === correct){
         b.classList.add('correct');
       }
     });
+
+    if(!isBlast){
+      statusEl.textContent = `Correct answer: ${correct}`;
+      statusEl.classList.add('big-feedback');
+    }
   }
 
-  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-    if(!blastActive || blastFinishing) return;
-
-    gameState.currentIndex++;
-
-    if(gameState.currentIndex >= gameState.questions.length){
-      buildNumberBuilderRound();
-      gameState.currentIndex = 0;
-    }
-
-    requestAnimationFrame(() => {
+  if(isBlast){
+    setTimeout(() => {
       if(blastActive && !blastFinishing){
-        renderCurrentQuestion();
+        renderBlastQuestion();
       }
-    });
+    }, 120);
   } else {
     setTimeout(() => {
       gameState.currentIndex++;

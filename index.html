@@ -2194,11 +2194,10 @@ async function setNumberBuilderLevel(level){
   }
 
   currentLevel = level;
-  playSound('tap');
-  document.getElementById('setupStatus').textContent = '';
-  updateLevelUI();
-  selectedTables = [];
-  renderTables();
+playSound('tap');
+document.getElementById('setupStatus').textContent = '';
+updateLevelUI();
+renderTables();
 }
     function updateLevelUI(){
       const levelConfig = numberBuilderLevels[currentLevel];

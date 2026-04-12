@@ -3632,6 +3632,8 @@ async function applyRecommendation(){
 
   renderTables();
   document.getElementById('setupStatus').textContent = '';
+  isPracticeMode = selectedFacts.length > 0;
+practiceHits = 0;
   currentMode = 'skill-builder';
 startSkillGame('blast');
 }

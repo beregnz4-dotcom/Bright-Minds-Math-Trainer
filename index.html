@@ -2105,7 +2105,31 @@ window.addEventListener('unhandledrejection', function(event){
       });
       document.getElementById(screenId).classList.add('active');
     }
+function showGlobalError(message){
+  let box = document.getElementById('globalErrorBox');
 
+  if(!box){
+    box = document.createElement('div');
+    box.id = 'globalErrorBox';
+    box.style.position = 'fixed';
+    box.style.left = '12px';
+    box.style.right = '12px';
+    box.style.bottom = '12px';
+    box.style.zIndex = '99999';
+    box.style.background = '#b91c1c';
+    box.style.color = '#fff';
+    box.style.padding = '12px 14px';
+    box.style.borderRadius = '14px';
+    box.style.fontSize = '13px';
+    box.style.fontWeight = '700';
+    box.style.boxShadow = '0 10px 24px rgba(0,0,0,.25)';
+    box.style.whiteSpace = 'pre-wrap';
+    document.body.appendChild(box);
+  }
+
+  box.textContent = message;
+}
+    
 function startTimeBar(){
   if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
   return;

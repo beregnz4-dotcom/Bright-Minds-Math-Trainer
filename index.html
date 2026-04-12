@@ -2761,12 +2761,12 @@ if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
     }
 
     function generateBlastQuestion(){
-      function generateBlastQuestion(){
+      
 
-  // 🔒 FIX: si no hay tablas seleccionadas
-  if(selectedTables.length === 0){
-    selectedTables = [1]; // fallback mínimo
-  }
+  if(selectedFacts.length === 0 && selectedTables.length === 0){
+  selectedTables = [1];
+}
+  
   const recentLimit = 6;
   let tries = 0;
   let table, multiplier, answer, key;

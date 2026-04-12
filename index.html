@@ -3355,6 +3355,13 @@ async function finishBlastRound(){
   let worst = Object.entries(blastMistakes)
     .sort((a,b) => b[1] - a[1])
     .slice(0,3);
+  selectedFacts = worst.map(x => {
+  const parts = x[0].split('x');
+  return {
+    table: Number(parts[0]),
+    multiplier: Number(parts[1])
+  };
+});
 
   if(worst.length > 0){
     const list = worst.map(x => `• ${x[0]}`).join('<br>');

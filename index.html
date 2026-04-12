@@ -2903,6 +2903,10 @@ if(q.type === 'sequence'){
         playSound('correct');
         button.classList.add('correct');
         gameState.correct++;
+        if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
+          blastSolved++;
+         blastCorrect++;
+        }
         const currentQuestion = gameState.questions[gameState.currentIndex];
 const table = currentQuestion.table;
 

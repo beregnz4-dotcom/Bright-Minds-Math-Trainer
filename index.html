@@ -3157,11 +3157,26 @@ async function finishBlastRound(){
   }
 
   resultSummaryEl.innerHTML = `
-    Correct: ${blastCorrect}<br>
-    Solved: ${blastSolved}<br>
-    Accuracy: ${accuracy}%<br><br>
-    <strong>${feedback}</strong>
-  `;
+  <div style="font-size:22px; font-weight:900; margin-bottom:10px;">
+    💥 Math Blast Results
+  </div>
+
+  <div style="font-size:18px; margin-bottom:6px;">
+    ✅ Correct: <strong>${blastCorrect}</strong>
+  </div>
+
+  <div style="font-size:18px; margin-bottom:6px;">
+    ⚡ Solved: <strong>${blastSolved}</strong>
+  </div>
+
+  <div style="font-size:18px; margin-bottom:12px;">
+    🎯 Accuracy: <strong>${accuracy}%</strong>
+  </div>
+
+  <div style="font-size:18px;">
+    ${feedback}
+  </div>
+`;
 
   document.getElementById('resultRecommendation').innerHTML = 'Practice again to beat your score!';
   showScreen('screen-result');

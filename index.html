@@ -1924,6 +1924,20 @@ body{
   </div>
 
   <script>
+    window.onerror = function(message, source, lineno, colno){
+  const old = document.getElementById('loginStatus')?.textContent || '';
+  const text = `JS ERROR: ${message} | line ${lineno}`;
+  const el = document.getElementById('loginStatus');
+  if(el) el.textContent = text;
+  console.log(text, source, colno);
+};
+
+window.addEventListener('unhandledrejection', function(event){
+  const msg = event.reason?.message || event.reason || 'Promise error';
+  const el = document.getElementById('loginStatus');
+  if(el) el.textContent = `PROMISE ERROR: ${msg}`;
+  console.log('PROMISE ERROR:', event.reason);
+});
     const firebaseConfig = {
       apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
       authDomain: "bright-minds-math.firebaseapp.com",

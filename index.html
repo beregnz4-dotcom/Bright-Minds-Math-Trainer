@@ -2506,7 +2506,33 @@ function applyLevelLockUI(roundsPlayed){
     answersArea.appendChild(btn);
   });
 }
+function renderTables(){
+  const container = document.getElementById('tablesContainer');
+  container.innerHTML = '';
 
+  const levelConfig = getCurrentLevelConfig();
+  const maxTable = levelConfig.maxTable;
+
+  for(let i = 1; i <= maxTable; i++){
+    const btn = document.createElement('button');
+    btn.className = 'table-option' + (selectedTables.includes(i) ? ' selected' : '');
+    btn.textContent = i;
+
+    btn.onclick = () => {
+      playSound('tap');
+
+      if(selectedTables.includes(i)){
+        selectedTables = selectedTables.filter(x => x !== i);
+      } else {
+        selectedTables.push(i);
+      }
+
+      renderTables();
+    };
+
+    container.appendChild(btn);
+  }
+}
     function selectAllTables(){
       const levelConfig = getCurrentLevelConfig();
       selectedTables = [];

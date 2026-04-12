@@ -2464,51 +2464,7 @@ function applyLevelLockUI(roundsPlayed){
   }
 }
 
-  function renderAnswerOptions(correctAnswer){
-  const answersArea = document.getElementById('answersArea');
-  answersArea.innerHTML = '';
-
-  if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-    answersArea.style.display = 'grid';
-    answersArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
-    answersArea.style.gap = '14px';
-    answersArea.style.maxWidth = '680px';
-    answersArea.style.margin = '0 auto';
-  } else {
-    answersArea.style.display = 'grid';
-    answersArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
-    answersArea.style.gap = '12px';
-    answersArea.style.maxWidth = '';
-    answersArea.style.margin = '';
-  }
-
-  const optionsSet = new Set();
-  optionsSet.add(correctAnswer);
-
-  // ... tu lógica actual ...
-
-  const options = shuffle([...optionsSet]);
-
-  options.forEach(option => {
-    const btn = document.createElement('button');
-    btn.className = 'answer-btn';
-    btn.textContent = option;
-
-    if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
-      btn.style.minHeight = '90px';
-      btn.style.fontSize = '28px';
-      btn.style.borderRadius = '20px';
-      btn.style.width = '100%';
-    }
-
-    btn.onclick = () => {
-      playSound('tap');
-      answerQuestion(btn, option, correctAnswer);
-    };
-
-    answersArea.appendChild(btn);
-  });
-}
+ 
 function renderTables(){
   const container = document.getElementById('tablesContainer');
   container.innerHTML = '';

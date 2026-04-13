@@ -3628,6 +3628,14 @@ function getAdaptiveRecommendation(){
   };
 }
     function practiceAgain(){
+  isPracticeMode = false;
+  selectedFacts = [];
+  practiceHits = 0;
+  blastMistakes = {};
+  blastRecentQuestions = [];
+  blastCurrentData = null;
+  blastCurrentQuestion = '';
+
   updateLevelUI();
 
   selectedTables = [];

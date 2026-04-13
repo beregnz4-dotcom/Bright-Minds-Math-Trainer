@@ -3429,10 +3429,10 @@ selectedFacts = worst.map(x => {
   if(worst.length > 0){
     const list = worst.map(x => `• ${x[0]}`).join('<br>');
     resultRecommendationEl.innerHTML = `
-      🎯 Practice these:
-      <br><br>
-      ${list}
-    `;
+  🎯 Practice these (${selectedFacts.length}):
+  <br><br>
+  ${list}
+`;
   } else {
     resultRecommendationEl.innerHTML = 'Practice again to beat your score!';
   }

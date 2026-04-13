@@ -2587,10 +2587,13 @@ function applyLevelLockUI(roundsPlayed){
       }
     }
 
-  async function openMode(mode){
+async function openMode(mode){
   currentMode = mode;
   selectedTables = [];
   selectedFacts = [];
+  isPracticeMode = false;
+  practiceHits = 0;
+  blastMistakes = {};
   document.getElementById('setupStatus').textContent = '';
 
   const setupTitle = document.querySelector('#screen-setup .topbar-title');
@@ -2598,19 +2601,21 @@ function applyLevelLockUI(roundsPlayed){
   if(mode === 'number-builder'){
     if(setupTitle) setupTitle.textContent = 'Number Builder';
     const roundsPlayed = await getNumberBuilderRoundsPlayed();
+
+    showScreen('screen-setup');
     applyLevelLockUI(roundsPlayed);
     updateLevelUI();
     renderTables();
-    showScreen('screen-setup');
     return;
   }
 
   if(mode === 'skill-builder'){
     if(setupTitle) setupTitle.textContent = 'Skill Builder';
     currentLevel = 1;
+
+    showScreen('screen-setup');
     updateLevelUI();
     renderTables();
-    showScreen('screen-setup');
     return;
   }
 }

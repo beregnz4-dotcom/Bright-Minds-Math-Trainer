@@ -2160,7 +2160,13 @@ function showGlobalError(message){
 
   box.textContent = message;
 }
-    
+
+    function clearGlobalError(){
+  const box = document.getElementById('globalErrorBox');
+  if(box){
+    box.remove();
+  }
+}
 function startTimeBar(){
   if(currentMode === 'skill-builder' && selectedSkillGame === 'blast'){
   return;

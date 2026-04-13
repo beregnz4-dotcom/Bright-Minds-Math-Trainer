@@ -2101,6 +2101,8 @@ window.addEventListener('unhandledrejection', function(event){
     }
 
     function showScreen(screenId){
+    clearGlobalError();
+      
   // limpiar estado del juego al salir
   if(screenId !== 'screen-game'){
     clearTimeout(questionTimer);

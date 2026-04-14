@@ -1,4 +1,4 @@
-const firebaseConfig = {
+ const firebaseConfig = {
       apiKey: "AIzaSyCOaIl9c3n8BohutZN0-dEfD2TJIu28Ngk",
       authDomain: "bright-minds-math.firebaseapp.com",
       projectId: "bright-minds-math",
@@ -10,4 +10,3 @@ const firebaseConfig = {
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-

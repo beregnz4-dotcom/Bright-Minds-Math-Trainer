@@ -1,1 +1,23 @@
 
+    let selectedTables = [];
+    let currentMode = null;
+    let currentLevel = 1;
+    let questionTimer = null;
+    let timeLimit = 10000;
+    let answered = false;
+    let selectedSkillGame = null;
+    let blastTime = 60;
+    let blastCorrect = 0;
+    let blastSolved = 0;
+    let blastAnswer = 0;
+    let blastMistakes = {};
+    let blastCurrentQuestion = '';
+    let blastInterval = null;
+    let blastActive = false;
+    let blastFinishing = false;
+    let blastQuestionLocked = false;
+    let blastRecentQuestions = [];
+    let blastCurrentData = null;
+    let selectedFacts = [];
+    let practiceHits = 0;
+    let isPracticeMode = false;
